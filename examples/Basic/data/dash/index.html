@@ -58,7 +58,6 @@
 															var _tabName = data.userTab[index].tabName;
 															var _tabValue = data.userTab[index].tabValue;
 															var heap = data.usedHeap;
-															console.log(_tabValue);
 															$(".content").each(function(i){
 																	if($(this).data('tabname') === _tabName){
 																		$(this).find('h1').html(_tabValue);
