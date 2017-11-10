@@ -1,0 +1,15 @@
+{
+  "name": "EspDash",
+  "keywords": "EspDash, esp8266, ui, dashboard, user, ux, interface, gui, iot, arduino, Wifi, server",
+  "description": "A Cool GUI Dashboard to Manage your ESP Device.",
+  "repository":
+  {
+    "type": "git",
+    "url": "https://github.com/ayushsharma82/ESP-DASH.git"
+  },
+  "frameworks": "arduino",
+  "platforms":
+  [
+    "espressif"
+  ]
+}

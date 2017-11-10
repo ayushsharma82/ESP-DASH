@@ -1,9 +1,12 @@
 # ESP-DASH
+<br>
 A Blazing Fast & Beautiful Library for creating a Functional Dashboard for your ESP8266.
+<br>
 <br>
 ![ESP-DASH Dashboard](https://github.com/ayushsharma82/ESP-DASH/blob/master/docs/dashboard.PNG)
 <br>
-ESP-DASH is a UI Library to create functional dashboards for your ESP8266. It provides essential functions like Wifi switcher, rebooting, and RAM usage. ESP-DASH uses ESP8266 arduino core for proper functioning and with dashboard page of size only 15Kb, It loads in just 1.30 seconds to your browser!.
+<br>
+ESP-DASH is a UI Library to create functional dashboards for your ESP8266. It provides essential functions like Wifi switcher, rebooting, and RAM usage. ESP-DASH uses ESP8266 arduino core for proper functioning and with dashboard page of size only 15Kb, It loads in just 1.30 seconds to your browser!. The best of all? it's a responsive design and adapts to your mobile screen size.
 
 ESP-DASH is NOT dependent on Internet. All webpages are served from your ESP's SPIFFS Memory.
 
@@ -57,7 +60,7 @@ EspDash.addTab("tabname", "tabvalue");
 EspDash.updateTab("tabname", "tabvalue");
 ```
 
-Note!: All 'Tab names' should be Unique! and updatetab function should have same tabname as specified in addtab for first time!
+Note: All 'Tab names' should be Unique! and updatetab function should have same tabname as specified in addtab for first time!
 
 
 ## API

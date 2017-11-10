@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Firmware Update</title>
+  <link rel="stylesheet" href="/css/style.css">
+  </head>
+  <body>
+  	<div class="container">
+      	<div id="content">
+          	<section id="colors">
+              		<header>
+                    <img src="/img/logo.png" width="150">
+                  </header>
+								<div class="content disable-cursor"  style="display: block;">
+							   	<div class="container" style="text-align:center;">
+										<div class="columns" style="justify-content: center;">
+											<div class="md-12 sm-12 lg-12">
+													<p>Firmware Update</p>
+											</div>
+											<div class="md-4 sm-6">
+													<form method='POST' action='/update' enctype='multipart/form-data'>
+													<div class="form-element">
+															<div class="form-file-field">
+																	<span class="file-btn">Choose file</span>
+																	<span class="file-msg">or drop file here</span>
+																	<input type="file" name="update">
+															</div>
+													</div>
+													<div class="form-element">
+		                  			<input class="btn" type='submit' value='Update'>
+													</div>
+													</form>
+											</div>
+
+										</div>
+									</div>
+							</div>
+            </section>
+        </div>
+		</div>
+<script src="/js/script.js"></script>
+  </body>
+</html>

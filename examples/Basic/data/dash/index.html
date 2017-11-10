@@ -1,0 +1,126 @@
+<html>
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Dashboard</title>
+  <link rel="stylesheet" href="/css/style.css">
+  </head>
+
+  <body>
+  	<div class="container">
+      	<div id="content">
+          	<section id="colors">
+              		<header>
+                    <img src="/img/logo.png" width="150">
+                  </header>
+								<div class="container">
+								<div class="columns" id="app">
+								</div>
+							</div>
+            </section>
+        </div>
+<script src="/js/script.js"></script>
+</div>
+	<script>
+			var notyf = new Notyf();
+
+				$.getJSON('/dash/data.json', function(data){
+					if(data != null){
+						$(data.userTab).each(function(index){
+								$('#app').append("<div class='md-3 sm-5 content disable-cursor' data-tabname='"+this.tabName+"'><span class='title'>"+this.tabName+"<hr></span><h1 class='body'>"+this.tabValue+"</h1><span class=\"dot\"></span></div>");
+						});
+
+						$('#app').append("<div class='md-3 sm-5 content disable-cursor' data-key='heap' ><span class='title'>RAM Usage<hr></span><h1 class='body'>"+data.usedHeap+"</h1><span class='dot'></span></div>");
+
+						if(data.wifiStatus === 1){
+								$('#app').append("<div class=\"md-3 sm-5 content\" data-key=\"wifi\" ><h1 class=\"body\"><img src=\"/img/wifi.png\" width=\"64\"></h1><p style=\"position: absolute; left: 10px; bottom: -10px;\">Connected - "+data.wifiSSID+"</p><span class=\"dot active\"></span></div>");
+						}else{
+								$('#app').append("<div class=\"md-3 sm-5 content\" data-key=\"wifi\" ><h1 class=\"body\"><img src=\"/img/wifi.png\" width=\"64\"></h1><p style=\"position: absolute; left: 10px; bottom: -10px;\">Disconnected</p><span class=\"dot\"></span></div>");
+						}
+
+						$('#app').append("<div class=\"md-2 sm-5 content\" data-key=\"reboot\"><h1 class=\"body\"><img class=\"spinner\" src=\"/img/loading.png\" width=\"64\"></h1><p style=\"position: absolute; left: 10px; bottom: -10px;\">Reboot</p></div>");
+						$('#app').append("<div class=\"md-2 sm-5 content\" data-key=\"update\"><h1 class=\"body\"><img src=\"/img/serverupdate.png\" width=\"94\"></h1><p style=\"position: absolute; left: 10px; bottom: -10px;\">Update</p></div>");
+
+					}else{
+						console.log("Could not get Response from Server.");
+					}
+				});
+
+				window.setInterval(function(){
+					$.ajax({
+							    dataType: "json",
+							    url: '/dash/data.json',
+							    success: function(data){
+
+												if(data != null){
+													$(data.userTab).each(function(index){
+															var _tabName = data.userTab[index].tabName;
+															var _tabValue = data.userTab[index].tabValue;
+															var heap = data.usedHeap;
+															console.log(_tabValue);
+															$(".content").each(function(i){
+																	if($(this).data('tabname') === _tabName){
+																		$(this).find('h1').html(_tabValue);
+																		$(this).find('span').toggleClass('active');
+																		var mdl = this;
+																		setTimeout( function () {
+																				$(mdl).find('span').toggleClass('active');
+																		},100);
+																	}
+															});
+													});
+
+													$(".content").each(function(i){
+															if($(this).data('key') === 'wifi'){
+																	if(data.wifiStatus == 1){
+																		$(this).find('span').addClass('active');
+																		$(this).find('p').html("Connected - "+data.wifiSSID);
+																	}else{
+																		$(this).find('span').removeClass('active');
+																		$(this).find('p').html("Disconnected");
+																	}
+															}
+													});
+												}
+											},
+								timeout: 2000
+							});
+			}, 2000);
+
+
+			var reboot_action = false;
+
+			$("body").on("click",".content",function(){
+    			if($(this).data('key') == "reboot"){
+						if(reboot_action == false){
+								$(this).find('img').toggleClass('active');
+								notyf.alert('Rebooting server in 5 Seconds...');
+								reboot_action = true;
+								var mid = this;
+
+								setTimeout( function () {
+										$(mid).find('img').toggleClass('active');
+										$.ajax({
+														dataType: "json",
+														url: '/dash/reboot',
+														success: function(data){
+														},
+														timeout: 6000
+												});
+										reboot_action = false;
+								},5000);
+							}
+					}
+					else if($(this).data('key') == "update"){
+							window.location.href='/update';
+					}
+					else if($(this).data('key') == "wifi"){
+							window.location.href='/settings';
+					}
+			});
+
+
+	</script>
+  </body>
+</html>
