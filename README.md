@@ -25,7 +25,7 @@ Download the [Repository](https://github.com/ayushsharma82/ESP-DASH/archive/mast
 This Library is dependent on the following libraries to function properly.
   - [ESP8266 Core Library](https://github.com/esp8266/Arduino)
   - [ArduinoJson](https://github.com/bblanchon/ArduinoJson)
-  
+
 Make Sure all dependencies are installed at their latest version to make this work.
 
 ## Getting Started
@@ -41,13 +41,13 @@ Step 1 and Step 2 only required for first time in each and every esp which uses 
 
 ## User Tabs
 
-ESP-DASH Gives users to add their own tabs on Dashboard! With a auto updating function which keeps your Dashboard Updated at an Interval of 2 Seconds. 
+ESP-DASH Gives users to add their own tabs on Dashboard! With a auto updating function which keeps your Dashboard Dynamically Updated at an Interval of 2 Seconds. 
 
 ![ESP-DASH Dashboard](https://github.com/ayushsharma82/ESP-DASH/blob/master/docs/tab.gif)
 
 Please give a glance at 'Basic' Example for understanding on how to frame code with ESP-DASH.
 
-###### To Add a Tab on Dashboard: 
+###### To Add a Tab on Dashboard:
 ```
 EspDash.addTab("tabname", "tabvalue");
 ```
@@ -79,4 +79,4 @@ Drop this loop function in Sketch's void loop(); for proper functioning.
 
 
 ## Contribute
-Liked this Library? You can Contribute by adding your own Improvements in this Library or you may also share a :coffee:[Coffee](https://www.paypal.me/ayushsharma82/3)  with me. 
+Liked this Library? You can Contribute by adding your own Improvements in this Library or you may also share a :coffee:[Coffee](https://www.paypal.me/ayushsharma82/3)  with me.
