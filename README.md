@@ -81,6 +81,12 @@ This will update the value in your Tab which you created earlier. In this case j
 ###### EspDash.loop();
 Drop this loop function in Sketch's void loop(); for proper functioning.
 
+## A Special Thanks
+I would like to Thank the developers of the following Minimalistic Libraries which helped me in accomplishing a beautiful frontend for the ESP-DASH!
+
+- [Framy CSS Framework](http://framycss.org/)
+- [Zepto Javascript Framework](http://zeptojs.com/)
+- [Notyf Notifications](http://carlosroso.com/notyf/)
 
 ## Contribute
-Liked this Library? You can Contribute by adding your own Improvements in this Library or you may also share a :coffee:[Coffee](https://www.paypal.me/ayushsharma82/3)  with me.
+Liked this Library? You can Contribute by adding your own Improvements in this Library or you may also share a :coffee:[Coffee](https://www.paypal.me/ayushsharma82/3) with me.
