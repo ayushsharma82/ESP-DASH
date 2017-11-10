@@ -87,6 +87,7 @@ Drop this loop function in Sketch's void loop(); for proper functioning.
 
 ## A Special Thanks
 [![forthebadge](http://forthebadge.com/images/badges/thats-how-they-get-you.svg)](http://forthebadge.com)
+<br>
 I would like to Thank the developers of the following Minimalistic Libraries which helped me in accomplishing a beautiful frontend for the ESP-DASH!
 
 - [Framy CSS Framework](http://framycss.org/)
