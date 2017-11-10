@@ -1,7 +1,7 @@
 EspDash KEYWORD1
 
-begin KEYWORD2
-addTab KEYWORD2
-updateTab KEYWORD2
-debug KEYWORD2
-loop KEYWORD2
+begin	KEYWORD2
+addTab	KEYWORD2
+updateTab	KEYWORD2
+debug	KEYWORD2
+loop	KEYWORD2
