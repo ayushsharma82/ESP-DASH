@@ -1,5 +1,9 @@
 # ESP-DASH
 
+[![forthebadge](http://forthebadge.com/images/badges/uses-html.svg)](http://forthebadge.com)
+[![forthebadge](http://forthebadge.com/images/badges/gluten-free.svg)](http://forthebadge.com)
+[![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](http://forthebadge.com)
+
 ![Dashboard](https://github.com/ayushsharma82/ESP-DASH/blob/master/docs/dashboard.PNG)
 
 <br>
@@ -82,6 +86,7 @@ This will update the value in your Tab which you created earlier. In this case j
 Drop this loop function in Sketch's void loop(); for proper functioning.
 
 ## A Special Thanks
+[![forthebadge](http://forthebadge.com/images/badges/thats-how-they-get-you.svg)](http://forthebadge.com)
 I would like to Thank the developers of the following Minimalistic Libraries which helped me in accomplishing a beautiful frontend for the ESP-DASH!
 
 - [Framy CSS Framework](http://framycss.org/)
