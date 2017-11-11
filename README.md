@@ -49,7 +49,7 @@ Step 1 and Step 2 only required for first time in each and every esp which uses 
 
 ## User Tabs
 
-ESP-DASH Gives users to add their own tabs on Dashboard! With a auto updating function which keeps your Dashboard Dynamically Updated at an Interval of 2 Seconds.
+ESP-DASH Gives users ability to add their own tabs on Dashboard! With a auto updating function which keeps your Dashboard Dynamically Updated at an Interval of 2 Seconds.
 
 ![UserTab](https://github.com/ayushsharma82/ESP-DASH/blob/master/docs/tab.gif)
 

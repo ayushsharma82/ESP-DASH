@@ -7,9 +7,15 @@
     "type": "git",
     "url": "https://github.com/ayushsharma82/ESP-DASH.git"
   },
-  "frameworks": "arduino",
-  "platforms":
+  "authors":
   [
-    "espressif"
-  ]
+    {
+      "name": "Ayush Sharma",
+      "email": "asrocks5@gmail.com",
+      "maintainer": true
+    }
+  ],
+  "version": "1.0.0",
+  "frameworks": "arduino",
+  "platforms": "espressif"
 }
