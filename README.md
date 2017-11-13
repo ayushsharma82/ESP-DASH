@@ -41,7 +41,7 @@ Make Sure all dependencies are installed at their latest version to make this wo
 
 Step 1 and Step 2 only required for first time in each and every esp which uses ESP-DASH. Once UI is stored in SPIFFS you don't need to re-upload every time.
 
-- Step1:  Download and install [ESP8266 SPIFFS Tool](http://esp8266.github.io/Arduino/versions/2.0.0/doc/filesystem.html#uploading-files-to-file-system)
+- Step1:  Download and install [ESP8266 SPIFFS Tool](https://arduino-esp8266.readthedocs.io/en/latest/filesystem.html#uploading-files-to-file-system)
 - Step2:  Now Connect your ESP8266 > Open Basic Example and then in Toolbar > Select Tools > ESP8266 Sketch Data Upload.
 
 - Step3: Upload the Arduino Sketch to ESP8266.
