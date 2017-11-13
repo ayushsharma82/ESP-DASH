@@ -2,8 +2,8 @@
 ESP-DASH is a Blazing Fast Library to Create Great Looking Dashboards to Manage your ESP's
 
 To Use this Library - (Step 1 and Step 2 Required only for First time Upload)
-Step1: Download and install ESP8266 SPIFFS Tool
-        http://esp8266.github.io/Arduino/versions/2.0.0/doc/filesystem.html#uploading-files-to-file-system
+Step1: Download and install ESP8266 SPIFFS Tool V0.3.0 / Latest
+        https://arduino-esp8266.readthedocs.io/en/latest/filesystem.html#uploading-files-to-file-system
 Step2: Now Connect your ESP8266 and Select Tools > ESP8266 Sketch Data Upload.
         (This Uploads the UI for your Dashboard)
 Step3: After SPIFFS Upload is Completed, Upload the Arduino Sketch to ESP8266.
