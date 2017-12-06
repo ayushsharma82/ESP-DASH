@@ -65,7 +65,7 @@ void EspDashClass::handleJS(){
     file.close();
 }
 
-void EspDashClass::addTab(const char* _tabName, const char* _value){
+void EspDashClass::addTab(const char* _tabName, String _value){
     if(tabCount > TABS_LIMIT) return;
 
     tabName[tabCount] = _tabName;

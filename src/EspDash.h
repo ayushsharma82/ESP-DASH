@@ -34,7 +34,7 @@ class EspDashClass{
 public:
   void begin(const char* _ssid, const char* _pass = NULL);   // Begin Webserver & Get Base SSID / Pass
   void debug(bool stat = false);                                     // Print Out Serial Data or not.
-  void addTab(const char* _tabName, const char* _value);     // Add User Tab
+  void addTab(const char* _tabName, String _value);     // Add User Tab
   void addTab(const char* _tabName, int _value);             // Add User Tab in Int
   void updateTab(const char* _tabName, String _value);       // Update Tab Value
   void updateTab(const char* _tabName, int _value);          // Update Tab Value in Int
