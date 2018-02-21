@@ -1,4 +1,4 @@
-EspDash KEYWORD1
+EspDash	KEYWORD1
 
 begin	KEYWORD2
 addTab	KEYWORD2
