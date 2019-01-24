@@ -1,4 +1,4 @@
-int	KEYWORD2
+init	KEYWORD2
 disableStats	KEYWORD2
 addNumberCard	KEYWORD2
 updateNumberCard	KEYWORD2
