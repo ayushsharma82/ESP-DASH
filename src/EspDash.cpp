@@ -70,7 +70,7 @@ void ESPDashClass::onWsEvent(AsyncWebSocket * server, AsyncWebSocketClient * cli
                         #endif
                     }else if(command == "buttonClicked"){
                         if(ESPDash._buttonClickFunc != NULL){
-                            String buttonId = object["id"];
+                            const char* buttonId = object["id"];
                             for(int i=0; i < BUTTON_CARD_LIMIT; i++){
                                 if(ESPDash.button_card_id[i] == buttonId){
                                     ESPDash._buttonClickFunc(buttonId);

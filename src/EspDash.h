@@ -5,6 +5,7 @@
 * ESP-DASH V2
 * Made by Ayush Sharma
 * Github URL: https://github.com/ayushsharma82/ESP-DASH
+* Support Me: https://www.patreon.com/asrocks5
 *
 * - Version Changelog - 
 * V1.0.0 - 11 Nov. 2017 - Library was Born
@@ -27,7 +28,6 @@
     #include "ESPAsyncTCP.h"
     #include "ESPAsyncWebServer.h"
     #include "ArduinoJson.h"
-    #include "FS.h"
 #elif defined(ESP32)
     #define HARDWARE "ESP32"
     #include <esp_int_wdt.h>
@@ -35,13 +35,12 @@
     #include "WiFi.h"
     #include "AsyncTCP.h"
     #include "ESPAsyncWebServer.h"
-    #include "SPIFFS.h"
     #include "ArduinoJson.h"
 #endif
 
-typedef std::function<void(String buttonId)> DashButtonHandler;
+typedef std::function<void(const char* buttonId)> DashButtonHandler;
 
-#define DEBUG_MODE 1 // change to 1 for DEBUG Messages
+#define DEBUG_MODE 0 // change to 1 for DEBUG Messages
 
 // Debug mode
 #ifndef DEBUG_MODE
