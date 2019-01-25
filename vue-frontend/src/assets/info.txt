@@ -1,0 +1,14 @@
+
+Hope you enjoy your new logo, here are the people that
+made your beautiful logo happen :)
+
+font name: Gnomon-Foreground
+font link: http://indestructibletype.com/Gnomon.html
+font author: indestructible type
+font author site: http://indestructibletype.com
+
+icon designer: Natalie Doud
+icon designer link: /nataliedoud
+        
+{"bg":"#ffffff","icon-gradient-0":"#5106FF","icon-gradient-1":"#61CBF2","font":"#000000"}
+      
