@@ -28,6 +28,7 @@
     #include "ESPAsyncTCP.h"
     #include "ESPAsyncWebServer.h"
     #include "ArduinoJson.h"
+    #include "FS.h"
 #elif defined(ESP32)
     #define HARDWARE "ESP32"
     #include <esp_int_wdt.h>
@@ -36,6 +37,7 @@
     #include "AsyncTCP.h"
     #include "ESPAsyncWebServer.h"
     #include "ArduinoJson.h"
+    #include "SPIFFS.h"
 #endif
 
 typedef std::function<void(const char* buttonId)> DashButtonHandler;
@@ -72,7 +74,7 @@ class ESPDashClass{
 
     public:
         void init(AsyncWebServer& server);
-        void disableStats();    // To Disable Stats and reboot
+        void disableStats();    // To Disable Stats and disable reboot
 
         void addNumberCard(const char* _id, const char* _name); // Add Number card with default value
         void addNumberCard(const char* _id, const char* _name, int _value); // Add Number card with custom value
