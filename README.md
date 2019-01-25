@@ -1,4 +1,4 @@
-<p align="center"><img src="https://i.ibb.co/GdHjC6p/icon-above-font.png" width="250"></p>
+<p align="center"><img src="https://github.com/ayushsharma82/ESP-DASH/raw/master/docs/logo-above.svg" width="250"></p>
 
 <hr/>
 
