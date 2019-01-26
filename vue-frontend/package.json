@@ -1,0 +1,60 @@
+{
+  "name": "DASH",
+  "version": "0.8.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "apexcharts": "^2.6.0",
+    "bulma": "^0.7.2",
+    "compression-webpack-plugin": "^2.0.0",
+    "vue": "^2.5.22",
+    "vue-apexcharts": "^1.2.8",
+    "vue-content-loading": "^1.5.3",
+    "vue-feather-icons": "^4.10.0",
+    "vue-native-websocket": "^2.0.12",
+    "vue-router": "^3.0.2",
+    "vue-top-progress": "^0.7.0"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.3.0",
+    "@vue/cli-plugin-eslint": "^3.3.0",
+    "@vue/cli-service": "^3.3.0",
+    "babel-eslint": "^10.0.1",
+    "chota": "^0.5.2",
+    "eslint": "^5.12.0",
+    "eslint-plugin-vue": "^5.1.0",
+    "node-sass": "^4.11.0",
+    "sass-loader": "^7.0.1",
+    "style-resources-loader": "^1.2.1",
+    "vue-cli-plugin-style-resources-loader": "^0.1.3",
+    "vue-template-compiler": "^2.5.22"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "rules": {},
+    "parserOptions": {
+      "parser": "babel-eslint"
+    }
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
+}

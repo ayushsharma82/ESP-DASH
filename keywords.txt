@@ -1,7 +1,15 @@
-EspDash	KEYWORD1
+init	KEYWORD2
+disableStats	KEYWORD2
+addNumberCard	KEYWORD2
+updateNumberCard	KEYWORD2
+addTemperatureCard	KEYWORD2
+updateTemperatureCard	KEYWORD2
+addHumidityCard		KEYWORD2
+updateHumidityCard	KEYWORD2
+addStatusCard		KEYWORD2
+updateStatusCard	KEYWORD2
+addButtonCard		KEYWORD2
+addLineChart		KEYWORD2
+updateLineChart		KEYWORD2
+attachButtonClick	KEYWORD2
 
-begin	KEYWORD2
-addTab	KEYWORD2
-updateTab	KEYWORD2
-debug	KEYWORD2
-loop	KEYWORD2
