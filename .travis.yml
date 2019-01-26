@@ -1,7 +1,6 @@
 language: c
 env:
-  - ESP8266=esp8266:esp8266:genericesp8266module
-  - ESP32=esp32:esp32:esp32devmodule
+  - ESP32=espressif:esp32:ESP32 Dev Module
 before_install:
   - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_1.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :1 -ac -screen 0 1280x1024x16"
   - sleep 3
@@ -14,8 +13,8 @@ install:
   - ln -s $PWD /usr/local/share/arduino/libraries/
   - arduino --pref "boardsmanager.additional.urls=http://arduino.esp8266.com/stable/package_esp8266com_index.json, https://dl.espressif.com/dl/package_esp32_index.json" --save-prefs
   - arduino --install-boards esp8266:esp8266
-  - arduino --install-boards esp32:esp32
-  - arduino --board $BD --save-prefs
+  - arduino --install-boards espressif:esp32
+  - arduino --board esp8266:esp8266:ESP8266_GENERIC --save-prefs
   - arduino --pref "compiler.warning_level=all" --save-prefs
   
   # install lib
@@ -27,12 +26,12 @@ install:
   
 script:
 #compile the code, example:
- - arduino --verify --board $ESP8266 $PWD/ESP-DASH/examples/ESP8266_basic/ESP8266_basic.ino
- - arduino --verify --board $ESP8266 $PWD/ESP-DASH/examples/ESP8266_blink/ESP8266_blink.ino
- - arduino --verify --board $ESP8266 $PWD/ESP-DASH/examples/ESP8266_realtime/ESP8266_realtime.ino
- - arduino --verify --board $ESP32 $PWD/ESP-DASH/examples/ESP32_basic/ESP32_basic.ino
- - arduino --verify --board $ESP32 $PWD/ESP-DASH/examples/ESP32_blink/ESP32_blink.ino
- - arduino --verify --board $ESP32 $PWD/ESP-DASH/examples/ESP32_realtime/ESP32_realtime.ino
+ - arduino --verify --board esp8266:esp8266:ESP8266_GENERIC $PWD/ESP-DASH/examples/ESP8266_basic/ESP8266_basic.ino
+ - arduino --verify --board esp8266:esp8266:ESP8266_GENERIC $PWD/ESP-DASH/examples/ESP8266_blink/ESP8266_blink.ino
+ - arduino --verify --board esp8266:esp8266:ESP8266_GENERIC $PWD/ESP-DASH/examples/ESP8266_realtime/ESP8266_realtime.ino
+ - arduino --verify --board espressif:esp32:ESP32 Dev Module $PWD/ESP-DASH/examples/ESP32_basic/ESP32_basic.ino
+ - arduino --verify --board espressif:esp32:ESP32 Dev Module $PWD/ESP-DASH/examples/ESP32_blink/ESP32_blink.ino
+ - arduino --verify --board espressif:esp32:ESP32 Dev Module $PWD/ESP-DASH/examples/ESP32_realtime/ESP32_realtime.ino
  
 notifications:
   email:
