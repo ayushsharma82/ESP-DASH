@@ -1,31 +1,29 @@
-language: c
+sudo: false
+cache:
+  directories:
+    - ~/arduino_ide
+    - ~/.arduino15/packages/
+git:
+  depth: false
+  quiet: true
+env:
+  global:
+     - ARDUINO_IDE_VERSION="1.8.7"
 before_install:
-  - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_1.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :1 -ac -screen 0 1280x1024x16"
-  - sleep 3
-  - export DISPLAY=:1.0
-  - wget http://downloads.arduino.cc/arduino-1.8.2-linux64.tar.xz
-  - tar xf arduino-1.8.2-linux64.tar.xz
-  - sudo mv arduino-1.8.2 /usr/local/share/arduino
-  - sudo ln -s /usr/local/share/arduino/arduino /usr/local/bin/arduino
+  - source <(curl -SLs https://raw.githubusercontent.com/adafruit/travis-ci-arduino/master/install.sh)
 install:
-  - ln -s $PWD /usr/local/share/arduino/libraries
-  - arduino --pref "boardsmanager.additional.urls=http://arduino.esp8266.com/stable/package_esp8266com_index.json" --save-prefs
-  - arduino --install-boards esp8266:esp8266
-  #- arduino --install-boards espressif:esp32
-  - arduino --board esp8266:esp8266:generic --save-prefs
-  
   # install lib
   # add your libs here, example:
-  - git clone https://github.com/me-no-dev/AsyncTCP /usr/local/share/arduino/libraries/AsyncTCP
-  - git clone https://github.com/me-no-dev/ESPAsyncTCP /usr/local/share/arduino/libraries/ESPAsyncTCP
-  - git clone https://github.com/me-no-dev/ESPAsyncWebServer /usr/local/share/arduino/libraries/ESPAsyncWebServer
-  - git clone https://github.com/bblanchon/ArduinoJson /usr/local/share/arduino/libraries/ArduinoJson
+  - git clone https://github.com/me-no-dev/AsyncTCP ~/arduino_ide/libraries/AsyncTCP
+  - git clone https://github.com/me-no-dev/ESPAsyncTCP ~/arduino_ide/libraries/ESPAsyncTCP
+  - git clone https://github.com/me-no-dev/ESPAsyncWebServer ~/arduino_ide/libraries/ESPAsyncWebServer
+  - git clone https://github.com/bblanchon/ArduinoJson ~/arduino_ide/libraries/ArduinoJson
   
 script:
 #compile the code, example:
- - arduino --verify --board esp8266:esp8266:generic /usr/local/share/arduino/libraries/ESP-DASH/examples/ESP8266_basic/ESP8266_basic.ino
- - arduino --verify --board esp8266:esp8266:generic /usr/local/share/arduino/libraries/ESP-DASH/examples/ESP8266_blink/ESP8266_blink.ino
- - arduino --verify --board esp8266:esp8266:generic /usr/local/share/arduino/libraries/ESP-DASH/examples/ESP8266_realtime/ESP8266_realtime.ino
+ - arduino --verify --board esp8266:esp8266:generic ~/arduino_ide/libraries/ESP-DASH/examples/ESP8266_basic/ESP8266_basic.ino
+ - arduino --verify --board esp8266:esp8266:generic ~/arduino_ide/libraries/ESP-DASH/examples/ESP8266_blink/ESP8266_blink.ino
+ - arduino --verify --board esp8266:esp8266:generic ~/arduino_ide/libraries/ESP-DASH/examples/ESP8266_realtime/ESP8266_realtime.ino
  #- arduino --verify --board espressif:esp32:esp32:FlashFreq=80 /usr/local/share/arduino/libraries/ESP-DASH/examples/ESP32_basic/ESP32_basic.ino
  #- arduino --verify --board espressif:esp32:esp32:FlashFreq=80 /usr/local/share/arduino/libraries/ESP-DASH/examples/ESP32_blink/ESP32_blink.ino
  #- arduino --verify --board espressif:esp32:esp32:FlashFreq=80 /usr/local/share/arduino/libraries/ESP-DASH/examples/ESP32_realtime/ESP32_realtime.ino
