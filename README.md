@@ -21,7 +21,7 @@
 <br/>
 
 <h2>Demo</h2>
-![Click Here](https://ayushsharma82.github.io/ESP-DASH)
+<img src="https://ayushsharma82.github.io/ESP-DASH" target="_blank"> 
 
 <br/>
 <br/>
