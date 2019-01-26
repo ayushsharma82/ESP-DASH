@@ -14,11 +14,12 @@ before_install:
 install:
   # install lib
   # add your libs here, example:
-  - git clone https://github.com/me-no-dev/AsyncTCP ~/arduino_ide/libraries/AsyncTCP
-  - git clone https://github.com/me-no-dev/ESPAsyncTCP ~/arduino_ide/libraries/ESPAsyncTCP
-  - git clone https://github.com/me-no-dev/ESPAsyncWebServer ~/arduino_ide/libraries/ESPAsyncWebServer
-  - git clone https://github.com/bblanchon/ArduinoJson ~/arduino_ide/libraries/ArduinoJson
-  - git clone https://github.com/ayushsharma82/ESP-DASH ~/arduino_ide/libraries/ESP-DASH
+  - 
+  - if [ ! -d "~/arduino_ide/libraries/AsyncTCP" ]; then git clone https://github.com/me-no-dev/AsyncTCP ~/arduino_ide/libraries/AsyncTCP fi
+  - if [ ! -d "~/arduino_ide/libraries/ESPAsyncTCP" ]; then git clone https://github.com/me-no-dev/ESPAsyncTCP ~/arduino_ide/libraries/ESPAsyncTCP fi
+  - if [ ! -d "~/arduino_ide/libraries/ESPAsyncWebServer" ]; then git clone https://github.com/me-no-dev/ESPAsyncWebServer ~/arduino_ide/libraries/ESPAsyncWebServer fi
+  - if [ ! -d "~/arduino_ide/libraries/ArduinoJson" ]; then git clone https://github.com/bblanchon/ArduinoJson ~/arduino_ide/libraries/ArduinoJson fi
+  - if [ ! -d "~/arduino_ide/libraries/ESP-DASH" ]; then git clone https://github.com/ayushsharma82/ESP-DASH ~/arduino_ide/libraries/ESP-DASH fi
 script:
 #compile the code, example:
  - arduino --verify --board esp8266:esp8266:generic ~/arduino_ide/libraries/ESP-DASH/examples/ESP8266_basic/ESP8266_basic.ino
