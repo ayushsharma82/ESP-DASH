@@ -82,9 +82,5 @@ If you want to donate to the author then <b>you can become my patron</b>, It rea
 ESP-DASH is licensed under General Public License v3 ( GPLv3 ).
 <br/>
 <br/>
-
 <img src="https://img.shields.io/github/license/ayushsharma82/ESP-DASH.svg?style=for-the-badge" />
-
-<br/>
-<br/>
 </div>
