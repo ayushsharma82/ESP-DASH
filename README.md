@@ -61,7 +61,7 @@
 <br/>
 
 <h2>Documentation</h2>
-<a href="#">Click Here</a>
+<a href="https://github.com/ayushsharma82/ESP-DASH/wiki/Getting-Started">Click Here</a>
 
 <br/>
 <br/>
