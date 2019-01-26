@@ -16,7 +16,7 @@
 
 <br/>
 
-<p><b>ESP-DASH</b> is a Blazing fast library to create functional and realtime dashboard for <b>ESP8266</b> & <b>ESP32</b> Microcontrollers. It is <b>not</b> dependent on Internet. DASH V2 is the successor of previous generation and is fully rewritten to enhance performance and realtime capabilites.</p>
+<p><b>ESP-DASH</b> is a Blazing fast library to create functional and realtime dashboard for <b>ESP8266</b> & <b>ESP32</b> Microcontrollers. It is <b>not</b> dependent on Internet. DASH V2 is the successor of previous generation and is fully rewritten to enhance performance and realtime capabilites. DASH V2 includes Line Charts, Temperature Cards, Humidity Cards and Buttons etc to create a perfect dashboard which is accessible locally via your device IP without the need of an internet connection.</p>
 
 <br/>
 
