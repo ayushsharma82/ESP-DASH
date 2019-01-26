@@ -18,7 +18,7 @@ install:
   - git clone https://github.com/me-no-dev/ESPAsyncTCP ~/arduino_ide/libraries/ESPAsyncTCP
   - git clone https://github.com/me-no-dev/ESPAsyncWebServer ~/arduino_ide/libraries/ESPAsyncWebServer
   - git clone https://github.com/bblanchon/ArduinoJson ~/arduino_ide/libraries/ArduinoJson
-  
+  - git clone https://github.com/ayushsharma82/ESP-DASH ~/arduino_ide/libraries/ESP-DASH
 script:
 #compile the code, example:
  - arduino --verify --board esp8266:esp8266:generic ~/arduino_ide/libraries/ESP-DASH/examples/ESP8266_basic/ESP8266_basic.ino
