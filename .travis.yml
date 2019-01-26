@@ -9,9 +9,9 @@ before_install:
   - sudo ln -s /usr/local/share/arduino/arduino /usr/local/bin/arduino
 install:
   - ln -s $PWD /usr/local/share/arduino/libraries/
-  - arduino --pref "boardsmanager.additional.urls=http://arduino.esp8266.com/stable/package_esp8266com_index.json,https://dl.espressif.com/dl/package_esp32_index.json" --save-prefs
+  - arduino --pref "boardsmanager.additional.urls=http://arduino.esp8266.com/stable/package_esp8266com_index.json" --save-prefs
   - arduino --install-boards esp8266:esp8266
-  - arduino --install-boards espressif:esp32
+  #- arduino --install-boards espressif:esp32
   - arduino --board esp8266:esp8266:huzzah:eesz=4M3M,xtal=80 --save-prefs
   - arduino --pref "compiler.warning_level=all" --save-prefs
   
@@ -27,9 +27,9 @@ script:
  - arduino --verify --board esp8266:esp8266:huzzah:eesz=4M3M,xtal=80 $PWD/ESP-DASH/examples/ESP8266_basic/ESP8266_basic.ino
  - arduino --verify --board esp8266:esp8266:huzzah:eesz=4M3M,xtal=80 $PWD/ESP-DASH/examples/ESP8266_blink/ESP8266_blink.ino
  - arduino --verify --board esp8266:esp8266:huzzah:eesz=4M3M,xtal=80 $PWD/ESP-DASH/examples/ESP8266_realtime/ESP8266_realtime.ino
- - arduino --verify --board espressif:esp32:esp32:FlashFreq=80 $PWD/ESP-DASH/examples/ESP32_basic/ESP32_basic.ino
- - arduino --verify --board espressif:esp32:esp32:FlashFreq=80 $PWD/ESP-DASH/examples/ESP32_blink/ESP32_blink.ino
- - arduino --verify --board espressif:esp32:esp32:FlashFreq=80 $PWD/ESP-DASH/examples/ESP32_realtime/ESP32_realtime.ino
+ #- arduino --verify --board espressif:esp32:esp32:FlashFreq=80 $PWD/ESP-DASH/examples/ESP32_basic/ESP32_basic.ino
+ #- arduino --verify --board espressif:esp32:esp32:FlashFreq=80 $PWD/ESP-DASH/examples/ESP32_blink/ESP32_blink.ino
+ #- arduino --verify --board espressif:esp32:esp32:FlashFreq=80 $PWD/ESP-DASH/examples/ESP32_realtime/ESP32_realtime.ino
  
 notifications:
   email:
