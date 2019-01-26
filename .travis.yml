@@ -26,9 +26,9 @@ install:
   - git clone https://github.com/ayushsharma82/ESP-DASH ~/arduino_ide/libraries/ESP-DASH
 script:
 #compile the code, example:
- - arduino --verify --board esp8266:esp8266:generic ~/arduino_ide/libraries/ESP-DASH/examples/ESP8266_basic/ESP8266_basic.ino
- - arduino --verify --board esp8266:esp8266:generic ~/arduino_ide/libraries/ESP-DASH/examples/ESP8266_blink/ESP8266_blink.ino
- - arduino --verify --board esp8266:esp8266:generic ~/arduino_ide/libraries/ESP-DASH/examples/ESP8266_realtime/ESP8266_realtime.ino
+ - arduino --verify --board esp8266:esp8266:huzzah:eesz=4M3M,xtal=80 ~/arduino_ide/libraries/ESP-DASH/examples/ESP8266_basic/ESP8266_basic.ino
+ - arduino --verify --board esp8266:esp8266:huzzah:eesz=4M3M,xtal=80 ~/arduino_ide/libraries/ESP-DASH/examples/ESP8266_blink/ESP8266_blink.ino
+ - arduino --verify --board esp8266:esp8266:huzzah:eesz=4M3M,xtal=80 ~/arduino_ide/libraries/ESP-DASH/examples/ESP8266_realtime/ESP8266_realtime.ino
  #- arduino --verify --board espressif:esp32:esp32:FlashFreq=80 /usr/local/share/arduino/libraries/ESP-DASH/examples/ESP32_basic/ESP32_basic.ino
  #- arduino --verify --board espressif:esp32:esp32:FlashFreq=80 /usr/local/share/arduino/libraries/ESP-DASH/examples/ESP32_blink/ESP32_blink.ino
  #- arduino --verify --board espressif:esp32:esp32:FlashFreq=80 /usr/local/share/arduino/libraries/ESP-DASH/examples/ESP32_realtime/ESP32_realtime.ino
