@@ -23,12 +23,9 @@ install:
   - arduino --pref "compiler.warning_level=all" --save-prefs
 script:
 #compile the code, example:
- - arduino --verify --board $BD $PWD/ESP-DASH/examples/ESP8266_basic/ESP8266_basic.ino
- - arduino --verify --board $BD $PWD/ESP-DASH/examples/ESP8266_blink/ESP8266_blink.ino
- - arduino --verify --board $BD $PWD/ESP-DASH/examples/ESP8266_realtime/ESP8266_realtime.ino
- - cd $PWD
- - ls
- - arduino --verify --board $BD ~ayushsharma82/ESP-DASH/examples/ESP8266_basic/ESP8266_basic.ino
+ - arduino --verify --board $BD $PWD/examples/ESP8266_basic/ESP8266_basic.ino
+ - arduino --verify --board $BD $PWD/examples/ESP8266_blink/ESP8266_blink.ino
+ - arduino --verify --board $BD $PWD/examples/ESP8266_realtime/ESP8266_realtime.ino
  #- arduino --verify --board $BD2 $PWD/examples/ESP32_basic/ESP32_basic.ino
  #- arduino --verify --board $BD2 $PWD/examples/ESP32_blink/ESP32_blink.ino
  #- arduino --verify --board $BD2 $PWD/examples/ESP32_realtime/ESP32_realtime.ino
