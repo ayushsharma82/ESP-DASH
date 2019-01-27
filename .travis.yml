@@ -20,7 +20,6 @@ install:
   - git clone https://github.com/me-no-dev/ESPAsyncTCP.git /usr/local/share/arduino/libraries/ESPAsyncTCP
   - git clone https://github.com/me-no-dev/ESPAsyncWebServer.git /usr/local/share/arduino/libraries/ESPAsyncWebServer
   - git clone https://github.com/bblanchon/ArduinoJson.git /usr/local/share/arduino/libraries/ArduinoJson
-  - git clone https://github.com/ayushsharma82/ESP-DASH.git /usr/local/share/arduino/libraries/ESP-DASH
   - arduino --pref "compiler.warning_level=all" --save-prefs
 script:
 #compile the code, example:
