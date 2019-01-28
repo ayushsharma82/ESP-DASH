@@ -23,14 +23,9 @@ install:
   - arduino --pref "compiler.warning_level=all" --save-prefs
 script:
 #compile the code, example:
- - echo "## Base Directory"
- - cd ~/
- - ls
- - echo "## Examples
- - ls /usr/local/share/arduino/libraries/examples
- - arduino --verify --board $BD $PWD/examples/ESP8266_basic/ESP8266_basic.ino
- - arduino --verify --board $BD $PWD/examples/ESP8266_blink/ESP8266_blink.ino
- - arduino --verify --board $BD $PWD/examples/ESP8266_realtime/ESP8266_realtime.ino
+ - arduino --verify --board $BD /examples/ESP8266_basic/ESP8266_basic.ino
+ - arduino --verify --board $BD /examples/ESP8266_blink/ESP8266_blink.ino
+ - arduino --verify --board $BD /examples/ESP8266_realtime/ESP8266_realtime.ino
  #- arduino --verify --board $BD2 $PWD/examples/ESP32_basic/ESP32_basic.ino
  #- arduino --verify --board $BD2 $PWD/examples/ESP32_blink/ESP32_blink.ino
  #- arduino --verify --board $BD2 $PWD/examples/ESP32_realtime/ESP32_realtime.ino
