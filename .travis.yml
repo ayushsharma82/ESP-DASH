@@ -23,6 +23,7 @@ install:
   - arduino --pref "compiler.warning_level=all" --save-prefs
 script:
 #compile the code, example:
+ - ls $PWD
  - arduino --verify --board $BD $PWD/examples/ESP8266_basic/ESP8266_basic.ino
  - arduino --verify --board $BD $PWD/examples/ESP8266_blink/ESP8266_blink.ino
  - arduino --verify --board $BD $PWD/examples/ESP8266_realtime/ESP8266_realtime.ino
