@@ -9,17 +9,17 @@ before_install:
   - sudo ln -s /usr/local/share/arduino/arduino /usr/local/bin/arduino
 install:
   # Install ESP8266 Board
-  - mkdir /user/local/bin/arduino/hardware/esp8266com
-  - git clone https://github.com/esp8266/Arduino.git /user/local/bin/arduino/hardware/esp8266com/esp8266
-  - python /user/local/bin/arduino/hardware/esp8266com/esp8266/tools/get.py
-  - arduino --board esp8266:esp8266:generic --save-prefs
+  - sudo mkdir /user/local/bin/arduino/hardware/esp8266com
+  - sudo git clone https://github.com/esp8266/Arduino.git /user/local/bin/arduino/hardware/esp8266com/esp8266
+  - sudo python /user/local/bin/arduino/hardware/esp8266com/esp8266/tools/get.py
+  - sudo arduino --board esp8266:esp8266:generic --save-prefs
   # Install Dependencies and Library
   - git clone https://github.com/me-no-dev/AsyncTCP.git /usr/local/share/arduino/libraries/AsyncTCP
   - git clone https://github.com/me-no-dev/ESPAsyncTCP.git /usr/local/share/arduino/libraries/ESPAsyncTCP
   - git clone https://github.com/me-no-dev/ESPAsyncWebServer.git /usr/local/share/arduino/libraries/ESPAsyncWebServer
   - git clone https://github.com/bblanchon/ArduinoJson.git /usr/local/share/arduino/libraries/ArduinoJson
   - git clone https://github.com/ayushsharma82/ESP-DASH.git /usr/local/share/arduino/libraries/ESP-DASH
-  - ln -s $PWD /usr/local/share/arduino/libraries/ESP-DASH
+  - sudo ln -s $PWD /usr/local/share/arduino/libraries/ESP-DASH
   - arduino --pref "compiler.warning_level=all" --save-prefs
 script:
  # Verify All Examples
