@@ -16,6 +16,7 @@ install:
   - sudo rm -rf ~/arduino_ide/libraries/AsyncTCP
   - sudo rm -rf ~/arduino_ide/libraries/ESPAsyncTCP
   - sudo rm -rf ~/arduino_ide/libraries/ESPAsyncWebServer
+  - sudo rm -rf ~/arduino_ide/libraries/ArduinoJson
   - sudo rm -rf ~/arduino_ide/libraries/ESP-DASH
   - git clone https://github.com/me-no-dev/AsyncTCP.git ~/arduino_ide/libraries/AsyncTCP
   - git clone https://github.com/me-no-dev/ESPAsyncTCP.git ~/arduino_ide/libraries/ESPAsyncTCP
