@@ -1,5 +1,5 @@
 language: c
-sudo: false
+sudo: true
 cache:
   directories:
     - ~/arduino_ide
@@ -13,10 +13,10 @@ env:
 before_install:
   - source <(curl -SLs https://raw.githubusercontent.com/adafruit/travis-ci-arduino/master/install.sh)
 install:
-  - rm -rf ~/arduino_ide/libraries/AsyncTCP
-  - rm -rf ~/arduino_ide/libraries/ESPAsyncTCP
-  - rm -rf ~/arduino_ide/libraries/ESPAsyncWebServer
-  - rm -rf ~/arduino_ide/libraries/ESP-DASH
+  - sudo rm -rf ~/arduino_ide/libraries/AsyncTCP
+  - sudo rm -rf ~/arduino_ide/libraries/ESPAsyncTCP
+  - sudo rm -rf ~/arduino_ide/libraries/ESPAsyncWebServer
+  - sudo rm -rf ~/arduino_ide/libraries/ESP-DASH
   - git clone https://github.com/me-no-dev/AsyncTCP.git ~/arduino_ide/libraries/AsyncTCP
   - git clone https://github.com/me-no-dev/ESPAsyncTCP.git ~/arduino_ide/libraries/ESPAsyncTCP
   - git clone https://github.com/me-no-dev/ESPAsyncWebServer.git ~/arduino_ide/libraries/ESPAsyncWebServer
