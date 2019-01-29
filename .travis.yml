@@ -10,7 +10,7 @@ before_install:
 install:
   - arduino --pref "boardsmanager.additional.urls=http://arduino.esp8266.com/stable/package_esp8266com_index.json" --save-prefs
   - arduino --install-boards esp8266:esp8266
-  - arduino --board $BD --save-prefs
+  - arduino --board esp8266:esp8266:generic --save-prefs
   - git clone https://github.com/me-no-dev/AsyncTCP.git /usr/local/share/arduino/libraries/AsyncTCP
   - git clone https://github.com/me-no-dev/ESPAsyncTCP.git /usr/local/share/arduino/libraries/ESPAsyncTCP
   - git clone https://github.com/me-no-dev/ESPAsyncWebServer.git /usr/local/share/arduino/libraries/ESPAsyncWebServer
