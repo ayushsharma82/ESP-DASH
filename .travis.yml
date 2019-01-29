@@ -1,7 +1,4 @@
 language: c
-env:
-  - BD=esp8266:esp8266:generic
-  #- BD2=esp8266:esp8266:d1_mini:xtal=80,eesz=4M3M
 before_install:
   - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_1.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :1 -ac -screen 0 1280x1024x16"
   - sleep 3
@@ -10,9 +7,8 @@ before_install:
   - tar xf arduino-1.8.8-linux64.tar.xz
   - sudo mv arduino-1.8.8 /usr/local/share/arduino
   - sudo ln -s /usr/local/share/arduino/arduino /usr/local/bin/arduino
-  - wget https://raw.githubusercontent.com/google/styleguide/gh-pages/cpplint/cpplint.py
 install:
-  - ln -s $PWD /usr/local/share/arduino/libraries/
+  - ln -s $PWD /usr/local/share/arduino/libraries/ESP-DASH/
   - arduino --pref "boardsmanager.additional.urls=http://arduino.esp8266.com/stable/package_esp8266com_index.json" --save-prefs
   - arduino --install-boards esp8266:esp8266
   - arduino --board $BD --save-prefs
@@ -23,9 +19,9 @@ install:
   - arduino --pref "compiler.warning_level=all" --save-prefs
 script:
 #compile the code, example:
- - arduino --verify --board $BD /examples/ESP8266_basic/ESP8266_basic.ino
- - arduino --verify --board $BD /examples/ESP8266_blink/ESP8266_blink.ino
- - arduino --verify --board $BD /examples/ESP8266_realtime/ESP8266_realtime.ino
+ - arduino --verify --board esp8266:esp8266:generic $PWD/examples/ESP8266_basic/ESP8266_basic.ino
+ - arduino --verify --board esp8266:esp8266:generic $PWD/examples/ESP8266_blink/ESP8266_blink.ino
+ - arduino --verify --board esp8266:esp8266:generic $PWD/examples/ESP8266_realtime/ESP8266_realtime.ino
  #- arduino --verify --board $BD2 $PWD/examples/ESP32_basic/ESP32_basic.ino
  #- arduino --verify --board $BD2 $PWD/examples/ESP32_blink/ESP32_blink.ino
  #- arduino --verify --board $BD2 $PWD/examples/ESP32_realtime/ESP32_realtime.ino
