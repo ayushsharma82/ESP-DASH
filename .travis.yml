@@ -8,9 +8,12 @@ before_install:
   - sudo mv arduino-1.8.8 /usr/local/share/arduino
   - sudo ln -s /usr/local/share/arduino/arduino /usr/local/bin/arduino
 install:
-  - arduino --pref "boardsmanager.additional.urls=http://arduino.esp8266.com/stable/package_esp8266com_index.json" --save-prefs
-  - arduino --install-boards esp8266:esp8266
+  # Install ESP8266 Board
+  - mkdir /user/local/bin/arduino/hardware/esp8266com
+  - git clone https://github.com/esp8266/Arduino.git /user/local/bin/arduino/hardware/esp8266com/esp8266
+  - python /user/local/bin/arduino/hardware/esp8266com/esp8266/tools/get.py
   - arduino --board esp8266:esp8266:generic --save-prefs
+  # Install Dependencies and Library
   - git clone https://github.com/me-no-dev/AsyncTCP.git /usr/local/share/arduino/libraries/AsyncTCP
   - git clone https://github.com/me-no-dev/ESPAsyncTCP.git /usr/local/share/arduino/libraries/ESPAsyncTCP
   - git clone https://github.com/me-no-dev/ESPAsyncWebServer.git /usr/local/share/arduino/libraries/ESPAsyncWebServer
@@ -19,7 +22,7 @@ install:
   - ln -s $PWD /usr/local/share/arduino/libraries/ESP-DASH
   - arduino --pref "compiler.warning_level=all" --save-prefs
 script:
-#compile the code, example:
+ # Verify All Examples
  - arduino --verify --board esp8266:esp8266:generic $PWD/examples/ESP8266_basic/ESP8266_basic.ino
  - arduino --verify --board esp8266:esp8266:generic $PWD/examples/ESP8266_blink/ESP8266_blink.ino
  - arduino --verify --board esp8266:esp8266:generic $PWD/examples/ESP8266_realtime/ESP8266_realtime.ino
