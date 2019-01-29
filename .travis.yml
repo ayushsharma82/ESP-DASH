@@ -1,35 +1,25 @@
 language: c
+sudo: false
+cache:
+  directories:
+    - ~/arduino_ide
+    - ~/.arduino15/packages/
+git:
+  depth: false
+  quiet: true
+env:
+  global:
+     - ARDUINO_IDE_VERSION="1.8.7"
 before_install:
-  - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_1.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :1 -ac -screen 0 1280x1024x16"
-  - sleep 3
-  - export DISPLAY=:1.0
-  - wget http://downloads.arduino.cc/arduino-1.8.8-linux64.tar.xz
-  - tar xf arduino-1.8.8-linux64.tar.xz
-  - sudo mv arduino-1.8.8 /usr/local/share/arduino
-  - sudo ln -s /usr/local/share/arduino/arduino /usr/local/bin/arduino
+  - source <(curl -SLs https://raw.githubusercontent.com/adafruit/travis-ci-arduino/master/install.sh)
 install:
-  # Install ESP8266 Board
-  - sudo mkdir /user/local/bin/arduino/hardware/esp8266com
-  - sudo git clone https://github.com/esp8266/Arduino.git /user/local/bin/arduino/hardware/esp8266com/esp8266
-  - sudo python /user/local/bin/arduino/hardware/esp8266com/esp8266/tools/get.py
-  - sudo arduino --board esp8266:esp8266:generic --save-prefs
-  # Install Dependencies and Library
-  - git clone https://github.com/me-no-dev/AsyncTCP.git /usr/local/share/arduino/libraries/AsyncTCP
-  - git clone https://github.com/me-no-dev/ESPAsyncTCP.git /usr/local/share/arduino/libraries/ESPAsyncTCP
-  - git clone https://github.com/me-no-dev/ESPAsyncWebServer.git /usr/local/share/arduino/libraries/ESPAsyncWebServer
-  - git clone https://github.com/bblanchon/ArduinoJson.git /usr/local/share/arduino/libraries/ArduinoJson
-  - git clone https://github.com/ayushsharma82/ESP-DASH.git /usr/local/share/arduino/libraries/ESP-DASH
-  - sudo ln -s $PWD /usr/local/share/arduino/libraries/ESP-DASH
-  - arduino --pref "compiler.warning_level=all" --save-prefs
+  - git clone https://github.com/me-no-dev/AsyncTCP.git ~/arduino_ide/libraries/AsyncTCP
+  - git clone https://github.com/me-no-dev/ESPAsyncTCP.git ~/arduino_ide/libraries/ESPAsyncTCP
+  - git clone https://github.com/me-no-dev/ESPAsyncWebServer.git ~/arduino_ide/libraries/ESPAsyncWebServer
+  - git clone https://github.com/bblanchon/ArduinoJson.git ~/arduino_ide/libraries/ArduinoJson
+  - git clone https://github.com/ayushsharma82/ESP-DASH.git ~/arduino_ide/libraries/ESP-DASH
 script:
- # Verify All Examples
- - arduino --verify --board esp8266:esp8266:generic $PWD/examples/ESP8266_basic/ESP8266_basic.ino
- - arduino --verify --board esp8266:esp8266:generic $PWD/examples/ESP8266_blink/ESP8266_blink.ino
- - arduino --verify --board esp8266:esp8266:generic $PWD/examples/ESP8266_realtime/ESP8266_realtime.ino
- #- arduino --verify --board $BD2 $PWD/examples/ESP32_basic/ESP32_basic.ino
- #- arduino --verify --board $BD2 $PWD/examples/ESP32_blink/ESP32_blink.ino
- #- arduino --verify --board $BD2 $PWD/examples/ESP32_realtime/ESP32_realtime.ino
- 
+  - build_main_platforms
 notifications:
   email:
     on_success: change
