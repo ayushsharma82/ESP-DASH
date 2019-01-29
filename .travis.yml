@@ -8,7 +8,6 @@ before_install:
   - sudo mv arduino-1.8.8 /usr/local/share/arduino
   - sudo ln -s /usr/local/share/arduino/arduino /usr/local/bin/arduino
 install:
-  - ln -s $PWD /usr/local/share/arduino/libraries/ESP-DASH/
   - arduino --pref "boardsmanager.additional.urls=http://arduino.esp8266.com/stable/package_esp8266com_index.json" --save-prefs
   - arduino --install-boards esp8266:esp8266
   - arduino --board $BD --save-prefs
@@ -16,6 +15,8 @@ install:
   - git clone https://github.com/me-no-dev/ESPAsyncTCP.git /usr/local/share/arduino/libraries/ESPAsyncTCP
   - git clone https://github.com/me-no-dev/ESPAsyncWebServer.git /usr/local/share/arduino/libraries/ESPAsyncWebServer
   - git clone https://github.com/bblanchon/ArduinoJson.git /usr/local/share/arduino/libraries/ArduinoJson
+  - git clone https://github.com/ayushsharma82/ESP-DASH.git /usr/local/share/arduino/libraries/ESP-DASH
+  - ln -s $PWD /usr/local/share/arduino/libraries/ESP-DASH
   - arduino --pref "compiler.warning_level=all" --save-prefs
 script:
 #compile the code, example:
