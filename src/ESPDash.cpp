@@ -206,7 +206,7 @@ void ESPDashClass::updateNumberCard(const char* _id, int _value){
 
             number_card_value[i] = _value;
 
-            DynamicJsonDocument doc;
+            DynamicJsonDocument doc(250);
             JsonObject object = doc.to<JsonObject>();
             object["response"] = "updateNumberCard";
             object["id"] = number_card_id[i];
@@ -293,7 +293,7 @@ void ESPDashClass::updateTemperatureCard(const char* _id, int _value){
 
             temperature_card_value[i] = _value;
 
-            DynamicJsonDocument doc;
+            DynamicJsonDocument doc(250);
             JsonObject object = doc.to<JsonObject>();
             object["response"] = "updateTemperatureCard";
             object["id"] = temperature_card_id[i];
@@ -378,7 +378,7 @@ void ESPDashClass::updateHumidityCard(const char* _id, int _value){
 
             humidity_card_value[i] = _value;
 
-            DynamicJsonDocument doc;
+            DynamicJsonDocument doc(250);
             JsonObject object = doc.to<JsonObject>();
             object["response"] = "updateHumidityCard";
             object["id"] = humidity_card_id[i];
@@ -495,7 +495,7 @@ void ESPDashClass::updateStatusCard(const char* _id, bool _value){
                 status_card_value[i] = 0;
             }
 
-            DynamicJsonDocument doc;
+            DynamicJsonDocument doc(250);
             JsonObject object = doc.to<JsonObject>();
             object["response"] = "updateStatusCard";
             object["id"] = status_card_id[i];
@@ -528,7 +528,7 @@ void ESPDashClass::updateStatusCard(const char* _id, int _value){
 
                 status_card_value[i] = _value;
 
-                DynamicJsonDocument doc;
+                DynamicJsonDocument doc(250);
                 JsonObject object = doc.to<JsonObject>();
                 object["response"] = "updateStatusCard";
                 object["id"] = status_card_id[i];
@@ -663,7 +663,7 @@ void ESPDashClass::updateLineChart(const char* _id, int _x_axis_value[], int _x_
 
             if(line_chart_x_axis_type[i] == false){
                 
-                DynamicJsonDocument doc;
+                DynamicJsonDocument doc(250);
                 JsonObject object = doc.to<JsonObject>();
                 object["response"] = "updateLineChart";
                 object["id"] = line_chart_id[i];
@@ -711,7 +711,7 @@ void ESPDashClass::updateLineChart(const char* _id, String _x_axis_value[], int 
 
             if(line_chart_x_axis_type[i] == true){
                 
-                DynamicJsonDocument doc;
+                DynamicJsonDocument doc(250);
                 JsonObject object = doc.to<JsonObject>();
                 object["response"] = "updateLineChart";
                 object["id"] = line_chart_id[i];
@@ -762,7 +762,6 @@ void ESPDashClass::generateLayoutResponse(String& result){
     size_t CAPACITY = getTotalResponseCapacity();
 
     DynamicJsonDocument doc(CAPACITY+1000);
-    doc.nestingLimit = 100;
     JsonObject root = doc.to<JsonObject>();
     root["response"] = "getLayout";
     root["version"] = "1";
@@ -793,7 +792,7 @@ void ESPDashClass::generateLayoutResponse(String& result){
     JsonArray cards = root.createNestedArray("cards");
     for(int i=0; i < NUMBER_CARD_LIMIT; i++){
         if(number_card_id[i] != ""){
-            DynamicJsonDocument carddoc;
+            DynamicJsonDocument carddoc(250);
             JsonObject jsoncard = carddoc.to<JsonObject>();
             jsoncard["id"] = number_card_id[i];
             jsoncard["card_type"] = "number";
@@ -805,7 +804,7 @@ void ESPDashClass::generateLayoutResponse(String& result){
 
     for(int i=0; i < TEMPERATURE_CARD_LIMIT; i++){
         if(temperature_card_id[i] != ""){
-            DynamicJsonDocument carddoc;
+            DynamicJsonDocument carddoc(250);
             JsonObject jsoncard = carddoc.to<JsonObject>();
             jsoncard["id"] = temperature_card_id[i];
             jsoncard["card_type"] = "temperature";
@@ -818,7 +817,7 @@ void ESPDashClass::generateLayoutResponse(String& result){
 
     for(int i=0; i < HUMIDITY_CARD_LIMIT; i++){
         if(humidity_card_id[i] != ""){
-            DynamicJsonDocument carddoc;
+            DynamicJsonDocument carddoc(250);
             JsonObject jsoncard = carddoc.to<JsonObject>();
             jsoncard["id"] = humidity_card_id[i];
             jsoncard["card_type"] = "humidity";
@@ -830,7 +829,7 @@ void ESPDashClass::generateLayoutResponse(String& result){
 
     for(int i=0; i < STATUS_CARD_LIMIT; i++){
         if(status_card_id[i] != ""){
-            DynamicJsonDocument carddoc;
+            DynamicJsonDocument carddoc(250);
             JsonObject jsoncard = carddoc.to<JsonObject>();
             jsoncard["id"] = status_card_id[i];
             jsoncard["card_type"] = "status";
@@ -842,7 +841,7 @@ void ESPDashClass::generateLayoutResponse(String& result){
 
     for(int i=0; i < BUTTON_CARD_LIMIT; i++){
         if(button_card_id[i] != ""){
-            DynamicJsonDocument carddoc;
+            DynamicJsonDocument carddoc(250);
             JsonObject jsoncard = carddoc.to<JsonObject>();
             jsoncard["id"] = button_card_id[i];
             jsoncard["card_type"] = "button";
@@ -895,7 +894,7 @@ void ESPDashClass::generateStatsResponse(String& result){
         Serial.println("Free HEAP = before = JSON Serialization: "+String(ESP.getFreeHeap()));
     }
 
-    DynamicJsonDocument doc;
+    DynamicJsonDocument doc(500);
     JsonObject stats = doc.to<JsonObject>();
     if(stats_enabled){
         stats["response"] = "getStats";
@@ -934,7 +933,7 @@ void ESPDashClass::generateRebootResponse(String& result){
         Serial.println("Free HEAP = before = JSON Serialization: "+String(ESP.getFreeHeap()));
     }
 
-    DynamicJsonDocument doc;
+    DynamicJsonDocument doc(200);
     JsonObject obj = doc.to<JsonObject>();
         obj["response"] = "reboot";
     if(stats_enabled){
