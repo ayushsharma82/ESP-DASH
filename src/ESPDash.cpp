@@ -122,7 +122,7 @@ void ESPDashClass::init(AsyncWebServer& server){
     });
 
     server.on("/js/app.js", HTTP_GET, [](AsyncWebServerRequest *request){
-        AsyncWebServerResponse *response = request->beginResponse(SPIFFS, "/dash/js/app.js.gz", "application/javascript");
+        AsyncWebServerResponse *response = request->beginResponse(SPIFFS, "/dash/js/app.js", "application/javascript");
         response->addHeader("Content-Encoding","gzip");
         request->send(response);
     });
