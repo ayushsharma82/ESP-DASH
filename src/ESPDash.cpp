@@ -150,7 +150,7 @@ void ESPDashClass::init(AsyncWebServer& server){
 
 // Add Number Card with Default Value
 void ESPDashClass::addNumberCard(const char* _id, const char* _name){
-    if(_id != ""){
+    if(_id != NULL){
         for(int i=0; i < NUMBER_CARD_LIMIT; i++){
             if(number_card_id[i] == ""){
                 if(DEBUG_MODE){
@@ -174,7 +174,7 @@ void ESPDashClass::addNumberCard(const char* _id, const char* _name){
 
 // Add Number Card with Custom Value
 void ESPDashClass::addNumberCard(const char* _id, const char* _name, int _value){
-    if(_id != ""){
+    if(_id != NULL){
         for(int i=0; i < NUMBER_CARD_LIMIT; i++){
             if(number_card_id[i] == ""){
                 if(DEBUG_MODE){
@@ -235,7 +235,7 @@ void ESPDashClass::updateNumberCard(const char* _id, int _value){
 
 // Add Temperature Card with Default Value
 void ESPDashClass::addTemperatureCard(const char* _id, const char* _name, int _type){
-    if(_id != "" && _type >= 0 && _type <= TEMPERATURE_CARD_TYPES){
+    if(_id != NULL && _type >= 0 && _type <= TEMPERATURE_CARD_TYPES){
         for(int i=0; i < TEMPERATURE_CARD_LIMIT; i++){
             if(temperature_card_id[i] == ""){
                 if(DEBUG_MODE){
@@ -260,7 +260,7 @@ void ESPDashClass::addTemperatureCard(const char* _id, const char* _name, int _t
 
 // Add Temperature Card with Custom Value
 void ESPDashClass::addTemperatureCard(const char* _id, const char* _name, int _type, int _value){
-    if(_id != "" && _type >= 0 && _type <= TEMPERATURE_CARD_TYPES){
+    if(_id != NULL && _type >= 0 && _type <= TEMPERATURE_CARD_TYPES){
         for(int i=0; i < TEMPERATURE_CARD_LIMIT; i++){
             if(temperature_card_id[i] == ""){
                 if(DEBUG_MODE){
@@ -322,7 +322,7 @@ void ESPDashClass::updateTemperatureCard(const char* _id, int _value){
 
 // Add Humidity Card with Default Value
 void ESPDashClass::addHumidityCard(const char* _id, const char* _name){
-    if(_id != ""){
+    if(_id != NULL){
         for(int i=0; i < HUMIDITY_CARD_LIMIT; i++){
             if(humidity_card_id[i] == ""){
                 if(DEBUG_MODE){
@@ -346,7 +346,7 @@ void ESPDashClass::addHumidityCard(const char* _id, const char* _name){
 
 // Add Humidity Card with Custom Value
 void ESPDashClass::addHumidityCard(const char* _id, const char* _name, int _value){
-    if(_id != ""){
+    if(_id != NULL){
         for(int i=0; i < HUMIDITY_CARD_LIMIT; i++){
             if(humidity_card_id[i] == ""){
                 if(DEBUG_MODE){
@@ -407,7 +407,7 @@ void ESPDashClass::updateHumidityCard(const char* _id, int _value){
 
 // Add Status Card with Default Value
 void ESPDashClass::addStatusCard(const char* _id, const char* _name){
-    if(_id != ""){
+    if(_id != NULL){
         for(int i=0; i < STATUS_CARD_LIMIT; i++){
             if(status_card_id[i] == ""){
                 if(DEBUG_MODE){
@@ -431,7 +431,7 @@ void ESPDashClass::addStatusCard(const char* _id, const char* _name){
 
 // Add Status Card with Custom Value
 void ESPDashClass::addStatusCard(const char* _id, const char* _name, int _value){
-    if(_id != "" && _value >= 0 && _value <= STATUS_CARD_TYPES){
+    if(_id != NULL && _value >= 0 && _value <= STATUS_CARD_TYPES){
         for(int i=0; i < STATUS_CARD_LIMIT; i++){
             if(status_card_id[i] == ""){
                 if(DEBUG_MODE){
@@ -455,7 +455,7 @@ void ESPDashClass::addStatusCard(const char* _id, const char* _name, int _value)
 
 // Add Status Card with Custom Boolean Value
 void ESPDashClass::addStatusCard(const char* _id, const char* _name, bool _value){
-    if(_id != ""){
+    if(_id != NULL){
         for(int i=0; i < STATUS_CARD_LIMIT; i++){
             if(status_card_id[i] == ""){
                 if(DEBUG_MODE){
@@ -560,7 +560,7 @@ void ESPDashClass::updateStatusCard(const char* _id, int _value){
 
 // Add Button Card
 void ESPDashClass::addButtonCard(const char* _id, const char* _name){
-    if(_id != ""){
+    if(_id != NULL){
         for(int i=0; i < BUTTON_CARD_LIMIT; i++){
             if(button_card_id[i] == ""){
                 if(DEBUG_MODE){
@@ -586,7 +586,7 @@ void ESPDashClass::addButtonCard(const char* _id, const char* _name){
 
 // Add Line Chart
 void ESPDashClass::addLineChart(const char* _id, const char* _name, int _x_axis_value[], int _x_axis_size, const char* _y_axis_name, int _y_axis_value[], int _y_axis_size){
-    if(_id != ""){
+    if(_id != NULL){
         for(int i=0; i < LINE_CHART_LIMIT; i++){
             if(line_chart_id[i] == ""){
                 if(DEBUG_MODE){
@@ -620,7 +620,7 @@ void ESPDashClass::addLineChart(const char* _id, const char* _name, int _x_axis_
 
 // Add Line Chart
 void ESPDashClass::addLineChart(const char* _id, const char* _name, String _x_axis_value[], int _x_axis_size, const char* _y_axis_name, int _y_axis_value[], int _y_axis_size){
-    if(_id != ""){
+    if(_id != NULL){
         for(int i=0; i < LINE_CHART_LIMIT; i++){
             if(line_chart_id[i] == ""){
                 if(DEBUG_MODE){
@@ -711,7 +711,7 @@ void ESPDashClass::updateLineChart(const char* _id, String _x_axis_value[], int 
 
             if(line_chart_x_axis_type[i] == true){
                 
-                DynamicJsonDocument doc(250);
+                DynamicJsonDocument doc(1000);
                 JsonObject object = doc.to<JsonObject>();
                 object["response"] = "updateLineChart";
                 object["id"] = line_chart_id[i];
