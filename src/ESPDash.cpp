@@ -663,7 +663,7 @@ void ESPDashClass::updateLineChart(const char* _id, int _x_axis_value[], int _x_
 
             if(line_chart_x_axis_type[i] == false){
                 
-                DynamicJsonDocument doc(250);
+                DynamicJsonDocument doc(1000);
                 JsonObject object = doc.to<JsonObject>();
                 object["response"] = "updateLineChart";
                 object["id"] = line_chart_id[i];
@@ -852,7 +852,7 @@ void ESPDashClass::generateLayoutResponse(String& result){
 
     for(int i=0; i < LINE_CHART_LIMIT; i++){
         if(line_chart_id[i] != ""){
-            DynamicJsonDocument carddoc(500);
+            DynamicJsonDocument carddoc(1000);
             JsonObject jsoncard = carddoc.to<JsonObject>();
             jsoncard["id"] = line_chart_id[i];
             jsoncard["card_type"] = "lineChart";
