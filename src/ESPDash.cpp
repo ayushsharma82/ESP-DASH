@@ -919,6 +919,7 @@ void ESPDashClass::generateLayoutResponse(String& result){
             DynamicJsonDocument carddoc(250);
             JsonObject jsoncard = carddoc.to<JsonObject>();
             jsoncard["id"] = gauge_chart_id[i];
+            jsoncard["card_type"] = "gaugeChart";
             jsoncard["value"] = gauge_chart_value[i];
             jsoncard["name"] = gauge_chart_name[i];
             cards.add(jsoncard);
