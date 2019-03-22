@@ -106,8 +106,6 @@ void ESPDashClass::init(AsyncWebServer& server){
         request->send(response);        
     });
 
-    server.addHandler(&ws);
-
     #if DEBUG_MODE == 1
         server.on("/debug", HTTP_GET, [&](AsyncWebServerRequest *request){
             String json = "";
