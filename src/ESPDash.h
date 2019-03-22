@@ -20,6 +20,7 @@
 #if defined(ESP8266) || defined(ESP32)
     #include "Arduino.h"
     #include "stdlib_noniso.h"
+    #include "webpage.h"
 #endif
 
 #if defined(ESP8266)
@@ -59,6 +60,7 @@ typedef std::function<void(const char* buttonId)> DashButtonHandler;
     #define HUMIDITY_CARD_LIMIT 20
     #define STATUS_CARD_LIMIT 20
     #define LINE_CHART_LIMIT 5
+    #define GAUGE_CHART_LIMIT 20
 #elif defined(ESP32)
     #define BUTTON_CARD_LIMIT 50
     #define NUMBER_CARD_LIMIT 50
@@ -66,6 +68,7 @@ typedef std::function<void(const char* buttonId)> DashButtonHandler;
     #define HUMIDITY_CARD_LIMIT 50
     #define STATUS_CARD_LIMIT 50
     #define LINE_CHART_LIMIT 10
+    #define GAUGE_CHART_LIMIT 50
 #endif
 
 
@@ -102,6 +105,10 @@ class ESPDashClass{
         void addLineChart(const char* _id, const char* _name, String _x_axis_value[], int _x_axis_size, const char* _y_axis_name, int _y_axis_value[], int _y_axis_size); 
         void updateLineChart(const char* _id, int _x_axis_value[], int _x_axis_size, int _y_axis_value[], int _y_axis_size); // Update a Line Chart with custom Int x axis and y axis
         void updateLineChart(const char* _id, String _x_axis_value[], int _x_axis_size, int _y_axis_value[], int _y_axis_size); // Update a Line Chart with custom String x axis and y axis
+
+        void addGaugeChart(const char* _id, const char* _name); // Add Gauge card with default value
+        void updateGaugeChart(const char* _id, int _value); // Update Gauge card with default value
+
 
         void attachButtonClick(DashButtonHandler handler){
             _buttonClickFunc = handler;
@@ -174,6 +181,12 @@ class ESPDashClass{
         int line_chart_y_axis_size[LINE_CHART_LIMIT] = {};
         int line_chart_y_axis_value[LINE_CHART_LIMIT][100] = {};
 
+        // Gauge Charts
+        // Card ID -> Card Name -> Integer Value
+        String gauge_chart_id[GAUGE_CHART_LIMIT] = {};
+        String gauge_chart_name[GAUGE_CHART_LIMIT] = {};
+        uint16_t gauge_chart_value[GAUGE_CHART_LIMIT] = {};
+
         static void onWsEvent(AsyncWebSocket * server, AsyncWebSocketClient * client, AwsEventType type, void * arg, uint8_t *data, size_t len);
         void generateLayoutResponse(String& result);
         void generateStatsResponse(String& result);
@@ -185,6 +198,7 @@ class ESPDashClass{
         size_t getStatusCardsLen();
         size_t getButtonCardsLen();
         size_t getLineChartsLen();
+        size_t getGaugeChartsLen();
 };
 
 extern ESPDashClass ESPDash;

@@ -1,8 +1,6 @@
 import Vue from 'vue'
 import VueApexCharts from 'vue-apexcharts';
-import vueTopprogress from 'vue-top-progress';
 
-Vue.use(vueTopprogress)
 Vue.use(VueApexCharts)
 Vue.component('apexchart', VueApexCharts)
 

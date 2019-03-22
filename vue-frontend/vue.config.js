@@ -1,5 +1,4 @@
-const CompressionWebpackPlugin = require('compression-webpack-plugin')
-const productionGzipExtensions = ['js', 'css', 'svg']
+const WebpackShellPlugin = require('webpack-shell-plugin');
 
 module.exports = {
   pluginOptions: {
@@ -21,14 +20,10 @@ module.exports = {
     config.optimization.delete('splitChunks')
   },
   configureWebpack: {
-        plugins: [
-            new CompressionWebpackPlugin({
-                filename: '[path]',
-                algorithm: 'gzip',
-                test: new RegExp('\\.(' + productionGzipExtensions.join('|') + ')$'),
-                threshold: 10240,
-                minRatio: 0.8
-            })
-        ]
+      plugins: [
+        new WebpackShellPlugin({
+            onBuildEnd: ['node finalize.js']
+        })
+      ]
     }
 }
