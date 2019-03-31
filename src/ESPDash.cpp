@@ -812,7 +812,7 @@ void ESPDashClass::generateLayoutResponse(String& result){
             stats["sketchHash"] = ESP.getSketchMD5();
             stats["macAddress"] = String(WiFi.macAddress());
             stats["freeHeap"] = ESP.getFreeHeap();
-            stats["heapFragmentation"] = ESP.getHeapFragmentation();
+           // disabled temp stats["heapFragmentation"] = ESP.getHeapFragmentation();
             stats["wifiMode"] = int(WiFi.getMode());
         #elif defined(ESP32)
             stats["chipId"] = ESP.getEfuseMac();
@@ -953,7 +953,7 @@ void ESPDashClass::generateStatsResponse(String& result){
             stats["sketchHash"] = ESP.getSketchMD5();
             stats["macAddress"] = String(WiFi.macAddress());
             stats["freeHeap"] = ESP.getFreeHeap();
-            stats["heapFragmentation"] = ESP.getHeapFragmentation();
+           // disabled temp stats["heapFragmentation"] = ESP.getHeapFragmentation();
             stats["wifiMode"] = int(WiFi.getMode());
         #elif defined(ESP32)
             stats["chipId"] = ESP.getEfuseMac();
