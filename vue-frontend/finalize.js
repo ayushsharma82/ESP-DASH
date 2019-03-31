@@ -50,7 +50,7 @@ Handlebars.registerHelper('ifCond', function(v1, v2, options) {
 
 let source = 
 `
-const uint16_t DASH_HTML_SIZE = {{htmlSize}};
+const uint32_t DASH_HTML_SIZE = {{htmlSize}};
 const uint8_t DASH_HTML[] PROGMEM = { {{#each htmlBytes}}{{this}},{{/each}} };
 `;
 

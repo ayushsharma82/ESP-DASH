@@ -10,6 +10,10 @@
   "dependencies": {
     "apexcharts": "^2.6.0",
     "bulma": "^0.7.2",
+    "compression-webpack-plugin": "^2.0.0",
+    "fs": "0.0.1-security",
+    "handlebars": "^4.1.1",
+    "hex": "^0.1.0",
     "vue": "^2.5.22",
     "vue-apexcharts": "^1.2.8",
     "vue-feather-icons": "^4.10.0",
