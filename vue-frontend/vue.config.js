@@ -23,7 +23,7 @@ module.exports = {
   configureWebpack: {
         plugins: [
             new CompressionWebpackPlugin({
-                filename: '[path]',
+                filename: (process.env.NODE_ENV == "production")?'[path]':'[path].gz',
                 algorithm: 'gzip',
                 test: new RegExp('\\.(' + productionGzipExtensions.join('|') + ')$'),
                 threshold: 10240,
