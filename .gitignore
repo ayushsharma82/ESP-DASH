@@ -32,3 +32,5 @@ dist
 *.exe
 *.out
 *.app
+
+/.vscode
