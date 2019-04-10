@@ -99,35 +99,12 @@ void ESPDashClass::onWsEvent(AsyncWebSocket * server, AsyncWebSocketClient * cli
 //////////////////////
 
 void ESPDashClass::init(AsyncWebServer& server){
-    if(!SPIFFS.begin()){
-        if(DEBUG_MODE){
-            Serial.println("SPIFFS Mount Failed. Formatted... Please Upload Static DASH Files again.");
-        }
-        return;
-    }
-
     server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
         // Send File
-        request->send(SPIFFS, "/dash/index.html", "text/html");
-    });
-
-    server.on("/favicon.ico", HTTP_GET, [](AsyncWebServerRequest *request){
-        // Send File
-        request->send(SPIFFS, "/dash/favicon.ico", "image/x-icon");
-    });
-
-    server.on("/index.html", HTTP_GET, [](AsyncWebServerRequest *request){
-        // Send File
-        request->send(SPIFFS, "/dash/index.html", "text/html");
-    });
-
-    server.on("/js/app.js", HTTP_GET, [](AsyncWebServerRequest *request){
-        AsyncWebServerResponse *response = request->beginResponse(SPIFFS, "/dash/js/app.js", "application/javascript");
+        AsyncWebServerResponse *response = request->beginResponse_P(200, "text/html", DASH_HTML, DASH_HTML_SIZE);
         response->addHeader("Content-Encoding","gzip");
-        request->send(response);
+        request->send(response);        
     });
-
-    server.addHandler(&ws);
 
     #if DEBUG_MODE == 1
         server.on("/debug", HTTP_GET, [&](AsyncWebServerRequest *request){
@@ -749,6 +726,65 @@ void ESPDashClass::updateLineChart(const char* _id, String _x_axis_value[], int 
 }
 
 
+/////////////////
+// Gauge Chart //
+/////////////////
+
+// Add Gauge Card with Default Value
+void ESPDashClass::addGaugeChart(const char* _id, const char* _name){
+    if(_id != NULL){
+        for(int i=0; i < GAUGE_CHART_LIMIT; i++){
+            if(gauge_chart_id[i] == ""){
+                if(DEBUG_MODE){
+                    Serial.println("[DASH] Found an empty slot in Gauge Cards. Inserted New Card at Index ["+String(i)+"].");
+                }
+
+                gauge_chart_id[i] = _id;
+                gauge_chart_name[i] = _name;
+                gauge_chart_value[i] = 0;
+                ws.textAll("{\"response\": \"updateLayout\"}");
+                break;
+            }
+        }
+        return;
+    }else{
+        return;
+    }
+}
+
+
+// Update Gauge Card with Custom Value
+void ESPDashClass::updateGaugeChart(const char* _id, int _value){
+    for(int i=0; i < GAUGE_CHART_LIMIT; i++){
+        if(gauge_chart_id[i] == _id){
+            if(DEBUG_MODE){
+                Serial.println("[DASH] Updated Gauge Chart at Index ["+String(i)+"].");
+            }
+
+            gauge_chart_value[i] = _value;
+
+            DynamicJsonDocument doc(250);
+            JsonObject object = doc.to<JsonObject>();
+            object["response"] = "updateGaugeChart";
+            object["id"] = gauge_chart_id[i];
+            object["value"] = gauge_chart_value[i];
+            size_t len = measureJson(doc);
+            AsyncWebSocketMessageBuffer * buffer = ws.makeBuffer(len);
+            if (buffer) {
+                serializeJson(doc, (char *)buffer->get(), len + 1);
+                ws.textAll(buffer);
+            }else{
+                if(DEBUG_MODE){
+                    Serial.println("[DASH] Websocket Buffer Error");
+                }
+            }
+            break;
+        }
+    }
+    return;
+}
+
+
 
 ///////////////////////
 // Private Functions //
@@ -776,9 +812,9 @@ void ESPDashClass::generateLayoutResponse(String& result){
             stats["sketchHash"] = ESP.getSketchMD5();
             stats["macAddress"] = String(WiFi.macAddress());
             stats["freeHeap"] = ESP.getFreeHeap();
-            stats["heapFragmentation"] = ESP.getHeapFragmentation();
+           // disabled temp stats["heapFragmentation"] = ESP.getHeapFragmentation();
             stats["wifiMode"] = int(WiFi.getMode());
-        #elif(ESP32)
+        #elif defined(ESP32)
             stats["chipId"] = ESP.getEfuseMac();
             stats["sketchHash"] = ESP.getSketchMD5();
             stats["macAddress"] = String(WiFi.macAddress());
@@ -878,6 +914,18 @@ void ESPDashClass::generateLayoutResponse(String& result){
         }
     }
 
+    for(int i=0; i < GAUGE_CHART_LIMIT; i++){
+        if(gauge_chart_id[i] != ""){
+            DynamicJsonDocument carddoc(250);
+            JsonObject jsoncard = carddoc.to<JsonObject>();
+            jsoncard["id"] = gauge_chart_id[i];
+            jsoncard["card_type"] = "gaugeChart";
+            jsoncard["value"] = gauge_chart_value[i];
+            jsoncard["name"] = gauge_chart_name[i];
+            cards.add(jsoncard);
+        }
+    }
+
     serializeJson(doc, result);
 
     if(DEBUG_MODE){
@@ -905,9 +953,9 @@ void ESPDashClass::generateStatsResponse(String& result){
             stats["sketchHash"] = ESP.getSketchMD5();
             stats["macAddress"] = String(WiFi.macAddress());
             stats["freeHeap"] = ESP.getFreeHeap();
-            stats["heapFragmentation"] = ESP.getHeapFragmentation();
+           // disabled temp stats["heapFragmentation"] = ESP.getHeapFragmentation();
             stats["wifiMode"] = int(WiFi.getMode());
-        #elif(ESP32)
+        #elif defined(ESP32)
             stats["chipId"] = ESP.getEfuseMac();
             stats["sketchHash"] = ESP.getSketchMD5();
             stats["macAddress"] = String(WiFi.macAddress());
@@ -999,6 +1047,13 @@ size_t ESPDashClass::getTotalResponseCapacity(){
         }
     }
 
+    for(int i=0; i < GAUGE_CHART_LIMIT; i++){
+        if(gauge_chart_id[i] != ""){
+            capacity +=  JSON_OBJECT_SIZE(3);
+            totalCards++;
+        }
+    }
+
 
     capacity += JSON_ARRAY_SIZE(totalCards);
     return capacity;
@@ -1059,6 +1114,16 @@ size_t ESPDashClass::getLineChartsLen(){
     size_t total = 0;
     for(int i=0; i < LINE_CHART_LIMIT; i++){
         if(line_chart_id[i] != ""){
+            total++;
+        }
+    }
+    return total;
+}
+
+size_t ESPDashClass::getGaugeChartsLen(){
+    size_t total = 0;
+    for(int i=0; i < GAUGE_CHART_LIMIT; i++){
+        if(gauge_chart_id[i] != ""){
             total++;
         }
     }

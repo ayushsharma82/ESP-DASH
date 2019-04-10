@@ -3,7 +3,6 @@
     <!-- Made by Ayush Sharma -->
     <!-- ESP-DASH V2 | 25-01-2019 -->
     <!-- GitHub Profile: https://github.com/ayushsharma82 -->
-    <vue-topprogress  ref="topProgress" color="#4286f4"></vue-topprogress>
     <navbar :connected="ws.connected"></navbar>
     <transition name="fade" mode="out-in">
         <router-view :cards="cards" :stats="stats" @reboot="rebootMicrocontroller"/>
@@ -15,12 +14,10 @@
 import EventBus from './event-bus.js';
 import Socket from './socket';
 import Navbar from './components/Navbar';
-import { vueTopprogress } from 'vue-top-progress';
 
 export default {
     components: {
-        Navbar,
-        vueTopprogress
+        Navbar
     },
 
     data(){
@@ -45,7 +42,8 @@ export default {
                 status: [],
                 button: [],
                 number: [],
-                lineChart: []
+                lineChart: [],
+                gauge: []
             }
         }
     },
@@ -57,11 +55,10 @@ export default {
     },
 
     mounted(){
-        
+
         Socket.$on("connected", () => {
             this.ws.connected = true;
             Socket.send(JSON.stringify({"command":"getLayout"}));
-            this.$refs.topProgress.start();
         });
 
         Socket.$on("disconnected", () => {
@@ -78,6 +75,7 @@ export default {
                 this.cards.button = [];
                 this.cards.number = [];
                 this.cards.lineChart = [];
+                this.cards.gauge = [];
                 this.stats.enabled = json.statistics.enabled;
                 if(this.stats.enabled){
                     this.stats.hardware = json.statistics.hardware;
@@ -142,6 +140,14 @@ export default {
                             });
                             break;
 
+                        case "gauge":
+                            this.cards.gauge.push({
+                                id: card.id,
+                                name: card.name,
+                                value: card.value
+                            });
+                            break;
+
                         default:
                             break;
                     }
@@ -177,11 +183,15 @@ export default {
                         card.value = json.value;
                     }
                 });
+            }else if(json.response == "updateGauge"){
+                this.cards.gauge.forEach((card) => {
+                    if(card.id == json.id){
+                        card.value = json.value;
+                    }
+                });
             }else if(json.response == "updateLayout"){
                 Socket.send(JSON.stringify({"command":"getLayout"}));
             }
-
-            this.$refs.topProgress.done();
         });
 
         EventBus.$on('buttonClicked', id => {
