@@ -106,7 +106,8 @@ class ESPDashClass{
         void updateLineChart(const char* _id, int _x_axis_value[], int _x_axis_size, int _y_axis_value[], int _y_axis_size); // Update a Line Chart with custom Int x axis and y axis
         void updateLineChart(const char* _id, String _x_axis_value[], int _x_axis_size, int _y_axis_value[], int _y_axis_size); // Update a Line Chart with custom String x axis and y axis
 
-        void addGaugeChart(const char* _id, const char* _name); // Add Gauge card with default value
+        void addGaugeChart(const char *_id, const char *_name); // Add Gauge card with default value
+        void addGaugeChart(const char *_id, const char *_name, int _value); // Add Gauge card with default value
         void updateGaugeChart(const char* _id, int _value); // Update Gauge card with default value
 
 

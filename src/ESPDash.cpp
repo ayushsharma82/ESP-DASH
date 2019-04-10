@@ -752,6 +752,28 @@ void ESPDashClass::addGaugeChart(const char* _id, const char* _name){
     }
 }
 
+// Add Gauge Card with Default Value
+void ESPDashClass::addGaugeChart(const char* _id, const char* _name, int _value){
+    if(_id != NULL){
+        for(int i=0; i < GAUGE_CHART_LIMIT; i++){
+            if(gauge_chart_id[i] == ""){
+                if(DEBUG_MODE){
+                    Serial.println("[DASH] Found an empty slot in Gauge Cards. Inserted New Card at Index ["+String(i)+"].");
+                }
+
+                gauge_chart_id[i] = _id;
+                gauge_chart_name[i] = _name;
+                gauge_chart_value[i] = _value;
+                ws.textAll("{\"response\": \"updateLayout\"}");
+                break;
+            }
+        }
+        return;
+    }else{
+        return;
+    }
+}
+
 
 // Update Gauge Card with Custom Value
 void ESPDashClass::updateGaugeChart(const char* _id, int _value){

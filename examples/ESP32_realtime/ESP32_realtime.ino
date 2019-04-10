@@ -50,6 +50,7 @@ void setup() {
     ESPDash.init(server);   // Initiate ESPDash and attach your Async webserver instance
     // Add Respective Cards
     ESPDash.addLineChart("chart1", "Example Line Chart", x_axis, x_axis_size, "Power KwH", y_axis, y_axis_size);
+    ESPDash.addGaugeChart("chart2", "Gauge 1", 30);
     server.begin();
 }
 
@@ -60,5 +61,10 @@ void loop() {
     }
 
     ESPDash.updateLineChart("chart1", x_axis, x_axis_size, y_axis, y_axis_size);
-    delay(3000);
+    ESPDash.updateGaugeChart("chart2", 50);
+    delay(1000);
+    ESPDash.updateGaugeChart("chart2", 80);
+    delay(1000);
+    ESPDash.updateGaugeChart("chart2", 10);
+    delay(1000);
 }
