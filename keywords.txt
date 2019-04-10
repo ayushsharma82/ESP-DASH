@@ -11,5 +11,7 @@ updateStatusCard	KEYWORD2
 addButtonCard		KEYWORD2
 addLineChart		KEYWORD2
 updateLineChart		KEYWORD2
+addGaugeChart		KEYWORD2
+updateGaugeChart	KEYWORD2
 attachButtonClick	KEYWORD2
 
