@@ -1,1 +1,0 @@
-<h2>ESP-DASH PROGMEM Approach (Unstable / Under Development)</h2>
