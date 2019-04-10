@@ -22,7 +22,7 @@ module.exports = {
   configureWebpack: {
       plugins: [
         new WebpackShellPlugin({
-            onBuildEnd: ['node finalize.js']
+            onBuildEnd: (process.env.NODE_ENV == 'production')?['node finalize.js']:['echo Skipping Finalizing Vuejs Webpage']
         })
       ]
     }

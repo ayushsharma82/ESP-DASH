@@ -33,4 +33,4 @@ dist
 *.out
 *.app
 
-.vscode
+/.vscode
