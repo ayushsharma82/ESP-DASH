@@ -17,7 +17,7 @@
                     <div class="column is-3">
                         <br>
                         <br>
-                        <lock-icon style="vertical-align:middle;"></lock-icon> &nbsp; Stats are disabled by admin.
+                        <lock-icon style="vertical-align:middle;"></lock-icon> &nbsp; Stats are disabled by Admin.
                     </div>
                 </div>
             </div>
