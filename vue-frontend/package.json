@@ -1,6 +1,6 @@
 {
-  "name": "DASH",
-  "version": "0.8.0",
+  "name": "esp-dash-webpage",
+  "version": "1.4.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -10,10 +10,6 @@
   "dependencies": {
     "apexcharts": "^2.6.0",
     "bulma": "^0.7.2",
-    "compression-webpack-plugin": "^2.0.0",
-    "fs": "0.0.1-security",
-    "handlebars": "^4.1.1",
-    "hex": "^0.1.0",
     "vue": "^2.5.22",
     "vue-apexcharts": "^1.2.8",
     "vue-feather-icons": "^4.10.0",
@@ -24,11 +20,8 @@
     "@vue/cli-plugin-eslint": "^3.3.0",
     "@vue/cli-service": "^3.3.0",
     "babel-eslint": "^10.0.1",
-    "chota": "^0.5.2",
     "eslint": "^5.12.0",
     "eslint-plugin-vue": "^5.1.0",
-    "fs": "0.0.1-security",
-    "handlebars": "^4.1.1",
     "node-sass": "^4.11.0",
     "sass-loader": "^7.0.1",
     "style-resources-loader": "^1.2.1",

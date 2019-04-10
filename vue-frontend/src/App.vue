@@ -140,7 +140,7 @@ export default {
                             });
                             break;
 
-                        case "gauge":
+                        case "gaugeChart":
                             this.cards.gauge.push({
                                 id: card.id,
                                 name: card.name,
@@ -183,7 +183,7 @@ export default {
                         card.value = json.value;
                     }
                 });
-            }else if(json.response == "updateGauge"){
+            }else if(json.response == "updateGaugeChart"){
                 this.cards.gauge.forEach((card) => {
                     if(card.id == json.id){
                         card.value = json.value;
