@@ -136,7 +136,8 @@ export default {
                             this.cards.slider.push({
                                 id: card.id,
                                 name: card.name,
-                                type: card.type
+                                type: card.type,
+                                value: card.value
                             });
                             break;
 

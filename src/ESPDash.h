@@ -17,11 +17,8 @@
 * V2.0.0 - 25 Jan 2019 - Wohoo! A breakthrough in performance and capabilities!
 */
 
-#if defined(ESP8266) || defined(ESP32)
-    #include "Arduino.h"
-    #include "stdlib_noniso.h"
-    #include "webpage.h"
-#endif
+#include "Arduino.h"
+#include "stdlib_noniso.h"
 
 #if defined(ESP8266)
     #define HARDWARE "ESP8266"
@@ -38,6 +35,8 @@
     #include "ESPAsyncWebServer.h"
     #include "ArduinoJson.h"
 #endif
+
+#include "webpage.h"
 
 typedef std::function<void(const char* buttonId)> DashButtonHandler;
 typedef std::function<void(const char* sliderId, int sliderValue)> DashSliderHandler;
