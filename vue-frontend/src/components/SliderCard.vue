@@ -1,6 +1,5 @@
 <!-- 
 Credits:
--------
 # Made by Malcolm Brook
 # Github: https://github.com/malbrook
 # Email: malcolm.brook@toddesigns.com
