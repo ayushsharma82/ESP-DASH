@@ -116,18 +116,11 @@ void ESPDashClass::onWsEvent(AsyncWebSocket * server, AsyncWebSocketClient * cli
 //////////////////////
 
 void ESPDashClass::init(AsyncWebServer& server){
-    if(!SPIFFS.begin()){
-        if(DEBUG_MODE){
-            Serial.println("SPIFFS Mount Failed. Formatted... Please Upload Static DASH Files again.");
-        }
-        return;
-    }
-
     server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
         // Send File
         AsyncWebServerResponse *response = request->beginResponse_P(200, "text/html", DASH_HTML, DASH_HTML_SIZE);
         response->addHeader("Content-Encoding","gzip");
-        request->send(response);
+        request->send(response);        
     });
 
     #if DEBUG_MODE == 1

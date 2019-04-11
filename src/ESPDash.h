@@ -29,7 +29,6 @@
     #include "ESPAsyncTCP.h"
     #include "ESPAsyncWebServer.h"
     #include "ArduinoJson.h"
-    #include "FS.h"
 #elif defined(ESP32)
     #define HARDWARE "ESP32"
     #include <esp_int_wdt.h>
@@ -38,7 +37,6 @@
     #include "AsyncTCP.h"
     #include "ESPAsyncWebServer.h"
     #include "ArduinoJson.h"
-    #include "SPIFFS.h"
 #endif
 
 typedef std::function<void(const char* buttonId)> DashButtonHandler;
