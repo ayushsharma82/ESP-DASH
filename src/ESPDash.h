@@ -15,6 +15,10 @@
 *
 * = Library Rewritten! =
 * V2.0.0 - 25 Jan 2019 - Wohoo! A breakthrough in performance and capabilities!
+*
+* 
+* Credits:
+* Malcolm Brook (https://github.com/malbrook) for Slider Card
 */
 
 #include "Arduino.h"
