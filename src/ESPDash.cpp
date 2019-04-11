@@ -85,7 +85,7 @@ void ESPDashClass::onWsEvent(AsyncWebSocket * server, AsyncWebSocketClient * cli
                     } else if (command == "sliderChanged"){
                         if(ESPDash._sliderChangedFunc != NULL){
                             const char* sliderId = object["id"];
-                            int sliderValue      = object["value"];
+                            int sliderValue = object["value"];
                             for(int i=0; i < SLIDER_CARD_LIMIT; i++){
                                 if(ESPDash.slider_card_id[i] == sliderId){
                                     ESPDash._sliderChangedFunc(sliderId, sliderValue);
@@ -94,7 +94,7 @@ void ESPDashClass::onWsEvent(AsyncWebSocket * server, AsyncWebSocketClient * cli
                             }
 
                             if(DEBUG_MODE){
-                                Serial.println("buttonClicked Command didn't match any ID in our records! Rouge Request...");
+                                Serial.println("sliderChanged Command didn't match any ID in our records! Rouge Request...");
                             }
                         }                    
                     }

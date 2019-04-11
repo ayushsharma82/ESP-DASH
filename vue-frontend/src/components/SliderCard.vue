@@ -1,3 +1,12 @@
+<!-- 
+Credits:
+-------
+# Made by Malcolm Brook
+# Github: https://github.com/malbrook
+# Email: malcolm.brook@toddesigns.com
+# Created On: 12-4-2019
+-->
+
 <template>
     <!-- Slider Card -->
     <div class="column" :class="[generateCardSize]">
