@@ -16,6 +16,10 @@
         <div class="columns is-multiline">
           <gauge-card v-for="card in cards.gauge" :key="card.id" :name="card.name" :value="card.value"></gauge-card>
         </div>
+        <br/>
+        <div class="columns is-multiline">
+          <slider-card v-for="card in cards.slider" :key="card.id" :id="card.id" :name="card.name" :value="card.value" :type="card.type"></slider-card>
+        </div>
     </div>
     <div class="container" v-if="totalNumOfCards == 0">
       
@@ -31,6 +35,7 @@ import StatusCard from '@/components/StatusCard.vue';
 import ButtonCard from '@/components/ButtonCard.vue';
 import LineChart from '@/components/LineChart.vue';
 import GaugeCard from '@/components/GaugeCard.vue';
+import SliderCard from '@/components/SliderCard.vue';
 
 export default {
   name: 'home',
@@ -44,7 +49,8 @@ export default {
     StatusCard,
     ButtonCard,
     LineChart,
-    GaugeCard
+    GaugeCard,
+    SliderCard
   },
 
   computed: {
@@ -55,9 +61,11 @@ export default {
       num = num + this.cards.number.length;
       num = num + this.cards.status.length;
       num = num + this.cards.button.length;
+      num = num + this.cards.slider.length;
       num = num + this.cards.lineChart.length;
       return num;
     }
   }  
 }
 </script>
+
