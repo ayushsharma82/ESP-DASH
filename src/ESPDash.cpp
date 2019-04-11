@@ -1038,6 +1038,7 @@ void ESPDashClass::generateLayoutResponse(String& result){
             jsoncard["id"] = slider_card_id[i];
             jsoncard["card_type"] = "slider";
             jsoncard["name"] = slider_card_name[i];
+            jsoncard["value"] = slider_card_value[i];
             jsoncard["type"] = slider_card_type[i];
             cards.add(jsoncard);
         }
@@ -1172,7 +1173,7 @@ size_t ESPDashClass::getTotalResponseCapacity(){
 
     for(int i=0; i < SLIDER_CARD_LIMIT; i++){
         if(slider_card_id[i] != ""){
-            capacity += JSON_OBJECT_SIZE(4);
+            capacity += JSON_OBJECT_SIZE(5);
             totalCards++;
         }
     }
