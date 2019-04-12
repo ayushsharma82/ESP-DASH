@@ -8,6 +8,8 @@ addHumidityCard		KEYWORD2
 updateHumidityCard	KEYWORD2
 addStatusCard		KEYWORD2
 updateStatusCard	KEYWORD2
+addSliderCard		KEYWORD2
+updateSliderCard	KEYWORD2
 addButtonCard		KEYWORD2
 addLineChart		KEYWORD2
 updateLineChart		KEYWORD2

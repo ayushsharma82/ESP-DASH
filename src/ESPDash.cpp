@@ -82,6 +82,24 @@ void ESPDashClass::onWsEvent(AsyncWebSocket * server, AsyncWebSocketClient * cli
                                 Serial.println("buttonClicked Command didn't match any ID in our records! Rouge Request...");
                             }
                         }
+                    } else if (command == "sliderChanged"){
+                        if(ESPDash._sliderChangedFunc != NULL){
+                            const char* sliderId = object["id"];
+                            int sliderValue = object["value"];
+                            for(int i=0; i < SLIDER_CARD_LIMIT; i++){
+                                if(ESPDash.slider_card_id[i] == sliderId){
+                                    ESPDash._sliderChangedFunc(sliderId, sliderValue);
+                                    // Send Confirmation
+                                    ESPDash.slider_card_value[i] = sliderValue;
+                                    ws.textAll("{\"response\": \"updateSliderCard\", \"id\": \""+(String)sliderId+"\", \"value\": "+sliderValue+"}");
+                                    return;
+                                }
+                            }
+
+                            if(DEBUG_MODE){
+                                Serial.println("sliderChanged Command didn't match any ID in our records! Rouge Request...");
+                            }
+                        }                    
                     }
                 }else{
                     if(DEBUG_MODE){
@@ -556,6 +574,66 @@ void ESPDashClass::addButtonCard(const char* _id, const char* _name){
 }
 
 
+/////////////////
+// Slider Card //
+/////////////////
+
+// Add Slider Card
+void ESPDashClass::addSliderCard(const char* _id, const char* _name, int _type){
+    if(_id != NULL && _type >= 0 && _type <= SLIDER_CARD_TYPES){
+        for(int i=0; i < SLIDER_CARD_LIMIT; i++){
+            if(slider_card_id[i] == ""){
+                if(DEBUG_MODE){
+                    Serial.println("[DASH] Found an empty slot in Slider Cards. Inserted New Card at Index ["+String(i)+"].");
+                }
+
+                slider_card_id[i]    = _id;
+                slider_card_name[i]  = _name;
+                slider_card_type[i]  = _type;
+                slider_card_value[i] = 0;
+
+                ws.textAll("{\"response\": \"updateLayout\"}");
+                break;
+            }
+        }
+        return;
+    }else{
+        return;
+    }
+}
+
+// Update Slider Card with Custom Value
+void ESPDashClass::updateSliderCard(const char* _id, int _value){
+    for(int i=0; i < SLIDER_CARD_LIMIT; i++){
+        if(slider_card_id[i] == _id){
+            if(DEBUG_MODE){
+                Serial.println("[DASH] Updated Slider Card at Index ["+String(i)+"].");
+            }
+
+            slider_card_value[i] = _value;
+
+            DynamicJsonDocument doc(250);
+            JsonObject object = doc.to<JsonObject>();
+            object["response"] = "updateSliderCard";
+            object["id"] = slider_card_id[i];
+            object["value"] = slider_card_value[i];
+            size_t len = measureJson(doc);
+            AsyncWebSocketMessageBuffer * buffer = ws.makeBuffer(len);
+            if (buffer) {
+                serializeJson(doc, (char *)buffer->get(), len + 1);
+                ws.textAll(buffer);
+            }else{
+                if(DEBUG_MODE){
+                    Serial.println("[DASH] Websocket Buffer Error (updateSliderCard())");
+                }
+            }
+            break;
+        }
+    }
+    return;
+}
+
+
 
 ////////////////
 // Line Chart //
@@ -834,7 +912,6 @@ void ESPDashClass::generateLayoutResponse(String& result){
             stats["sketchHash"] = ESP.getSketchMD5();
             stats["macAddress"] = String(WiFi.macAddress());
             stats["freeHeap"] = ESP.getFreeHeap();
-           // disabled temp stats["heapFragmentation"] = ESP.getHeapFragmentation();
             stats["wifiMode"] = int(WiFi.getMode());
         #elif defined(ESP32)
             stats["chipId"] = ESP.getEfuseMac();
@@ -948,6 +1025,19 @@ void ESPDashClass::generateLayoutResponse(String& result){
         }
     }
 
+    for(int i=0; i < SLIDER_CARD_LIMIT; i++){
+        if(slider_card_id[i] != ""){
+            DynamicJsonDocument carddoc(250);
+            JsonObject jsoncard = carddoc.to<JsonObject>();
+            jsoncard["id"] = slider_card_id[i];
+            jsoncard["card_type"] = "slider";
+            jsoncard["name"] = slider_card_name[i];
+            jsoncard["value"] = slider_card_value[i];
+            jsoncard["type"] = slider_card_type[i];
+            cards.add(jsoncard);
+        }
+    }
+
     serializeJson(doc, result);
 
     if(DEBUG_MODE){
@@ -975,7 +1065,6 @@ void ESPDashClass::generateStatsResponse(String& result){
             stats["sketchHash"] = ESP.getSketchMD5();
             stats["macAddress"] = String(WiFi.macAddress());
             stats["freeHeap"] = ESP.getFreeHeap();
-           // disabled temp stats["heapFragmentation"] = ESP.getHeapFragmentation();
             stats["wifiMode"] = int(WiFi.getMode());
         #elif defined(ESP32)
             stats["chipId"] = ESP.getEfuseMac();
@@ -1076,6 +1165,13 @@ size_t ESPDashClass::getTotalResponseCapacity(){
         }
     }
 
+    for(int i=0; i < SLIDER_CARD_LIMIT; i++){
+        if(slider_card_id[i] != ""){
+            capacity += JSON_OBJECT_SIZE(5);
+            totalCards++;
+        }
+    }
+
 
     capacity += JSON_ARRAY_SIZE(totalCards);
     return capacity;
@@ -1151,6 +1247,17 @@ size_t ESPDashClass::getGaugeChartsLen(){
     }
     return total;
 }
+
+size_t ESPDashClass::getSliderCardsLen(){
+    size_t total = 0;
+    for(int i=0; i < SLIDER_CARD_LIMIT; i++){
+        if(slider_card_id[i] != ""){
+            total++;
+        }
+    }
+    return total;
+}
+
 
 
 ESPDashClass ESPDash;

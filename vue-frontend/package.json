@@ -13,7 +13,8 @@
     "vue": "^2.5.22",
     "vue-apexcharts": "^1.2.8",
     "vue-feather-icons": "^4.10.0",
-    "vue-router": "^3.0.2"
+    "vue-router": "^3.0.2",
+    "vue-slider-component": "^3.0.26"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.3.0",

@@ -43,7 +43,8 @@ export default {
                 button: [],
                 number: [],
                 lineChart: [],
-                gauge: []
+                gauge: [],
+		        slider:[]
             }
         }
     },
@@ -55,7 +56,7 @@ export default {
     },
 
     mounted(){
-
+        
         Socket.$on("connected", () => {
             this.ws.connected = true;
             Socket.send(JSON.stringify({"command":"getLayout"}));
@@ -76,6 +77,7 @@ export default {
                 this.cards.number = [];
                 this.cards.lineChart = [];
                 this.cards.gauge = [];
+                this.cards.slider = [];
                 this.stats.enabled = json.statistics.enabled;
                 if(this.stats.enabled){
                     this.stats.hardware = json.statistics.hardware;
@@ -126,6 +128,15 @@ export default {
                             this.cards.number.push({
                                 id: card.id,
                                 name: card.name,
+                                value: card.value
+                            });
+                            break;
+
+                        case "slider":
+                            this.cards.slider.push({
+                                id: card.id,
+                                name: card.name,
+                                type: card.type,
                                 value: card.value
                             });
                             break;
@@ -189,6 +200,12 @@ export default {
                         card.value = json.value;
                     }
                 });
+            }else if(json.response == "updateSliderCard"){
+                this.cards.slider.forEach((card) => {
+                    if(card.id == json.id){
+                        card.value = json.value;
+                    }
+                });
             }else if(json.response == "updateLayout"){
                 Socket.send(JSON.stringify({"command":"getLayout"}));
             }
@@ -196,6 +213,10 @@ export default {
 
         EventBus.$on('buttonClicked', id => {
             Socket.send(JSON.stringify({"command": "buttonClicked", "id": id}));
+        });
+
+        EventBus.$on('sliderChanged', msg  => {
+            Socket.send(JSON.stringify({"command": "sliderChanged", "id": msg.id, "value": msg.value }));
         });
     }
 }
@@ -225,6 +246,14 @@ export default {
   padding-bottom: 0;
 }
 
+.card-loader{
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    margin: 15px;
+    color: #6c757d !important;
+}
 
 .dot{
   display: none;
@@ -248,4 +277,23 @@ export default {
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
 }
+
+.spinner{
+  width: 1.25em;
+  height: 1.25em;
+  animation-name: spin;
+  animation-duration: 5000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear; 
+}
+
+@keyframes spin {
+    from {
+        transform:rotate(0deg);
+    }
+    to {
+        transform:rotate(360deg);
+    }
+}
 </style>
+

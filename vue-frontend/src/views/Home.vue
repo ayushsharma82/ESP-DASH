@@ -10,6 +10,10 @@
         </div>
         <br/>
         <div class="columns is-multiline">
+          <slider-card v-for="card in cards.slider" :key="card.id" :id="card.id" :name="card.name" :value="card.value" :type="card.type"></slider-card>
+        </div>
+        <br/>
+        <div class="columns is-multiline">
           <line-chart v-for="chart in cards.lineChart" :key="chart.id" :id="chart.id" :name="chart.name" :xAxis="chart.xAxis" :yAxisName="chart.yAxisName" :yAxis="chart.yAxis"></line-chart>
         </div>
         <br/>
@@ -31,6 +35,7 @@ import StatusCard from '@/components/StatusCard.vue';
 import ButtonCard from '@/components/ButtonCard.vue';
 import LineChart from '@/components/LineChart.vue';
 import GaugeCard from '@/components/GaugeCard.vue';
+import SliderCard from '@/components/SliderCard.vue';
 
 export default {
   name: 'home',
@@ -44,7 +49,8 @@ export default {
     StatusCard,
     ButtonCard,
     LineChart,
-    GaugeCard
+    GaugeCard,
+    SliderCard
   },
 
   computed: {
@@ -55,9 +61,11 @@ export default {
       num = num + this.cards.number.length;
       num = num + this.cards.status.length;
       num = num + this.cards.button.length;
+      num = num + this.cards.slider.length;
       num = num + this.cards.lineChart.length;
       return num;
     }
   }  
 }
 </script>
+

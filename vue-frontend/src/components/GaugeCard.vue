@@ -21,7 +21,7 @@ export default {
   },
 
   watch: { 
-  	value: function() {
+    value: function() {
       this.activity = true;
       setTimeout(() => {this.activity = false}, 100);
     }

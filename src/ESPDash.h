@@ -15,13 +15,14 @@
 *
 * = Library Rewritten! =
 * V2.0.0 - 25 Jan 2019 - Wohoo! A breakthrough in performance and capabilities!
+*
+* 
+* Credits:
+* Malcolm Brook (https://github.com/malbrook) for Slider Card
 */
 
-#if defined(ESP8266) || defined(ESP32)
-    #include "Arduino.h"
-    #include "stdlib_noniso.h"
-    #include "webpage.h"
-#endif
+#include "Arduino.h"
+#include "stdlib_noniso.h"
 
 #if defined(ESP8266)
     #define HARDWARE "ESP8266"
@@ -29,7 +30,6 @@
     #include "ESPAsyncTCP.h"
     #include "ESPAsyncWebServer.h"
     #include "ArduinoJson.h"
-    #include "FS.h"
 #elif defined(ESP32)
     #define HARDWARE "ESP32"
     #include <esp_int_wdt.h>
@@ -38,12 +38,14 @@
     #include "AsyncTCP.h"
     #include "ESPAsyncWebServer.h"
     #include "ArduinoJson.h"
-    #include "SPIFFS.h"
 #endif
 
-typedef std::function<void(const char* buttonId)> DashButtonHandler;
+#include "webpage.h"
 
-#define DEBUG_MODE 0 // change to 1 for DEBUG Messages
+typedef std::function<void(const char* buttonId)> DashButtonHandler;
+typedef std::function<void(const char* sliderId, int sliderValue)> DashSliderHandler;
+
+#define DEBUG_MODE 1 // change to 1 for DEBUG Messages
 
 // Debug mode
 #ifndef DEBUG_MODE
@@ -52,6 +54,7 @@ typedef std::function<void(const char* buttonId)> DashButtonHandler;
 
 #define TEMPERATURE_CARD_TYPES 6
 #define STATUS_CARD_TYPES 4
+#define SLIDER_CARD_TYPES 4
 
 #if defined(ESP8266)
     #define BUTTON_CARD_LIMIT 20
@@ -61,6 +64,7 @@ typedef std::function<void(const char* buttonId)> DashButtonHandler;
     #define STATUS_CARD_LIMIT 20
     #define LINE_CHART_LIMIT 5
     #define GAUGE_CHART_LIMIT 20
+    #define SLIDER_CARD_LIMIT 10
 #elif defined(ESP32)
     #define BUTTON_CARD_LIMIT 50
     #define NUMBER_CARD_LIMIT 50
@@ -69,6 +73,7 @@ typedef std::function<void(const char* buttonId)> DashButtonHandler;
     #define STATUS_CARD_LIMIT 50
     #define LINE_CHART_LIMIT 10
     #define GAUGE_CHART_LIMIT 50
+    #define SLIDER_CARD_LIMIT 20
 #endif
 
 
@@ -99,6 +104,10 @@ class ESPDashClass{
 
         void addButtonCard(const char* _id, const char* _name); // Add Button
         
+        // Add Slider Card 
+        void addSliderCard(const char* _id, const char* _name, int _type); 
+        void updateSliderCard(const char* _id, int _value); 
+        
         //Initiate a Line Chart with Integer x axis and custom y axis
         void addLineChart(const char* _id, const char* _name, int _x_axis_value[], int _x_axis_size, const char* _y_axis_name, int _y_axis_value[], int _y_axis_size);
         // Initiate a Line Chart with String x axis and custom y axis
@@ -115,10 +124,15 @@ class ESPDashClass{
             _buttonClickFunc = handler;
         }
         
+        void attachSliderChanged(DashSliderHandler handler){
+            _sliderChangedFunc = handler;
+        }
 
+        
     private:
         bool stats_enabled = true;
         DashButtonHandler _buttonClickFunc;
+        DashSliderHandler _sliderChangedFunc;
         // Button Cards
         // Data Relation:
         // (Handle Incomming Websocket Requests via Card ID) Card ID -> Card Name
@@ -188,6 +202,19 @@ class ESPDashClass{
         String gauge_chart_name[GAUGE_CHART_LIMIT] = {};
         uint16_t gauge_chart_value[GAUGE_CHART_LIMIT] = {};
 
+        // Slider Card
+        // Data Relation:
+        // Card ID -> Card Name -> Card Type
+        // 0 - vertical bottom to top
+        // 1 - vertical top to bottom
+        // 2 - horizontal left to right
+        // 3 - horizontal right to left        
+        String slider_card_id[SLIDER_CARD_LIMIT] = {};
+        String slider_card_name[SLIDER_CARD_LIMIT] = {};
+        int slider_card_type[SLIDER_CARD_LIMIT] = {}; 
+        int slider_card_value[SLIDER_CARD_LIMIT] = {};       
+        
+
         static void onWsEvent(AsyncWebSocket * server, AsyncWebSocketClient * client, AwsEventType type, void * arg, uint8_t *data, size_t len);
         void generateLayoutResponse(String& result);
         void generateStatsResponse(String& result);
@@ -200,6 +227,7 @@ class ESPDashClass{
         size_t getButtonCardsLen();
         size_t getLineChartsLen();
         size_t getGaugeChartsLen();
+        size_t getSliderCardsLen();
 };
 
 extern ESPDashClass ESPDash;
