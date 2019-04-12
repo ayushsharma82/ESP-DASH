@@ -10,15 +10,15 @@
         </div>
         <br/>
         <div class="columns is-multiline">
+          <slider-card v-for="card in cards.slider" :key="card.id" :id="card.id" :name="card.name" :value="card.value" :type="card.type"></slider-card>
+        </div>
+        <br/>
+        <div class="columns is-multiline">
           <line-chart v-for="chart in cards.lineChart" :key="chart.id" :id="chart.id" :name="chart.name" :xAxis="chart.xAxis" :yAxisName="chart.yAxisName" :yAxis="chart.yAxis"></line-chart>
         </div>
         <br/>
         <div class="columns is-multiline">
           <gauge-card v-for="card in cards.gauge" :key="card.id" :name="card.name" :value="card.value"></gauge-card>
-        </div>
-        <br/>
-        <div class="columns is-multiline">
-          <slider-card v-for="card in cards.slider" :key="card.id" :id="card.id" :name="card.name" :value="card.value" :type="card.type"></slider-card>
         </div>
     </div>
     <div class="container" v-if="totalNumOfCards == 0">
