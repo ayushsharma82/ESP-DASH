@@ -64,7 +64,7 @@ Credits:
           sendValue() {
               this.msg = {
                 "id": this.id,
-                "value": this.value2
+                "value": this.displayValue
               };
               
               EventBus.$emit('sliderChanged', this.msg);
