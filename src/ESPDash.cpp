@@ -90,6 +90,7 @@ void ESPDashClass::onWsEvent(AsyncWebSocket * server, AsyncWebSocketClient * cli
                                 if(ESPDash.slider_card_id[i] == sliderId){
                                     ESPDash._sliderChangedFunc(sliderId, sliderValue);
                                     // Send Confirmation
+                                    ESPDash.slider_card_value[i] = sliderValue;
                                     ws.textAll("{\"response\": \"updateSliderCard\", \"id\": \""+(String)sliderId+"\", \"value\": "+sliderValue+"}");
                                     return;
                                 }
