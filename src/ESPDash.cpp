@@ -43,7 +43,10 @@ void ESPDashClass::onWsEvent(AsyncWebSocket * server, AsyncWebSocketClient * cli
                 JsonObject object = doc.as<JsonObject>();
                 String command = object["command"];
                 if(command != ""){
-                    if(command == "getLayout"){
+                    if(command == "ping") {
+                        String result = "{ \"response\": \"pong\" }";
+                        ws.text(client->id(), result);
+                    }else if(command == "getLayout"){
                         if(DEBUG_MODE){
                             Serial.println("[WEBSOCKET] Got getLayout Command from Client "+String(client->id()));
                         }
