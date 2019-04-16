@@ -45,7 +45,7 @@
 typedef std::function<void(const char* buttonId)> DashButtonHandler;
 typedef std::function<void(const char* sliderId, int sliderValue)> DashSliderHandler;
 
-#define DEBUG_MODE 1 // change to 1 for DEBUG Messages
+#define DEBUG_MODE 0 // change to 1 for DEBUG Messages
 
 // Debug mode
 #ifndef DEBUG_MODE
@@ -86,7 +86,9 @@ class ESPDashClass{
 
         void addNumberCard(const char* _id, const char* _name); // Add Number card with default value
         void addNumberCard(const char* _id, const char* _name, int _value); // Add Number card with custom value
+
         void updateNumberCard(const char* _id, int _value); // Update Number Card with custom value
+        void updateNumberCard(const char* _id, float _value); // Update Number Card with custom value
 
         void addTemperatureCard(const char* _id, const char* _name, int _type); // Add Temperature Card with custom type and default value
         void addTemperatureCard(const char* _id, const char* _name, int _type, int _value); // Add Temperature Card with custom value
