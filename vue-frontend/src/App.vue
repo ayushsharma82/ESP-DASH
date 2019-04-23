@@ -44,7 +44,7 @@ export default {
                 number: [],
                 lineChart: [],
                 gauge: [],
-		        slider:[]
+                slider:[]
             }
         }
     },
