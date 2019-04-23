@@ -93,7 +93,6 @@ Credits:
             contained: false,
             data: null,
             direction:"ltr",
-            height:20,
             min: 0,
             max: 100,
             interval: 1,
