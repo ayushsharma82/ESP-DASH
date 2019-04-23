@@ -21,8 +21,8 @@ export default {
     }
   },
 
-  watch: { 
-  	yAxis: function() {
+  watch: {
+      yAxis: function() {
       this.activity = true;
       setTimeout(() => {this.activity = false}, 100);
     }

@@ -19,8 +19,8 @@ export default {
       activity: true
     }
   },
-  watch:{ 
-  	value:function() {
+  watch:{
+      value:function() {
       this.activity = true;
       setTimeout(() => {this.activity = false}, 100);
     }
@@ -37,9 +37,9 @@ export default {
         case 3:
           return "°R"; // Rakine
         case 4:
-          return "°De" // Delisle
+          return "°De"; // Delisle
         case 5:
-          return "°N" // Newton
+          return "°N"; // Newton
         default:
           return "°C";
       }
