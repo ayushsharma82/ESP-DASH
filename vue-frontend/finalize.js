@@ -9,9 +9,9 @@ const zlib = require('zlib');
 
 function getByteArray(file){
     let fileData = file.toString('hex');
-    let result = []
-    for (var i = 0; i < fileData.length; i+=2)
-      result.push('0x'+fileData[i]+''+fileData[i+1])
+    let result = [];
+    for (let i = 0; i < fileData.length; i+=2)
+      result.push('0x'+fileData[i]+''+fileData[i+1]);
     return result;
 }
 
