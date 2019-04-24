@@ -36,7 +36,7 @@ let html = `
 </html>
 `;
 // Gzip the index.html file with JS Code.
-const gzippedIndex = zlib.gzipSync(html);
+const gzippedIndex = zlib.gzipSync(html, {'level': zlib.constants.Z_BEST_COMPRESSION});
 let indexHTML = getByteArray(gzippedIndex);
 
 let source = 
