@@ -6,6 +6,7 @@
 
 const fs = require('fs');
 const zlib = require('zlib');
+const { gzip } = require('@gfx/zopfli');
 
 function getByteArray(file){
     let fileData = file.toString('hex');
@@ -47,3 +48,18 @@ const uint8_t DASH_HTML[] PROGMEM = { ${indexHTML} };
 
 
 fs.writeFileSync(__dirname+'/dist/webpage.h', source, 'utf8');
+
+// Produce a second variant with zopfli
+// Zopfli is a improved zip algorithm by google
+// Takes much more time and maybe is not available on every machine
+const input =  html;
+gzip(input, {numiterations: 15}, (err, output) => {
+    indexHTML = output;
+    let source =
+`
+const uint32_t DASH_HTML_SIZE = ${indexHTML.length};
+const uint8_t DASH_HTML[] PROGMEM = { ${indexHTML} };
+`;
+
+    fs.writeFileSync(__dirname + '/dist/webpage_zopfli.h', source, 'utf8');
+});
