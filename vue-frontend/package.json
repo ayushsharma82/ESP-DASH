@@ -17,6 +17,7 @@
     "vue-slider-component": "^3.0.26"
   },
   "devDependencies": {
+    "@gfx/zopfli": "^1.0.11",
     "@vue/cli-plugin-babel": "^3.3.0",
     "@vue/cli-plugin-eslint": "^3.3.0",
     "@vue/cli-service": "^3.3.0",

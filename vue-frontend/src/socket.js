@@ -3,7 +3,7 @@ import Vue from "vue"
 let host = "ws://"+document.location.host+"/dashws";
 // let host = "ws://192.168.1.x/dashws"; // For Local Testing via npm run serve
 
-const socket = new WebSocket(host)
+const socket = new WebSocket(host);
 
 const emitter = new Vue({
   methods:{
@@ -12,22 +12,22 @@ const emitter = new Vue({
         socket.send(message)
     }
   }
-})
+});
 
 socket.onopen = function(){
   emitter.$emit("connected");
-}
+};
 
 socket.onclose = function(){
   emitter.$emit("disconnected");
-}
+};
 
 socket.onmessage = function(msg){
   emitter.$emit("message",  JSON.parse(msg.data));
-}
+};
 socket.onerror = function(err){
   emitter.$emit("error", err)
-}
+};
 
 
 setInterval(() => {
