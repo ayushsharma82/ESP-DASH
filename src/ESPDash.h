@@ -1,6 +1,3 @@
-#ifndef ESPDash_h
-#define ESPDash_h
-
 /*
 * ESP-DASH V2
 * Made by Ayush Sharma
@@ -19,10 +16,22 @@
 * 
 * Credits:
 * Malcolm Brook (https://github.com/malbrook) for Slider Card
+*
+*
+* Core routines rewritten by Cassiano Martin <cassiano.martin@gmail.com>
+* Not all functions implemented yet, missing button and slider routines.
 */
+
+#ifndef ESPDash_h
+#define ESPDash_h
+
+#include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "Arduino.h"
 #include "stdlib_noniso.h"
+#include "webpage.h"
 
 #if defined(ESP8266)
     #define HARDWARE "ESP8266"
@@ -40,197 +49,345 @@
     #include "ArduinoJson.h"
 #endif
 
-#include "webpage.h"
+// functions defaults to zero (number card)
+enum {
+    TYPE_NUMBER_CARD,
+    TYPE_BUTTON_CARD,
+    TYPE_TEMPERATURE_CARD,
+    TYPE_HUMIDITY_CARD,
+    TYPE_STATUS_CARD,
+    TYPE_LINE_CARD,
+    TYPE_GAUGE_CARD,
+    TYPE_SLIDER_CARD
+};
 
-typedef std::function<void(const char* buttonId)> DashButtonHandler;
-typedef std::function<void(const char* sliderId, int sliderValue)> DashSliderHandler;
+enum {
+    CARD_0,
+    CARD_1,
+    CARD_2,
+    CARD_3,
+    CARD_4,
+    CARD_5,
+    CARD_6,
+    CARD_7,
+    CARD_8,
+    CARD_9,
+    CARD_10,
+    CARD_11,
+    CARD_12,
+    CARD_13,
+    CARD_14,
+    CARD_15,
+    CARD_16,
+    CARD_17,
+    CARD_18,
+    CARD_19
+};
 
-#define DEBUG_MODE 0 // change to 1 for DEBUG Messages
+typedef int Card;
 
-// Debug mode
-#ifndef DEBUG_MODE
-#define DEBUG_MODE 0
-#endif
+struct CardData {
+    int id;
+    int type;
+    enum { INTEGER, FLOAT } value_type;
+    union {
+        float value_f;
+        int value_i;
+    };
+    
+    int datatype;
+    char name[20];
+};
+
+struct CardNames {
+    int value;
+    const char *name;
+    const char *json_method;
+};
 
 #define TEMPERATURE_CARD_TYPES 6
 #define STATUS_CARD_TYPES 4
 #define SLIDER_CARD_TYPES 4
 
-#if defined(ESP8266)
-    #define BUTTON_CARD_LIMIT 20
-    #define NUMBER_CARD_LIMIT 20
-    #define TEMPERATURE_CARD_LIMIT 20
-    #define HUMIDITY_CARD_LIMIT 20
-    #define STATUS_CARD_LIMIT 20
-    #define LINE_CHART_LIMIT 5
-    #define GAUGE_CHART_LIMIT 20
-    #define SLIDER_CARD_LIMIT 10
-#elif defined(ESP32)
-    #define BUTTON_CARD_LIMIT 50
-    #define NUMBER_CARD_LIMIT 50
-    #define TEMPERATURE_CARD_LIMIT 50
-    #define HUMIDITY_CARD_LIMIT 50
-    #define STATUS_CARD_LIMIT 50
-    #define LINE_CHART_LIMIT 10
-    #define GAUGE_CHART_LIMIT 50
-    #define SLIDER_CARD_LIMIT 20
+#ifndef MIN
+#define MIN(a, b) (((a) < (b)) ? (a) : (b))
 #endif
 
+#ifndef MAX
+#define MAX(a, b) (((a) > (b)) ? (a) : (b))
+#endif
 
+#define SWAP(type, a, b) type tmp ## a = a; a = b; b = tmp ## a;
 
-class ESPDashClass{
-
-    public:
-        void init(AsyncWebServer& server);
-        void disableStats();    // To Disable Stats and disable reboot
-
-        void addNumberCard(const char* _id, const char* _name); // Add Number card with default value
-        void addNumberCard(const char* _id, const char* _name, int _value); // Add Number card with custom value
-
-        void updateNumberCard(const char* _id, int _value); // Update Number Card with custom value
-        void updateNumberCard(const char* _id, float _value); // Update Number Card with custom value
-
-        void addTemperatureCard(const char* _id, const char* _name, int _type); // Add Temperature Card with custom type and default value
-        void addTemperatureCard(const char* _id, const char* _name, int _type, int _value); // Add Temperature Card with custom value
-        void updateTemperatureCard(const char* _id, int _value); // Update Temperature Card with custom value
-
-        void addHumidityCard(const char* _id, const char* _name);   // Add default Humidity card
-        void addHumidityCard(const char* _id, const char* _name, int _value);  // Add Humidity Card with custom value
-        void updateHumidityCard(const char* _id, int _value); // Update Humidity Card with custom value
-
-        void addStatusCard(const char* _id, const char* _name); // Add Default Status Card
-        void addStatusCard(const char* _id, const char* _name, int _type); // Add Status Card with more status types
-        void addStatusCard(const char* _id, const char* _name, bool _type); // Add Status Card with true / false
-        void updateStatusCard(const char* _id, int _type);
-        void updateStatusCard(const char* _id, bool _type);
-
-        void addButtonCard(const char* _id, const char* _name); // Add Button
-        
-        // Add Slider Card 
-        void addSliderCard(const char* _id, const char* _name, int _type); 
-        void updateSliderCard(const char* _id, int _value); 
-        
-        //Initiate a Line Chart with Integer x axis and custom y axis
-        void addLineChart(const char* _id, const char* _name, int _x_axis_value[], int _x_axis_size, const char* _y_axis_name, int _y_axis_value[], int _y_axis_size);
-        // Initiate a Line Chart with String x axis and custom y axis
-        void addLineChart(const char* _id, const char* _name, String _x_axis_value[], int _x_axis_size, const char* _y_axis_name, int _y_axis_value[], int _y_axis_size); 
-        void updateLineChart(const char* _id, int _x_axis_value[], int _x_axis_size, int _y_axis_value[], int _y_axis_size); // Update a Line Chart with custom Int x axis and y axis
-        void updateLineChart(const char* _id, String _x_axis_value[], int _x_axis_size, int _y_axis_value[], int _y_axis_size); // Update a Line Chart with custom String x axis and y axis
-
-        void addGaugeChart(const char *_id, const char *_name); // Add Gauge card with default value
-        void addGaugeChart(const char *_id, const char *_name, int _value); // Add Gauge card with default value
-        void updateGaugeChart(const char* _id, int _value); // Update Gauge card with default value
-
-
-        void attachButtonClick(DashButtonHandler handler){
-            _buttonClickFunc = handler;
-        }
-        
-        void attachSliderChanged(DashSliderHandler handler){
-            _sliderChangedFunc = handler;
-        }
-
-        
-    private:
-        bool stats_enabled = true;
-        DashButtonHandler _buttonClickFunc;
-        DashSliderHandler _sliderChangedFunc;
-        // Button Cards
-        // Data Relation:
-        // (Handle Incomming Websocket Requests via Card ID) Card ID -> Card Name
-        String button_card_id[BUTTON_CARD_LIMIT] = {};
-        String button_card_name[BUTTON_CARD_LIMIT] = {};
-
-        // Number Cards
-        // Card ID -> Card Name -> Integer Value
-        String number_card_id[NUMBER_CARD_LIMIT] = {};
-        String number_card_name[NUMBER_CARD_LIMIT] = {};
-        uint16_t number_card_value[NUMBER_CARD_LIMIT] = {};
-
-        // Temperature Cards
-        // Data Relation:
-        // Card ID -> Card Name ->>
-        // Types 
-        // 0 - °C [Celsius] 
-        // 1 - °F [Fahrenheit]
-        // 2 - K [Kelvin]
-        // 3 - °R [Rakine] 
-        // 4 - °De [Delisle]
-        // 5 - °N [Newton]
-        // ->> Integer Value
-        String temperature_card_id[TEMPERATURE_CARD_LIMIT] = {};
-        String temperature_card_name[TEMPERATURE_CARD_LIMIT] = {};
-        int temperature_card_type[TEMPERATURE_CARD_LIMIT] = {};
-        int temperature_card_value[TEMPERATURE_CARD_LIMIT] = {};
-
-        // Humidity Cards
-        // Data Relation:
-        // Card ID -> Card Name -> Integer Value
-        String humidity_card_id[HUMIDITY_CARD_LIMIT] = {};
-        String humidity_card_name[HUMIDITY_CARD_LIMIT] = {};
-        int humidity_card_value[HUMIDITY_CARD_LIMIT] = {};
-
-        // Status Cards
-        // Data Relation:
-        // Card ID -> Card Name -> Card Type
-        // 0 - false 
-        // 1 - true
-        // 2 - warning
-        // 3 - paused
-        String status_card_id[STATUS_CARD_LIMIT] = {};
-        String status_card_name[STATUS_CARD_LIMIT] = {};
-        int status_card_value[STATUS_CARD_LIMIT] = {};
-
-        // Graph Cards
-        // Data Relation:
-        // Card ID -> Card Name ->>
-        // X Axis -> Bool Type -> String <- OR -> ( Array Length -> Integer Array )
-        // Y Axis -> Y Axis Name -> Array Length -> Integer Array
-        String line_chart_id[LINE_CHART_LIMIT] = {};
-        String line_chart_name[LINE_CHART_LIMIT] = {};
-        // X Axis // A Graph can either have a STRING Type X Axis or Integer Type
-        bool line_chart_x_axis_type[LINE_CHART_LIMIT] = {}; // Boolean which indicates the type // true = String, false = Int
-        String line_chart_x_axis_value_string[LINE_CHART_LIMIT][100] = {};   // String Type
-        int line_chart_x_axis_size[LINE_CHART_LIMIT] = {};
-        int line_chart_x_axis_value_int[LINE_CHART_LIMIT][100] = {};  // Integer Type
-        // Y Axis
-        String line_chart_y_axis_name[LINE_CHART_LIMIT] = {};
-        int line_chart_y_axis_size[LINE_CHART_LIMIT] = {};
-        int line_chart_y_axis_value[LINE_CHART_LIMIT][100] = {};
-
-        // Gauge Charts
-        // Card ID -> Card Name -> Integer Value
-        String gauge_chart_id[GAUGE_CHART_LIMIT] = {};
-        String gauge_chart_name[GAUGE_CHART_LIMIT] = {};
-        uint16_t gauge_chart_value[GAUGE_CHART_LIMIT] = {};
-
-        // Slider Card
-        // Data Relation:
-        // Card ID -> Card Name -> Card Type
-        // 0 - vertical bottom to top
-        // 1 - vertical top to bottom
-        // 2 - horizontal left to right
-        // 3 - horizontal right to left        
-        String slider_card_id[SLIDER_CARD_LIMIT] = {};
-        String slider_card_name[SLIDER_CARD_LIMIT] = {};
-        int slider_card_type[SLIDER_CARD_LIMIT] = {}; 
-        int slider_card_value[SLIDER_CARD_LIMIT] = {};       
-        
-
-        static void onWsEvent(AsyncWebSocket * server, AsyncWebSocketClient * client, AwsEventType type, void * arg, uint8_t *data, size_t len);
-        void generateLayoutResponse(String& result);
-        void generateStatsResponse(String& result);
-        void generateRebootResponse(String& result);
-        size_t getTotalResponseCapacity();
-        size_t getNumberCardsLen();
-        size_t getTemperatureCardsLen();
-        size_t getHumidityCardsLen();
-        size_t getStatusCardsLen();
-        size_t getButtonCardsLen();
-        size_t getLineChartsLen();
-        size_t getGaugeChartsLen();
-        size_t getSliderCardsLen();
+template <class ParameterType> class Predicate
+{
+public:
+    virtual void operator() (ParameterType &param) = 0;
 };
 
-extern ESPDashClass ESPDash;
+// This class implements missing vector from STL
+template <class VectorType> class Vector
+{
+    VectorType *begin;
+    VectorType *storage;
+    int head;
+
+public:
+    VectorType OB;
+
+    // We can save a few re-sizings if we know how large the array is likely to grow to be
+    Vector(int initialSize = 0)
+    {
+        begin = new VectorType[initialSize]; //points to the beginning of the new array
+        head = initialSize - 1;
+        storage = begin + initialSize; //points to the element one outside of the array (such that end - begin = capacity)
+    }
+
+    Vector(Vector &obj)
+    {
+        begin = new VectorType[0]; // Points to the beginning of the new array, it's zero but this line keeps malloc from seg faulting should we delete begin before resizing it
+        head = -1;
+        storage = begin; //points to the element one outside of the array (such that end - begin = capacity)
+
+        *this = obj;
+    }
+
+    // If there's anything in the vector then delete the array, if there's no array then doing will will cause seg faults
+    virtual ~Vector() { delete[] begin; }
+
+    Vector &operator=(Vector &obj)
+    {
+        // Reallocate the underlying buffer to the same size as the
+        Resize(obj.Size());
+
+        for(int i = 0; i < obj.Size(); i++)
+            (*this)[i] = obj[i];
+
+        head = obj.head;
+
+        return *this;
+    }
+
+    void ForEach(Predicate<VectorType> &functor)
+    {
+        for(int i =  0; i < Size(); i++)
+            functor(begin[i]);
+    }
+
+    // Swaps the underlying array and characteristics of this vector with another of the same type, very quickly
+    void Swap(Vector &obj)
+    {
+        SWAP(int, head, obj.head);
+        SWAP(VectorType*, begin, obj.begin);
+        SWAP(VectorType*, storage, obj.storage);
+    }
+
+    // Checks the entire Vector to see whether a matching item exists. Bear in mind that the VectorType might need to implement
+    // equality operator (operator==) for this to work properly.
+    bool Contains(VectorType element)
+    {
+        for(int i = 0; i < Size(); i++)
+            if(operator [](i) == element)
+                return true;
+
+        return false;
+    }
+
+    int Find(VectorType element)
+    {
+        for(int i = 0; i < Size(); i++)
+            if(operator [](i) == element)
+                return i;
+
+        return -1;
+    }
+
+    void PushBack(VectorType element) { PushBack(&element, 1); }
+
+    void PushBack(const VectorType *elements, int len)
+    {
+        // If the length plus this's size is greater than the capacity, reallocate to that size.
+        if(len + Size() > Capacity())
+            ReAllocate(MAX(Size() + len, Size() * 2));
+
+        int append = MIN(storage - begin - head - 1, len), prepend = len - append;
+
+        // memcpy the data starting at the head all the way up to the last element *(storage - 1)
+        memcpy((begin + head + 1), elements, sizeof(VectorType) * append);
+
+        // If there's still data to copy memcpy whatever remains, starting at the first element *(begin) until the end of data. The first step will have ensured
+        // that we don't crash into the tail during this process.
+        memcpy(begin,(elements + append), sizeof(VectorType) * prepend);
+
+        // Re-recalculate head and size.
+        head += len;
+    }
+
+    void Erase(unsigned int position) { Erase(position, position + 1); }
+
+    // Erase an arbitrary section of the vector from first up to last minus one. Like the stl counterpart, this is pretty labour intensive so go easy on it.
+    void Erase(int first, int last)
+    {
+        // For this we'll set the value of the array at first to the value of the array at last plus one. We'll do that all the way up to toIndex
+        for(int i = 0; i < (Size() - first); i++)
+        {
+            // If by trying to fill in the next element with the ones ahead of it we'll be running off the end of the vector, stop.
+            if((i + last) > (Size() - 1))
+                break;
+
+            begin[first + i] = begin[last + i];
+        }
+
+        // Adjust the head to reflect the new size
+        head -= last - first;
+    }
+
+    // Remove the most recent element in the array
+    void PopBack()
+    {
+        if(Size() > 0)
+            head--;
+    }
+
+    // Empty the vector, or to be precise - forget the fact that there was ever anything in there.
+    void Clear() { head = -1; }
+
+    // Returns a bool indicating whether or not there are any elements in the array
+    bool Empty() { return head == -1; }
+
+    // Returns the oldest element in the array (the one added before any other)
+    VectorType const &Back() { return *begin; }
+
+    // Returns the newest element in the array (the one added after every other)
+    VectorType const &Front() { return begin[head]; }
+
+    // Returns the nth element in the vector
+    VectorType &operator[](int n)
+    {
+        if(n < Size())
+            return begin[n];
+        else
+            return OB;
+    }
+
+    // Returns a pointer such that the vector's data is laid out between ret to ret + size
+    VectorType *Data() { return begin; }
+
+    // Recreates the vector to hold len elements, all being copies of val
+    void Assign(int len, const VectorType &val)
+    {
+        delete[] begin;
+
+        // Allocate an array the same size as the one passed in
+        begin = new VectorType[len];
+        storage = begin + len;
+
+        // Refresh the head and tail, assuming the array is in order, which it really has to be
+        head = len - 1;
+
+        for(int i = 0 ; i < Size(); i++)
+            begin[i] = val;
+    }
+
+    // Recreates the vector using an external array
+    void Assign(VectorType *array, int len)
+    {
+        delete[] begin;
+
+        // Allocate an array the same size as the one passed in
+        begin = new VectorType[len];
+        storage = begin + len;
+
+        // Refresh the head and tail, assuming the array is in order, which it really has to be
+        head = len - 1;
+
+        // Copy over the memory
+        memcpy(begin, array, sizeof(VectorType) * len);
+    }
+
+    // Returns the number of elements that the vector will support before needing resizing
+    int Capacity() { return (storage - begin); }
+
+    // Returns the number of elements in vector
+    int Size() { return head + 1; }
+
+    // Requests that the capacity of the allocated storage space for the elements
+    // of the vector be at least enough to hold size elements.
+    void Reserve(unsigned int size)
+    {
+        if(size > Capacity())
+            ReAllocate(size);
+    }
+
+    // Resizes the vector
+    void Resize(unsigned int size)
+    {
+        // If necessary, resize the underlying array to fit the new size
+        if(size > Capacity())
+            ReAllocate(size);
+
+        // Now revise the head and size (tail needn't change) to reflect the new size
+        head = size - 1;
+    }
+
+private:
+
+    void ReAllocate(unsigned int size)
+    {
+        // Just in case we're re-allocating less room than we had before, make sure that we don't overrun the buffer by trying to write more elements than
+        // are now possible for this vector to hold.
+        if(Size() > (int)size)
+            head = size - 1;
+
+        // Allocate an array twice the size of that of the old
+        VectorType *_begin = new VectorType[size];
+        VectorType *_storage = _begin + size;
+
+        int _head = Size() - 1;
+
+        // Copy across all the old array's data and rearrange it!
+        for(int i = 0; i < Size(); i++)
+            _begin[i] = (*this)[i];
+
+        // Free the old memory
+        delete[] begin;
+
+        // Redirect the old array to point to the new one
+        begin = _begin;
+        storage = _storage;
+        head = _head;
+    }
+};
+
+class ESPDashV2
+{
+    private:
+        Vector<CardData> cData;
+        bool stats_enabled = true;
+
+        // Async WebSocket event callback function
+        static void onWsEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len);
+
+    public:
+        ESPDashV2() { };
+        ~ESPDashV2() { };
+
+        void init(AsyncWebServer& server);
+
+        // adding a new card to layout
+        int AddCard(const int type, const char *name, int datatype = 0);
+
+        // Update card data, specialized functions
+        void UpdateCard(const int cardID, int value);
+        void UpdateCard(const int cardID, float value);
+
+        // Notify client side to update values
+        void SendUpdates();
+
+        // send generated layout json to client side
+        String UpdateLayout(bool only_stats = false);
+};
+
+extern ESPDashV2 ESPDash;
+
 #endif
