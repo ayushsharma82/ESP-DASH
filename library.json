@@ -13,14 +13,9 @@
       "name": "Ayush Sharma",
       "email": "asrocks5@gmail.com",
       "maintainer": true
-    },
-    {
-      "name": "Malcolm Brook",
-      "email": "malcolm.brook@toddesigns.com",
-      "maintainer": true
     }
   ],
-  "version": "2.2.1",
+  "version": "2.2.2",
   "frameworks": "arduino",
   "platforms": "espressif"
 }
