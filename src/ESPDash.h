@@ -93,10 +93,11 @@ struct CardData {
     int type;
     enum { INTEGER, FLOAT, STRING, FUNCTION } value_type;
     union {
+        char *value_s;
         float value_f;
         int value_i;
-        char *value_s;
         void (*value_ptr)();
+        unsigned char __pad[8]; // force alignment
     };
 
     int datatype;
