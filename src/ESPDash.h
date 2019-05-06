@@ -91,7 +91,7 @@ typedef int Card;
 struct CardData {
     int id;
     int type;
-    enum { INTEGER, FLOAT, STRING } value_type;
+    enum { INTEGER, FLOAT, STRING, FUNCTION } value_type;
     union {
         float value_f;
         int value_i;
@@ -369,12 +369,12 @@ class ESPDashV2
 
         // adding a new card to layout, specialized functions
         int AddCard(const int type, const char *name, int datatype = 0);
-        int AddCard(const int type, const char *name, void (*funptr)());
 
         // Update card data, specialized functions
         void UpdateCard(const int cardID, int value);
         void UpdateCard(const int cardID, float value);
         void UpdateCard(const int cardID, String &value);
+        void UpdateCard(const int cardID, void (*funptr)());
 
         // Notify client side to update values
         void SendUpdates();

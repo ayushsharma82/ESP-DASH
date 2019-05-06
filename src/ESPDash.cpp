@@ -145,11 +145,6 @@ int ESPDashV2::AddCard(const int type, const char *name, int datatype)
     return cData.Size()-1;
 }
 
-// add a new card to the collection
-int ESPDashV2::AddCard(const int type, const char *name, void (*funptr)())
-{
-}
-
 // overload funtion for integer value update
 void ESPDashV2::UpdateCard(const int cardID, int value)
 {
@@ -181,6 +176,12 @@ void ESPDashV2::UpdateCard(const int cardID, String &value)
     strncpy(cData[cardID].value_s, value.c_str(), size);
 }
 
+void ESPDashV2::UpdateCard(const int cardID, void (*funptr)())
+{
+    cData[cardID].value_type = CardData::FUNCTION;
+    cData[cardID].value_ptr = funptr;
+}
+
 // push updates to all connected clients
 void ESPDashV2::SendUpdates()
 {
@@ -197,11 +198,25 @@ void ESPDashV2::SendUpdates()
 
         data ="{\"id\":"+String(cData[i].id)+",";
         data+="\"response\":\""+String(func)+"\",";
+        data+="\"value\":\"";
 
-        if(cData[i].value_type == CardData::INTEGER)
-            data+="\"value\":\""+String(cData[i].value_i)+"\"}";
-        else if(cData[i].value_type == CardData::FLOAT)
-            data+="\"value\":\""+String(cData[i].value_f, 2)+"\"}";
+        switch(cData[i].value_type)
+        {
+            case CardData::INTEGER:
+                data+=String(cData[i].value_i);
+                break;
+            case CardData::FLOAT:
+                data+=String(cData[i].value_f, 2);
+                break;
+            case CardData::STRING:
+                data+=String(cData[i].value_s);
+                break;
+            default:
+                // blank value
+                break;
+        }
+
+        data+="\"}";
 
         // no need to make buffer, just send it right away
         ws.textAll(data.c_str());
