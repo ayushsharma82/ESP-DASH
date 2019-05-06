@@ -159,7 +159,7 @@ void ESPDashV2::UpdateCard(const int cardID, float value)
     cData[cardID].value_f = value;
 }
 
-// overload function for string value update
+// overload function for string value update, some trailing bytes present when string is < 8 chars
 void ESPDashV2::UpdateCard(const int cardID, String &value)
 {
     int size = value.length();
@@ -260,12 +260,25 @@ String ESPDashV2::UpdateLayout(bool only_stats)
         data+="\"card_type\":\""+String(cardtype)+"\",";
         data+="\"name\":\""+String(cData[i].name)+"\",";
         data+="\"datatype\":\""+String(cData[i].datatype)+"\",";
-        //data+="\"type\":\""+String(cData[i].type)+"\",";
+        data+="\"value\":\"";
 
-        if(cData[i].value_type == CardData::INTEGER)
-            data+="\"value\":\""+String(cData[i].value_i)+"\"}";
-        else if(cData[i].value_type == CardData::FLOAT)
-            data+="\"value\":\""+String(cData[i].value_f, 2)+"\"}";
+        switch(cData[i].value_type)
+        {
+            case CardData::INTEGER:
+                data+=String(cData[i].value_i);
+                break;
+            case CardData::FLOAT:
+                data+=String(cData[i].value_f, 2);
+                break;
+            case CardData::STRING:
+                data+=String(cData[i].value_s);
+                break;
+            default:
+                // blank value
+                break;
+        }
+
+        data+="\"}";
 
         if(i<cData.Size()-1)
             data+=",";
