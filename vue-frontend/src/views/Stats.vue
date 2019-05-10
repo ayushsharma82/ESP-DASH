@@ -8,6 +8,7 @@
             <div><b>Sketch Hash:</b> &nbsp; {{stats.sketchHash}}</div><br/>
             <div><b>MAC Address:</b> &nbsp; {{stats.macAddress}}</div><br/>
             <div><b>Connection Type:</b> &nbsp; {{getWifiMode}}</div><br/>
+            <div><b>Signal Level (RSSI):</b> &nbsp; {{stats.wifiSignal}}</div><br/>
             <br/>
             <div><b>Reboot:</b> &nbsp; <button class="button is-danger is-small" @click="$emit('reboot')"><div class="icon"><refresh-ccw-icon></refresh-ccw-icon></div></button></div>
         </div>

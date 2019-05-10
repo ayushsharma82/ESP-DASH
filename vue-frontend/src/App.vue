@@ -90,6 +90,7 @@ export default {
                         this.stats.heapFragmentation = json.statistics.heapFragmentation;
                     }
                     this.stats.wifiMode = json.statistics.wifiMode;
+                    this.stats.wifiSignal = json.statistics.wifiSignal;
                 }
 
                 json.cards.forEach(card => {
