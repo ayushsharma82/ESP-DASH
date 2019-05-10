@@ -34,7 +34,8 @@ export default {
                 macAddress: null,
                 freeHeap: null,
                 heapFragmentation: null,
-                wifiMode: null
+                wifiMode: null,
+                wifiSignal: null
             },
             cards:{
                 temperature: [],
@@ -90,6 +91,7 @@ export default {
                     }
                     this.stats.wifiMode = json.statistics.wifiMode;
                 }
+
                 json.cards.forEach(card => {
                     switch(card.card_type){
                         case "temperature":
@@ -163,50 +165,73 @@ export default {
                             break;
                     }
                 });
-            }else if(json.response == "updateLineChart"){
-                this.cards.lineChart.forEach((chart) => {
-                    if(chart.id == json.id){
-                        chart.xAxis = json.x_axis_value;
-                        chart.yAxis = json.y_axis_value;
+            }
+            // TODO: better rewrite this
+            else if(json.response == "updateCards")
+            {
+                json.cards.forEach(card => {
+                    switch(card.response){
+                        case "updateLineChart":
+                            this.cards.lineChart.forEach((chart) => {
+                                if(chart.id == card.id){
+                                    chart.xAxis = card.x_axis_value;
+                                    chart.yAxis = card.y_axis_value;
+                                }
+                            });
+                            break;
+
+                        case "updateStatusCard":
+                            this.cards.status.forEach((data) => {
+                                if(data.id == card.id){
+                                    data.value = card.value;
+                                }
+                            });
+                            break;
+
+                        case "updateNumberCard":
+                            this.cards.number.forEach((data) => {
+                                if(data.id == card.id){
+                                    data.value = card.value;
+                                }
+                            });
+                            break;
+
+                        case "updateTemperatureCard":
+                            this.cards.temperature.forEach((data) => {
+                                if(data.id == card.id){
+                                    data.value = card.value;
+                                }
+                            });
+                            break;
+
+                        case "updateHumidityCard":
+                            this.cards.humidity.forEach((data) => {
+                                if(data.id == card.id){
+                                    data.value = card.value;
+                                }
+                            });
+                            break;
+
+                        case "updateGaugeChart":
+                            this.cards.gauge.forEach((data) => {
+                                if(data.id == card.id){
+                                    data.value = card.value;
+                                }
+                            });
+
+                            break;
+                        case "updateSliderCard":
+                            this.cards.slider.forEach((data) => {
+                                if(data.id == card.id){
+                                    data.value = card.value;
+                                }
+                            });
+                            break;
                     }
                 });
-            }else if(json.response == "updateStatusCard"){
-                this.cards.status.forEach((card) => {
-                    if(card.id == json.id){
-                        card.value = json.value;
-                    }
-                });
-            }else if(json.response == "updateNumberCard"){
-                this.cards.number.forEach((card) => {
-                    if(card.id == json.id){
-                        card.value = json.value;
-                    }
-                });
-            }else if(json.response == "updateTemperatureCard"){
-                this.cards.temperature.forEach((card) => {
-                    if(card.id == json.id){
-                        card.value = json.value;
-                    }
-                });
-            }else if(json.response == "updateHumidityCard"){
-                this.cards.humidity.forEach((card) => {
-                    if(card.id == json.id){
-                        card.value = json.value;
-                    }
-                });
-            }else if(json.response == "updateGaugeChart"){
-                this.cards.gauge.forEach((card) => {
-                    if(card.id == json.id){
-                        card.value = json.value;
-                    }
-                });
-            }else if(json.response == "updateSliderCard"){
-                this.cards.slider.forEach((card) => {
-                    if(card.id == json.id){
-                        card.value = json.value;
-                    }
-                });
-            }else if(json.response == "updateLayout"){
+            }
+            else if(json.response == "updateLayout")
+            {
                 Socket.send(JSON.stringify({"command":"getLayout"}));
             }
         });

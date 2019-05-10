@@ -67,7 +67,8 @@ void ESPDashV2::init(AsyncWebServer& server)
 
     server.on("/debug", HTTP_GET, [&](AsyncWebServerRequest *request)
     {
-        request->send(200, "application/json", UpdateLayout());
+        //request->send(200, "application/json", UpdateLayout());
+        request->send(200, "application/json", RefreshCards());
     });
 
     ws.onEvent(onWsEvent);
@@ -101,7 +102,11 @@ void ESPDashV2::onWsEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, 
                     response = ESPDash.UpdateLayout(true);
                 else if(json["command"] == "buttonClicked")
                 {
-                    // WIP
+                    int id = json["id"];
+                    if(id >= 0 && ESPDash.cData[id].value_ptr != NULL)
+                        ESPDash.cData[id].value_ptr();
+
+                    return;
                 }
                 else if(json["command"] == "sliderChanged")
                 {
@@ -184,7 +189,7 @@ void ESPDashV2::UpdateCard(const int cardID, void (*funptr)())
 }
 
 // push updates to all connected clients
-void ESPDashV2::SendUpdates()
+String ESPDashV2::RefreshCards()
 {
     String data;
 
@@ -197,7 +202,7 @@ void ESPDashV2::SendUpdates()
         if(func == NULL)
             continue;
 
-        data ="{\"id\":"+String(cData[i].id)+",";
+        data+="{\"id\":"+String(cData[i].id)+",";
         data+="\"response\":\""+String(func)+"\",";
         data+="\"value\":\"";
 
@@ -219,9 +224,12 @@ void ESPDashV2::SendUpdates()
 
         data+="\"}";
 
-        // no need to make buffer, just send it right away
-        ws.textAll(data.c_str());
+        if(i<cData.Size()-1)
+            data+=",";
     }
+
+    return "{\"response\":\"updateCards\", "
+           "\"cards\":["+data+"]}";
 }
 
 // generates the layout JSON string to the frontend
@@ -289,6 +297,11 @@ String ESPDashV2::UpdateLayout(bool only_stats)
            "\"version\": \"1\", "
            "\"statistics\":{"+stats+"}, "
            "\"cards\":["+data+"]}";
+}
+
+void ESPDashV2::SendUpdates()
+{
+    ws.textAll(RefreshCards());
 }
 
 ESPDashV2 ESPDash;

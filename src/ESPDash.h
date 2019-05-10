@@ -382,6 +382,9 @@ class ESPDashV2
 
         // send generated layout json to client side
         String UpdateLayout(bool only_stats = false);
+
+        // send generated update json to client side
+        String RefreshCards();
 };
 
 extern ESPDashV2 ESPDash;
