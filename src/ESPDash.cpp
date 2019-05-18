@@ -202,6 +202,10 @@ String ESPDashV2::RefreshCards()
         if(func == NULL)
             continue;
 
+        // skip on start and end
+        if(i>0 && i<=cData.Size()-1)
+            data+=",";
+
         data+="{\"id\":"+String(cData[i].id)+",";
         data+="\"response\":\""+String(func)+"\",";
         data+="\"value\":\"";
@@ -223,9 +227,6 @@ String ESPDashV2::RefreshCards()
         }
 
         data+="\"}";
-
-        if(i<cData.Size()-1)
-            data+=",";
     }
 
     return "{\"response\":\"updateCards\", "
