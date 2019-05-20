@@ -27,7 +27,7 @@
 
 #include "ESPDash.h"
 
-// integral type to string pairs
+// integral type to string pairs events
 // ID, type, json_method call
 CardNames cNames[] = {
     {TYPE_NUMBER_CARD, "number", "updateNumberCard"},
@@ -57,6 +57,7 @@ ESPDashV2::~ESPDashV2()
 
 void ESPDashV2::init(AsyncWebServer& server)
 {
+    // lambda function to respond on http request
     server.on("/", HTTP_GET, [](AsyncWebServerRequest *request)
     {
         // respond with the compressed frontend
@@ -67,8 +68,11 @@ void ESPDashV2::init(AsyncWebServer& server)
 
     server.on("/debug", HTTP_GET, [&](AsyncWebServerRequest *request)
     {
-        //request->send(200, "application/json", UpdateLayout());
         request->send(200, "application/json", RefreshCards());
+    });
+    server.on("/debug2", HTTP_GET, [&](AsyncWebServerRequest *request)
+    {
+        request->send(200, "application/json", UpdateLayout());
     });
 
     ws.onEvent(onWsEvent);
@@ -85,7 +89,7 @@ void ESPDashV2::onWsEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, 
     if(type == WS_EVT_DATA)
     {
         //data packet
-        AwsFrameInfo * info = (AwsFrameInfo*)arg;
+        AwsFrameInfo *info = (AwsFrameInfo*)arg;
         if(info->final && info->index == 0 && info->len == len)
         {
             if(info->opcode == WS_TEXT)
@@ -102,15 +106,23 @@ void ESPDashV2::onWsEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, 
                     response = ESPDash.UpdateLayout(true);
                 else if(json["command"] == "buttonClicked")
                 {
+                    // execute and reference card data struct to funtion
                     int id = json["id"];
                     if(id >= 0 && ESPDash.cData[id].value_ptr != NULL)
-                        ESPDash.cData[id].value_ptr();
+                        ESPDash.cData[id].value_ptr(&ESPDash.cData[id]);
 
                     return;
                 }
                 else if(json["command"] == "sliderChanged")
                 {
-                    // WIP
+                    // execute and reference card data struct to funtion
+                    int id = json["id"];
+                    int value = json["value"];
+                    ESPDash.cData[id].value_i = value;
+                    if(id >= 0 && ESPDash.cData[id].value_ptr != NULL)
+                        ESPDash.cData[id].value_ptr(&ESPDash.cData[id]);
+
+                    response = ESPDash.RefreshCards();
                 }
                 else if(json["command"] == "reboot")
                 {
@@ -122,6 +134,7 @@ void ESPDashV2::onWsEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, 
                     for(;;);
                 }
 
+                // update only requested socket
                 ws.text(client->id(), response);
             }
         }
@@ -139,6 +152,7 @@ int ESPDashV2::AddCard(const int type, const char *name, int datatype)
     card.datatype = datatype;
     card.value_s = NULL;
     card.value_type = CardData::STRING;    // defaults to STRING type, but changed later
+    card.value_ptr = NULL;  // default to null function
 
     size = strlen(name)+1;
     card.name = new char[size];
@@ -182,9 +196,10 @@ void ESPDashV2::UpdateCard(const int cardID, String &value)
     strncpy(cData[cardID].value_s, value.c_str(), size);
 }
 
-void ESPDashV2::UpdateCard(const int cardID, void (*funptr)())
+void ESPDashV2::UpdateCard(const int cardID, void (*funptr)(CardData *))
 {
-    cData[cardID].value_type = CardData::FUNCTION;
+    // card has a function attached to it
+    cData[cardID].value_type = CardData::INTEGER;
     cData[cardID].value_ptr = funptr;
 }
 
@@ -210,6 +225,7 @@ String ESPDashV2::RefreshCards()
         data+="\"response\":\""+String(func)+"\",";
         data+="\"value\":\"";
 
+        // only value
         switch(cData[i].value_type)
         {
             case CardData::INTEGER:
@@ -239,7 +255,7 @@ String ESPDashV2::UpdateLayout(bool only_stats)
     String data;
     String stats;
 
-    if(ESPDash.stats_enabled)
+    if(stats_enabled)
     {
         // No need to use json library to build response packet
         stats+="\"enabled\":true,";
