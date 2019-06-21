@@ -1,12 +1,15 @@
 <template>
-  <!-- Button Card -->
+  <!-- Button Status Card -->
   <div class="column is-2">
     <div class="card">
       <span class="dot" :class="{'active': activity}"></span>
       <div class="card-content">
         <header><h5>{{name}}</h5></header>
         <Br/>
-        <p><target-icon @click="sendClickEvent"></target-icon></p>
+        <p>
+          <toggle-right-icon @click="sendClickEvent" class="is_on" v-if="value == 1"></toggle-right-icon>
+          <toggle-left-icon @click="sendClickEvent" v-else></toggle-left-icon>
+        </p>
       </div>
     </div>
   </div>
@@ -14,11 +17,11 @@
 
 <script>
 import EventBus from '@/event-bus.js';
-import { TargetIcon } from 'vue-feather-icons';
 import { setTimeout } from 'timers';
+import { ToggleLeftIcon, ToggleRightIcon } from 'vue-feather-icons';
 
 export default {
-    props:['id', 'name'],
+    props:['id', 'name', 'value'],
 
     data(){
       return{
@@ -27,7 +30,15 @@ export default {
     },
 
     components:{
-        TargetIcon
+        ToggleLeftIcon,
+        ToggleRightIcon,
+    },
+
+    watch: {
+      value: function() {
+        this.activity = true;
+        setTimeout(() => {this.activity = false}, 100);
+      }
     },
 
     methods:{
@@ -51,7 +62,8 @@ export default {
   cursor: pointer;
 }
 
-.card svg:active{
-  color:dodgerblue;
+.card svg.is_on{
+  color:rgb(24, 187, 73);
 }
+
 </style>

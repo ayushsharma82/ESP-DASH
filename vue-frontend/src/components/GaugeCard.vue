@@ -1,5 +1,5 @@
 <template>
-    <!-- Temperature Card -->
+    <!-- Gauge Card -->
     <div class="column is-3">
       <div class="card">
         <span class="dot" :class="{'active': activity}"></span>

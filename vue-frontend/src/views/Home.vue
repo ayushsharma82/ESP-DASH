@@ -7,6 +7,7 @@
           <humdidity-card v-for="card in cards.humidity" :key="card.id" :name="card.name" :value="card.value"></humdidity-card>
           <status-card v-for="card in cards.status" :key="card.id" :name="card.name" :value="card.value"></status-card>
           <button-card v-for="card in cards.button" :key="card.id" :id="card.id" :name="card.name"></button-card>
+          <buttonStatus-card v-for="card in cards.buttonStatus" :key="card.id" :id="card.id" :name="card.name" :value="card.value"></buttonStatus-card>
         </div>
         <br/>
         <div class="columns is-multiline">
@@ -33,6 +34,7 @@ import HumdidityCard from '@/components/HumidityCard.vue';
 import NumberCard from '@/components/NumberCard.vue';
 import StatusCard from '@/components/StatusCard.vue';
 import ButtonCard from '@/components/ButtonCard.vue';
+import ButtonStatusCard from '@/components/ButtonStatusCard.vue';
 import LineChart from '@/components/LineChart.vue';
 import GaugeCard from '@/components/GaugeCard.vue';
 import SliderCard from '@/components/SliderCard.vue';
@@ -48,6 +50,7 @@ export default {
     NumberCard,
     StatusCard,
     ButtonCard,
+    ButtonStatusCard,
     LineChart,
     GaugeCard,
     SliderCard
@@ -61,6 +64,7 @@ export default {
       num = num + this.cards.number.length;
       num = num + this.cards.status.length;
       num = num + this.cards.button.length;
+      num = num + this.cards.buttonStatus.length;
       num = num + this.cards.slider.length;
       num = num + this.cards.lineChart.length;
       return num;

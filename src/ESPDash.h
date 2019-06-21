@@ -58,6 +58,7 @@ typedef std::function<void(const char* sliderId, int sliderValue)> DashSliderHan
 
 #if defined(ESP8266)
     #define BUTTON_CARD_LIMIT 20
+    #define BUTTON_STATUS_CARD_LIMIT 20
     #define NUMBER_CARD_LIMIT 20
     #define TEMPERATURE_CARD_LIMIT 20
     #define HUMIDITY_CARD_LIMIT 20
@@ -67,6 +68,7 @@ typedef std::function<void(const char* sliderId, int sliderValue)> DashSliderHan
     #define SLIDER_CARD_LIMIT 10
 #elif defined(ESP32)
     #define BUTTON_CARD_LIMIT 50
+    #define BUTTON_STATUS_CARD_LIMIT 50
     #define NUMBER_CARD_LIMIT 50
     #define TEMPERATURE_CARD_LIMIT 50
     #define HUMIDITY_CARD_LIMIT 50
@@ -103,6 +105,11 @@ class ESPDashClass{
         void updateStatusCard(const char* _id, bool _type);
 
         void addButtonCard(const char* _id, const char* _name); // Add Button
+
+        void addButtonStatusCard(const char* _id, const char* _name, bool _type); // Add Button Status with true / false
+
+        void updateButtonStatusCard(const char* _id, bool _type); // Update Button Status with true / false
+
         
         // Add Slider Card 
         void addSliderCard(const char* _id, const char* _name, int _type); 
@@ -179,6 +186,15 @@ class ESPDashClass{
         String status_card_name[STATUS_CARD_LIMIT] = {};
         int status_card_value[STATUS_CARD_LIMIT] = {};
 
+        // Button Status Cards
+        // Data Relation:
+        // Card ID -> Card Name -> Card Type
+        // 0 - false 
+        // 1 - true
+        String button_status_card_id[BUTTON_STATUS_CARD_LIMIT] = {};
+        String button_status_card_name[BUTTON_STATUS_CARD_LIMIT] = {};
+        bool button_status_card_value[BUTTON_STATUS_CARD_LIMIT] = {};
+
         // Graph Cards
         // Data Relation:
         // Card ID -> Card Name ->>
@@ -225,6 +241,7 @@ class ESPDashClass{
         size_t getHumidityCardsLen();
         size_t getStatusCardsLen();
         size_t getButtonCardsLen();
+        size_t getButtonStatusCardsLen();
         size_t getLineChartsLen();
         size_t getGaugeChartsLen();
         size_t getSliderCardsLen();

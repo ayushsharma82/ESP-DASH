@@ -41,6 +41,7 @@ export default {
                 humidity: [],
                 status: [],
                 button: [],
+                buttonStatus: [],
                 number: [],
                 lineChart: [],
                 gauge: [],
@@ -74,6 +75,7 @@ export default {
                 this.cards.humidity = [];
                 this.cards.status = [];
                 this.cards.button = [];
+                this.cards.buttonStatus = [];
                 this.cards.number = [];
                 this.cards.lineChart = [];
                 this.cards.gauge = [];
@@ -121,6 +123,14 @@ export default {
                             this.cards.button.push({
                                 id: card.id,
                                 name: card.name
+                            });
+                            break;
+
+                        case "buttonStatus":
+                            this.cards.buttonStatus.push({
+                                id: card.id,
+                                name: card.name,
+                                value: card.value
                             });
                             break;
 
@@ -172,6 +182,12 @@ export default {
                 });
             }else if(json.response == "updateStatusCard"){
                 this.cards.status.forEach((card) => {
+                    if(card.id == json.id){
+                        card.value = json.value;
+                    }
+                });
+            }else if(json.response == "updateButtonStatusCard"){
+                this.cards.buttonStatus.forEach((card) => {
                     if(card.id == json.id){
                         card.value = json.value;
                     }
