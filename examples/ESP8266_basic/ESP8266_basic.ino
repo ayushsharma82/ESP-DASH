@@ -59,5 +59,9 @@ void loop() {
     ESPDash.UpdateCard(number, (int)random(0, 5000));
     ESPDash.UpdateCard(temperature, (int)random(0, 50));
     ESPDash.UpdateCard(humidity, (int)random(0, 100));
+
+    // Notify frontend updates
+    ESPDash.SendUpdates();
+
     delay(3000);
 }
