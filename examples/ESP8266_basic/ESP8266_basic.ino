@@ -29,6 +29,8 @@ AsyncWebServer server(80);
 const char* ssid = ""; // Your WiFi SSID
 const char* password = ""; // Your WiFi Password
 
+// these holds created cards IDs
+Card number, temperature, humidity;
 
 void setup() {
     Serial.begin(115200);
@@ -38,21 +40,24 @@ void setup() {
         Serial.printf("WiFi Failed!\n");
         return;
     }
+
     Serial.print("IP Address: ");
     Serial.println(WiFi.localIP());
     
-    ESPDash.init(server);   // Initiate ESPDash and attach your Async webserver instance
+    // Initiate ESPDash and attach your Async webserver instance, it also starts the
+    // server automatically now. no need to call server.begin
+    ESPDash.init(server);
+
     // Add Respective Cards
-    ESPDash.addNumberCard("num1", "Number Card", 264);
-    ESPDash.addTemperatureCard("temp1", "Temperature Card", 0, 20);
-    ESPDash.addHumidityCard("hum1", "Humidity Card", 98);
-    
-    server.begin();
+    number = ESPDash.AddCard(TYPE_NUMBER_CARD, "Number Card");
+    temperature = ESPDash.AddCard(TYPE_TEMPERATURE_CARD, "Temperature Card");
+    humidity = ESPDash.AddCard(TYPE_HUMIDITY_CARD, "Humidity Card");    
 }
 
 void loop() {
-    ESPDash.updateNumberCard("num1", random(0, 5000));
-    ESPDash.updateTemperatureCard("temp1", random(0, 50));
-    ESPDash.updateHumidityCard("hum1", random(0, 100));
+    // cast values as integers
+    ESPDash.UpdateCard(number, (int)random(0, 5000));
+    ESPDash.UpdateCard(temperature, (int)random(0, 50));
+    ESPDash.UpdateCard(humidity, (int)random(0, 100));
     delay(3000);
 }
