@@ -41,8 +41,9 @@ void createSSID() {
 }
 
 void buttonClicked(const char* id){
-   Serial.println("Button Clicked - "+String(id));
-   on = !on;
+  Serial.println("Button Clicked - "+String(id));
+  on = !on;
+  ESPDash.updateButtonStatusCard("btn1", on);
 }
 
 void setup() {
@@ -67,6 +68,5 @@ void setup() {
 }
 
 void loop() {
-  ESPDash.updateButtonStatusCard("btn1", on);
-  delay(1000);
+
 }
