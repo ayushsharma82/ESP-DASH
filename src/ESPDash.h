@@ -122,6 +122,9 @@ class ESPDashV2
     private:
         Vector<CardData> cData;
         bool stats_enabled = true;
+        bool basic_auth = false;
+        const char *username;
+        const char *password;
 
         // Async WebSocket event callback function
         static void onWsEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len);
@@ -131,6 +134,7 @@ class ESPDashV2
         ~ESPDashV2();
 
         void init(AsyncWebServer& server);
+        void webauth(const char *user, const char *pass);
 
         // adding a new card to layout, specialized functions
         int AddCard(const int type, const char *name, int datatype = 0);

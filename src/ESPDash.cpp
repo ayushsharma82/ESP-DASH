@@ -55,11 +55,24 @@ ESPDashV2::~ESPDashV2()
         delete[] cData[i].name;
 }
 
+void ESPDashV2::webauth(const char *user, const char *pass)
+{
+    username = user;
+    password = pass;
+    basic_auth = true;
+}
+
 void ESPDashV2::init(AsyncWebServer& server)
 {
     // lambda function to respond on http request
-    server.on("/", HTTP_GET, [](AsyncWebServerRequest *request)
+    server.on("/", HTTP_GET, [this](AsyncWebServerRequest *request)
     {
+        if(basic_auth)
+        {
+            if(!request->authenticate(username, password))
+                return request->requestAuthentication();
+        }
+
         // respond with the compressed frontend
         AsyncWebServerResponse *response = request->beginResponse_P(200, "text/html", DASH_HTML, DASH_HTML_SIZE);
         response->addHeader("Content-Encoding","gzip");
