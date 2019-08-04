@@ -79,16 +79,11 @@ void ESPDashV2::init(AsyncWebServer& server)
         request->send(response);        
     });
 
-    server.on("/debug", HTTP_GET, [&](AsyncWebServerRequest *request)
-    {
-        request->send(200, "application/json", RefreshCards());
-    });
-    server.on("/debug2", HTTP_GET, [&](AsyncWebServerRequest *request)
-    {
-        request->send(200, "application/json", UpdateLayout());
-    });
-
     ws.onEvent(onWsEvent);
+
+    if(basic_auth)
+        ws.setAuthentication(username, password);
+
     server.addHandler(&ws);
     server.begin();
 }
