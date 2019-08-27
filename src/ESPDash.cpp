@@ -215,6 +215,7 @@ void ESPDashV2::UpdateCard(const int cardID, void (*funptr)(CardData *))
 String ESPDashV2::RefreshCards()
 {
     String data;
+    bool insertComma = false;
 
     for(int i = 0; i < cData.Size(); i++)
     {
@@ -225,9 +226,10 @@ String ESPDashV2::RefreshCards()
         if(func == NULL)
             continue;
 
-        // skip on start and end
-        if(i>0 && i<=cData.Size()-1)
+        // Insert comma if necessary
+        if(insertComma)
             data+=",";
+        insertComma = false;
 
         data+="{\"id\":"+String(cData[i].id)+",";
         data+="\"response\":\""+String(func)+"\",";
@@ -251,6 +253,12 @@ String ESPDashV2::RefreshCards()
         }
 
         data+="\"}";
+
+        // Insert comma or schedule for next card
+        if(i<cData.Size()-1 && cNames[cData[i+1].type].json_method)
+            data+=",";
+        else
+            insertComma = true;
     }
 
     return "{\"response\":\"updateCards\", "
