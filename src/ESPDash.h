@@ -92,6 +92,7 @@ typedef int Card;
 struct CardData {
     int id;
     int type;
+    bool changed;
     enum { INTEGER, FLOAT, STRING } value_type;
     union {
         char *value_s;
