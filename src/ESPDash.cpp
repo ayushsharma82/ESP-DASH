@@ -126,7 +126,7 @@ void ESPDashV2::onWsEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, 
                     // execute and reference card data struct to funtion
                     int id = json["id"];
                     int value = json["value"];
-                    ESPDash.cData[id].value_i = value;
+                    ESPDash.UpdateCard(id, value);                    
                     if(id >= 0 && ESPDash.cData[id].value_ptr != NULL)
                         ESPDash.cData[id].value_ptr(&ESPDash.cData[id]);
 
@@ -222,7 +222,7 @@ void ESPDashV2::UpdateCard(const int cardID, void (*funptr)(CardData *))
 }
 
 // push updates to all connected clients
-String ESPDashV2::RefreshCards()
+String ESPDashV2::RefreshCards(bool toAll)
 {
     String data;
     bool insertComma = false;
@@ -264,7 +264,8 @@ String ESPDashV2::RefreshCards()
 
         data+="\"}";
 
-        cData[i].changed = false;
+        if(toAll)
+            cData[i].changed = false;
 
         // Insert comma or schedule for next card
         if(i<cData.Size()-1 && cNames[cData[i+1].type].json_method && cData[i+1].changed)
@@ -346,7 +347,7 @@ String ESPDashV2::UpdateLayout(bool only_stats)
 
 void ESPDashV2::SendUpdates()
 {
-    ws.textAll(RefreshCards());
+    ws.textAll(RefreshCards(true));
 }
 
 ESPDashV2 ESPDash;

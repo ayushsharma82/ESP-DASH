@@ -153,7 +153,7 @@ class ESPDashV2
         String UpdateLayout(bool only_stats = false);
 
         // send generated update json to client side
-        String RefreshCards();
+        String RefreshCards(bool toAll = false);
 };
 
 extern ESPDashV2 ESPDash;
