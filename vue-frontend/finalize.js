@@ -16,6 +16,8 @@ function getByteArray(file){
     return result;
 }
 
+// Set external path like https://localhost.localdomain/iot to serve JS files or leave blank to store files in ESP
+let path = ``;
 let js = fs.readFileSync(__dirname+'/dist/js/app.js');
 let html = `
 <!DOCTYPE html>
@@ -26,13 +28,15 @@ let html = `
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <meta name="referrer" content="no-referrer">
     <title>ESP-DASH</title>
+    ${path ? `<link rel=icon href=${path}/favicon.ico>` : ``}
+    ${path ? `<link href=${path}/js/app.js rel=preload as=script>` : ``}
   </head>
   <body>
     <noscript>
       <strong>We're sorry but ESP-DASH doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
     <div id="app"></div>
-    <script>${js}</script>
+    <script${path ? ` src=${path}/js/app.js>` : `>${js}`}</script>
   </body>
 </html>
 `;
