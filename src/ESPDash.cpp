@@ -43,26 +43,26 @@ CardNames cNames[] = {
 // this is where websocket calls goes
 AsyncWebSocket ws("/dashws");
 
-ESPDashV2::ESPDashV2()
+ESPDashV3::ESPDashV3()
 {
 
 }
 
-ESPDashV2::~ESPDashV2()
+ESPDashV3::~ESPDashV3()
 {
     // free heap memory before destructor
     for(int i=0; i<cData.Size(); i++)
         delete[] cData[i].name;
 }
 
-void ESPDashV2::webauth(const char *user, const char *pass)
+void ESPDashV3::webauth(const char *user, const char *pass)
 {
     username = user;
     password = pass;
     basic_auth = true;
 }
 
-void ESPDashV2::init(AsyncWebServer& server)
+void ESPDashV3::init(AsyncWebServer& server)
 {
     // lambda function to respond on http request
     server.on("/", HTTP_GET, [this](AsyncWebServerRequest *request)
@@ -89,7 +89,7 @@ void ESPDashV2::init(AsyncWebServer& server)
     server.begin();
 }
 
-void ESPDashV2::onWsEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len)
+void ESPDashV3::onWsEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len)
 {
     // json stuff remains on the stack
     StaticJsonDocument<200> json;
@@ -154,7 +154,7 @@ void ESPDashV2::onWsEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, 
 }
 
 // add a new card to the collection
-int ESPDashV2::AddCard(const int type, const char *name, int datatype)
+int ESPDashV3::AddCard(const int type, const char *name, int datatype)
 {
     CardData card;
     int size;
@@ -178,7 +178,7 @@ int ESPDashV2::AddCard(const int type, const char *name, int datatype)
 }
 
 // overload funtion for integer value update
-void ESPDashV2::UpdateCard(const int cardID, int value)
+void ESPDashV3::UpdateCard(const int cardID, int value)
 {
     cData[cardID].value_type = CardData::INTEGER;
     if(cData[cardID].value_i != value)
@@ -187,7 +187,7 @@ void ESPDashV2::UpdateCard(const int cardID, int value)
 }
 
 // overload function for float value update
-void ESPDashV2::UpdateCard(const int cardID, float value)
+void ESPDashV3::UpdateCard(const int cardID, float value)
 {
     cData[cardID].value_type = CardData::FLOAT;
     if(cData[cardID].value_f != value)
@@ -196,7 +196,7 @@ void ESPDashV2::UpdateCard(const int cardID, float value)
 }
 
 // overload function for string value update
-void ESPDashV2::UpdateCard(const int cardID, String &value)
+void ESPDashV3::UpdateCard(const int cardID, String &value)
 {
     int size = value.length();
 
@@ -216,7 +216,7 @@ void ESPDashV2::UpdateCard(const int cardID, String &value)
     strncpy(cData[cardID].value_s, value.c_str(), size);
 }
 
-void ESPDashV2::UpdateCard(const int cardID, void (*funptr)(CardData *))
+void ESPDashV3::UpdateCard(const int cardID, void (*funptr)(CardData *))
 {
     // card has a function attached to it
     cData[cardID].value_type = CardData::INTEGER;
@@ -226,7 +226,7 @@ void ESPDashV2::UpdateCard(const int cardID, void (*funptr)(CardData *))
 }
 
 // push updates to all connected clients
-String ESPDashV2::RefreshCards(bool toAll)
+String ESPDashV3::RefreshCards(bool toAll)
 {
     String data;
     bool insertComma = false;
@@ -283,7 +283,7 @@ String ESPDashV2::RefreshCards(bool toAll)
 }
 
 // generates the layout JSON string to the frontend
-String ESPDashV2::UpdateLayout(bool only_stats)
+String ESPDashV3::UpdateLayout(bool only_stats)
 {
     String data;
     String stats;
@@ -349,9 +349,9 @@ String ESPDashV2::UpdateLayout(bool only_stats)
            "\"cards\":["+data+"]}";
 }
 
-void ESPDashV2::SendUpdates()
+void ESPDashV3::SendUpdates()
 {
     ws.textAll(RefreshCards(true));
 }
 
-ESPDashV2 ESPDash;
+ESPDashV3 ESPDash;

@@ -118,7 +118,7 @@ struct CardNames {
 #define STATUS_CARD_TYPES 4
 #define SLIDER_CARD_TYPES 4
 
-class ESPDashV2
+class ESPDashV3
 {
     private:
         Vector<CardData> cData;
@@ -131,8 +131,8 @@ class ESPDashV2
         static void onWsEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len);
 
     public:
-        ESPDashV2();
-        ~ESPDashV2();
+        ESPDashV3();
+        ~ESPDashV3();
 
         void init(AsyncWebServer& server);
         void webauth(const char *user, const char *pass);
@@ -156,6 +156,6 @@ class ESPDashV2
         String RefreshCards(bool toAll = false);
 };
 
-extern ESPDashV2 ESPDash;
+extern ESPDashV3 ESPDash;
 
 #endif
