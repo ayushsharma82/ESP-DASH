@@ -70,7 +70,7 @@ void ESPDashV2::init(AsyncWebServer& server)
         if(basic_auth)
         {
             if(!request->authenticate(username, password))
-                return request->requestAuthentication();
+                return request->requestAuthentication("ESP-Dash V3");
         }
 
         // respond with the compressed frontend
@@ -81,8 +81,9 @@ void ESPDashV2::init(AsyncWebServer& server)
 
     ws.onEvent(onWsEvent);
 
-    if(basic_auth)
-        ws.setAuthentication(username, password);
+    // setup websocket basic auth
+    if(ESPDash.basic_auth)
+       ws.setAuthentication(ESPDash.username, ESPDash.password);
 
     server.addHandler(&ws);
     server.begin();
@@ -137,9 +138,12 @@ void ESPDashV2::onWsEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, 
                     response = "{\"response\":\"reboot\", \"done\":"+String(ESPDash.stats_enabled?"true":"false")+"}";
                     ws.text(client->id(), response);
 
-                    // TODO: does it work on ESP32?
-                    ESP.restart();
-                    for(;;);
+                    // Force a board reboot
+                    WiFi.forceSleepBegin();
+                    wdt_reset();
+                    ESP.reset();
+                    while(1)
+                        wdt_reset();
                 }
 
                 // update only requested socket
