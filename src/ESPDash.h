@@ -92,6 +92,7 @@ typedef int Card;
 struct CardData {
     int id;
     int type;
+    bool changed;
     enum { INTEGER, FLOAT, STRING } value_type;
     union {
         char *value_s;
@@ -152,7 +153,7 @@ class ESPDashV2
         String UpdateLayout(bool only_stats = false);
 
         // send generated update json to client side
-        String RefreshCards();
+        String RefreshCards(bool toAll = false);
 };
 
 extern ESPDashV2 ESPDash;

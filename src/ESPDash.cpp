@@ -126,7 +126,7 @@ void ESPDashV2::onWsEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, 
                     // execute and reference card data struct to funtion
                     int id = json["id"];
                     int value = json["value"];
-                    ESPDash.cData[id].value_i = value;
+                    ESPDash.UpdateCard(id, value);                    
                     if(id >= 0 && ESPDash.cData[id].value_ptr != NULL)
                         ESPDash.cData[id].value_ptr(&ESPDash.cData[id]);
 
@@ -157,6 +157,7 @@ int ESPDashV2::AddCard(const int type, const char *name, int datatype)
 
     card.id = cData.Size();
     card.type = type;
+    card.changed = true;
     card.datatype = datatype;
     card.value_s = NULL;
     card.value_type = CardData::STRING;    // defaults to STRING type, but changed later
@@ -176,6 +177,8 @@ int ESPDashV2::AddCard(const int type, const char *name, int datatype)
 void ESPDashV2::UpdateCard(const int cardID, int value)
 {
     cData[cardID].value_type = CardData::INTEGER;
+    if(cData[cardID].value_i != value)
+        cData[cardID].changed = true;
     cData[cardID].value_i = value;
 }
 
@@ -183,6 +186,8 @@ void ESPDashV2::UpdateCard(const int cardID, int value)
 void ESPDashV2::UpdateCard(const int cardID, float value)
 {
     cData[cardID].value_type = CardData::FLOAT;
+    if(cData[cardID].value_f != value)
+        cData[cardID].changed = true;
     cData[cardID].value_f = value;
 }
 
@@ -198,6 +203,9 @@ void ESPDashV2::UpdateCard(const int cardID, String &value)
             delete[] cData[cardID].value_s;
     }
 
+    // TODO: Make a check
+    cData[cardID].changed = true;
+
     cData[cardID].value_type = CardData::STRING;
     cData[cardID].value_s = new char[size+1];
 
@@ -208,26 +216,30 @@ void ESPDashV2::UpdateCard(const int cardID, void (*funptr)(CardData *))
 {
     // card has a function attached to it
     cData[cardID].value_type = CardData::INTEGER;
+    if(cData[cardID].value_ptr != funptr)
+        cData[cardID].changed = true;
     cData[cardID].value_ptr = funptr;
 }
 
 // push updates to all connected clients
-String ESPDashV2::RefreshCards()
+String ESPDashV2::RefreshCards(bool toAll)
 {
     String data;
+    bool insertComma = false;
 
     for(int i = 0; i < cData.Size(); i++)
     {
         // convert from ID to method
         const char *func = cNames[cData[i].type].json_method;
 
-        // discard cards without event
-        if(func == NULL)
+        // discard cards without event or no changes since last refresh
+        if(func == NULL || !cData[i].changed)
             continue;
 
-        // skip on start and end
-        if(i>0 && i<=cData.Size()-1)
+        // Insert comma if necessary
+        if(insertComma)
             data+=",";
+        insertComma = false;
 
         data+="{\"id\":"+String(cData[i].id)+",";
         data+="\"response\":\""+String(func)+"\",";
@@ -251,6 +263,15 @@ String ESPDashV2::RefreshCards()
         }
 
         data+="\"}";
+
+        if(toAll)
+            cData[i].changed = false;
+
+        // Insert comma or schedule for next card
+        if(i<cData.Size()-1 && cNames[cData[i+1].type].json_method && cData[i+1].changed)
+            data+=",";
+        else
+            insertComma = true;
     }
 
     return "{\"response\":\"updateCards\", "
@@ -326,7 +347,7 @@ String ESPDashV2::UpdateLayout(bool only_stats)
 
 void ESPDashV2::SendUpdates()
 {
-    ws.textAll(RefreshCards());
+    ws.textAll(RefreshCards(true));
 }
 
 ESPDashV2 ESPDash;
