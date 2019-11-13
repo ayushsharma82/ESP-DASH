@@ -48,10 +48,6 @@ typedef std::function<void(const char* sliderId, int sliderValue)> DashSliderHan
 #define DEBUG_MODE 1 // change to 1 for DEBUG Messages
 
 // Debug mode
-#ifndef DEBUG_MODE
-#define DEBUG_MODE 0
-#endif
-
 #define TEMPERATURE_CARD_TYPES 6
 #define STATUS_CARD_TYPES 4
 #define SLIDER_CARD_TYPES 4
