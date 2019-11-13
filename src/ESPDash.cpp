@@ -228,30 +228,6 @@ void ESPDashClass::updateNumberCard(const char* _id, int _value){
 // Temperature Card //
 //////////////////////
 
-// Add Temperature Card with Default Value
-void ESPDashClass::addTemperatureCard(const char* _id, const char* _name, int _type){
-    if(_id != NULL && _type >= 0 && _type <= TEMPERATURE_CARD_TYPES){
-        for(int i=0; i < TEMPERATURE_CARD_LIMIT; i++){
-            if(temperature_card_id[i] == ""){
-                #if defined(DEBUG_MODE)
-                    Serial.println("[DASH] Found an empty slot in Temperature Cards. Inserted New Card at Index ["+String(i)+"].");
-                #endif
-
-                temperature_card_id[i] = _id;
-                temperature_card_name[i] = _name;
-                temperature_card_type[i] = _type;
-                temperature_card_value[i] = 0;
-
-                ws.textAll("{\"response\": \"updateLayout\"}");
-                break;
-            }
-        }
-        return;
-    }else{
-        return;
-    }
-}
-
 
 // Add Temperature Card with Custom Value
 void ESPDashClass::addTemperatureCard(const char* _id, const char* _name, int _type, int _value){
@@ -315,29 +291,6 @@ void ESPDashClass::updateTemperatureCard(const char* _id, int _value){
 // Humidity Card //
 ///////////////////
 
-// Add Humidity Card with Default Value
-void ESPDashClass::addHumidityCard(const char* _id, const char* _name){
-    if(_id != NULL){
-        for(int i=0; i < HUMIDITY_CARD_LIMIT; i++){
-            if(humidity_card_id[i] == ""){
-                #if defined(DEBUG_MODE)
-                    Serial.println("[DASH] Found an empty slot in Humidity Cards. Inserted New Card at Index ["+String(i)+"].");
-                #endif
-
-                humidity_card_id[i] = _id;
-                humidity_card_name[i] = _name;
-                humidity_card_value[i] = 0;
-
-                ws.textAll("{\"response\": \"updateLayout\"}");
-                break;
-            }
-        }
-        return;
-    }else{
-        return;
-    }
-}
-
 
 // Add Humidity Card with Custom Value
 void ESPDashClass::addHumidityCard(const char* _id, const char* _name, int _value){
@@ -400,32 +353,9 @@ void ESPDashClass::updateHumidityCard(const char* _id, int _value){
 // Status Card //
 /////////////////
 
-// Add Status Card with Default Value
-void ESPDashClass::addStatusCard(const char* _id, const char* _name){
-    if(_id != NULL){
-        for(int i=0; i < STATUS_CARD_LIMIT; i++){
-            if(status_card_id[i] == ""){
-                #if defined(DEBUG_MODE)
-                    Serial.println("[DASH] Found an empty slot in Status Cards. Inserted New Card at Index ["+String(i)+"].");
-                #endif
-
-                status_card_id[i] = _id;
-                status_card_name[i] = _name;
-                status_card_value[i] = 0;
-
-                ws.textAll("{\"response\": \"updateLayout\"}");
-                break;
-            }
-        }
-        return;
-    }else{
-        return;
-    }
-}
-
 
 // Add Status Card with Custom Value
-void ESPDashClass::addStatusCard(const char* _id, const char* _name, int _value){
+void ESPDashClass::addStatusCard(const char* _id, const char* _name, int _value = 0){
     if(_id != NULL && _value >= 0 && _value <= STATUS_CARD_TYPES){
         for(int i=0; i < STATUS_CARD_LIMIT; i++){
             if(status_card_id[i] == ""){
@@ -450,65 +380,7 @@ void ESPDashClass::addStatusCard(const char* _id, const char* _name, int _value)
 
 // Add Status Card with Custom Boolean Value
 void ESPDashClass::addStatusCard(const char* _id, const char* _name, bool _value){
-    if(_id != NULL){
-        for(int i=0; i < STATUS_CARD_LIMIT; i++){
-            if(status_card_id[i] == ""){
-                #if defined(DEBUG_MODE)
-                    Serial.println("[DASH] Found an empty slot in Status Cards. Inserted New Card at Index ["+String(i)+"].");
-                #endif
-
-                status_card_id[i] = _id;
-                status_card_name[i] = _name;
-                if(_value){
-                    status_card_value[i] = 1;
-                }else{
-                    status_card_value[i] = 0;
-                }
-
-                ws.textAll("{\"response\": \"updateLayout\"}");
-                break;
-            }
-        }
-        return;
-    }else{
-        return;
-    }
-}
-
-
-// Update Status Card with Custom Value
-void ESPDashClass::updateStatusCard(const char* _id, bool _value){
-    for(int i=0; i < STATUS_CARD_LIMIT; i++){
-        if(status_card_id[i] == _id){
-            #if defined(DEBUG_MODE)
-                Serial.println("[DASH] Updated Status Card at Index ["+String(i)+"].");
-            #endif
-
-            if(_value){
-                status_card_value[i] = 1;
-            }else{
-                status_card_value[i] = 0;
-            }
-
-            DynamicJsonDocument doc(250);
-            JsonObject object = doc.to<JsonObject>();
-            object["response"] = "updateStatusCard";
-            object["id"] = status_card_id[i];
-            object["value"] = status_card_value[i];
-            size_t len = measureJson(doc);
-            AsyncWebSocketMessageBuffer * buffer = ws.makeBuffer(len);
-            if (buffer) {
-                serializeJson(doc, (char *)buffer->get(), len + 1);
-                ws.textAll(buffer);
-            }else{
-                #if defined(DEBUG_MODE)
-                    Serial.println("[DASH] Websocket Buffer Error");
-                #endif
-            }
-            break;
-        }
-    }
-    return;
+    addStatusCard(_value ? 1 : 0);
 }
 
 
@@ -545,6 +417,12 @@ void ESPDashClass::updateStatusCard(const char* _id, int _value){
     }else{
         return;
     }
+}
+
+
+// Update Status Card with Custom Value
+void ESPDashClass::updateStatusCard(const char* _id, bool _value){
+    updateStatusCard(_value ? 1 : 0);
 }
 
 
@@ -807,28 +685,6 @@ void ESPDashClass::updateLineChart(const char* _id, String _x_axis_value[], int 
 /////////////////
 // Gauge Chart //
 /////////////////
-
-// Add Gauge Card with Default Value
-void ESPDashClass::addGaugeChart(const char* _id, const char* _name){
-    if(_id != NULL){
-        for(int i=0; i < GAUGE_CHART_LIMIT; i++){
-            if(gauge_chart_id[i] == ""){
-                #if defined(DEBUG_MODE)
-                    Serial.println("[DASH] Found an empty slot in Gauge Cards. Inserted New Card at Index ["+String(i)+"].");
-                #endif
-
-                gauge_chart_id[i] = _id;
-                gauge_chart_name[i] = _name;
-                gauge_chart_value[i] = 0;
-                ws.textAll("{\"response\": \"updateLayout\"}");
-                break;
-            }
-        }
-        return;
-    }else{
-        return;
-    }
-}
 
 // Add Gauge Card with Default Value
 void ESPDashClass::addGaugeChart(const char* _id, const char* _name, int _value){

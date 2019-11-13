@@ -84,30 +84,26 @@ class ESPDashClass{
         void init(AsyncWebServer& server);
         void disableStats();    // To Disable Stats and disable reboot
 
-        void addNumberCard(const char* _id, const char* _name); // Add Number card with default value
-        void addNumberCard(const char* _id, const char* _name, int _value); // Add Number card with custom value
+        void addNumberCard(const char* _id, const char* _name, int _value = 0); // Add Number card with custom value
         void updateNumberCard(const char* _id, int _value); // Update Number Card with custom value
 
-        void addTemperatureCard(const char* _id, const char* _name, int _type); // Add Temperature Card with custom type and default value
-        void addTemperatureCard(const char* _id, const char* _name, int _type, int _value); // Add Temperature Card with custom value
+        void addTemperatureCard(const char* _id, const char* _name, int _type, int _value = 0); // Add Temperature Card with custom value
         void updateTemperatureCard(const char* _id, int _value); // Update Temperature Card with custom value
 
-        void addHumidityCard(const char* _id, const char* _name);   // Add default Humidity card
-        void addHumidityCard(const char* _id, const char* _name, int _value);  // Add Humidity Card with custom value
+        void addHumidityCard(const char* _id, const char* _name, int _value = 0);  // Add Humidity Card with custom value
         void updateHumidityCard(const char* _id, int _value); // Update Humidity Card with custom value
 
-        void addStatusCard(const char* _id, const char* _name); // Add Default Status Card
-        void addStatusCard(const char* _id, const char* _name, int _type); // Add Status Card with more status types
+        void addStatusCard(const char* _id, const char* _name, int _type = 0); // Add Status Card with more status types
         void addStatusCard(const char* _id, const char* _name, bool _type); // Add Status Card with true / false
         void updateStatusCard(const char* _id, int _type);
         void updateStatusCard(const char* _id, bool _type);
 
         void addButtonCard(const char* _id, const char* _name); // Add Button
-        
+
         // Add Slider Card 
         void addSliderCard(const char* _id, const char* _name, int _type); 
         void updateSliderCard(const char* _id, int _value); 
-        
+
         //Initiate a Line Chart with Integer x axis and custom y axis
         void addLineChart(const char* _id, const char* _name, int _x_axis_value[], int _x_axis_size, const char* _y_axis_name, int _y_axis_value[], int _y_axis_size);
         // Initiate a Line Chart with String x axis and custom y axis
@@ -115,20 +111,19 @@ class ESPDashClass{
         void updateLineChart(const char* _id, int _x_axis_value[], int _x_axis_size, int _y_axis_value[], int _y_axis_size); // Update a Line Chart with custom Int x axis and y axis
         void updateLineChart(const char* _id, String _x_axis_value[], int _x_axis_size, int _y_axis_value[], int _y_axis_size); // Update a Line Chart with custom String x axis and y axis
 
-        void addGaugeChart(const char *_id, const char *_name); // Add Gauge card with default value
-        void addGaugeChart(const char *_id, const char *_name, int _value); // Add Gauge card with default value
-        void updateGaugeChart(const char* _id, int _value); // Update Gauge card with default value
+        void addGaugeChart(const char *_id, const char *_name, int _value = 0); // Add Gauge card
+        void updateGaugeChart(const char* _id, int _value); // Update Gauge card
 
 
         void attachButtonClick(DashButtonHandler handler){
             _buttonClickFunc = handler;
         }
-        
+
         void attachSliderChanged(DashSliderHandler handler){
             _sliderChangedFunc = handler;
         }
 
-        
+
     private:
         bool stats_enabled = true;
         DashButtonHandler _buttonClickFunc;
