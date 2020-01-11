@@ -1,27 +1,25 @@
-<p align="center"><img src="https://raw.githubusercontent.com/ayushsharma82/ESP-DASH/master/docs/img/logo-above.svg?sanitize=true" width="250"></p>
-
-<hr/>
+<p align="center"><img src="https://raw.githubusercontent.com/ayushsharma82/ESP-DASH/dash-next/docs/img/logo.png" width="320"></p>
+<h1 align="center">ESP-DASH</h1>
+<br/>
 
 <p align="center">
 <!-- <img src="https://img.shields.io/travis/com/ayushsharma82/ESP-DASH.svg?style=for-the-badge" />
 &nbsp; -->
-<img src="https://img.shields.io/github/last-commit/ayushsharma82/ESP-DASH.svg?style=for-the-badge" />
+<img src="https://img.shields.io/github/last-commit/ayushsharma82/ESP-DASH.svg?style=flat" />
 &nbsp;
-<img src="https://img.shields.io/github/license/ayushsharma82/ESP-DASH.svg?style=for-the-badge" />
-&nbsp;
-<a href="https://www.patreon.com/bePatron?u=16780597" target="_blank"><img src="https://img.shields.io/badge/patreon-donate-orange.svg?style=for-the-badge&logo=patreon" /></a>
+<img src="https://img.shields.io/github/license/ayushsharma82/ESP-DASH.svg?style=flat" />
 </p>
 
-<hr/>
+<br/>
 
 <br/>
 
-<p><b>ESP-DASH</b> is a Blazing fast library to create functional and realtime dashboard for <b>ESP8266</b> & <b>ESP32</b> Microcontrollers. It is <b>not</b> dependent on Internet. DASH V2 is the successor of previous generation and is fully rewritten to enhance performance and realtime capabilites. DASH V2 includes Line Charts, Temperature Cards, Humidity Cards and Buttons etc to create a perfect dashboard which is accessible locally via your device IP without the need of an internet connection.</p>
+<p><b>ESP-DASH V3.0</b> is a Blazing fast library to create functional and realtime dashboard for <b>ESP8266</b> & <b>ESP32</b> Microcontrollers. It is <b>not</b> dependent on Internet. DASH V3.0 has it's core routines rewritten to enhance performance and UI has been reworked to improve user accessibility.</p>
 
 <br/>
 
-<h2>Demo</h2>
-<a href="https://ayushsharma82.github.io/ESP-DASH" target="_blank">Click Here</a>
+<h2>Preview</h2>
+<img src="https://raw.githubusercontent.com/ayushsharma82/ESP-DASH/dash-next/docs/img/screenshot.PNG">
 
 <br/>
 <br/>
