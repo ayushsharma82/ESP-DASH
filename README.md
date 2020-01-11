@@ -1,6 +1,6 @@
 <p align="center"><img src="https://raw.githubusercontent.com/ayushsharma82/ESP-DASH/dash-next/docs/img/logo.png" width="320"></p>
 <h1 align="center">ESP-DASH</h1>
-<hr/>
+<br/>
 
 <p align="center">
 <!-- <img src="https://img.shields.io/travis/com/ayushsharma82/ESP-DASH.svg?style=for-the-badge" />
@@ -10,7 +10,7 @@
 <img src="https://img.shields.io/github/license/ayushsharma82/ESP-DASH.svg?style=flat" />
 </p>
 
-<hr/>
+<br/>
 
 <br/>
 
