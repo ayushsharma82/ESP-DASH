@@ -1,21 +1,3 @@
-/*
-* ESP-DASH V2
-* Made by Ayush Sharma
-* Github URL: https://github.com/ayushsharma82/ESP-DASH
-* Support Me: https://www.patreon.com/asrocks5
-*
-* - Version Changelog - 
-* V1.0.0 - 11 Nov. 2017 - Library was Born
-* V1.0.1 - 13 Nov. 2017 - Fixed Empty SPIFFS Issue
-* V1.0.2 - 13 Nov. 2017 - Improvements on SPIFFS Issue
-* V1.0.3 - 24 Dec. 2017 - Pushing to Library Manager
-*
-* = Library Rewritten! =
-* V2.0.0 - 25 Jan 2019 - Wohoo! A breakthrough in performance and capabilities!
-*/
-
-// This Example is a Demo of Realtime Capabilities of ESP-DASH.
-// Open Dashboard after Uploading and UI will auto update as a Card's Value changes
 
 
 #include <Arduino.h>
@@ -29,6 +11,8 @@ AsyncWebServer server(80);
 const char* ssid = ""; // Your WiFi SSID
 const char* password = ""; // Your WiFi Password
 
+// these holds created cards IDs
+Card number, temperature, humidity;
 
 void setup() {
     Serial.begin(115200);
@@ -38,21 +22,28 @@ void setup() {
         Serial.printf("WiFi Failed!\n");
         return;
     }
+
     Serial.print("IP Address: ");
     Serial.println(WiFi.localIP());
     
-    ESPDash.init(server);   // Initiate ESPDash and attach your Async webserver instance
+    // Initiate ESPDash and attach your Async webserver instance, it also starts the
+    // server automatically now. no need to call server.begin
+    ESPDash.init(server);
+
     // Add Respective Cards
-    ESPDash.addNumberCard("num1", "Number Card", 264);
-    ESPDash.addTemperatureCard("temp1", "Temperature Card", 0, 20);
-    ESPDash.addHumidityCard("hum1", "Humidity Card", 98);
-    
-    server.begin();
+    number = ESPDash.AddCard(TYPE_NUMBER_CARD, "Visitors");
+    temperature = ESPDash.AddCard(TYPE_TEMPERATURE_CARD, "Temperature");
+    humidity = ESPDash.AddCard(TYPE_HUMIDITY_CARD, "Humidity");    
 }
 
 void loop() {
-    ESPDash.updateNumberCard("num1", random(0, 5000));
-    ESPDash.updateTemperatureCard("temp1", random(0, 50));
-    ESPDash.updateHumidityCard("hum1", random(0, 100));
+    // cast values as integers
+    ESPDash.UpdateCard(number, (int)random(0, 5000));
+    ESPDash.UpdateCard(temperature, (int)random(0, 50));
+    ESPDash.UpdateCard(humidity, (int)random(0, 100));
+
+    // Notify frontend updates
+    ESPDash.SendUpdates();
+
     delay(3000);
 }

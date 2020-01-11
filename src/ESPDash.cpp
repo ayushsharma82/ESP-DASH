@@ -4,19 +4,6 @@
 * Github URL: https://github.com/ayushsharma82/ESP-DASH
 * Support Me: https://www.patreon.com/asrocks5
 *
-* - Version Changelog - 
-* V1.0.0 - 11 Nov. 2017 - Library was Born
-* V1.0.1 - 13 Nov. 2017 - Fixed Empty SPIFFS Issue
-* V1.0.2 - 13 Nov. 2017 - Improvements on SPIFFS Issue
-* V1.0.3 - 24 Dec. 2017 - Pushing to Library Manager
-*
-* = Library Rewritten! =
-* V2.0.0 - 25 Jan 2019 - Wohoo! A breakthrough in performance and capabilities!
-*
-* 
-* Credits:
-* Malcolm Brook (https://github.com/malbrook) for Slider Card
-*
 *
 * Core routines rewritten by Cassiano Martin <cassiano.martin@gmail.com>
 * Not all functions implemented yet, missing button and slider routines.
@@ -132,18 +119,6 @@ void ESPDashV3::onWsEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, 
                         ESPDash.cData[id].value_ptr(&ESPDash.cData[id]);
 
                     response = ESPDash.RefreshCards();
-                }
-                else if(json["command"] == "reboot")
-                {
-                    response = "{\"response\":\"reboot\", \"done\":"+String(ESPDash.stats_enabled?"true":"false")+"}";
-                    ws.text(client->id(), response);
-
-                    // Force a board reboot
-                    WiFi.forceSleepBegin();
-                    wdt_reset();
-                    ESP.reset();
-                    while(1)
-                        wdt_reset();
                 }
 
                 // update only requested socket
@@ -292,8 +267,19 @@ String ESPDashV3::UpdateLayout(bool only_stats)
     {
         // No need to use json library to build response packet
         stats+="\"enabled\":true,";
-        stats+="\"hardware\":\""+ESP.getCoreVersion()+"\",";
-        stats+="\"chipId\":\""+String(ESP.getChipId())+"\",";
+        stats+="\"releaseTag\": \""+String(ESPDASH_RELEASE_TAG)+"\",";
+        #if defined(ESP8266)
+            stats+="\"sdk\":\""+ESP.getCoreVersion()+"\",";
+        #elif defined(ESP32)
+            stats+="\"sdk\":\""+String(esp_get_idf_version())+"\",";
+        #endif
+
+        #if defined(ESP8266)
+            stats+="\"chipId\":\""+String(ESP.getChipId())+"\",";
+        #elif defined(ESP32)
+            stats+="\"chipId\":\""+String((uint32_t)ESP.getEfuseMac())+"\",";
+        #endif
+        
         stats+="\"sketchHash\":\""+ESP.getSketchMD5()+"\",";
         stats+="\"macAddress\":\""+WiFi.macAddress()+"\",";
         stats+="\"freeHeap\":\""+String(ESP.getFreeHeap())+"\",";

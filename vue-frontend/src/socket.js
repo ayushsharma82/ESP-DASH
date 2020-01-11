@@ -30,7 +30,7 @@ socket.onerror = function(err){
 };
 
 
-setInterval(() => {
+let socketInterval = setInterval(() => {
     if(socket.readyState == 0){
         emitter.$emit("disconnected");
     }else if(socket.readyState === 3){
@@ -39,5 +39,9 @@ setInterval(() => {
         socket.send("{\"command\":\"ping\"}");
     }
 }, 5000);
+
+if(process.env.NODE_ENV !== 'production'){
+  clearInterval(socketInterval);
+}
 
 export default emitter

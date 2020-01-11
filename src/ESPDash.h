@@ -42,13 +42,13 @@
     #include "ArduinoJson.h"
 #elif defined(ESP32)
     #define HARDWARE "ESP32"
-    #include <esp_int_wdt.h>
-    #include <esp_task_wdt.h>
     #include "WiFi.h"
     #include "AsyncTCP.h"
     #include "ESPAsyncWebServer.h"
     #include "ArduinoJson.h"
 #endif
+
+#define ESPDASH_RELEASE_TAG "v3.0.0"
 
 // functions defaults to zero (number card)
 enum {

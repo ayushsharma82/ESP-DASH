@@ -1,11 +1,21 @@
 <template>
     <!-- Temperature Card -->
-    <div class="column is-3">
+    <div class="column is-6-mobile is-4-tablet is-3-desktop">
       <div class="card">
         <span class="dot" :class="{'active': activity}"></span>
         <div class="card-content">
-          <header><h5>{{name}}</h5></header>
-          <p><b>{{value}}<small>{{getSymbol}}</small></b></p>
+          <header class="columns is-gapless is-mobile">
+          <div class="column is-narrow sicon sicon-xs is-inline has-text-danger align-middle">
+              <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                  <g id="Stockholm-icons-/-Weather-/-Temperature-half" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                      <polygon id="Shape" points="0 0 24 0 24 24 0 24"></polygon>
+                      <path opacity="0.7" d="M18,16 C18,19.3137085 15.3137085,22 12,22 C8.6862915,22 6,19.3137085 6,16 C6,13.7791529 7.20659589,11.8401214 9,10.8026932 L9,5 C9,3.34314575 10.3431458,2 12,2 C13.6568542,2 15,3.34314575 15,5 L15,10.8026932 C16.7934041,11.8401214 18,13.7791529 18,16 Z M12,4 C11.4477153,4 11,4.44771525 11,5 L11,10 C11,10.5522847 11.4477153,11 12,11 C12.5522847,11 13,10.5522847 13,10 L13,5 C13,4.44771525 12.5522847,4 12,4 Z" id="Combined-Shape" fill="#335EEA"></path>
+                  </g>
+              </svg>
+            </div>
+            <h4 class="column" style="margin-left: 0.5rem; line-height: 1.2;">{{card.value}}{{getSymbol}}</h4>
+          </header>
+          <p class="has-text-dark"><b>{{card.name}}</b></p>
         </div>
       </div>
     </div>
@@ -13,21 +23,21 @@
 
 <script>
 export default {
-  props:['name', 'type', 'value'],
+  props:['card'],
   data(){
     return{
       activity: true
     }
   },
   watch:{
-      value:function() {
+    'card.value':function() {
       this.activity = true;
       setTimeout(() => {this.activity = false}, 100);
     }
   },
   computed:{
     getSymbol(){
-      switch(this.type){
+      switch(this.card.type){
         case 0:
           return "°C"; // Celsius
         case 1:
@@ -52,13 +62,36 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
+.card{
+  border-radius: 0.525rem;
+}
+
+.card header{
+  font-weight: 600;
+  font-size: 1.25rem;
+}
+
 .card p{
-  font-size: 4rem;
+  font-size: 1.15rem;
+}
+
+.card-content{
+  padding: 1.2rem 1.4rem;
+}
+
+.card-content p{
+  padding: 0.5rem 0rem 0rem 0.2rem;
+}
+
+
+.card header h4{
+  font-weight: 600;
+  margin-left: 0.5rem;
 }
 
 .card small{
-  vertical-align: top;
-  font-size: 2.45rem;
+  font-weight: 500;
+  line-height: 1.6;
 }
 </style>

@@ -1,0 +1,18 @@
+<template>
+    <div class="container" style="margin: 5.55rem 1rem;">
+        <p class="section">
+            <img src="data:image/png;base64,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" width="140px">
+            <br/>
+            <br/>
+            ESP-DASH V3.0 as a library is licensed under General Public License V3 for non-profit / personal use cases where you disclose the source code. <br/>
+        </p>
+        <br/>
+        <br/>
+        <p class="section">
+            <span class="title is-4">For Commercial Use:</span>
+            <br/>
+            <br/>
+            For usage of ESP-DASH in commercial / non-disclosed use with your own logo. Please contact <b>asrocks5@gmail.com</b>.
+        </p>
+    </div>
+</template>
