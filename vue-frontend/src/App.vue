@@ -131,14 +131,38 @@
                     wifiSignal: null
                 },
                 cards: {
-                    temperature: [],
-                    humidity: [],
-                    status: [],
+                    temperature: [{
+                        id: '1',
+                        name: 'Temperature',
+                        value: 14,
+                        type: 0
+                    }],
+                    humidity: [{
+                        id: '1',
+                        name: 'Humidity',
+                        value: 36,
+                        type: 0
+                    }],
+                    status: [{
+                        id: '2',
+                        name: 'Valve Status',
+                        value: 1
+                    }],
                     button: [],
                     number: [],
                     lineChart: [],
-                    gauge: [],
-                    slider: []
+                    gauge: [{
+                        id: '5',
+                        name: 'Tank Capacity',
+                        value: 120,
+                        min: 0,
+                        max: 200
+                    }],
+                    slider: [{
+                        id: '4',
+                        name: 'Pressure',
+                        value: 0
+                    }]
                 }
             }
         },
