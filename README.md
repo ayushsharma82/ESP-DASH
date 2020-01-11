@@ -1,5 +1,5 @@
-<p align="center"><img src="https://raw.githubusercontent.com/ayushsharma82/ESP-DASH/dash-next/docs/img/logo2.PNG" width="400"></p>
-
+<p align="center"><img src="https://raw.githubusercontent.com/ayushsharma82/ESP-DASH/dash-next/docs/img/logo.png" width="320"></p>
+<h1 align="center">ESP-DASH</h1>
 <hr/>
 
 <p align="center">
