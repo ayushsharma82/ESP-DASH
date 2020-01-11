@@ -1,15 +1,13 @@
-<p align="center"><img src="https://raw.githubusercontent.com/ayushsharma82/ESP-DASH/master/docs/img/logo-above.svg?sanitize=true" width="250"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/ayushsharma82/ESP-DASH/dash-next/docs/img/logo2.PNG" width="400"></p>
 
 <hr/>
 
 <p align="center">
 <!-- <img src="https://img.shields.io/travis/com/ayushsharma82/ESP-DASH.svg?style=for-the-badge" />
 &nbsp; -->
-<img src="https://img.shields.io/github/last-commit/ayushsharma82/ESP-DASH.svg?style=for-the-badge" />
+<img src="https://img.shields.io/github/last-commit/ayushsharma82/ESP-DASH.svg?style=flat" />
 &nbsp;
-<img src="https://img.shields.io/github/license/ayushsharma82/ESP-DASH.svg?style=for-the-badge" />
-&nbsp;
-<a href="https://www.patreon.com/bePatron?u=16780597" target="_blank"><img src="https://img.shields.io/badge/patreon-donate-orange.svg?style=for-the-badge&logo=patreon" /></a>
+<img src="https://img.shields.io/github/license/ayushsharma82/ESP-DASH.svg?style=flat" />
 </p>
 
 <hr/>
