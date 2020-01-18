@@ -3,7 +3,7 @@
 <hr/>
 
 <p align="center">
-<!-- <img src="https://img.shields.io/travis/com/ayushsharma82/ESP-DASH.svg?style=for-the-badge" />
+<!-- <a href="https://opencollective.com/espdash" alt="Financial Contributors on Open Collective"><img src="https://opencollective.com/espdash/all/badge.svg?label=financial+contributors" /></a> <img src="https://img.shields.io/travis/com/ayushsharma82/ESP-DASH.svg?style=for-the-badge" />
 &nbsp; -->
 <img src="https://img.shields.io/github/last-commit/ayushsharma82/ESP-DASH.svg?style=for-the-badge" />
 &nbsp;
@@ -86,3 +86,33 @@ ESP-DASH is licensed under General Public License v3 ( GPLv3 ).
 <br/>
 <img src="https://img.shields.io/github/license/ayushsharma82/ESP-DASH.svg?style=for-the-badge" />
 </div>
+
+## Contributors
+
+### Code Contributors
+
+This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
+<a href="https://github.com/ayushsharma82/ESP-DASH/graphs/contributors"><img src="https://opencollective.com/espdash/contributors.svg?width=890&button=false" /></a>
+
+### Financial Contributors
+
+Become a financial contributor and help us sustain our community. [[Contribute](https://opencollective.com/espdash/contribute)]
+
+#### Individuals
+
+<a href="https://opencollective.com/espdash"><img src="https://opencollective.com/espdash/individuals.svg?width=890"></a>
+
+#### Organizations
+
+Support this project with your organization. Your logo will show up here with a link to your website. [[Contribute](https://opencollective.com/espdash/contribute)]
+
+<a href="https://opencollective.com/espdash/organization/0/website"><img src="https://opencollective.com/espdash/organization/0/avatar.svg"></a>
+<a href="https://opencollective.com/espdash/organization/1/website"><img src="https://opencollective.com/espdash/organization/1/avatar.svg"></a>
+<a href="https://opencollective.com/espdash/organization/2/website"><img src="https://opencollective.com/espdash/organization/2/avatar.svg"></a>
+<a href="https://opencollective.com/espdash/organization/3/website"><img src="https://opencollective.com/espdash/organization/3/avatar.svg"></a>
+<a href="https://opencollective.com/espdash/organization/4/website"><img src="https://opencollective.com/espdash/organization/4/avatar.svg"></a>
+<a href="https://opencollective.com/espdash/organization/5/website"><img src="https://opencollective.com/espdash/organization/5/avatar.svg"></a>
+<a href="https://opencollective.com/espdash/organization/6/website"><img src="https://opencollective.com/espdash/organization/6/avatar.svg"></a>
+<a href="https://opencollective.com/espdash/organization/7/website"><img src="https://opencollective.com/espdash/organization/7/avatar.svg"></a>
+<a href="https://opencollective.com/espdash/organization/8/website"><img src="https://opencollective.com/espdash/organization/8/avatar.svg"></a>
+<a href="https://opencollective.com/espdash/organization/9/website"><img src="https://opencollective.com/espdash/organization/9/avatar.svg"></a>
