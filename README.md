@@ -9,7 +9,7 @@
 &nbsp;
 <img src="https://img.shields.io/github/license/ayushsharma82/ESP-DASH.svg?style=for-the-badge" />
 &nbsp;
-<a href="https://www.patreon.com/bePatron?u=16780597" target="_blank"><img src="https://img.shields.io/badge/patreon-donate-orange.svg?style=for-the-badge&logo=patreon" /></a>
+<a href="https://opencollective.com/espdash/contribute" target="_blank"><img src="https://img.shields.io/opencollective/all/espdash?style=for-the-badge&logo=open-collective" /></a>
 </p>
 
 <hr/>
@@ -66,16 +66,6 @@
 <a href="https://github.com/ayushsharma82/ESP-DASH/wiki/Getting-Started">Click Here</a>
 
 <br/>
-<br/>
-<br/>
-
-<h2>Contributions</h2>
-<p>Every Contribution to this repository is highly appriciated! Don't fear to create pull requests which enhance or fix the library as ultimatly you are going to help everybody.</p>
-<p>
-If you want to donate to the author then <b>you can become my patron</b>, It really helps me keep these libraries updated:
-<br/><br/>
-<a href="https://www.patreon.com/bePatron?u=16780597" target="_blank"><img src="https://img.shields.io/badge/patreon-donate-orange.svg?style=for-the-badge&logo=patreon" /></a>
-</p>
 <br/>
 <br/>
 
