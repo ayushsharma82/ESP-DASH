@@ -86,6 +86,8 @@ ESP-DASH is licensed under General Public License v3 ( GPLv3 ).
 <br/>
 <img src="https://img.shields.io/github/license/ayushsharma82/ESP-DASH.svg?style=for-the-badge" />
 </div>
+<br/>
+<br/>
 
 ## Contributors
 
