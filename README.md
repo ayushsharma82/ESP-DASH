@@ -1,5 +1,4 @@
-<p align="center"><img src="/docs/img/logo.png?raw=true" width="320"></p>
-<h1 align="center">ESP-DASH</h1>
+<p align="center"><img src="/docs/img/logo.png?raw=true" width="620"></p>
 <br/>
 
 <p align="center">
