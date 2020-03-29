@@ -1,22 +1,5 @@
 <template>
     <div class="container" style="margin: 1.55rem 1rem;">
-        <div class="section has-text-centered">
-            <svg width="128px" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <g id="Stockholm-icons-_-Home-_-Deer" data-name="Stockholm-icons-/-Home-/-Deer">
-                    <rect id="bound" fill="none" width="24" height="24"></rect>
-                    <path id="Combined-Shape" fill="#384c74" opacity="0.3" isolation="isolate"
-                        d="M22,8.19a1,1,0,0,1-.47.67l-5,3A1,1,0,0,1,16,12H8a1,1,0,0,1-.51-.14l-5-3A1,1,0,0,1,2,8.19l-1-5a1,1,0,0,1,2-.4L3.61,6,6.29,3.29A1,1,0,0,1,7.71,4.71L4.61,7.8,8.28,10h7.44l3.67-2.2-3.1-3.09a1,1,0,0,1,1.42-1.42L20.39,6,21,2.8a1,1,0,0,1,2,.4Zm-6.93.7A1,1,0,0,1,16,7.11l3,1.5A1,1,0,0,1,19,10.36l-2.5,1.5A1,1,0,0,1,16,12H8a1,1,0,0,1-.51-.14L5,10.36A1,1,0,0,1,5,8.64l2.5-1.5a1,1,0,1,1,1,1.72L7.44,9.5l.84.5h7.44l.7-.42Z">
-                    </path>
-                    <path id="Rectangle-192" fill="#384c74"
-                        d="M9.86,10h4.28A2,2,0,0,1,16,12.68l-2.68,7.38A1.43,1.43,0,0,1,12,21h0a1.43,1.43,0,0,1-1.34-.94L8,12.68A2,2,0,0,1,9.86,10Z">
-                    </path>
-                </g>
-            </svg>
-            <br/>
-            <h1 class="title is-4">ESP-DASH</h1>
-        </div>
-        <br/>
-        <hr/>
         <br/>
         <p class="section">
             A open-source software library is never made perfect in one go. It's the collective effort of all the users in making it stable. Don't let the efforts of everyone go waste! Contribute a bit in the library to keep it up-to-date.   
