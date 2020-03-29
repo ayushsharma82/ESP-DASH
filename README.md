@@ -1,13 +1,17 @@
-<p align="center"><img src="https://raw.githubusercontent.com/ayushsharma82/ESP-DASH/dash-next/docs/img/logo.png" width="320"></p>
+<p align="center"><img src="/docs/img/logo.png?raw=true" width="320"></p>
 <h1 align="center">ESP-DASH</h1>
 <br/>
 
 <p align="center">
 <!-- <img src="https://img.shields.io/travis/com/ayushsharma82/ESP-DASH.svg?style=for-the-badge" />
 &nbsp; -->
-<img src="https://img.shields.io/github/last-commit/ayushsharma82/ESP-DASH.svg?style=flat" />
+<img src="https://img.shields.io/github/last-commit/ayushsharma82/ESP-DASH.svg?style=for-the-badge" />
 &nbsp;
-<img src="https://img.shields.io/github/license/ayushsharma82/ESP-DASH.svg?style=flat" />
+<img src="https://img.shields.io/github/license/ayushsharma82/ESP-DASH.svg?style=for-the-badge" />
+&nbsp;
+<a href="https://opencollective.com/espdash/contribute" target="_blank"><img src="https://img.shields.io/opencollective/all/espdash?style=for-the-badge&logo=open-collective" /></a>
+&nbsp;
+<a href="https://www.buymeacoffee.com/6QGVpSj" target="_blank"><img src="https://img.shields.io/badge/Buy%20me%20a%20coffee-%245-orange?style=for-the-badge&logo=buy-me-a-coffee" /></a>
 </p>
 
 <br/>
@@ -19,7 +23,7 @@
 <br/>
 
 <h2>Preview</h2>
-<img src="https://raw.githubusercontent.com/ayushsharma82/ESP-DASH/dash-next/docs/img/screenshot.PNG">
+<img src="/docs/img/screenshot.PNG?raw=true">
 
 <br/>
 <br/>
