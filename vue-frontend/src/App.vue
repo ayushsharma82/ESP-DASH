@@ -48,8 +48,6 @@
                             <br/>
                             <p>
                                 Hi There!
-                                <br/>
-                                I hope everybody's doing well!
                             </p>
                             <p>
                                 <br/>
@@ -170,6 +168,8 @@
                     this.cards.slider = [];
                     this.stats.enabled = json.statistics.enabled;
                     if (this.stats.enabled) {
+                        this.stats.releaseTag = json.statistics.releaseTag;
+                        this.stats.hardware = json.statistics.hardware;
                         this.stats.sdk = json.statistics.sdk;
                         this.stats.chipId = json.statistics.chipId;
                         this.stats.sketchHash = json.statistics.sketchHash;

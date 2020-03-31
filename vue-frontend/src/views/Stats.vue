@@ -2,6 +2,7 @@
     <div class="container" style="margin: 1.55rem 1rem;">
         <div class="section" v-if="stats.enabled">
             <div><b>Hardware:</b> &nbsp; {{stats.hardware}}</div> <br />
+            <div><b>SDK Version:</b> &nbsp; {{stats.sdk}}</div> <br />
             <div><b>Chip ID:</b> &nbsp; {{stats.chipId}}</div> <br />
             <div><b>Free Heap:</b> &nbsp; {{stats.freeHeap}} bytes</div> <br />
             <div v-if="stats.heapFragmentation"><b>Heap Fragmentation:</b> &nbsp; {{stats.heapFragmentation}}</div> <br
