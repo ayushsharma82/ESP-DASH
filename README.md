@@ -19,6 +19,8 @@
 
 <br/>
 
+<h3>[WIP] This project is currently being developed. Please wait for the merge.</h3>
+
 <br/>
 
 <p><b>ESP-DASH V3.0</b> is a Blazing fast library to create functional and realtime dashboard for <b>ESP8266</b> & <b>ESP32</b> Microcontrollers. It is <b>not</b> dependent on Internet. DASH V3.0 has it's core routines rewritten to enhance performance and UI has been reworked to improve user accessibility.</p>
