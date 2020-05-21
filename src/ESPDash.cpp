@@ -11,7 +11,7 @@ AsyncWebSocket ws("/dashws");
 
 
 // Handle Websocket Requests
-void ESPDashClass::onWsEvent(AsyncWebSocket * server, AsyncWebSocketClient * client, AwsEventType type, void * arg, uint8_t *data, size_t len){
+void ESPDashClass::onWsEvent(AsyncWebSocket * /*server*/, AsyncWebSocketClient * client, AwsEventType type, void * arg, uint8_t *data, size_t len){
     if(type == WS_EVT_CONNECT){
         debugPrintln("[WEBSOCKET] Client connection received");
     } else if(type == WS_EVT_DISCONNECT){
