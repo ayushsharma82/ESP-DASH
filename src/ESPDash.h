@@ -98,6 +98,8 @@ struct CardData {
         char *value_s;
         float value_f;
         int value_i;
+        int value_min;
+        int value_max;
         unsigned char __pad[8]; // force alignment
     };
 
@@ -138,7 +140,7 @@ class ESPDashV3
         void webauth(const char *user, const char *pass);
 
         // adding a new card to layout, specialized functions
-        int AddCard(const int type, const char *name, int datatype = 0);
+        int AddCard(const int type, const char *name, int datatype = 0, int min = 0, int max = 0);
 
         // Update card data, specialized functions
         void UpdateCard(const int cardID, int value);

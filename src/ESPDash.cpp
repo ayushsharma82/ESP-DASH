@@ -129,7 +129,7 @@ void ESPDashV3::onWsEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, 
 }
 
 // add a new card to the collection
-int ESPDashV3::AddCard(const int type, const char *name, int datatype)
+int ESPDashV3::AddCard(const int type, const char *name, int datatype, int min, int max)
 {
     CardData card;
     int size;
@@ -141,6 +141,8 @@ int ESPDashV3::AddCard(const int type, const char *name, int datatype)
     card.value_s = NULL;
     card.value_type = CardData::STRING;    // defaults to STRING type, but changed later
     card.value_ptr = NULL;  // default to null function
+    card.value_min = min;
+    card.value_max = max;
 
     size = strlen(name)+1;
     card.name = new char[size];
@@ -311,7 +313,7 @@ String ESPDashV3::UpdateLayout(bool only_stats)
         data+="\"card_type\":\""+String(cardtype)+"\",";
         data+="\"name\":\""+String(cData[i].name)+"\",";
         data+="\"datatype\":\""+String(cData[i].datatype)+"\",";
-        data+="\"value\":\"";
+        data+="\"value\": ";
 
         switch(cData[i].value_type)
         {
@@ -322,14 +324,29 @@ String ESPDashV3::UpdateLayout(bool only_stats)
                 data+=String(cData[i].value_f, 2);
                 break;
             case CardData::STRING:
-                data+=cData[i].value_s;
+                data+="\""+cData[i].value_s+"\"";
                 break;
             default:
                 // blank value
                 break;
         }
 
-        data+="\"}";
+        data+=",";
+
+        switch(cData[i].value_type)
+        {
+            case CardData::INTEGER:
+                data+="\"value_min\": "+cData[i].value_min+",";
+                data+="\"value_max\": "+cData[i].value_max+"}";
+                break;
+            case CardData::FLOAT:
+                data+="\"value_min\": "+cData[i].value_min+",";
+                data+="\"value_max\": "+cData[i].value_max+"}";
+                break;
+            default:
+                // blank value
+                break;
+        }
 
         if(i<cData.Size()-1)
             data+=",";

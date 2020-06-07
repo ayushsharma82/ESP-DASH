@@ -1,7 +1,7 @@
 <p>
   <br/>
 </p>
-<p align="center"><img src="/docs/img/logo.svg?sanitize=true&raw=true" width="420"></p>
+<p align="center"><img src="/docs/img/logo.png?sanitize=true&raw=true" width="300"></p>
 <br/>
 <br/>
 
