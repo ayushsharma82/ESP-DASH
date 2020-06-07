@@ -167,8 +167,8 @@
                   name: card.name,
                   type: card.type,
                   value: card.value,
-                  min: card.min,
-                  max: card.max
+                  min: card.value_min,
+                  max: card.value_max
                 });
                 break;
 
@@ -186,7 +186,8 @@
                 this.cards.gauge.push({
                   id: card.id,
                   name: card.name,
-                  value: card.value
+                  value: card.value,
+                  max: card.value_max
                 });
                 break;
 
