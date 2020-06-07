@@ -26,7 +26,7 @@
           <span class="column is-1" style="margin-left: 0.8rem; margin-right: 0.5rem; line-height: 1.1">
             {{ displayValue }}</span>
         </header>
-        <p class="has-text-dark"><b>{{card.name}}<small></small></b></p>
+        <p class="card-name has-text-dark">{{card.name}}</p>
       </div>
     </div>
   </div>

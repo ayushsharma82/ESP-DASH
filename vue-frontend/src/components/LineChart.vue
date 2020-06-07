@@ -20,7 +20,7 @@
               </g>
             </svg>
           </div>
-          <p class="column" style="margin-left: 0.5rem; line-height: 1.2;">{{card.name}}</p>
+          <p class="column card-name" style="margin-left: 0.5rem; line-height: 1.2;">{{card.name}}</p>
         </header>
         <div class="has-text-dark">
           <line-chart height="200px" :chart-data="datacollection" :options="options"></line-chart>

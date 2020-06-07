@@ -15,7 +15,7 @@
               </button>
             </h4>
           </header>
-          <p class="has-text-dark"><b>{{card.name}}</b></p>
+          <p class="card-name has-text-dark">{{card.name}}</p>
         </div>
       </div>
     </div>

@@ -17,7 +17,7 @@
           </div>
           <p class="column" style="margin-left: 0.5rem; line-height: 1.2;">{{card.name}}</p>
         </header>
-        <div class="has-text-dark">
+        <div class="card-name has-text-dark">
           <doughnut-chart :chart-data="datacollection" :options="options"></doughnut-chart>
         </div>
       </div>

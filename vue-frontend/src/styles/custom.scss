@@ -18,7 +18,8 @@
 
 $themeColor: #335EEA;
 $grey-dark: #384C74;
-$black: #161C2D;
+$black: #1B1B1B;
+$text: $black;
 $light: #F9FBFD;
 $dark: #2B354F;
 $blue: #335EEA;
@@ -268,8 +269,8 @@ input{
 }
 
 .page-sidebar {
-    background-color: rgba(241, 241, 248, 0.8);
-    border-right: 2px solid rgba(188, 188, 194, 0.1);
+    z-index: 1;
+    box-shadow: 0 1.5rem 4rem rgba(22,28,45,.05) !important;
     min-height: 100vh;
 
     @media screen and (max-width: $tablet) {

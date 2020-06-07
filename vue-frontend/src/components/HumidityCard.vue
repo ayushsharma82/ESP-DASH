@@ -17,7 +17,7 @@
           </div>
           <h4 class="column" style="margin-left: 0.5rem; line-height: 1.2;">{{card.value}}%</h4>
         </header>
-        <p class="has-text-dark"><b>{{card.name}}</b></p>
+        <p class="card-name has-text-dark">{{card.name}}</p>
       </div>
     </div>
   </div>
