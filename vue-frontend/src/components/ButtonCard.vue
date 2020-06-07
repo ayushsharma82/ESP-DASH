@@ -1,5 +1,4 @@
 <template>
-  <!-- Button Card -->
   <div class="column is-6-mobile is-4-tablet is-3-desktop">
       <div class="card">
         <span class="dot" :class="{'active': activity}"></span>

@@ -1,10 +1,8 @@
 <template>
-  <!-- Doughnut Chart -->
   <div class="column is-6-mobile is-4-tablet is-3-desktop">
     <div class="card">
       <span class="dot" :class="{'active': activity}"></span>
       <div class="card-content">
-
         <header class="columns is-gapless is-mobile">
           <div class="column is-narrow sicon sicon-xs is-inline has-text-danger align-middle">
             <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg"

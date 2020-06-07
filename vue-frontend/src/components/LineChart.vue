@@ -1,5 +1,4 @@
 <template>
-  <!-- Doughnut Chart -->
   <div class="column is-12-mobile is-6-tablet is-6-desktop">
     <div class="card">
       <span class="dot" :class="{'active': activity}"></span>
