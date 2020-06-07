@@ -98,10 +98,10 @@ struct CardData {
         char *value_s;
         float value_f;
         int value_i;
-        int value_min;
-        int value_max;
         unsigned char __pad[8]; // force alignment
     };
+    int value_min;
+    int value_max;
 
     // used to run an attached function
     void (*value_ptr)(CardData *);

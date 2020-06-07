@@ -324,7 +324,7 @@ String ESPDashV3::UpdateLayout(bool only_stats)
                 data+=String(cData[i].value_f, 2);
                 break;
             case CardData::STRING:
-                data+="\""+cData[i].value_s+"\"";
+                data+="\""+String(cData[i].value_s)+"\"";
                 break;
             default:
                 // blank value
@@ -336,12 +336,12 @@ String ESPDashV3::UpdateLayout(bool only_stats)
         switch(cData[i].value_type)
         {
             case CardData::INTEGER:
-                data+="\"value_min\": "+cData[i].value_min+",";
-                data+="\"value_max\": "+cData[i].value_max+"}";
+                data+="\"value_min\": "+String(cData[i].value_min)+",";
+                data+="\"value_max\": "+String(cData[i].value_max)+"}";
                 break;
             case CardData::FLOAT:
-                data+="\"value_min\": "+cData[i].value_min+",";
-                data+="\"value_max\": "+cData[i].value_max+"}";
+                data+="\"value_min\": "+String(cData[i].value_min)+",";
+                data+="\"value_max\": "+String(cData[i].value_max)+"}";
                 break;
             default:
                 // blank value

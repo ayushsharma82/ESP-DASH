@@ -38,14 +38,6 @@
     data() {
       return {
         activity: true,
-        datacollection: {
-          labels: [this.card.value],
-          datasets: [{
-            label: this.card.name,
-            backgroundColor: ['#f87979', '#f2f2f2'],
-            data: [this.card.value, this.card.max - this.card.value]
-          }]
-        },
         options: {
           events: [],
           rotation: 1 * Math.PI,
@@ -62,11 +54,11 @@
             position: 'bottom',
             labels: {
               // This more specific font property overrides the global property
-              fontFamily: "'Quicksand', 'sans-serif'"
+              fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';"
             }
           },
           tooltips: {
-            bodyFontFamily: "'Quicksand', 'sans-serif'",
+            bodyFontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';",
             filter: function () {
               return false;
             }
@@ -82,33 +74,17 @@
       }
     },
 
-    methods: {
-      getRandomInt() {
-        return Math.floor(Math.random() * (50 - 5 + 1)) + 5
-      }
-    },
-
     computed: {
-      generateSeries: function () {
-        return [this.value];
-      },
-
-      generateChartOptions() {
-        let json = {
-          responsive: [{
-            breakpoint: undefined,
-            options: {},
-          }],
-          chart: {
-            height: 'auto',
-            type: 'radialBar',
-          },
-          series: [this.value],
-          labels: [this.name],
+      datacollection: function () {
+        return {
+          labels: [this.card.value],
+          datasets: [{
+            label: this.card.name,
+            backgroundColor: ['#f87979', '#f2f2f2'],
+            data: [this.card.value, this.card.max - this.card.value]
+          }]
         };
-
-        return json;
-      }
+      },
     },
 
     mounted() {
