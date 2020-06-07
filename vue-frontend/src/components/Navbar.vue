@@ -131,21 +131,6 @@
           </router-link>
         </li>
       </ul>
-      <br />
-      <div>
-        <div class="control">
-          <div class="tags has-addons" v-if="stats.enabled">
-            <span class="tag is-rounded is-dark">Version</span>
-            <span class="tag is-rounded is-info">{{stats.releaseTag}}</span>
-          </div>
-          <div class="tags has-addons" v-if="showUpdateTag">
-            <a :href="update.url">
-              <span class="tag is-rounded is-dark">Update Available</span>
-              <span class="tag is-rounded is-success">{{update.releaseTag}}</span>
-            </a>
-          </div>
-        </div>
-      </div>
     </aside>
   </div>
 </template>
@@ -157,71 +142,7 @@
     data() {
       return {
         open: false,
-        update: {
-          retrieved: false,
-          releaseTag: 'NaN',
-          url: '#'
-        }
       }
     },
-
-    mounted() {
-      // Check for new releases and show update tag
-      let that = this;
-      let xhttp = new XMLHttpRequest();
-      xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-          let res = JSON.parse(this.responseText);
-          that.update.releaseTag = res.tag_name;
-          that.update.url = res.html_url;
-          that.update.retrieved = true;
-        }
-      };
-      xhttp.open("GET", "https://api.github.com/repos/ayushsharma82/ESP-DASH/releases/latest", true);
-      xhttp.send();
-    },
-
-    computed: {
-      showUpdateTag: function () {
-        if (this.stats.enabled === true && this.update.retrieved === true && this.stats.releaseTag !== this.update
-          .releaseTag) {
-          return true;
-        } else {
-          return false;
-        }
-      }
-    }
   }
 </script>
-
-<style lang="scss">
-  .menu-list svg {
-    vertical-align: middle;
-    margin-right: 1rem;
-  }
-
-  .menu-list svg {
-    vertical-align: middle;
-  }
-
-
-  .menu-list a {
-    color: #A8A8AD;
-    letter-spacing: 0.8px !important;
-    font-weight: 500;
-  }
-
-  .menu-list a:hover {
-    background-color: transparent;
-  }
-
-  .menu-list a.is-active {
-    font-weight: 600;
-  }
-
-  .navbar-burger:focus {
-    outline: none;
-    text-decoration: none;
-    background: transparent;
-  }
-</style>

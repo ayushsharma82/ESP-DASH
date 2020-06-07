@@ -23,6 +23,11 @@
   }
 }
 
+.navbar-burger:focus {
+  outline: none;
+  text-decoration: none;
+  background: transparent;
+}
 
 // Sidebar Styles
 
@@ -44,6 +49,26 @@
     @include mobile{
         padding: 2rem 0rem;
     }
+  }
+
+  .menu-list svg {
+    vertical-align: middle;
+    margin-right: 1rem;
+  }
+
+  .menu-list svg {
+    vertical-align: middle;
+  }
+
+
+  .menu-list a {
+    color: #A8A8AD;
+    letter-spacing: 0.8px !important;
+    font-weight: 500;
+  }
+
+  .menu-list a:hover {
+    background-color: transparent;
   }
 
   .section {
