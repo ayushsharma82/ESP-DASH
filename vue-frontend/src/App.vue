@@ -112,7 +112,7 @@
             this.stats.sketchHash = json.statistics.sketchHash;
             this.stats.macAddress = json.statistics.macAddress;
             this.stats.freeHeap = json.statistics.freeHeap;
-            if (json.statistics.hasOwnProperty("heapFragmentation")) {
+            if (json.statistics?.heapFragmentation) {
               this.stats.heapFragmentation = json.statistics.heapFragmentation;
             }
             this.stats.wifiMode = json.statistics.wifiMode;
