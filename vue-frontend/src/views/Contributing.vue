@@ -88,7 +88,7 @@ export default {
         let that = this;
         let xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
+            if (this.readyState === 4 && this.status === 200) {
                 let res = JSON.parse(this.responseText);
                 that.repo.stars = res.stargazers_count;
                 that.repo.subscribers = res.subscribers_count;

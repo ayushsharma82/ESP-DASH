@@ -94,7 +94,7 @@
       Socket.$on("message", (json) => {
         this.ws.connected = true;
 
-        if (json.response == "getLayout") {
+        if (json.response === "getLayout") {
           this.cards.temperature = [];
           this.cards.humidity = [];
           this.cards.status = [];
@@ -197,7 +197,7 @@
           });
         }
         // TODO: better rewrite this
-        else if (json.response == "updateCards") {
+        else if (json.response === "updateCards") {
           json.cards.forEach(card => {
             switch (card.response) {
               case "updateLineChart":
