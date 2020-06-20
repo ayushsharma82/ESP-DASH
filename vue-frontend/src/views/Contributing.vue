@@ -22,7 +22,7 @@
             <span class="title is-5">1. Create an issue</span>
             <br/>
             A absolutely necessary thing which you can do is to create an issue on ESP-DASH's repository. It can be a bug or a feature request.
-            As soon as you encounter a bug related to ESP-DASH, You can create an issue on Github where people will try to fix it for all. You can create a issue <a href="https://github.com/ayushsharma82/ESP-DASH/issues" target="_blank">here</a>.
+            As soon as you encounter a bug related to ESP-DASH, You can create an issue on Github where people will try to fix it for all. You can create a issue <a href="https://github.com/ayushsharma82/ESP-DASH/issues" target="_blank" rel="noopener">here</a>.
         </p>
         <br/>
         <br/>
@@ -30,17 +30,17 @@
             <span class="title is-5">2. Create a pull request</span>
             <br/>
             You can go through the list of issues on ESP-DASH's repository and try to create a pull request to fix something. It will be much appriciated by everyone! Don't worry if your pull request is doubtful, collaborartors will help you with your efforts in fixing that particular thing.
-            You can create / check pending pull requests <a href="https://github.com/ayushsharma82/ESP-DASH/pulls" target="_blank">here</a>.
+            You can create / check pending pull requests <a href="https://github.com/ayushsharma82/ESP-DASH/pulls" target="_blank" rel="noopener">here</a>.
         </p>
         <br/>
         <br/>
         <p class="section">
             <span class="title is-5">3. Sponsor / Donate to the Project</span>
             <br/>
-            Development of any open-source software comes at the cost of time. I can't force this enough, but if you think ESP-DASH has met your expectations and should do better, then you can think of supporting the project on <a href="https://opencollective.com/espdash#section-contribute" target="_blank">OpenCollective</a>. We would love to have you on board our contributors list!
+            Development of any open-source software comes at the cost of time. I can't force this enough, but if you think ESP-DASH has met your expectations and should do better, then you can think of supporting the project on <a href="https://opencollective.com/espdash#section-contribute" target="_blank" rel="noopener">OpenCollective</a>. We would love to have you on board our contributors list!
             <br/>
             <br/>
-            <a href="https://opencollective.com/espdash#section-contribute" target="_blank">
+            <a href="https://opencollective.com/espdash#section-contribute" target="_blank" rel="noopener">
                 <img :src="$collectiveLogo" width="300">
             </a>
         </p>
