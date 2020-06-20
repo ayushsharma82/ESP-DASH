@@ -2,7 +2,7 @@
     <div class="container" style="margin: 1.55rem 1rem;">
         <br/>
         <p class="section">
-            A open-source software library is never made perfect in one go. It's the collective effort of all the users in making it stable. Don't let the efforts of everyone go waste! Contribute a bit in the library to keep it up-to-date.   
+            A open-source software library is never made perfect in one go. It's the collective effort of all the users in making it stable. Don't let the efforts of everyone go waste! Contribute a bit in the library to keep it up-to-date.
         </p>
         <br/>
         <br/>
@@ -21,7 +21,7 @@
         <p class="section">
             <span class="title is-5">1. Create an issue</span>
             <br/>
-            A absolutely necessary thing which you can do is to create an issue on ESP-DASH's repository. It can be a bug or a feature request. 
+            A absolutely necessary thing which you can do is to create an issue on ESP-DASH's repository. It can be a bug or a feature request.
             As soon as you encounter a bug related to ESP-DASH, You can create an issue on Github where people will try to fix it for all. You can create a issue <a href="https://github.com/ayushsharma82/ESP-DASH/issues" target="_blank">here</a>.
         </p>
         <br/>

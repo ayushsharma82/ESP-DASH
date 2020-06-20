@@ -44,7 +44,7 @@ let html = `
 const gzippedIndex = zlib.gzipSync(html, {'level': zlib.constants.Z_BEST_COMPRESSION});
 let indexHTML = getByteArray(gzippedIndex);
 
-let source = 
+let source =
 `
 const uint32_t DASH_HTML_SIZE = ${indexHTML.length};
 const uint8_t DASH_HTML[] PROGMEM = { ${indexHTML} };
