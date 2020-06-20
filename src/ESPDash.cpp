@@ -272,19 +272,11 @@ String ESPDashV3::UpdateLayout(bool only_stats)
         stats+="\"releaseTag\": \""+String(ESPDASH_RELEASE_TAG)+"\",";
         #if defined(ESP8266)
             stats+="\"hardware\":\"ESP8266\",";
-        #elif defined(ESP32)
-            stats+="\"hardware\":\"ESP32\",";
-        #endif
-
-        #if defined(ESP8266)
             stats+="\"sdk\":\""+ESP.getCoreVersion()+"\",";
-        #elif defined(ESP32)
-            stats+="\"sdk\":\""+String(esp_get_idf_version())+"\",";
-        #endif
-
-        #if defined(ESP8266)
             stats+="\"chipId\":\""+String(ESP.getChipId())+"\",";
         #elif defined(ESP32)
+            stats+="\"hardware\":\"ESP32\",";
+            stats+="\"sdk\":\""+String(esp_get_idf_version())+"\",";
             stats+="\"chipId\":\""+String((uint32_t)ESP.getEfuseMac())+"\",";
         #endif
         
