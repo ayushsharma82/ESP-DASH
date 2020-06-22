@@ -94,11 +94,10 @@ struct CardData {
     int type;
     bool changed;
     enum { INTEGER, FLOAT, STRING } value_type;
-    union {
+    union alignas(8) {
         char *value_s;
         float value_f;
         int value_i;
-        unsigned char __pad[8]; // force alignment
     };
     int value_min;
     int value_max;

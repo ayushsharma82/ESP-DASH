@@ -104,7 +104,7 @@ void ESPDashV3::onWsEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, 
                 {
                     // execute and reference card data struct to funtion
                     int id = json["id"];
-                    if(id >= 0 && ESPDash.cData[id].value_ptr != NULL)
+                    if(id >= 0 && ESPDash.cData[id].value_ptr != nullptr)
                         ESPDash.cData[id].value_ptr(&ESPDash.cData[id]);
 
                     return;
@@ -115,7 +115,7 @@ void ESPDashV3::onWsEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, 
                     int id = json["id"];
                     int value = json["value"];
                     ESPDash.UpdateCard(id, value);                    
-                    if(id >= 0 && ESPDash.cData[id].value_ptr != NULL)
+                    if(id >= 0 && ESPDash.cData[id].value_ptr != nullptr)
                         ESPDash.cData[id].value_ptr(&ESPDash.cData[id]);
 
                     response = ESPDash.RefreshCards();
@@ -140,7 +140,7 @@ int ESPDashV3::AddCard(const int type, const char *name, int datatype, int min, 
     card.datatype = datatype;
     card.value_s = NULL;
     card.value_type = CardData::STRING;    // defaults to STRING type, but changed later
-    card.value_ptr = NULL;  // default to null function
+    card.value_ptr = nullptr;  // default to null function
     card.value_min = min;
     card.value_max = max;
 
@@ -272,19 +272,11 @@ String ESPDashV3::UpdateLayout(bool only_stats)
         stats+="\"releaseTag\": \""+String(ESPDASH_RELEASE_TAG)+"\",";
         #if defined(ESP8266)
             stats+="\"hardware\":\"ESP8266\",";
-        #elif defined(ESP32)
-            stats+="\"hardware\":\"ESP32\",";
-        #endif
-
-        #if defined(ESP8266)
             stats+="\"sdk\":\""+ESP.getCoreVersion()+"\",";
-        #elif defined(ESP32)
-            stats+="\"sdk\":\""+String(esp_get_idf_version())+"\",";
-        #endif
-
-        #if defined(ESP8266)
             stats+="\"chipId\":\""+String(ESP.getChipId())+"\",";
         #elif defined(ESP32)
+            stats+="\"hardware\":\"ESP32\",";
+            stats+="\"sdk\":\""+String(esp_get_idf_version())+"\",";
             stats+="\"chipId\":\""+String((uint32_t)ESP.getEfuseMac())+"\",";
         #endif
         
