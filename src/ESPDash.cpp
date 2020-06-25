@@ -683,7 +683,7 @@ void ESPDashClass::generateLayoutResponse(String& result){
             stats["freeHeap"] = ESP.getFreeHeap();
             stats["wifiMode"] = int(WiFi.getMode());
         #elif defined(ESP32)
-            stats["chipId"] = String(ESP.getEfuseMac());
+            stats["chipId"] = String((uint32_t)ESP.getEfuseMac(), HEX);
             stats["sketchHash"] = ESP.getSketchMD5();
             stats["macAddress"] = String(WiFi.macAddress());
             stats["freeHeap"] = ESP.getFreeHeap();
