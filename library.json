@@ -15,7 +15,7 @@
       "maintainer": true
     }
   ],
-  "version": "2.2.4",
+  "version": "2.2.5",
   "frameworks": "arduino",
   "platforms": "espressif",
   "dependencies":
