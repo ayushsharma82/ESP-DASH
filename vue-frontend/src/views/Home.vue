@@ -12,6 +12,7 @@
       <br />
       <div class="columns is-mobile is-multiline">
         <line-chart v-for="card in cards.lineChart" :key="card.id" :card="card"></line-chart>
+        <table-card v-for="card in cards.table" :key="card.id" :card="card"></table-card><!--table-->
       </div>
       <br />
       <div class="columns is-mobile is-multiline">
@@ -49,6 +50,7 @@
   import LineChart from '@/components/LineChart.vue';
   import GaugeCard from '@/components/GaugeCard.vue';
   import SliderCard from '@/components/SliderCard.vue';
+  import TableCard from '@/components/TableCard.vue';
 
   export default {
     name: 'home',
@@ -63,7 +65,8 @@
       ButtonCard,
       LineChart,
       GaugeCard,
-      SliderCard
+      SliderCard,
+      TableCard
     },
 
     computed: {
@@ -76,6 +79,7 @@
         num = num + this.cards.button.length;
         num = num + this.cards.slider.length;
         num = num + this.cards.lineChart.length;
+        num = num + this.cards.table.length;
         return num;
       }
     }

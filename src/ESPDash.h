@@ -59,7 +59,8 @@ enum {
     TYPE_STATUS_CARD,
     TYPE_LINE_CARD,
     TYPE_GAUGE_CARD,
-    TYPE_SLIDER_CARD
+    TYPE_SLIDER_CARD,
+    TYPE_TABLE_CARD
 };
 
 enum {
@@ -145,6 +146,7 @@ class ESPDashV3
         void UpdateCard(const int cardID, int value);
         void UpdateCard(const int cardID, float value);
         void UpdateCard(const int cardID, String &value);
+//        void UpdateCard(const int cardID, char *value[25]);
         void UpdateCard(const int cardID, void (*funptr)(CardData *));
 
         // Notify client side to update values

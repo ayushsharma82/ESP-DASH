@@ -6,6 +6,7 @@
     <div class="column is-4-tablet is-3-desktop is-one-fifth-fullhd page-sidebar">
       <div class="section">
         <navbar :connected="ws.connected" :stats="stats"></navbar>
+        <p>{{jsonstrng}}</p><!--table-->
       </div>
     </div>
     <div class="column page-content">
@@ -49,6 +50,7 @@
 
     data() {
       return {
+        jsonstrng: "",
         ws: {
           url: "",
           connected: false
@@ -73,7 +75,8 @@
           number: [],
           lineChart: [],
           gauge: [],
-          slider: []
+          slider: [],
+          table: []
         }
       }
     },
@@ -93,7 +96,7 @@
 
       Socket.$on("message", (json) => {
         this.ws.connected = true;
-
+        this.jsonstrng = json;
         if (json.response == "getLayout") {
           this.cards.temperature = [];
           this.cards.humidity = [];
@@ -103,6 +106,7 @@
           this.cards.lineChart = [];
           this.cards.gauge = [];
           this.cards.slider = [];
+          this.cards.table = []; 
           this.stats.enabled = json.statistics.enabled;
           if (this.stats.enabled) {
             this.stats.releaseTag = json.statistics.releaseTag;
@@ -190,6 +194,15 @@
                   max: card.value_max
                 });
                 break;
+              
+              case "table":
+                this.cards.table.push({
+                  id: card.id,
+                  name: card.name,
+                  value: card.value,
+                  value_type: card.value_type
+                });
+                break;
 
               default:
                 break;
@@ -247,8 +260,8 @@
                     data.value = card.value;
                   }
                 });
-
                 break;
+
               case "updateSliderCard":
                 this.cards.slider.forEach((data) => {
                   if (data.id == card.id) {
@@ -256,6 +269,15 @@
                   }
                 });
                 break;
+                
+              case "updateTableCard":
+                this.cards.table.forEach((data) => {
+                  if (data.id == card.id) {
+                    data.value = card.value;
+                  }
+                });
+                break;
+
             }
           });
         } else if (json.response == "updateLayout") {

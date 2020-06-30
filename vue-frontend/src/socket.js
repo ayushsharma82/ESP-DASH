@@ -1,7 +1,7 @@
 import Vue from "vue"
 
 let host = "ws://"+document.location.host+"/dashws";
-// let host = "ws://192.168.1.x/dashws"; // For Local Testing via npm run serve
+//let host = "ws://192.168.2.48/dashws"; // For Local Testing via npm run serve
 
 const socket = new WebSocket(host);
 
@@ -25,6 +25,7 @@ socket.onclose = function(){
 socket.onmessage = function(msg){
   emitter.$emit("message",  JSON.parse(msg.data));
 };
+
 socket.onerror = function(err){
   emitter.$emit("error", err)
 };
