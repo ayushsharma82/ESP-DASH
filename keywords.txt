@@ -1,19 +1,9 @@
-init	KEYWORD2
-disableStats	KEYWORD2
-addNumberCard	KEYWORD2
-updateNumberCard	KEYWORD2
-addTemperatureCard	KEYWORD2
-updateTemperatureCard	KEYWORD2
-addHumidityCard		KEYWORD2
-updateHumidityCard	KEYWORD2
-addStatusCard		KEYWORD2
-updateStatusCard	KEYWORD2
-addSliderCard		KEYWORD2
-updateSliderCard	KEYWORD2
-addButtonCard		KEYWORD2
-addLineChart		KEYWORD2
-updateLineChart		KEYWORD2
-addGaugeChart		KEYWORD2
-updateGaugeChart	KEYWORD2
-attachButtonClick	KEYWORD2
+ESPDash         KEYWORD1
+init	        KEYWORD2
+webauth	        KEYWORD2
+AddCard	        KEYWORD2
+UpdateCard	    KEYWORD2
+SendUpdates	    KEYWORD2
+UpdateLayout	KEYWORD2
+RefreshCards    KEYWORD2
 
