@@ -43,7 +43,7 @@ public:
         // Reallocate the underlying buffer to the same size as the
         Resize(obj.Size());
 
-        for(int i = 0; i < obj.Size(); i++)
+        for(int i{0}; i < obj.Size(); i++)
             (*this)[i] = obj[i];
 
         head = obj.head;
@@ -63,7 +63,7 @@ public:
     // equality operator (operator==) for this to work properly.
     bool Contains(VectorType element)
     {
-        for(int i = 0; i < Size(); i++)
+        for(int i{0}; i < Size(); i++)
             if(operator [](i) == element)
                 return true;
 
@@ -72,7 +72,7 @@ public:
 
     int Find(VectorType element)
     {
-        for(int i = 0; i < Size(); i++)
+        for(int i{0}; i < Size(); i++)
             if(operator [](i) == element)
                 return i;
 
@@ -106,7 +106,7 @@ public:
     void Erase(int first, int last)
     {
         // For this we'll set the value of the array at first to the value of the array at last plus one. We'll do that all the way up to toIndex
-        for(int i = 0; i < (Size() - first); i++)
+        for(int i{0}; i < (Size() - first); i++)
         {
             // If by trying to fill in the next element with the ones ahead of it we'll be running off the end of the vector, stop.
             if((i + last) > (Size() - 1))
@@ -162,7 +162,7 @@ public:
         // Refresh the head and tail, assuming the array is in order, which it really has to be
         head = len - 1;
 
-        for(int i = 0 ; i < Size(); i++)
+        for(int i{0} ; i < Size(); i++)
             begin[i] = val;
     }
 
@@ -217,13 +217,13 @@ private:
             head = size - 1;
 
         // Allocate an array twice the size of that of the old
-        VectorType *_begin = new VectorType[size];
-        VectorType *_storage = _begin + size;
+        VectorType *_begin{new VectorType[size]};
+        VectorType *_storage{_begin + size};
 
-        int _head = Size() - 1;
+        int _head{Size() - 1};
 
         // Copy across all the old array's data and rearrange it!
-        for(int i = 0; i < Size(); i++)
+        for(int i{0}; i < Size(); i++)
             _begin[i] = (*this)[i];
 
         // Free the old memory

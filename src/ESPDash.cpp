@@ -38,7 +38,7 @@ ESPDashV3::ESPDashV3()
 ESPDashV3::~ESPDashV3()
 {
     // free heap memory before destructor
-    for(int i=0; i<cData.Size(); i++)
+    for(int i{0}; i<cData.Size(); i++)
         delete[] cData[i].name;
 }
 
@@ -61,9 +61,9 @@ void ESPDashV3::init(AsyncWebServer& server)
         }
 
         // respond with the compressed frontend
-        AsyncWebServerResponse *response = request->beginResponse_P(200, "text/html", DASH_HTML, DASH_HTML_SIZE);
+        AsyncWebServerResponse *response{request->beginResponse_P(200, "text/html", DASH_HTML, DASH_HTML_SIZE)};
         response->addHeader("Content-Encoding","gzip");
-        request->send(response);        
+        request->send(response);
     });
 
     ws.onEvent(onWsEvent);
@@ -85,7 +85,7 @@ void ESPDashV3::onWsEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, 
     if(type == WS_EVT_DATA)
     {
         //data packet
-        AwsFrameInfo *info = (AwsFrameInfo*)arg;
+        AwsFrameInfo *info{(AwsFrameInfo*)arg};
         if(info->final && info->index == 0 && info->len == len)
         {
             if(info->opcode == WS_TEXT)
@@ -114,7 +114,7 @@ void ESPDashV3::onWsEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, 
                     // execute and reference card data struct to funtion
                     int id = json["id"];
                     int value = json["value"];
-                    ESPDash.UpdateCard(id, value);                    
+                    ESPDash.UpdateCard(id, value);
                     if(id >= 0 && ESPDash.cData[id].value_ptr != nullptr)
                         ESPDash.cData[id].value_ptr(&ESPDash.cData[id]);
 
@@ -175,7 +175,7 @@ void ESPDashV3::UpdateCard(const int cardID, float value)
 // overload function for string value update
 void ESPDashV3::UpdateCard(const int cardID, String &value)
 {
-    int size = value.length();
+    int size{value.length()};
 
     // only free old value if type not changed
     if(cData[cardID].value_type == CardData::STRING)
@@ -206,12 +206,12 @@ void ESPDashV3::UpdateCard(const int cardID, void (*funptr)(CardData *))
 String ESPDashV3::RefreshCards(bool toAll)
 {
     String data;
-    bool insertComma = false;
+    bool insertComma{false};
 
-    for(int i = 0; i < cData.Size(); i++)
+    for(int i{0}; i < cData.Size(); i++)
     {
         // convert from ID to method
-        const char *func = cNames[cData[i].type].json_method;
+        const char *func{cNames[cData[i].type].json_method};
 
         // discard cards without event or no changes since last refresh
         if(func == NULL || !cData[i].changed)
@@ -279,7 +279,7 @@ String ESPDashV3::UpdateLayout(bool only_stats)
             stats+="\"sdk\":\""+String(esp_get_idf_version())+"\",";
             stats+="\"chipId\":\""+String((uint32_t)ESP.getEfuseMac())+"\",";
         #endif
-        
+
         stats+="\"sketchHash\":\""+ESP.getSketchMD5()+"\",";
         stats+="\"macAddress\":\""+WiFi.macAddress()+"\",";
         stats+="\"freeHeap\":\""+String(ESP.getFreeHeap())+"\",";
@@ -296,10 +296,10 @@ String ESPDashV3::UpdateLayout(bool only_stats)
                "\"statistics\":{"+stats+"}}";
     }
 
-    for(int i = 0; i < cData.Size(); i++)
+    for(int i{0}; i < cData.Size(); i++)
     {
         // convert from ID to type
-        const char *cardtype = cNames[cData[i].type].name;
+        const char *cardtype{cNames[cData[i].type].name};
 
         data+="{\"id\":\""+String(cData[i].id)+"\",";
         data+="\"card_type\":\""+String(cardtype)+"\",";

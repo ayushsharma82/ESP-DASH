@@ -4,7 +4,7 @@
 * Github URL: https://github.com/ayushsharma82/ESP-DASH
 * Support Me: https://www.patreon.com/asrocks5
 *
-* - Version Changelog - 
+* - Version Changelog -
 * V1.0.0 - 11 Nov. 2017 - Library was Born
 * V1.0.1 - 13 Nov. 2017 - Fixed Empty SPIFFS Issue
 * V1.0.2 - 13 Nov. 2017 - Improvements on SPIFFS Issue
@@ -13,7 +13,7 @@
 * = Library Rewritten! =
 * V2.0.0 - 25 Jan 2019 - Wohoo! A breakthrough in performance and capabilities!
 *
-* 
+*
 * Credits:
 * Malcolm Brook (https://github.com/malbrook) for Slider Card
 *
@@ -123,8 +123,8 @@ class ESPDashV3
 {
     private:
         Vector<CardData> cData;
-        bool stats_enabled = true;
-        bool basic_auth = false;
+        bool stats_enabled{true};
+        bool basic_auth{false};
         const char *username;
         const char *password;
 
