@@ -57,9 +57,12 @@ enum {
     TYPE_TEMPERATURE_CARD,
     TYPE_HUMIDITY_CARD,
     TYPE_STATUS_CARD,
-    TYPE_LINE_CARD,
     TYPE_GAUGE_CARD,
-    TYPE_SLIDER_CARD
+    TYPE_SLIDER_CARD,
+};
+
+enum {
+    TYPE_LINE_GRAPH,
 };
 
 enum {
@@ -109,6 +112,26 @@ struct CardData {
     char *name;
 };
 
+
+struct GraphAxisData {
+    enum { INTEGER, FLOAT, STRING } value_type;
+    union alignas(8) {
+        char *value_s;
+        float value_f;
+        int value_i;
+    };
+};
+
+struct GraphData {
+    int id;
+    int type;
+    bool changed;
+    Vector<GraphAxisData> x_axis;
+    Vector<int> y_axis;
+
+    char *name;
+};
+
 struct CardNames {
     int value;
     const char *name;
@@ -123,6 +146,7 @@ class ESPDashV3
 {
     private:
         Vector<CardData> cData;
+        Vector<GraphData> gData;
         bool stats_enabled = true;
         bool basic_auth = false;
         const char *username;
@@ -140,12 +164,15 @@ class ESPDashV3
 
         // adding a new card to layout, specialized functions
         int AddCard(const int type, const char *name, int datatype = 0, int min = 0, int max = 0);
+        int AddGraph(const int type, const char *name);
 
         // Update card data, specialized functions
         void UpdateCard(const int cardID, int value);
         void UpdateCard(const int cardID, float value);
         void UpdateCard(const int cardID, String &value);
         void UpdateCard(const int cardID, void (*funptr)(CardData *));
+
+        void UpdateGraph(const int cardID, int arr_x[], int x_size, int arr_y[], int y_size);
 
         // Notify client side to update values
         void SendUpdates();
