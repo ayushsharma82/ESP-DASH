@@ -13,5 +13,5 @@ jobs:
   include:
     - install:
       - pip install -U platformio
-      - platformio update
+      - platformio upgrade
       script: ./build_platformio.sh
