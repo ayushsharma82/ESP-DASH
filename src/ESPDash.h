@@ -25,6 +25,7 @@
 #ifndef ESPDash_h
 #define ESPDash_h
 
+#include <functional>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
@@ -38,153 +39,57 @@
     #define HARDWARE "ESP8266"
     #include "ESP8266WiFi.h"
     #include "ESPAsyncTCP.h"
-    #include "ESPAsyncWebServer.h"
-    #include "ArduinoJson.h"
 #elif defined(ESP32)
     #define HARDWARE "ESP32"
     #include "WiFi.h"
     #include "AsyncTCP.h"
-    #include "ESPAsyncWebServer.h"
-    #include "ArduinoJson.h"
 #endif
 
-#define ESPDASH_RELEASE_TAG "v3.0.0"
+#include "ESPAsyncWebServer.h"
+#include "ArduinoJson.h"
+#include "Card.h"
+#include "Chart.h"
 
-// functions defaults to zero (number card)
-enum {
-    TYPE_NUMBER_CARD,
-    TYPE_BUTTON_CARD,
-    TYPE_TEMPERATURE_CARD,
-    TYPE_HUMIDITY_CARD,
-    TYPE_STATUS_CARD,
-    TYPE_LINE_CARD,
-    TYPE_GAUGE_CARD,
-    TYPE_SLIDER_CARD,
+
+class ESPDash{
+  private:
+    std::unique_ptr<AsyncWebSocket> ws;
+
+    Vector<Card*> cards;
+    Vector<Chart*> charts;
+    bool stats_enabled = true;
+    bool basic_auth = false;
+    const char *username;
+    const char *password;
+
+    // Async WebSocket event callback function
+    static void onWsEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len);
+
+  public:
+    ESPDash(AsyncWebServer& server);
+
+    void setAuthentication(const char *user, const char *pass);
+
+    // Add Card
+    void add(Card *card);
+    // Remove Card
+    void remove(Card *card);
+
+    // Add Chart
+    void add(Chart *card);
+    // Remove Chart
+    void remove(Chart *card);
+
+    // Notify client side to update values
+    void sendUpdates();
+
+    // send generated layout json to client side
+    String updateLayout(bool only_stats = false);
+
+    // send generated update json to client side
+    String refresh(bool toAll = false);
+
+    ~ESPDash();
 };
-
-enum {
-    TYPE_LINE_GRAPH,
-};
-
-enum {
-    CARD_0,
-    CARD_1,
-    CARD_2,
-    CARD_3,
-    CARD_4,
-    CARD_5,
-    CARD_6,
-    CARD_7,
-    CARD_8,
-    CARD_9,
-    CARD_10,
-    CARD_11,
-    CARD_12,
-    CARD_13,
-    CARD_14,
-    CARD_15,
-    CARD_16,
-    CARD_17,
-    CARD_18,
-    CARD_19
-};
-
-typedef int Card;
-
-// values are stored in an union to keep them in the same memory area,
-// as this struct is copied for each card added.
-struct CardData {
-    int id;
-    int type;
-    bool changed;
-    enum { INTEGER, FLOAT, STRING } value_type;
-    union alignas(8) {
-        char *value_s;
-        float value_f;
-        int value_i;
-    };
-    int value_min;
-    int value_max;
-
-    // used to run an attached function
-    void (*value_ptr)(CardData *);
-
-    int datatype;
-    char *name;
-};
-
-
-struct GraphAxisData {
-    enum { INTEGER, FLOAT, STRING } value_type;
-    union alignas(8) {
-        char *value_s;
-        float value_f;
-        int value_i;
-    };
-};
-
-struct GraphData {
-    int id;
-    int type;
-    bool changed;
-    Vector<GraphAxisData> x_axis;
-    Vector<int> y_axis;
-
-    char *name;
-};
-
-struct CardNames {
-    int value;
-    const char *name;
-    const char *json_method;
-};
-
-#define TEMPERATURE_CARD_TYPES 6
-#define STATUS_CARD_TYPES 4
-#define SLIDER_CARD_TYPES 4
-
-class ESPDashV3
-{
-    private:
-        Vector<CardData> cData;
-        Vector<GraphData> gData;
-        bool stats_enabled = true;
-        bool basic_auth = false;
-        const char *username;
-        const char *password;
-
-        // Async WebSocket event callback function
-        static void onWsEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len);
-
-    public:
-        ESPDashV3();
-        ~ESPDashV3();
-
-        void init(AsyncWebServer& server);
-        void webauth(const char *user, const char *pass);
-
-        // adding a new card to layout, specialized functions
-        int AddCard(const int type, const char *name, int datatype = 0, int min = 0, int max = 0);
-        int AddGraph(const int type, const char *name);
-
-        // Update card data, specialized functions
-        void UpdateCard(const int cardID, int value);
-        void UpdateCard(const int cardID, float value);
-        void UpdateCard(const int cardID, String &value);
-        void UpdateCard(const int cardID, void (*funptr)(CardData *));
-
-        void UpdateGraph(const int cardID, int arr_x[], int x_size, int arr_y[], int y_size);
-
-        // Notify client side to update values
-        void SendUpdates();
-
-        // send generated layout json to client side
-        String UpdateLayout(bool only_stats = false);
-
-        // send generated update json to client side
-        String RefreshCards(bool toAll = false);
-};
-
-extern ESPDashV3 ESPDash;
 
 #endif
