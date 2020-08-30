@@ -53,7 +53,7 @@
 
 class ESPDash{
   private:
-    std::unique_ptr<AsyncWebSocket> ws;
+    AsyncWebSocket* ws = nullptr;
 
     Vector<Card*> cards;
     Vector<Chart*> charts;
@@ -61,9 +61,6 @@ class ESPDash{
     bool basic_auth = false;
     const char *username;
     const char *password;
-
-    // Async WebSocket event callback function
-    static void onWsEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len);
 
   public:
     ESPDash(AsyncWebServer& server);

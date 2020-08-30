@@ -6,33 +6,22 @@
 #include "Arduino.h"
 
 struct CardNames {
-    int value;
-    const char *tag;
-    const char *method;
+  int value;
+  const char* tag;
+  const char* method;
 };
 
 // functions defaults to zero (number card)
 enum {
-    NUMBER_CARD,
-    BUTTON_CARD,
-    TEMPERATURE_CARD,
-    HUMIDITY_CARD,
-    STATUS_CARD,
-    SLIDER_CARD,
-    GAUGE_CARD,
+  NUMBER_CARD,
+  BUTTON_CARD,
+  TEMPERATURE_CARD,
+  HUMIDITY_CARD,
+  STATUS_CARD,
+  SLIDER_CARD,
+  GAUGE_CARD,
 };
 
-// integral type to string pairs events
-// ID, type, json_method call
-CardNames cardNames[] = {
-    {NUMBER_CARD, "number", "updateNumber"},
-    {BUTTON_CARD, "button", NULL},
-    {TEMPERATURE_CARD, "temperature", "updateTemperature"},
-    {HUMIDITY_CARD, "humidity", "updateHumidity"},
-    {STATUS_CARD, "status", "updateStatus"},
-    {SLIDER_CARD, "slider", "updateSlider"},
-    {GAUGE_CARD, "gauge", "updateGauge"},
-};
 
 class Card {
   private:
@@ -62,7 +51,7 @@ class Card {
     void update(const String &value);
     ~Card();
   
-  friend class ESPDashV3;
+  friend class ESPDash;
 };
 
 

@@ -1,10 +1,21 @@
 #include "Card.h"
 
+// integral type to string pairs events
+// ID, type, json_method call
+struct CardNames cardTags[] = {
+  {NUMBER_CARD, "number", "updateNumber"},
+  {BUTTON_CARD, "button", NULL},
+  {TEMPERATURE_CARD, "temperature", "updateTemperature"},
+  {HUMIDITY_CARD, "humidity", "updateHumidity"},
+  {STATUS_CARD, "status", "updateStatus"},
+  {SLIDER_CARD, "slider", "updateSlider"},
+  {GAUGE_CARD, "gauge", "updateGauge"},
+};
 
 /*
   Constructor
 */
-Card::Card(const int type, const char* name, const int min = 0, const int max = 0){
+Card::Card(const int type, const char* name, const int min, const int max){
   _type = type;
   // _name = name; // TODO: copy const char to char array
   _value_min = min;
@@ -45,7 +56,7 @@ void Card::update(const String &value){
 const String Card::generateJSON(){
   String data = "";
   data += "{\"id\":" + String(_id) + ",";
-  data += "\"method\":\"" + String(cardNames[_type].method) + "\",";
+  data += "\"method\":\"" + String(cardTags[_type].method) + "\",";
   data += "\"value\":\"";
 
   switch (_value_type) {

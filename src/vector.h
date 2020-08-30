@@ -1,3 +1,7 @@
+#ifndef VectorClass
+#define VectorClass
+
+
 #ifndef MIN
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
 #endif
@@ -235,3 +239,5 @@ private:
         head = _head;
     }
 };
+
+#endif

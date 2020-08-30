@@ -25,7 +25,7 @@
 #include <ESPDash.h>
 
 AsyncWebServer server(80);
-ESPDash dashboard(&server);
+ESPDash dashboard(server);
 
 const char* ssid = ""; // Your WiFi SSID
 const char* password = ""; // Your WiFi Password
@@ -60,7 +60,7 @@ void loop() {
     // cast values as integers
     number.update((int)random(0, 5000));
     temperature.update((int)random(0, 50));
-    hummidity.update((int)random(0, 100));
+    humidity.update((int)random(0, 100));
 
     // Notify frontend updates
     dashboard.sendUpdates();

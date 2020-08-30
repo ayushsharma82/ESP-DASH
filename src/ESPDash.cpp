@@ -20,7 +20,7 @@
 */
 ESPDash::ESPDash(AsyncWebServer& server) {
   // Initialize AsyncWebSocket
-  ws.reset(new AsyncWebSocket("/dashws"));
+  ws = new AsyncWebSocket("/dashws");
 
   // Attach AsyncWebServer Routes
   server.on("/", HTTP_GET, [this](AsyncWebServerRequest *request){
@@ -35,7 +35,7 @@ ESPDash::ESPDash(AsyncWebServer& server) {
   });
 
   // Websocket Callback Handler
-  ws.onEvent([&](AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len){
+  ws->onEvent([&](AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len){
     StaticJsonDocument<200> json;
     String response;
 
@@ -44,43 +44,51 @@ ESPDash::ESPDash(AsyncWebServer& server) {
       if (info -> final && info -> index == 0 && info -> len == len) {
         if (info -> opcode == WS_TEXT) {
           data[len] = 0;
-          deserializeJson(json, reinterpret_cast <
-            const char * > (data));
-
+          deserializeJson(json, reinterpret_cast<const char*>(data));
           // client side commands parsing
           if (json["command"] == "getLayout")
-            response = ESPDash.UpdateLayout();
+            response = updateLayout();
           else if (json["command"] == "ping")
             response = "{\"response\":\"pong\"}";
           else if (json["command"] == "getStats")
-            response = ESPDash.UpdateLayout(true);
+            response = updateLayout(true);
           else if (json["command"] == "buttonClicked") {
             // execute and reference card data struct to funtion
             int id = json["id"];
-            if (id >= 0 && ESPDash.cards[id].value_ptr != nullptr)
-              ESPDash.cards[id].value_ptr( & ESPDash.cards[id]);
-
+            for(int i; i < cards.Size(); i++){
+              Card *p = cards[i];
+              if(id == p->_id){
+                if(p->_callback != nullptr){
+                  p->_callback();
+                }
+              }
+            }
             return;
           } else if (json["command"] == "sliderChanged") {
             // execute and reference card data struct to funtion
             int id = json["id"];
             int value = json["value"];
-            ESPDash.UpdateCard(id, value);
-            if (id >= 0 && ESPDash.cards[id].value_ptr != nullptr)
-              ESPDash.cards[id].value_ptr( & ESPDash.cards[id]);
-
-            response = ESPDash.RefreshCards();
+            for(int i; i < cards.Size(); i++){
+              Card *p = cards[i];
+              if(id == p->_id){
+                p->_value_i = value;
+                if(p->_callback != nullptr){
+                  p->_callback();
+                }
+              }
+            }
+            response = refresh();
           }
 
           // update only requested socket
-          ws.text(client -> id(), response);
+          ws->text(client -> id(), response);
         }
       }
     }
   });
 
   // Attach Websocket Instance to AsyncWebServer
-  server.addHandler(&ws);
+  server.addHandler(ws);
 }
 
 
@@ -88,7 +96,7 @@ void ESPDash::setAuthentication(const char *user, const char *pass) {
   username = user;
   password = pass;
   basic_auth = true;
-  ws.setAuthentication(user, pass);
+  ws->setAuthentication(user, pass);
 }
 
 
@@ -101,7 +109,7 @@ void ESPDash::add(Card *card) {
 void ESPDash::remove(Card *card) {
   for(int i=0; i < cards.Size(); i++){
     Card *p = cards[i];
-    if(strcmp(p->_id, card->_id) === 0){
+    if(p->_id == card->_id){
       delete cards[i];
       return;
     }
@@ -118,7 +126,7 @@ void ESPDash::add(Chart *chart) {
 void ESPDash::remove(Chart *chart) {
   for(int i=0; i < charts.Size(); i++){
     Chart *p = charts[i];
-    if(strcmp(p->_id, chart->_id) === 0){
+    if(p->_id == chart->_id){
       delete charts[i];
       return;
     }
@@ -153,7 +161,6 @@ String ESPDash::updateLayout(bool only_stats) {
   if (stats_enabled) {
     // No need to use json library to build response packet
     stats += "\"enabled\":true,";
-    stats += "\"releaseTag\": \"" + String(ESPDASH_RELEASE_TAG) + "\",";
     #if defined(ESP8266)
     stats += "\"hardware\":\"ESP8266\",";
     stats += "\"sdk\":\"" + ESP.getCoreVersion() + "\",";
@@ -181,11 +188,9 @@ String ESPDash::updateLayout(bool only_stats) {
   // Generate JSON for all changed Cards
   for (int i=0; i < cards.Size(); i++) {
     Card *p = cards[i];
-    if(p->_changed || toAll){
-      p->_changed = false;
-      data += p->generateJSON();
-      data += ",";
-    }    
+    p->_changed = false;
+    data += p->generateJSON();
+    data += ",";
   }
 
   // Remove Last Comma
@@ -198,5 +203,13 @@ String ESPDash::updateLayout(bool only_stats) {
 }
 
 void ESPDash::sendUpdates() {
-  ws.textAll(refresh(true));
+  ws->textAll(refresh(true));
+}
+
+
+/*
+  Destructor
+*/
+ESPDash::~ESPDash(){
+
 }

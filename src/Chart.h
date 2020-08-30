@@ -3,6 +3,7 @@
 
 #include <functional>
 #include "Arduino.h"
+#include "vector.h"
 
 // Default to Line Chart
 enum {
@@ -36,7 +37,7 @@ class Chart {
     void update(const int cardID, int arr_x[], int x_size, int arr_y[], int y_size);
     ~Chart();
 
-  friend class ESPDashV3;
+  friend class ESPDash;
 };
 
 #endif
