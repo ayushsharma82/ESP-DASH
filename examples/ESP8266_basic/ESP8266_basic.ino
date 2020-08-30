@@ -25,12 +25,15 @@
 #include <ESPDash.h>
 
 AsyncWebServer server(80);
+ESPDash dashboard(&server);
 
 const char* ssid = ""; // Your WiFi SSID
 const char* password = ""; // Your WiFi Password
 
-// these holds created cards IDs
-Card number, temperature, humidity;
+// Dashboard Cards
+Card number(NUMBER_CARD, "Random Number");
+Card temperature(TEMPERATURE_CARD, "Temperature");
+Card humidity(HUMIDITY_CARD, "Humidity");
 
 void setup() {
     Serial.begin(115200);
@@ -44,24 +47,22 @@ void setup() {
     Serial.print("IP Address: ");
     Serial.println(WiFi.localIP());
     
-    // Initiate ESPDash and attach your Async webserver instance, it also starts the
-    // server automatically now. no need to call server.begin
-    ESPDash.init(server);
+    // Add all cards to our dashboard
+    dashboard.add(&number);
+    dashboard.add(&temperature);
+    dashboard.add(&humidity);
 
-    // Add Respective Cards
-    number = ESPDash.AddCard(TYPE_NUMBER_CARD, "Number Card");
-    temperature = ESPDash.AddCard(TYPE_TEMPERATURE_CARD, "Temperature Card");
-    humidity = ESPDash.AddCard(TYPE_HUMIDITY_CARD, "Humidity Card");    
+    // Start AsyncWebServer
+    server.begin();
 }
 
 void loop() {
     // cast values as integers
-    ESPDash.UpdateCard(number, (int)random(0, 5000));
-    ESPDash.UpdateCard(temperature, (int)random(0, 50));
-    ESPDash.UpdateCard(humidity, (int)random(0, 100));
+    number.update((int)random(0, 5000));
+    temperature.update((int)random(0, 50));
+    hummidity.update((int)random(0, 100));
 
     // Notify frontend updates
-    ESPDash.SendUpdates();
-
+    dashboard.sendUpdates();
     delay(3000);
 }
