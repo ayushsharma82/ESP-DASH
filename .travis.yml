@@ -1,44 +1,17 @@
+# Enable validating this file
+version: ~> 1.0
+
+language: python
+python:
+    - "2.7"
 sudo: false
-language: bash
-os:
-  - linux
+cache:
+    directories:
+        - "~/.platformio"
 
-dist:
-  - xenial
-
-addons:
-  apt:
-    packages:
-      - xvfb
-
-script:
-  - /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_1.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :1 -ac -screen 0 1280x1024x16
-# - /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_1.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :1 -screen 0 1400x900x24 -ac +extension GLX +render;
-  - export DISPLAY=:1.0
-  - sleep 3
-  - ls -l /tmp/*pid
-
-  - wget http://downloads.arduino.cc/arduino-1.6.5-linux64.tar.xz
-  - tar xf arduino-1.6.5-linux64.tar.xz
-  - mv arduino-1.6.5 $HOME/arduino_ide
-  - export PATH="$HOME/arduino_ide:$PATH"
-  - which arduino
-  - mkdir -p $HOME/Arduino/libraries
-  - cp -r $TRAVIS_BUILD_DIR $HOME/Arduino/libraries/ESP-DASH
-  - git clone https://github.com/bblanchon/ArduinoJson $HOME/Arduino/libraries/ArduinoJson
-  - git clone https://github.com/me-no-dev/ESPAsyncTCP $HOME/Arduino/libraries/ESPAsyncTCP
-  - git clone https://github.com/me-no-dev/ESPAsyncTCP $HOME/Arduino/libraries/ESPAsyncWebServer
-  - cd $HOME/arduino_ide/hardware
-  - mkdir esp8266com
-  - cd esp8266com
-  - git clone https://github.com/esp8266/Arduino.git esp8266
-  - cd esp8266/tools
-  - python get.py
-  - arduino --board esp8266com:esp8266:generic --save-prefs
-  - arduino --get-pref sketchbook.path
-  - arduino --verify esp8266com:esp8266:generic $HOME/Arduino/libraries/ESP-DASH/examples/ESP8266_basic/ESP8266_basic.ino
-
-notifications:
-  email:
-    on_success: change
-    on_failure: change
+jobs:
+  include:
+    - install:
+      - pip install -U platformio
+      - platformio update
+      script: ./build_platformio.sh
