@@ -154,6 +154,26 @@ int ESPDashV3::AddCard(const int type, const char *name, int datatype, int min, 
     return cData.Size()-1;
 }
 
+// add a new card to the collection
+int ESPDashV3::AddGraph(const int type, const char *name)
+{
+    GraphData card;
+    int size;
+
+    card.id = cData.Size();
+    card.type = type;
+    card.changed = true;
+
+    size = strlen(name)+1;
+    card.name = new char[size];
+    strncpy(card.name, name, size);
+
+    // push the card into the array
+    gData.PushBack(card);
+
+    return gData.Size()-1;
+}
+
 // overload funtion for integer value update
 void ESPDashV3::UpdateCard(const int cardID, int value)
 {
