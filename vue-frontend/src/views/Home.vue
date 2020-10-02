@@ -49,7 +49,6 @@
   import ProgressCard from '@/components/ProgressCard.vue';
   import SliderCard from '@/components/SliderCard.vue';
   import ButtonCard from '@/components/ButtonCard.vue';
-  // import LineChart from '@/components/LineChart.vue';
 
   export default {
     name: 'home',
