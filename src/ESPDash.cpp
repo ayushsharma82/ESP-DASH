@@ -110,7 +110,7 @@ void ESPDash::remove(Card *card) {
   for(int i=0; i < cards.Size(); i++){
     Card *p = cards[i];
     if(p->_id == card->_id){
-      delete cards[i];
+      cards.Erase(i);
       return;
     }
   }
@@ -127,7 +127,7 @@ void ESPDash::remove(Chart *chart) {
   for(int i=0; i < charts.Size(); i++){
     Chart *p = charts[i];
     if(p->_id == chart->_id){
-      delete charts[i];
+      charts.Erase(i);
       return;
     }
   }
