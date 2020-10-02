@@ -143,13 +143,14 @@ String ESPDash::refresh(bool toAll) {
     Card *p = cards[i];
     if(p->_changed || toAll){
       p->_changed = false;
-      data += p->generateJSON();
+      data += p->generateJSON(true);
       data += ",";
     }    
   }
 
   // Remove Last Comma
-  data.remove(data.length());
+  data.remove(data.length()-1);
+
   return "{\"response\":\"updateCards\", ""\"cards\":[" + data + "]}";
 }
 
@@ -194,7 +195,7 @@ String ESPDash::updateLayout(bool only_stats) {
   }
 
   // Remove Last Comma
-  data.remove(data.length());
+  data.remove(data.length()-1);
 
   return "{\"response\":\"getLayout\", "
   "\"version\": \"1\", "
