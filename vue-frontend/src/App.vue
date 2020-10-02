@@ -41,49 +41,7 @@
           wifiMode: null,
           wifiSignal: null
         },
-        cards: [{
-          id: 1,
-          type: "number",
-          value: 1234,
-          name: 'Random Number',
-          symbol: ''
-        },
-        {
-          id: 2,
-          type: "temperature",
-          value: 12,
-          name: 'Temperature',
-          symbol: '°C'
-        },
-        {
-          id: 3,
-          type: "humidity",
-          value: 55,
-          name: 'Humidity',
-          symbol: '%'
-        },
-        {
-          id: 4,
-          type: "status",
-          value: "Working",
-          name: 'Status',
-          symbol: 'success'
-        },
-        {
-          id: 4,
-          type: "slider",
-          name: 'Slider',
-          value: 4,
-          value_min: 0,
-          value_max: 100,
-          symbol: '%'
-        },
-        {
-          id: 5,
-          type: "button",
-          name: "Button",
-          value: true
-        }]
+        cards: []
       }
     },
 

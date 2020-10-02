@@ -42,15 +42,14 @@
 </template>
 
 <script>
+  import NumberCard from '@/components/NumberCard.vue';
   import TemperatureCard from '@/components/TemperatureCard.vue';
   import HumdidityCard from '@/components/HumidityCard.vue';
-  import NumberCard from '@/components/NumberCard.vue';
   import StatusCard from '@/components/StatusCard.vue';
   import ProgressCard from '@/components/ProgressCard.vue';
-  import ButtonCard from '@/components/ButtonCard.vue';
-  import LineChart from '@/components/LineChart.vue';
-  import GaugeCard from '@/components/GaugeCard.vue';
   import SliderCard from '@/components/SliderCard.vue';
+  import ButtonCard from '@/components/ButtonCard.vue';
+  // import LineChart from '@/components/LineChart.vue';
 
   export default {
     name: 'home',
@@ -64,8 +63,6 @@
       StatusCard,
       ProgressCard,
       ButtonCard,
-      LineChart,
-      GaugeCard,
       SliderCard
     },
 
