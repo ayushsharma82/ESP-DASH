@@ -21,10 +21,11 @@
 
 // Layout
 @import '~bulma/sass/grid/_all';
+@import '~bulma/sass/helpers/_all';
 @import '~bulma/sass/layout/_all';
 
 // Bulma-Slider Plugin
-@import '~bulma-slider/dist/css/bulma-slider.sass';
+@import '~bulma-slider/src/sass/index.sass';
 
 
 // Custom Styles

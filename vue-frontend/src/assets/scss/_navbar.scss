@@ -23,71 +23,40 @@
   }
 }
 
+.navbar-burger{
+  border-radius: 0.55rem;
+}
+
 .navbar-burger:focus {
   outline: none;
   text-decoration: none;
   background: transparent;
 }
 
-// Sidebar Styles
-
-.page-sidebar {
-  z-index: 1;
-  box-shadow: 0 1.5rem 4rem rgba(22,28,45,.05) !important;
-  min-height: 100vh;
-  
-  .menu {
-    padding: 2rem 0rem;
-    .menu-list a{
-      font-weight: 400;
-    }
-
-    .menu-list a.is-active{
-      font-weight: 600 !important;
-    }
-
-    @include mobile{
-        padding: 2rem 0rem;
-    }
-  }
-
-  .menu-list svg {
-    vertical-align: middle;
-    margin-right: 1rem;
-  }
-
-  .menu-list svg {
-    vertical-align: middle;
-  }
-
-
-  .menu-list a {
-    color: #A8A8AD;
-    letter-spacing: 0.8px !important;
-    font-weight: 500;
-  }
-
-  .menu-list a:hover {
-    background-color: transparent;
-  }
-
-  .section {
-    padding: 3rem 1rem;
-  
-    @include mobile{
-        padding: 0.5rem 1rem 0rem 1rem !important;
-    }
-  }
-
-  @include mobile {
-      min-height: auto !important;
-  }
+.navbar-menu{
+  box-shadow: none !important;
 }
 
-.tags:not(:last-child) {
-  margin-bottom: 0.5rem !important;
-}
+.navbar-end{
+  .navbar-item{
+    border-radius: 0.55rem;
+    padding: 0.55rem 1.25rem;
+    font-weight: 600;
+    color: lighten($dark, 20%);
 
-.control.is-loading::after{
-  top: 1.15rem !important; 
+    @include touch{
+      margin-top: 1rem;
+    }
+  }
+
+  .navbar-item:not(:last-child){
+    @include desktop{
+      margin-right: 1rem;
+    }
+  }
+
+  .navbar-item.is-active{
+    color: #fff;
+    background: #000 !important;
+  }
 }

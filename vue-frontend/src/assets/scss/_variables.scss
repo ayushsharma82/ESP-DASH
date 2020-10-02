@@ -6,6 +6,7 @@ $grey-dark: #2c2e33;
 $black: #2B2B2B;
 $text: $black;
 $light: #F9FBFD;
+$muted: #a1a8b4;
 $dark: #2B354F;
 $link: #335EEA;
 $info: #7C69EF;
@@ -22,4 +23,7 @@ $menu-item-active-color: $dark;
 // Slider
 $slider-thumb-border: 1px solid rgba(0, 0, 0, 0.1);
 $slider-output-background: $primary;
-$slider-thumb-to-track-ratio: 6;
+
+.has-text-muted{
+  color: $muted;
+}
