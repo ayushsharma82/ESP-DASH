@@ -1,69 +1,68 @@
-// Finalize Nodejs Script
-// 1 - Append JS in HTML Document
-// 2 - Gzip HTML
-// 3 - Covert to Raw Bytes
-// 4 - ( Save to File: webpage.h ) in dist Folder
-
-const fs = require('fs');
-const zlib = require('zlib');
 const { gzip } = require('@gfx/zopfli');
+const FS = require('fs');
+const path = require('path');
 
-function getByteArray(file){
-    let fileData = file.toString('hex');
-    let result = [];
-    for (let i = 0; i < fileData.length; i+=2)
-      result.push('0x'+fileData[i]+''+fileData[i+1]);
-    return result;
-}
+const BUNDLE_JS = FS.readFileSync(path.resolve(__dirname, './dist/js/app.js'));
 
-// Set external path like https://localhost.localdomain/iot to serve JS files or leave blank to store files in ESP
-let path = ``;
-let js = fs.readFileSync(__dirname+'/dist/js/app.js');
-let html = `
+const HTML = `
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <meta name="referrer" content="no-referrer">
-    <title>ESP-DASH</title>
-    ${path ? `<link rel=icon href=${path}/favicon.ico>` : ``}
-    ${path ? `<link href=${path}/js/app.js rel=preload as=script>` : ``}
-  </head>
-  <body>
+<html lang=en>
+<head>
+    <meta charset=utf-8>
+    <meta http-equiv=X-UA-Compatible content="IE=edge">
+    <meta name=viewport content="width=device-width,initial-scale=1">
+    <link rel=icon href=/favicon.ico> <title>ESPDash</title>
+    <script data-name="BMC-Widget" async src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="6QGVpSj" data-description="Support me on Buy me a coffee!" data-message="You can always support my work by buying me a coffee!" data-color="#FF813F" data-position="right" data-x_margin="24" data-y_margin="24"></script>
+</head>
+<body style="overflow: hidden;">
     <noscript>
-      <strong>We're sorry but ESP-DASH doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+        <strong>We're sorry but ElegantOTA doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
-    <div id="app"></div>
-    <script${path ? ` src=${path}/js/app.js>` : `>${js}`}</script>
-  </body>
+    <div id=app></div>
+    <script defer>${BUNDLE_JS}</script>
+</body>
 </html>
 `;
-// Gzip the index.html file with JS Code.
-const gzippedIndex = zlib.gzipSync(html, {'level': zlib.constants.Z_BEST_COMPRESSION});
-let indexHTML = getByteArray(gzippedIndex);
 
-let source = 
-`
-const uint32_t DASH_HTML_SIZE = ${indexHTML.length};
-const uint8_t DASH_HTML[] PROGMEM = { ${indexHTML} };
+function chunkArray(myArray, chunk_size) {
+  let index = 0;
+  const arrayLength = myArray.length;
+  const tempArray = [];
+  for (index = 0; index < arrayLength; index += chunk_size) {
+    myChunk = myArray.slice(index, index + chunk_size);
+    // Do something if you want with the group
+    tempArray.push(myChunk);
+  }
+  return tempArray;
+}
+
+function addLineBreaks(buffer) {
+  let data = '';
+  const chunks = chunkArray(buffer, 30);
+  chunks.forEach((chunk, index) => {
+    data += chunk.join(',');
+    if (index + 1 !== chunks.length) {
+      data += ',\n';
+    }
+  });
+  return data;
+}
+
+
+gzip(HTML, { numiterations: 15 }, (err, output) => {
+  if (err) {
+    return console.error(err);
+  }
+
+  const FILE = `#ifndef DashWebpage_h
+#define DashWebpage_h
+const uint32_t DASH_HTML_SIZE = ${output.length};
+const uint8_t DASH_HTML[] PROGMEM = { 
+${addLineBreaks(output)} 
+};
+#endif
 `;
 
-
-fs.writeFileSync(__dirname+'/dist/webpage.h', source, 'utf8');
-
-// Produce a second variant with zopfli
-// Zopfli is a improved zip algorithm by google
-// Takes much more time and maybe is not available on every machine
-const input =  html;
-gzip(input, {numiterations: 15}, (err, output) => {
-    indexHTML = output;
-    let source =
-`
-const uint32_t DASH_HTML_SIZE = ${indexHTML.length};
-const uint8_t DASH_HTML[] PROGMEM = { ${indexHTML} };
-`;
-
-    fs.writeFileSync(__dirname + '/dist/webpage_zopfli.h', source, 'utf8');
+  FS.writeFileSync(path.resolve(__dirname, '../src/webpage.h'), FILE);
+  console.log(`[COMPRESS] Compressed Build Files to webpage.h: ${ (output.length/1024).toFixed(2) }KB`);
 });
