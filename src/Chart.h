@@ -1,5 +1,5 @@
-#ifndef Chart_h
-#define Chart_h
+#ifndef __CHART_H
+#define __CHART_H
 
 #include <functional>
 #include "Arduino.h"
@@ -7,7 +7,7 @@
 
 // Default to Line Chart
 enum {
-    LINE_CHART,
+  LINE_CHART,
 };
 
 struct GraphAxisData {
