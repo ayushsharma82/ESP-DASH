@@ -1,28 +1,28 @@
 <template>
   <div>
-    <div class="container" style="margin: 1.55rem 1rem;" v-if="totalNumOfCards > 0">
+    <div class="container" v-if="cards.length > 0">
       <div class="columns is-mobile is-multiline">
-        <number-card v-for="card in cards.number" :key="card.id" :card="card"></number-card>
-        <temperature-card v-for="card in cards.temperature" :key="card.id" :card="card"></temperature-card>
-        <humdidity-card v-for="card in cards.humidity" :key="card.id" :card="card"></humdidity-card>
-        <status-card v-for="card in cards.status" :key="card.id" :card="card"></status-card>
-        <button-card v-for="card in cards.button" :key="card.id" :card="card"></button-card>
-        <slider-card v-for="card in cards.slider" :key="card.id" :card="card"></slider-card>
+        <number-card v-for="card in getParticularCards('number')" :key="card.id" :card="card"></number-card>
+        <temperature-card v-for="card in getParticularCards('temperature')" :key="card.id" :card="card"></temperature-card>
+        <humdidity-card v-for="card in getParticularCards('humidity')" :key="card.id" :card="card"></humdidity-card>
+        <status-card v-for="card in getParticularCards('status')" :key="card.id" :card="card"></status-card>
+        <slider-card v-for="card in getParticularCards('slider')" :key="card.id" :card="card"></slider-card>
+        <button-card v-for="card in getParticularCards('button')" :key="card.id" :card="card"></button-card>
       </div>
-      <br />
+      <!-- <br />
       <div class="columns is-mobile is-multiline">
         <line-chart v-for="card in cards.lineChart" :key="card.id" :card="card"></line-chart>
       </div>
       <br />
       <div class="columns is-mobile is-multiline">
         <gauge-card v-for="card in cards.gauge" :key="card.id" :card="card"></gauge-card>
-      </div>
+      </div> -->
     </div>
     <div class="container" v-else>
       <div class="section">
         <div class="row">
           <div class="columns is-centered has-text-centered" style="font-weight: 400; font-size: 18px">
-            <div class="column" style="margin-top: 12rem">
+            <div class="column">
               Loading
               <svg width="24px" height="24px" class="spinner" style="vertical-align: middle;" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                   <g id="Stockholm-icons-/-Code-/-Loading" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -66,17 +66,15 @@
       SliderCard
     },
 
-    computed: {
-      totalNumOfCards() {
-        let num = 0;
-        num = num + this.cards.temperature.length;
-        num = num + this.cards.humidity.length;
-        num = num + this.cards.number.length;
-        num = num + this.cards.status.length;
-        num = num + this.cards.button.length;
-        num = num + this.cards.slider.length;
-        num = num + this.cards.lineChart.length;
-        return num;
+    methods: {
+      getParticularCards(type) {
+        let cards = [];
+        for(let card of this.cards){
+          if(card.type === type){
+            cards.push(card);
+          }
+        }
+        return cards;
       }
     }
   }
