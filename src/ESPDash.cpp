@@ -1,19 +1,4 @@
-/*
-* ESP-DASH V2
-* Made by Ayush Sharma
-* Github URL: https://github.com/ayushsharma82/ESP-DASH
-* Support Me: https://www.patreon.com/asrocks5
-*
-*
-* Core routines rewritten by Cassiano Martin <cassiano.martin@gmail.com>
-* Not all functions implemented yet, missing button and slider routines.
-* Next step is to reduce json library dependency, in fact we need only a
-* parser, and not a full-blown library.
-*
-*/
-
 #include "ESPDash.h"
-
 
 /*
   Constructor
@@ -58,8 +43,8 @@ ESPDash::ESPDash(AsyncWebServer& server) {
             for(int i; i < cards.Size(); i++){
               Card *p = cards[i];
               if(id == p->_id){
-                if(p->_callback != nullptr){
-                  p->_callback();
+                if(p->_btn_callback != nullptr){
+                  p->_btn_callback(json["value"].as<bool>());
                 }
               }
             }
@@ -71,9 +56,8 @@ ESPDash::ESPDash(AsyncWebServer& server) {
             for(int i; i < cards.Size(); i++){
               Card *p = cards[i];
               if(id == p->_id){
-                p->_value_i = value;
-                if(p->_callback != nullptr){
-                  p->_callback();
+                if(p->_slider_callback != nullptr){
+                  p->_slider_callback(json["value"].as<int>());
                 }
               }
             }

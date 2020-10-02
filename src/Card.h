@@ -41,7 +41,8 @@ class Card {
     int _value_min;
     int _value_max;
     String _symbol;
-    std::function<void()> _callback = nullptr;
+    std::function<void(bool value)> _btn_callback = nullptr;
+    std::function<void(int value)> _slider_callback = nullptr;
 
   private:
     // Utility Methods
@@ -49,7 +50,8 @@ class Card {
 
   public:
     Card(const int type, const char* name, const char* symbol = "", const int min = 0, const int max = 0);
-    void attachCallback(std::function<void()> cb);
+    void attachCallback(std::function<void(bool)> cb);
+    void attachCallback(std::function<void(int)> cb);
     void update(int value);
     void update(int value, const char* symbol);
     void update(bool value);

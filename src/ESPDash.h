@@ -1,25 +1,14 @@
 /*
-* ESP-DASH V2
-* Made by Ayush Sharma
-* Github URL: https://github.com/ayushsharma82/ESP-DASH
-* Support Me: https://www.patreon.com/asrocks5
-*
-* - Version Changelog - 
-* V1.0.0 - 11 Nov. 2017 - Library was Born
-* V1.0.1 - 13 Nov. 2017 - Fixed Empty SPIFFS Issue
-* V1.0.2 - 13 Nov. 2017 - Improvements on SPIFFS Issue
-* V1.0.3 - 24 Dec. 2017 - Pushing to Library Manager
-*
-* = Library Rewritten! =
-* V2.0.0 - 25 Jan 2019 - Wohoo! A breakthrough in performance and capabilities!
-*
-* 
-* Credits:
-* Malcolm Brook (https://github.com/malbrook) for Slider Card
-*
-*
-* Core routines rewritten by Cassiano Martin <cassiano.martin@gmail.com>
-* Not all functions implemented yet, missing button and slider routines.
+____ ____ ___  ___  ____ ____ _  _ 
+|___ [__  |__] |  \ |__| [__  |__| 
+|___ ___] |    |__/ |  | ___] |  | 
+                                   
+ESP-DASH V3
+---------------------
+Author: Ayush Sharma
+First Commit: Nov 5, 2017
+Github URL: https://github.com/ayushsharma82/ESP-DASH
+
 */
 
 #ifndef ESPDash_h

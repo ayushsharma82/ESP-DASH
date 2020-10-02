@@ -32,8 +32,15 @@ Card::Card(const int type, const char* name, const char* symbol, const int min, 
 /*
   Attach Function Callback for Button Card etc.
 */
-void Card::attachCallback(std::function<void()> cb){
-  _callback = cb;
+void Card::attachCallback(std::function<void(bool value)> cb){
+  _btn_callback = cb;
+}
+
+/*
+  Attach Function Callback for Slider Card etc.
+*/
+void Card::attachCallback(std::function<void(int value)> cb){
+  _slider_callback = cb;
 }
 
 
