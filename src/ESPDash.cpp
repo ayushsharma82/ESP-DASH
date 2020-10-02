@@ -39,8 +39,8 @@ ESPDash::ESPDash(AsyncWebServer& server) {
             response = updateLayout(true);
           else if (json["command"] == "buttonClicked") {
             // execute and reference card data struct to funtion
-            int id = json["id"];
-            for(int i; i < cards.Size(); i++){
+            uint32_t id = json["id"].as<uint32_t>();
+            for(int i=0; i < cards.Size(); i++){
               Card *p = cards[i];
               if(id == p->_id){
                 if(p->_btn_callback != nullptr){
@@ -51,9 +51,8 @@ ESPDash::ESPDash(AsyncWebServer& server) {
             return;
           } else if (json["command"] == "sliderChanged") {
             // execute and reference card data struct to funtion
-            int id = json["id"];
-            int value = json["value"];
-            for(int i; i < cards.Size(); i++){
+            uint32_t id = json["id"].as<uint32_t>();
+            for(int i=0; i < cards.Size(); i++){
               Card *p = cards[i];
               if(id == p->_id){
                 if(p->_slider_callback != nullptr){
