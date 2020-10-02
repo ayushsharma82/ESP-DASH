@@ -3,13 +3,13 @@
 // integral type to string pairs events
 // ID, type, json_method call
 struct CardNames cardTags[] = {
-  {NUMBER_CARD, "number", "updateNumber"},
-  {BUTTON_CARD, "button", NULL},
-  {TEMPERATURE_CARD, "temperature", "updateTemperature"},
-  {HUMIDITY_CARD, "humidity", "updateHumidity"},
-  {STATUS_CARD, "status", "updateStatus"},
-  {SLIDER_CARD, "slider", "updateSlider"},
-  {GAUGE_CARD, "gauge", "updateGauge"},
+  {NUMBER_CARD, "number"},
+  {TEMPERATURE_CARD, "temperature"},
+  {HUMIDITY_CARD, "humidity"},
+  {STATUS_CARD, "status"},
+  {SLIDER_CARD, "slider"},
+  {BUTTON_CARD, "button"},
+  {PROGRESS_CARD, "progress"},
 };
 
 /*
@@ -40,11 +40,27 @@ void Card::attachCallback(std::function<void()> cb){
 /*
   Value update methods
 */
+void Card::update(int value, const char* symbol){
+  _value_type = Card::INTEGER;
+  _symbol = symbol;
+  if(_value_i != value)
+    _changed = true;
+  _value_i = value;
+}
+
 void Card::update(int value){
   _value_type = Card::INTEGER;
   if(_value_i != value)
     _changed = true;
   _value_i = value;
+}
+
+void Card::update(float value, const char* symbol){
+  _value_type = Card::FLOAT;
+  _symbol = symbol;
+  if(_value_f != value)
+    _changed = true;
+  _value_f = value;
 }
 
 void Card::update(float value){
@@ -54,11 +70,34 @@ void Card::update(float value){
   _value_f = value;
 }
 
+void Card::update(const String &value, const char* symbol){
+  _value_type = Card::STRING;
+  _symbol = symbol;
+  if(strcmp(_value_s, value.c_str()) != 0)
+    _changed = true;
+  // _value_s = value; // TODO: Convert string to char array
+}
+
 void Card::update(const String &value){
   _value_type = Card::STRING;
   if(strcmp(_value_s, value.c_str()) != 0)
     _changed = true;
   // _value_s = value; // TODO: Convert string to char array
+}
+
+void Card::update(bool value, const char* symbol){
+  _value_type = Card::BOOLEAN;
+  _symbol = symbol;
+  if(_value_b != value)
+    _changed = true;
+  _value_b = value;
+}
+
+void Card::update(bool value){
+  _value_type = Card::BOOLEAN;
+  if(_value_b != value)
+    _changed = true;
+  _value_b = value;
 }
 
 
@@ -70,25 +109,26 @@ const String Card::generateJSON(bool change_only){
 
   StaticJsonDocument<256> doc;
   doc["id"] = _id;
-  if(change_only){
-    doc["method"] = cardTags[_type].method;
-  }else{
+  if(!change_only){
     doc["name"] = _name;
-    doc["type"] = _type;
-    doc["symbol"] = _symbol;
+    doc["type"] = cardTags[_type].type;
     doc["value_min"] = _value_min;
     doc["value_max"] = _value_max;
   }
+  doc["symbol"] = _symbol;
 
   switch (_value_type) {
     case Card::INTEGER:
-      doc["value"] = String(_value_i);
+      doc["value"] = _value_i;
       break;
     case Card::FLOAT:
       doc["value"] = String(_value_f, 2);
       break;
     case Card::STRING:
       doc["value"] = _value_s;
+      break;
+    case Card::BOOLEAN:
+      doc["value"] = _value_b;
       break;
     default:
       // blank value

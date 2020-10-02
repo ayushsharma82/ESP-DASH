@@ -9,7 +9,7 @@
 
 struct CardNames {
   int value;
-  const char* tag;
+  const char* type;
   const char* method;
 };
 
@@ -22,6 +22,7 @@ enum {
   SLIDER_CARD,
   GAUGE_CARD,
   BUTTON_CARD,
+  PROGRESS_CARD
 };
 
 
@@ -31,11 +32,12 @@ class Card {
     String _name;
     int   _type;
     bool  _changed;
-    enum { INTEGER, FLOAT, STRING } _value_type;
+    enum { INTEGER, FLOAT, STRING, BOOLEAN } _value_type;
     union alignas(8) {
         char *_value_s;
         float _value_f;
         int _value_i;
+        bool _value_b;
     };
     int _value_min;
     int _value_max;
@@ -50,8 +52,13 @@ class Card {
     Card(const int type, const char* name, const char* symbol = "", const int min = 0, const int max = 0);
     void attachCallback(std::function<void()> cb);
     void update(int value);
+    void update(int value, const char* symbol);
+    void update(bool value);
+    void update(bool value, const char* symbol);
     void update(float value);
+    void update(float value, const char* symbol);
     void update(const String &value);
+    void update(const String &value, const char* symbol);
     ~Card();
   
   friend class ESPDash;

@@ -6,6 +6,7 @@
         <temperature-card v-for="card in getParticularCards('temperature')" :key="card.id" :card="card"></temperature-card>
         <humdidity-card v-for="card in getParticularCards('humidity')" :key="card.id" :card="card"></humdidity-card>
         <status-card v-for="card in getParticularCards('status')" :key="card.id" :card="card"></status-card>
+        <progress-card v-for="card in getParticularCards('progress')" :key="card.id" :card="card"></progress-card>
         <slider-card v-for="card in getParticularCards('slider')" :key="card.id" :card="card"></slider-card>
         <button-card v-for="card in getParticularCards('button')" :key="card.id" :card="card"></button-card>
       </div>
@@ -45,6 +46,7 @@
   import HumdidityCard from '@/components/HumidityCard.vue';
   import NumberCard from '@/components/NumberCard.vue';
   import StatusCard from '@/components/StatusCard.vue';
+  import ProgressCard from '@/components/ProgressCard.vue';
   import ButtonCard from '@/components/ButtonCard.vue';
   import LineChart from '@/components/LineChart.vue';
   import GaugeCard from '@/components/GaugeCard.vue';
@@ -60,6 +62,7 @@
       HumdidityCard,
       NumberCard,
       StatusCard,
+      ProgressCard,
       ButtonCard,
       LineChart,
       GaugeCard,
