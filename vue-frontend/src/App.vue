@@ -135,10 +135,11 @@
         }
       });
 
-      EventBus.$on('buttonClicked', id => {
+      EventBus.$on('buttonClicked', data => {
         Socket.send(JSON.stringify({
           "command": "buttonClicked",
-          "id": id
+          "id": data.id,
+          "value": data.value
         }));
       });
 

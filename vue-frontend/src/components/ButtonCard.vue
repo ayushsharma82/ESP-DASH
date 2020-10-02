@@ -35,7 +35,7 @@ export default {
 
     methods:{
       sendClickEvent(){
-        EventBus.$emit('buttonClicked', this.card.id);
+        EventBus.$emit('buttonClicked', { id: this.card.id, value: !this.card.value });
         this.activity = true;
         setTimeout(() => { this.activity = false }, 100);
       }
