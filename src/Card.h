@@ -25,8 +25,8 @@ enum {
 
 class Card {
   private:
+    uint32_t _id;
     char* _name;
-    int   _id;
     int   _type;
     bool  _changed;
     enum { INTEGER, FLOAT, STRING } _value_type;

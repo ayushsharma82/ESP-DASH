@@ -16,6 +16,11 @@ struct CardNames cardTags[] = {
   Constructor
 */
 Card::Card(const int type, const char* name, const int min, const int max){
+  #if defined(ESP8266)
+    _id = RANDOM_REG32;
+  #elif defined(ESP32)
+    _id = esp_random();
+  #endif
   _type = type;
   // _name = name; // TODO: copy const char to char array
   _value_min = min;
