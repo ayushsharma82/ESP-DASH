@@ -36,16 +36,22 @@ void Card::attachCallback(std::function<void()> cb){
 */
 void Card::update(int value){
   _value_type = Card::INTEGER;
+  if(_value_i != value)
+    _changed = true;
   _value_i = value;
 }
 
 void Card::update(float value){
   _value_type = Card::FLOAT;
+  if(_value_f != value)
+    _changed = true;
   _value_f = value;
 }
 
 void Card::update(const String &value){
   _value_type = Card::STRING;
+  if(strcmp(_value_s, value.c_str()) != 0)
+    _changed = true;
   // _value_s = value; // TODO: Convert string to char array
 }
 
