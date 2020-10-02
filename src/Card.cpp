@@ -15,14 +15,15 @@ struct CardNames cardTags[] = {
 /*
   Constructor
 */
-Card::Card(const int type, const char* name, const int min, const int max){
+Card::Card(const int type, const char* name, const char* symbol, const int min, const int max){
   #if defined(ESP8266)
     _id = RANDOM_REG32;
   #elif defined(ESP32)
     _id = esp_random();
   #endif
   _type = type;
-  // _name = name; // TODO: copy const char to char array
+  _name = name;
+  _symbol = symbol;
   _value_min = min;
   _value_max = max;
 }
@@ -64,28 +65,37 @@ void Card::update(const String &value){
 /*
   Generate JSON for UI
 */
-const String Card::generateJSON(){
+const String Card::generateJSON(bool change_only){
   String data = "";
-  data += "{\"id\":" + String(_id) + ",";
-  data += "\"method\":\"" + String(cardTags[_type].method) + "\",";
-  data += "\"value\":\"";
+
+  StaticJsonDocument<256> doc;
+  doc["id"] = _id;
+  if(change_only){
+    doc["method"] = cardTags[_type].method;
+  }else{
+    doc["name"] = _name;
+    doc["type"] = _type;
+    doc["symbol"] = _symbol;
+    doc["value_min"] = _value_min;
+    doc["value_max"] = _value_max;
+  }
 
   switch (_value_type) {
     case Card::INTEGER:
-      data += String(_value_i);
+      doc["value"] = String(_value_i);
       break;
     case Card::FLOAT:
-      data += String(_value_f, 2);
+      doc["value"] = String(_value_f, 2);
       break;
     case Card::STRING:
-      data += _value_s;
+      doc["value"] = _value_s;
       break;
     default:
       // blank value
       break;
   }
 
-  data += "\"}";
+  serializeJson(doc, data);
   return data;
 }
 

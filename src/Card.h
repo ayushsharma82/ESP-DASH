@@ -5,6 +5,8 @@
 #include <functional>
 #include "Arduino.h"
 
+#include "ArduinoJson.h"
+
 struct CardNames {
   int value;
   const char* tag;
@@ -14,19 +16,19 @@ struct CardNames {
 // functions defaults to zero (number card)
 enum {
   NUMBER_CARD,
-  BUTTON_CARD,
   TEMPERATURE_CARD,
   HUMIDITY_CARD,
   STATUS_CARD,
   SLIDER_CARD,
   GAUGE_CARD,
+  BUTTON_CARD,
 };
 
 
 class Card {
   private:
     uint32_t _id;
-    char* _name;
+    String _name;
     int   _type;
     bool  _changed;
     enum { INTEGER, FLOAT, STRING } _value_type;
@@ -37,14 +39,15 @@ class Card {
     };
     int _value_min;
     int _value_max;
+    String _symbol;
     std::function<void()> _callback = nullptr;
 
   private:
     // Utility Methods
-    const String generateJSON();
+    const String generateJSON(bool change_only = false);
 
   public:
-    Card(const int type, const char* name, const int min = 0, const int max = 0);
+    Card(const int type, const char* name, const char* symbol = "", const int min = 0, const int max = 0);
     void attachCallback(std::function<void()> cb);
     void update(int value);
     void update(float value);
