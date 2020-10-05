@@ -1,14 +1,18 @@
 #include "ESPDash.h"
+#include "Card.h"
+#include "Chart.h"
 
 /*
   Constructor
 */
-ESPDash::ESPDash(AsyncWebServer& server) {
+ESPDash::ESPDash(AsyncWebServer* server) {
+  _server = server;
+
   // Initialize AsyncWebSocket
-  ws = new AsyncWebSocket("/dashws");
+  _ws = new AsyncWebSocket("/dashws");
 
   // Attach AsyncWebServer Routes
-  server.on("/", HTTP_GET, [this](AsyncWebServerRequest *request){
+  _server->on("/", HTTP_GET, [this](AsyncWebServerRequest *request){
     if(basic_auth){
       if(!request->authenticate(username, password))
       return request->requestAuthentication();
@@ -20,7 +24,7 @@ ESPDash::ESPDash(AsyncWebServer& server) {
   });
 
   // Websocket Callback Handler
-  ws->onEvent([&](AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len){
+  _ws->onEvent([&](AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len){
     StaticJsonDocument<200> json;
     String response;
 
@@ -64,14 +68,14 @@ ESPDash::ESPDash(AsyncWebServer& server) {
           }
 
           // update only requested socket
-          ws->text(client -> id(), response);
+          _ws->text(client->id(), response);
         }
       }
     }
   });
 
   // Attach Websocket Instance to AsyncWebServer
-  server.addHandler(ws);
+  _server->addHandler(_ws);
 }
 
 
@@ -79,7 +83,7 @@ void ESPDash::setAuthentication(const char *user, const char *pass) {
   username = user;
   password = pass;
   basic_auth = true;
-  ws->setAuthentication(user, pass);
+  _ws->setAuthentication(user, pass);
 }
 
 
@@ -187,7 +191,7 @@ String ESPDash::updateLayout(bool only_stats) {
 }
 
 void ESPDash::sendUpdates() {
-  ws->textAll(refresh(true));
+  _ws->textAll(refresh(true));
 }
 
 

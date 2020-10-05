@@ -39,10 +39,15 @@ Github URL: https://github.com/ayushsharma82/ESP-DASH
 #include "Card.h"
 #include "Chart.h"
 
+// Forward Declaration
+class Card;
+class Chart;
 
+// ESPDASH Class
 class ESPDash{
   private:
-    AsyncWebSocket* ws = nullptr;
+    AsyncWebServer* _server;
+    AsyncWebSocket* _ws = nullptr;
 
     Vector<Card*> cards;
     Vector<Chart*> charts;
@@ -52,7 +57,7 @@ class ESPDash{
     const char *password;
 
   public:
-    ESPDash(AsyncWebServer& server);
+    ESPDash(AsyncWebServer* server);
 
     void setAuthentication(const char *user, const char *pass);
 

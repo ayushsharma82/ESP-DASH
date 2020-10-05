@@ -15,7 +15,8 @@ struct CardNames cardTags[] = {
 /*
   Constructor
 */
-Card::Card(const int type, const char* name, const char* symbol, const int min, const int max){
+Card::Card(ESPDash *dashboard, const int type, const char* name, const char* symbol, const int min, const int max){
+  _dashboard = dashboard;
   #if defined(ESP8266)
     _id = RANDOM_REG32;
   #elif defined(ESP32)
@@ -26,6 +27,7 @@ Card::Card(const int type, const char* name, const char* symbol, const int min, 
   _symbol = symbol;
   _value_min = min;
   _value_max = max;
+  _dashboard->add(this);
 }
 
 
@@ -151,5 +153,5 @@ const String Card::generateJSON(bool change_only){
   Destructor
 */
 Card::~Card(){
-
+  _dashboard->remove(this);
 }
