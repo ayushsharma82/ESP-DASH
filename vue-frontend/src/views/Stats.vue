@@ -51,26 +51,34 @@
 </template>
 
 <script>
-  export default {
-    props: ['stats'],
+import Socket from '../socket';
 
-    computed: {
-      getWifiMode() {
-        switch (this.stats.wifiMode) {
-          case 0:
-            return "WIFI_AP";
-          case 1:
-            return "WIFI_STA";
-          case 2:
-            return "WIFI_AP_STA";
-          case 3:
-            return "WIFI_OFF";
-          default:
-            return "NaN";
-        }
+export default {
+  props: ['stats'],
+
+  computed: {
+    getWifiMode() {
+      switch (this.stats.wifiMode) {
+        case 0:
+          return "WIFI_AP";
+        case 1:
+          return "WIFI_STA";
+        case 2:
+          return "WIFI_AP_STA";
+        case 3:
+          return "WIFI_OFF";
+        default:
+          return "NaN";
       }
     }
+  },
+
+  mounted(){
+    Socket.send(JSON.stringify({
+      "command": "getStats"
+    }));
   }
+}
 </script>
 
 <style>
