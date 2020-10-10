@@ -1,6 +1,11 @@
 {
-  "name": "esp-dash-webpage",
-  "version": "1.4.0",
+  "name": "dash-webpage",
+  "author": "Ayush Sharma <asrocks5@gmail.com> (https://github.com/ayushsharma82)",
+  "version": "3.0.0",
+  "license": {
+    "type": "GPL-3.0",
+    "url": "https://github.com/ayushsharma82/ESP-DASH/blob/master/LICENSE"
+  },
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",

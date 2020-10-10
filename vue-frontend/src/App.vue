@@ -14,102 +14,109 @@
 </template>
 
 <script>
-  import EventBus from './event-bus.js';
-  import Socket from './socket';
-  import Navbar from './components/Navbar';
+import EventBus from './event-bus.js';
+import Socket from './socket';
+import Navbar from './components/Navbar';
 
-  export default {
-    components: {
-      Navbar
-    },
+export default {
+  components: {
+    Navbar
+  },
 
-    data() {
-      return {
-        ws: {
-          url: "",
-          connected: false
-        },
-        stats: {
-          enabled: false,
-          releaseTag: null,
-          sdk: null,
-          chipId: null,
-          sketchHash: null,
-          macAddress: null,
-          freeHeap: null,
-          heapFragmentation: null,
-          wifiMode: null,
-          wifiSignal: null
-        },
-        cards: []
-      }
-    },
+  data() {
+    return {
+      ws: {
+        url: "",
+        connected: false
+      },
+      stats: {
+        enabled: false,
+        releaseTag: null,
+        sdk: null,
+        chipId: null,
+        sketchHash: null,
+        macAddress: null,
+        freeHeap: null,
+        heapFragmentation: null,
+        wifiMode: null,
+        wifiSignal: null
+      },
+      cards: [],
+      charts: []
+    }
+  },
 
-    mounted() {
+  mounted() {
 
-      Socket.$on("connected", () => {
-        this.ws.connected = true;
+    Socket.$on("connected", () => {
+      this.ws.connected = true;
+      Socket.send(JSON.stringify({
+        "command": "getLayout"
+      }));
+    });
+
+    Socket.$on("disconnected", () => {
+      this.ws.connected = false;
+    });
+
+    Socket.$on("message", (json) => {
+      this.ws.connected = true;
+
+      if (json.command === "updateLayout") {
+        this.stats.enabled = json.statistics.enabled;
+        if (this.stats.enabled) {
+          this.stats = json.statistics;
+        }
+
+        this.cards = [];
+        json.cards.forEach(card => {
+          this.cards.push({
+            id: card.id,
+            type: card.type,
+            name: card.name,
+            value: card.value,
+            symbol: card.symbol,
+            min: card.value_min,
+            max: card.value_max
+          });
+        });
+      } else if (json.command === "updateStats") {
+        this.stats.enabled = json.statistics.enabled;
+        if (this.stats.enabled) {
+          this.stats = json.statistics;
+        }
+      } else if (json.command === "updateCards") {
+        json.cards.forEach(card => {
+          for(let existingcard of this.cards) {
+            if(existingcard.id === card.id){
+              existingcard.value = card.value;
+            }
+          }
+        });
+      } else if (json.command === "refreshLayout") {
         Socket.send(JSON.stringify({
           "command": "getLayout"
         }));
-      });
+      }
+    });
 
-      Socket.$on("disconnected", () => {
-        this.ws.connected = false;
-      });
+    EventBus.$on('buttonClicked', data => {
+      Socket.send(JSON.stringify({
+        "command": "buttonClicked",
+        "id": data.id,
+        "value": data.value
+      }));
+    });
 
-      Socket.$on("message", (json) => {
-        this.ws.connected = true;
-
-        if (json.response == "getLayout") {
-          this.stats.enabled = json.statistics.enabled;
-          if (this.stats.enabled) {
-            this.stats = json.statistics;
-          }
-
-          json.cards.forEach(card => {
-            this.cards.push({
-              id: card.id,
-              type: card.type,
-              name: card.name,
-              value: card.value,
-              symbol: card.symbol,
-              min: card.value_min,
-              max: card.value_max
-            });
-          });
-        } else if (json.response == "updateCards") {
-          json.cards.forEach(card => {
-            for(let existingcard of this.cards) {
-              if(existingcard.id === card.id){
-                existingcard.value = card.value;
-              }
-            }
-          });
-        } else if (json.response == "updateLayout") {
-          Socket.send(JSON.stringify({
-            "command": "getLayout"
-          }));
-        }
-      });
-
-      EventBus.$on('buttonClicked', data => {
-        Socket.send(JSON.stringify({
-          "command": "buttonClicked",
-          "id": data.id,
-          "value": data.value
-        }));
-      });
-
-      EventBus.$on('sliderChanged', msg => {
-        Socket.send(JSON.stringify({
-          "command": "sliderChanged",
-          "id": msg.id,
-          "value": msg.value
-        }));
-      });
-    }
+    EventBus.$on('sliderChanged', msg => {
+      Socket.send(JSON.stringify({
+        "command": "sliderChanged",
+        "id": msg.id,
+        "value": msg.value
+      }));
+    });
   }
+}
 </script>
 
 <style lang="scss">

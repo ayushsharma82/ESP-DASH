@@ -5,6 +5,7 @@
 #include <functional>
 #include "Arduino.h"
 
+#include "ESPDash.h"
 #include "ArduinoJson.h"
 
 struct CardNames {
@@ -24,9 +25,14 @@ enum {
   PROGRESS_CARD
 };
 
+// Forward Declaration
+class ESPDash;
 
+// Card Class
 class Card {
   private:
+    ESPDash *_dashboard;
+
     uint32_t _id;
     String _name;
     int   _type;
@@ -49,7 +55,7 @@ class Card {
     const String generateJSON(bool change_only = false);
 
   public:
-    Card(const int type, const char* name, const char* symbol = "", const int min = 0, const int max = 0);
+    Card(ESPDash *dashboard, const int type, const char* name, const char* symbol = "", const int min = 0, const int max = 0);
     void attachCallback(std::function<void(bool)> cb);
     void attachCallback(std::function<void(int)> cb);
     void update(int value);

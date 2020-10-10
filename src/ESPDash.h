@@ -39,21 +39,37 @@ Github URL: https://github.com/ayushsharma82/ESP-DASH
 #include "Card.h"
 #include "Chart.h"
 
+// Forward Declaration
+class Card;
+class Chart;
 
+// ESPDASH Class
 class ESPDash{
   private:
-    AsyncWebSocket* ws = nullptr;
+    AsyncWebServer* _server = nullptr;
+    AsyncWebSocket* _ws = nullptr;
 
     Vector<Card*> cards;
     Vector<Chart*> charts;
-    bool stats_enabled = true;
+    bool stats_enabled = false;
     bool basic_auth = false;
     const char *username;
     const char *password;
 
-  public:
-    ESPDash(AsyncWebServer& server);
+    // Generate layout json
+    String generateLayoutJSON(bool only_stats = false);
 
+    // Generate cards/charts update json
+    String generateUpdatesJSON(bool toAll = false);
+
+    // This method is called when a card/chart is added or removed
+    void refreshLayout();
+
+  public:
+
+    ESPDash(AsyncWebServer* server, bool enable_stats = true);
+
+    // Set Authentication
     void setAuthentication(const char *user, const char *pass);
 
     // Add Card
@@ -68,12 +84,6 @@ class ESPDash{
 
     // Notify client side to update values
     void sendUpdates();
-
-    // send generated layout json to client side
-    String updateLayout(bool only_stats = false);
-
-    // send generated update json to client side
-    String refresh(bool toAll = false);
 
     ~ESPDash();
 };

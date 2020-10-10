@@ -3,12 +3,15 @@
 /*
   Constructor
 */
-ESPDash::ESPDash(AsyncWebServer& server) {
+ESPDash::ESPDash(AsyncWebServer* server, bool enable_stats) {
+  _server = server;
+  stats_enabled = enable_stats;
+
   // Initialize AsyncWebSocket
-  ws = new AsyncWebSocket("/dashws");
+  _ws = new AsyncWebSocket("/dashws");
 
   // Attach AsyncWebServer Routes
-  server.on("/", HTTP_GET, [this](AsyncWebServerRequest *request){
+  _server->on("/", HTTP_GET, [this](AsyncWebServerRequest *request){
     if(basic_auth){
       if(!request->authenticate(username, password))
       return request->requestAuthentication();
@@ -20,7 +23,7 @@ ESPDash::ESPDash(AsyncWebServer& server) {
   });
 
   // Websocket Callback Handler
-  ws->onEvent([&](AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len){
+  _ws->onEvent([&](AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len){
     StaticJsonDocument<200> json;
     String response;
 
@@ -32,11 +35,11 @@ ESPDash::ESPDash(AsyncWebServer& server) {
           deserializeJson(json, reinterpret_cast<const char*>(data));
           // client side commands parsing
           if (json["command"] == "getLayout")
-            response = updateLayout();
+            response = generateLayoutJSON();
           else if (json["command"] == "ping")
-            response = "{\"response\":\"pong\"}";
+            response = "{\"command\":\"pong\"}";
           else if (json["command"] == "getStats")
-            response = updateLayout(true);
+            response = generateLayoutJSON(true);
           else if (json["command"] == "buttonClicked") {
             // execute and reference card data struct to funtion
             uint32_t id = json["id"].as<uint32_t>();
@@ -60,18 +63,18 @@ ESPDash::ESPDash(AsyncWebServer& server) {
                 }
               }
             }
-            response = refresh();
+            response = generateUpdatesJSON();
           }
 
           // update only requested socket
-          ws->text(client -> id(), response);
+          _ws->text(client->id(), response);
         }
       }
     }
   });
 
   // Attach Websocket Instance to AsyncWebServer
-  server.addHandler(ws);
+  _server->addHandler(_ws);
 }
 
 
@@ -79,13 +82,14 @@ void ESPDash::setAuthentication(const char *user, const char *pass) {
   username = user;
   password = pass;
   basic_auth = true;
-  ws->setAuthentication(user, pass);
+  _ws->setAuthentication(user, pass);
 }
 
 
 // Add Card
 void ESPDash::add(Card *card) {
   cards.PushBack(card);
+  refreshLayout();
 }
 
 // Remove Card
@@ -94,6 +98,7 @@ void ESPDash::remove(Card *card) {
     Card *p = cards[i];
     if(p->_id == card->_id){
       cards.Erase(i);
+      refreshLayout();
       return;
     }
   }
@@ -103,6 +108,7 @@ void ESPDash::remove(Card *card) {
 // Add Chart
 void ESPDash::add(Chart *chart) {
   charts.PushBack(chart);
+  refreshLayout();
 }
 
 // Remove Card
@@ -111,6 +117,7 @@ void ESPDash::remove(Chart *chart) {
     Chart *p = charts[i];
     if(p->_id == chart->_id){
       charts.Erase(i);
+      refreshLayout();
       return;
     }
   }
@@ -118,7 +125,7 @@ void ESPDash::remove(Chart *chart) {
 
 
 // push updates to all connected clients
-String ESPDash::refresh(bool toAll) {
+String ESPDash::generateUpdatesJSON(bool toAll) {
   String data;
 
   // Generate JSON for all changed Cards
@@ -134,11 +141,11 @@ String ESPDash::refresh(bool toAll) {
   // Remove Last Comma
   data.remove(data.length()-1);
 
-  return "{\"response\":\"updateCards\", ""\"cards\":[" + data + "]}";
+  return "{\"command\":\"updateCards\", ""\"cards\":[" + data + "]}";
 }
 
 // generates the layout JSON string to the frontend
-String ESPDash::updateLayout(bool only_stats) {
+String ESPDash::generateLayoutJSON(bool only_stats) {
   String data;
   String stats;
 
@@ -165,7 +172,7 @@ String ESPDash::updateLayout(bool only_stats) {
 
   // only status has been requested
   if (only_stats) {
-    return "{\"response\":\"getStats\", "
+    return "{\"command\":\"updateStats\", "
     "\"statistics\":{" + stats + "}}";
   }
 
@@ -180,14 +187,19 @@ String ESPDash::updateLayout(bool only_stats) {
   // Remove Last Comma
   data.remove(data.length()-1);
 
-  return "{\"response\":\"getLayout\", "
+  return "{\"command\":\"updateLayout\", "
   "\"version\": \"1\", "
   "\"statistics\":{" + stats + "}, "
   "\"cards\":[" + data + "]}";
 }
 
+/* Send Card Updates to all clients */
 void ESPDash::sendUpdates() {
-  ws->textAll(refresh(true));
+  _ws->textAll(generateUpdatesJSON(true));
+}
+
+void ESPDash::refreshLayout() {
+  _ws->textAll("{\"command\":\"refreshLayout\"}");
 }
 
 
@@ -195,5 +207,6 @@ void ESPDash::sendUpdates() {
   Destructor
 */
 ESPDash::~ESPDash(){
-
+  _server->removeHandler(_ws);
+  delete _ws;
 }
