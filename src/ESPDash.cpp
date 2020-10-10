@@ -1,6 +1,4 @@
 #include "ESPDash.h"
-#include "Card.h"
-#include "Chart.h"
 
 /*
   Constructor
@@ -199,5 +197,7 @@ void ESPDash::sendUpdates() {
   Destructor
 */
 ESPDash::~ESPDash(){
-
+  _server->removeHandler(_ws);
+  delete _ws;
+  delete _server;
 }

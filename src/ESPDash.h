@@ -46,7 +46,7 @@ class Chart;
 // ESPDASH Class
 class ESPDash{
   private:
-    AsyncWebServer* _server;
+    AsyncWebServer* _server = nullptr;
     AsyncWebSocket* _ws = nullptr;
 
     Vector<Card*> cards;
