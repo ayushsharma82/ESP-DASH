@@ -6,7 +6,7 @@
 <br/>
 
 <p align="center">
-<img src="https://img.shields.io/github/last-commit/ayushsharma82/ESP-DASH.svg/dash-next?style=for-the-badge" />
+<img src="https://img.shields.io/github/last-commit/ayushsharma82/ESP-DASH/dash-next?style=for-the-badge" />
 &nbsp;
 <img src="https://img.shields.io/travis/com/ayushsharma82/ESP-DASH/dash-next?style=for-the-badge" />
 &nbsp;
