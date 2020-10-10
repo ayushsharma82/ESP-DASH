@@ -172,5 +172,4 @@ const String Card::generateJSON(bool change_only){
 */
 Card::~Card(){
   _dashboard->remove(this);
-  delete _dashboard;
 }
