@@ -80,18 +80,36 @@ void Card::update(float value){
 }
 
 void Card::update(const String &value, const char* symbol){
+  if(_value_type == Card::STRING){
+    if(strcmp(_value_s, value.c_str()) != 0)
+      _changed = true;
+
+    if(_value_s != NULL)
+      delete[] _value_s;
+  }
+  
   _value_type = Card::STRING;
   _symbol = symbol;
-  if(strcmp(_value_s, value.c_str()) != 0)
-    _changed = true;
-  // _value_s = value; // TODO: Convert string to char array
+
+  int size = value.length();
+  _value_s = new char[size+1];
+  strncpy(_value_s, value.c_str(), size);
 }
 
 void Card::update(const String &value){
+    if(_value_type == Card::STRING){
+    if(strcmp(_value_s, value.c_str()) != 0)
+      _changed = true;
+
+    if(_value_s != NULL)
+      delete[] _value_s;
+  }
+  
   _value_type = Card::STRING;
-  if(strcmp(_value_s, value.c_str()) != 0)
-    _changed = true;
-  // _value_s = value; // TODO: Convert string to char array
+
+  int size = value.length();
+  _value_s = new char[size+1];
+  strncpy(_value_s, value.c_str(), size);
 }
 
 void Card::update(bool value, const char* symbol){
@@ -154,4 +172,5 @@ const String Card::generateJSON(bool change_only){
 */
 Card::~Card(){
   _dashboard->remove(this);
+  delete _dashboard;
 }
