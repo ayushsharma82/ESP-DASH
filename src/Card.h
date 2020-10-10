@@ -16,7 +16,7 @@ struct CardNames {
 
 // functions defaults to zero (number card)
 enum {
-  NUMBER_CARD,
+  GENERIC_CARD,
   TEMPERATURE_CARD,
   HUMIDITY_CARD,
   STATUS_CARD,

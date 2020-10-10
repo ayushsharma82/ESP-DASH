@@ -2,7 +2,7 @@
   <div>
     <div class="container" v-if="cards.length > 0">
       <div class="columns is-mobile is-multiline">
-        <number-card v-for="card in getParticularCards('number')" :key="card.id" :card="card"></number-card>
+        <generic-card v-for="card in getParticularCards('generic')" :key="card.id" :card="card"></generic-card>
         <temperature-card v-for="card in getParticularCards('temperature')" :key="card.id" :card="card"></temperature-card>
         <humdidity-card v-for="card in getParticularCards('humidity')" :key="card.id" :card="card"></humdidity-card>
         <status-card v-for="card in getParticularCards('status')" :key="card.id" :card="card"></status-card>
@@ -42,7 +42,7 @@
 </template>
 
 <script>
-  import NumberCard from '@/components/NumberCard.vue';
+  import GenericCard from '@/components/GenericCard.vue';
   import TemperatureCard from '@/components/TemperatureCard.vue';
   import HumdidityCard from '@/components/HumidityCard.vue';
   import StatusCard from '@/components/StatusCard.vue';
@@ -56,9 +56,9 @@
     props: ['cards'],
 
     components: {
+      GenericCard,
       TemperatureCard,
       HumdidityCard,
-      NumberCard,
       StatusCard,
       ProgressCard,
       ButtonCard,

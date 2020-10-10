@@ -3,7 +3,7 @@
 // integral type to string pairs events
 // ID, type, json_method call
 struct CardNames cardTags[] = {
-  {NUMBER_CARD, "number"},
+  {GENERIC_CARD, "generic"},
   {TEMPERATURE_CARD, "temperature"},
   {HUMIDITY_CARD, "humidity"},
   {STATUS_CARD, "status"},
