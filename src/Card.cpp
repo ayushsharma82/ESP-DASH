@@ -1,7 +1,7 @@
 #include "Card.h"
 
-// integral type to string pairs events
-// ID, type, json_method call
+// Integral type to string pairs events
+// ID, type
 struct CardNames cardTags[] = {
   {GENERIC_CARD, "generic"},
   {TEMPERATURE_CARD, "temperature"},

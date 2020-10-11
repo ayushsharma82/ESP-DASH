@@ -11,7 +11,6 @@
 struct CardNames {
   int value;
   const char* type;
-  const char* method;
 };
 
 // functions defaults to zero (number card)
