@@ -126,27 +126,43 @@ void ESPDash::remove(Chart *chart) {
 
 // push updates to all connected clients
 String ESPDash::generateUpdatesJSON(bool toAll) {
-  String data;
+  String cardsData;
+  String chartsData;
 
   // Generate JSON for all changed Cards
   for (int i=0; i < cards.Size(); i++) {
     Card *p = cards[i];
     if(p->_changed || toAll){
       p->_changed = false;
-      data += p->generateJSON(true);
-      data += ",";
+      cardsData += p->generateJSON(true);
+      cardsData += ",";
     }    
   }
 
   // Remove Last Comma
-  data.remove(data.length()-1);
+  if(cardsData.length() > 0)
+    cardsData.remove(cardsData.length()-1);
 
-  return "{\"command\":\"updateCards\", ""\"cards\":[" + data + "]}";
+  
+  // Generate JSON for all changed Charts
+  for (int i=0; i < charts.Size(); i++) {
+    Chart *p = charts[i];
+    p->_changed = false;
+    chartsData += p->generateJSON();
+    chartsData += ",";
+  }
+
+  // Remove Last Comma
+  if(chartsData.length() > 0)
+    chartsData.remove(chartsData.length()-1);
+
+  return "{\"command\":\"updateCards\", \"cards\":[" + cardsData + "], \"charts\":[" + chartsData + "]}";
 }
 
 // generates the layout JSON string to the frontend
 String ESPDash::generateLayoutJSON(bool only_stats) {
-  String data;
+  String cardsData;
+  String chartsData;
   String stats;
 
   if (stats_enabled) {
@@ -176,21 +192,39 @@ String ESPDash::generateLayoutJSON(bool only_stats) {
     "\"statistics\":{" + stats + "}}";
   }
 
+  /*
+    Generate Cards JSON
+  */
+
   // Generate JSON for all changed Cards
   for (int i=0; i < cards.Size(); i++) {
     Card *p = cards[i];
     p->_changed = false;
-    data += p->generateJSON();
-    data += ",";
+    cardsData += p->generateJSON();
+    cardsData += ",";
   }
 
   // Remove Last Comma
-  data.remove(data.length()-1);
+  if(cardsData.length() > 0)
+    cardsData.remove(cardsData.length()-1);
 
-  return "{\"command\":\"updateLayout\", "
-  "\"version\": \"1\", "
-  "\"statistics\":{" + stats + "}, "
-  "\"cards\":[" + data + "]}";
+  /* 
+    Generate Charts JSON
+  */
+  
+  // Generate JSON for all changed Charts
+  for (int i=0; i < charts.Size(); i++) {
+    Chart *p = charts[i];
+    p->_changed = false;
+    chartsData += p->generateJSON();
+    chartsData += ",";
+  }
+
+  // Remove Last Comma
+  if(chartsData.length() > 0)
+    chartsData.remove(chartsData.length()-1);
+
+  return "{\"command\":\"updateLayout\", \"version\": \"1\", \"statistics\":{" + stats + "}, \"cards\":[" + cardsData + "], \"charts\":[" + chartsData + "]}";
 }
 
 /* Send Card Updates to all clients */
