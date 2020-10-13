@@ -198,10 +198,9 @@ String ESPDash::generateLayoutJSON(bool only_stats) {
     Generate Cards JSON
   */
 
-  // Generate JSON for all changed Cards
+  // Generate JSON for all Cards
   for (int i=0; i < cards.Size(); i++) {
     Card *p = cards[i];
-    p->_changed = false;
     cardsData += p->generateJSON();
     cardsData += ",";
   }
@@ -214,10 +213,9 @@ String ESPDash::generateLayoutJSON(bool only_stats) {
     Generate Charts JSON
   */
   
-  // Generate JSON for all changed Charts
+  // Generate JSON for all Charts
   for (int i=0; i < charts.Size(); i++) {
     Chart *p = charts[i];
-    p->_changed = false;
     chartsData += p->generateJSON();
     chartsData += ",";
   }
