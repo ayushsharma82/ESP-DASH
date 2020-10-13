@@ -25,64 +25,73 @@ Chart::Chart(ESPDash *dashboard, const int type, const char* name){
 /*
   Value update methods
 */
-void Chart::updateX(int arr_x[], int x_size){
+void Chart::updateX(int arr_x[], size_t x_size){
   _x_axis_type = GraphAxisType::INTEGER;
-  _x_axis.Empty();
+  if(!_x_axis_i.Empty())
+    _x_axis_i.Clear();
+  if(!_x_axis_f.Empty())
+    _x_axis_f.Clear();
+  if(!_x_axis_s.Empty())
+    _x_axis_s.Clear();
 
   for(int i=0; i < x_size; i++){
-    struct GraphAxisData data;
-    data._value_i = arr_x[i];
-    _x_axis.PushBack(data);
+    _x_axis_i.PushBack(arr_x[i]);
   }
   _changed = true;
 }
 
-void Chart::updateX(float arr_x[], int x_size){
+void Chart::updateX(float arr_x[], size_t x_size){
   _x_axis_type = GraphAxisType::FLOAT;
-  _x_axis.Empty();
+  if(!_x_axis_i.Empty())
+    _x_axis_i.Clear();
+  if(!_x_axis_f.Empty())
+    _x_axis_f.Clear();
+  if(!_x_axis_s.Empty())
+    _x_axis_s.Clear();
 
   for(int i=0; i < x_size; i++){
-    struct GraphAxisData data;
-    data._value_f = arr_x[i];
-    _x_axis.PushBack(data);
+    _x_axis_f.PushBack(arr_x[i]);
   }
   _changed = true;
 }
 
-void Chart::updateX(const String arr_x[], int x_size){
+void Chart::updateX(String arr_x[], size_t x_size){
   _x_axis_type = GraphAxisType::STRING;
-  _x_axis.Empty();
+  if(!_x_axis_i.Empty())
+    _x_axis_i.Clear();
+  if(!_x_axis_f.Empty())
+    _x_axis_f.Clear();
+  if(!_x_axis_s.Empty())
+    _x_axis_s.Clear();
 
   for(int i=0; i < x_size; i++){
-    struct GraphAxisData data;
-    int size = arr_x[i].length();
-    data._value_s = new char[size+1];
-    strncpy(data._value_s, arr_x[i].c_str(), size);
-    _x_axis.PushBack(data);
+    _x_axis_s.PushBack(arr_x[i].c_str());
   }
   _changed = true;
 }
 
-void Chart::updateY(int arr_y[], int y_size){
+void Chart::updateY(int arr_y[], size_t y_size){
   _y_axis_type = GraphAxisType::INTEGER;
-  _y_axis.Empty();
+  if(!_y_axis_i.Empty())
+    _y_axis_i.Clear();
+  if(!_y_axis_f.Empty())
+    _y_axis_f.Clear();
 
   for(int i=0; i < y_size; i++){
-    struct GraphAxisData data;
-    data._value_i = arr_y[i];
-    _y_axis.PushBack(data);
+    _y_axis_i.PushBack(arr_y[i]);
   }
   _changed = true;
 }
 
-void Chart::updateY(float arr_y[], int y_size){
+void Chart::updateY(float arr_y[], size_t y_size){
   _y_axis_type = GraphAxisType::FLOAT;
-  _y_axis.Empty();
+  if(!_y_axis_i.Empty())
+    _y_axis_i.Clear();
+  if(!_y_axis_f.Empty())
+    _y_axis_f.Clear();
 
   for(int i=0; i < y_size; i++){
-    struct GraphAxisData data;
-    data._value_f = arr_y[i];
-    _y_axis.PushBack(data);
+    _y_axis_f.PushBack(arr_y[i]);
   }
   _changed = true;
 }
@@ -102,36 +111,37 @@ const String Chart::generateJSON(bool change_only){
   }
 
   JsonArray xAxis = doc["x_axis"].to<JsonArray>();
-  for(int i=0; i < _x_axis.Size(); i++){
-    switch (_x_axis_type) {
-      case GraphAxisType::INTEGER:
-        xAxis.add(_x_axis[i]._value_i);
-        break;
-      case GraphAxisType::FLOAT:
-        xAxis.add(_x_axis[i]._value_f);
-        break;
-      case GraphAxisType::STRING:
-        xAxis.add(_x_axis[i]._value_s);
-        break;
-      default:
-        // blank value
-        break;
-    }
+  switch (_x_axis_type) {
+    case GraphAxisType::INTEGER:
+      for(int i=0; i < _x_axis_i.Size(); i++)
+        xAxis.add(_x_axis_i[i]);
+      break;
+    case GraphAxisType::FLOAT:
+      for(int i=0; i < _x_axis_f.Size(); i++)
+        xAxis.add(_x_axis_f[i]);
+      break;
+    case GraphAxisType::STRING:
+      for(int i=0; i < _x_axis_s.Size(); i++)
+        xAxis.add(_x_axis_s[i].c_str());
+      break;
+    default:
+      // blank value
+      break;
   }
   
   JsonArray yAxis = doc["y_axis"].to<JsonArray>();
-  for(int i=0; i < _y_axis.Size(); i++){
-    switch (_y_axis_type) {
-      case GraphAxisType::INTEGER:
-        xAxis.add(_y_axis[i]._value_i);
-        break;
-      case GraphAxisType::FLOAT:
-        xAxis.add(_y_axis[i]._value_f);
-        break;
-      default:
-        // blank value
-        break;
-    }
+  switch (_y_axis_type) {
+    case GraphAxisType::INTEGER:
+      for(int i=0; i < _y_axis_i.Size(); i++)
+        yAxis.add(_y_axis_i[i]);
+      break;
+    case GraphAxisType::FLOAT:
+      for(int i=0; i < _y_axis_f.Size(); i++)
+        yAxis.add(_y_axis_f[i]);
+      break;
+    default:
+      // blank value
+      break;
   }
 
   serializeJson(doc, data);

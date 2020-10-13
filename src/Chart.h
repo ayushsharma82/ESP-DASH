@@ -20,15 +20,6 @@ struct ChartNames {
 
 enum GraphAxisType { INTEGER, FLOAT, STRING };
 
-// Chart X-Axis Data Structure
-struct GraphAxisData {
-  union alignas(8) {
-      char *_value_s;
-      float _value_f;
-      int _value_i;
-  };
-};
-
 // Forward Declaration
 class ESPDash;
 
@@ -43,8 +34,13 @@ class Chart {
     bool  _changed;
     GraphAxisType _x_axis_type;
     GraphAxisType _y_axis_type;
-    Vector<GraphAxisData> _x_axis;
-    Vector<GraphAxisData> _y_axis;
+    /* X-Axis */
+    Vector<int> _x_axis_i;
+    Vector<float> _x_axis_f;
+    Vector<String> _x_axis_s;
+    /* Y-Axis */
+    Vector<int> _y_axis_i;
+    Vector<float> _y_axis_f;
 
   private:
     // Utility Methods
@@ -52,11 +48,11 @@ class Chart {
 
   public:
     Chart(ESPDash *dashboard, const int type, const char* name);
-    void updateX(int arr_x[], int x_size);
-    void updateX(float arr_x[], int x_size);
-    void updateX(const String arr_x[], int x_size);
-    void updateY(int arr_y[], int y_size);
-    void updateY(float arr_y[], int y_size);
+    void updateX(int arr_x[], size_t x_size);
+    void updateX(float arr_x[], size_t x_size);
+    void updateX(String arr_x[], size_t x_size);
+    void updateY(int arr_y[], size_t y_size);
+    void updateY(float arr_y[], size_t y_size);
     ~Chart();
 
   friend class ESPDash;

@@ -147,9 +147,11 @@ String ESPDash::generateUpdatesJSON(bool toAll) {
   // Generate JSON for all changed Charts
   for (int i=0; i < charts.Size(); i++) {
     Chart *p = charts[i];
-    p->_changed = false;
-    chartsData += p->generateJSON();
-    chartsData += ",";
+    if(p->_changed || toAll){
+      p->_changed = false;
+      chartsData += p->generateJSON();
+      chartsData += ",";
+    }
   }
 
   // Remove Last Comma
@@ -224,7 +226,7 @@ String ESPDash::generateLayoutJSON(bool only_stats) {
   if(chartsData.length() > 0)
     chartsData.remove(chartsData.length()-1);
 
-  return "{\"command\":\"updateLayout\", \"version\": \"1\", \"statistics\":{" + stats + "}, \"cards\":[" + cardsData + "], \"charts\":[" + chartsData + "]}";
+  return "{\"command\":\"updateLayout\", \"version\":\"1\", \"statistics\":{" + stats + "}, \"cards\":[" + cardsData + "], \"charts\":[" + chartsData + "]}";
 }
 
 /* Send Card Updates to all clients */
