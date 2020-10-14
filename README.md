@@ -46,7 +46,7 @@
 <br/>
 
 <h2>Documentation</h2>
-<a href="https://github.com/ayushsharma82/ESP-DASH/wiki/Getting-Started">Click Here</a>
+<p>Learn more about Installation & Usage: <a href="https://ayushsharma82.github.io/ESP-DASH/">Click Here</a></p>
 
 <br/>
 <br/>
@@ -74,4 +74,3 @@ ESP-DASH is licensed under General Public License v3 ( GPLv3 ).
 If your company needs a custom embedded dashboard developed for commercial applications, you can send me a mail at: <a href="mailto:asrocks5@gmail.com">asrocks5@gmail.com</a>. We provide in-house software development services which are along the lines of merging low-power microcontrollers with famous web technologies. For example: ESP-DASH which consists of a C++ library and a lightweight Vuejs SPA to fit inside a microcontroller. Possibilities are endless.
 </p>
 <br/>
-</div>
