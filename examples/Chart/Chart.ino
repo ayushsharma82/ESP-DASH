@@ -46,7 +46,7 @@ String XAxis[] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
 int YAxis[] = {0, 0, 0, 0, 0, 0, 0};
 
 // Line Chart Instance
-Chart power(&dashboard, LINE_CHART, "Power Usage (kWh)");
+Chart power(&dashboard, BAR_CHART, "Power Usage (kWh)");
 
 
 void setup() {

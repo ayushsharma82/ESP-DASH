@@ -7,7 +7,7 @@
   </div>
   <div class="section pt-2">
     <transition name="fade" mode="out-in">
-      <router-view :cards="cards" :stats="stats" />
+      <router-view :cards="cards" :charts="charts" :stats="stats" />
     </transition>
   </div>
 </div>
@@ -69,6 +69,7 @@ export default {
         }
 
         this.cards = [];
+        this.charts = [];
         json.cards.forEach(card => {
           this.cards.push({
             id: card.id,
@@ -78,6 +79,15 @@ export default {
             symbol: card.symbol,
             min: card.value_min,
             max: card.value_max
+          });
+        });
+        json.charts.forEach(chart => {
+          this.charts.push({
+            id: chart.id,
+            type: chart.type,
+            name: chart.name,
+            x_axis: chart.x_axis,
+            y_axis: chart.y_axis,
           });
         });
       } else if (json.command === "updateStats") {
@@ -90,6 +100,15 @@ export default {
           for(let existingcard of this.cards) {
             if(existingcard.id === card.id){
               existingcard.value = card.value;
+            }
+          }
+        });
+        json.charts.forEach(chart => {
+          for(let existingchart of this.charts) {
+            if(existingchart.id === chart.id){
+              existingchart.x_axis = chart.x_axis;
+              existingchart.y_axis = chart.y_axis;
+              existingchart.y_axis_label = chart.y_axis_label;
             }
           }
         });

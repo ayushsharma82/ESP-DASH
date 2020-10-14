@@ -3,7 +3,7 @@
 // Integral type to string pairs events
 // ID, type
 struct ChartNames chartTags[] = {
-  {LINE_CHART, "line"},
+  {BAR_CHART, "bar"},
 };
 
 

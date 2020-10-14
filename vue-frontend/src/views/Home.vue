@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="container" v-if="cards.length > 0">
+    <div class="container" v-if="cards.length > 0 || charts.length > 0">
       <div class="columns is-mobile is-multiline">
         <generic-card v-for="card in getParticularCards('generic')" :key="card.id" :card="card"></generic-card>
         <temperature-card v-for="card in getParticularCards('temperature')" :key="card.id" :card="card"></temperature-card>
@@ -10,14 +10,9 @@
         <slider-card v-for="card in getParticularCards('slider')" :key="card.id" :card="card"></slider-card>
         <button-card v-for="card in getParticularCards('button')" :key="card.id" :card="card"></button-card>
       </div>
-      <!-- <br />
       <div class="columns is-mobile is-multiline">
-        <line-chart v-for="card in cards.lineChart" :key="card.id" :card="card"></line-chart>
+        <bar-chart v-for="chart in getParticularCharts('bar')" :key="chart.id" :chart="chart"></bar-chart>
       </div>
-      <br />
-      <div class="columns is-mobile is-multiline">
-        <gauge-card v-for="card in cards.gauge" :key="card.id" :card="card"></gauge-card>
-      </div> -->
     </div>
     <div class="container" v-else>
       <div class="section">
@@ -42,39 +37,51 @@
 </template>
 
 <script>
-  import GenericCard from '@/components/GenericCard.vue';
-  import TemperatureCard from '@/components/TemperatureCard.vue';
-  import HumdidityCard from '@/components/HumidityCard.vue';
-  import StatusCard from '@/components/StatusCard.vue';
-  import ProgressCard from '@/components/ProgressCard.vue';
-  import SliderCard from '@/components/SliderCard.vue';
-  import ButtonCard from '@/components/ButtonCard.vue';
+import GenericCard from '@/components/GenericCard.vue';
+import TemperatureCard from '@/components/TemperatureCard.vue';
+import HumdidityCard from '@/components/HumidityCard.vue';
+import StatusCard from '@/components/StatusCard.vue';
+import ProgressCard from '@/components/ProgressCard.vue';
+import SliderCard from '@/components/SliderCard.vue';
+import ButtonCard from '@/components/ButtonCard.vue';
 
-  export default {
-    name: 'home',
+import BarChart from '@/components/BarChart.vue';
 
-    props: ['cards'],
+export default {
+  name: 'home',
 
-    components: {
-      GenericCard,
-      TemperatureCard,
-      HumdidityCard,
-      StatusCard,
-      ProgressCard,
-      ButtonCard,
-      SliderCard
-    },
+  props: ['cards', 'charts'],
 
-    methods: {
-      getParticularCards(type) {
-        let cards = [];
-        for(let card of this.cards){
-          if(card.type === type){
-            cards.push(card);
-          }
+  components: {
+    GenericCard,
+    TemperatureCard,
+    HumdidityCard,
+    StatusCard,
+    ProgressCard,
+    ButtonCard,
+    SliderCard,
+    BarChart
+  },
+
+  methods: {
+    getParticularCards(type) {
+      let cards = [];
+      for(let card of this.cards){
+        if(card.type === type){
+          cards.push(card);
         }
-        return cards;
       }
+      return cards;
+    },
+    getParticularCharts(type) {
+      let charts = [];
+      for(let chart of this.charts){
+        if(chart.type === type){
+          charts.push(chart);
+        }
+      }
+      return charts;
     }
   }
+}
 </script>

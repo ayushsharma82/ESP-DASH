@@ -10,7 +10,7 @@
 
 // Default to Line Chart
 enum {
-  LINE_CHART,
+  BAR_CHART,
 };
 
 struct ChartNames {
