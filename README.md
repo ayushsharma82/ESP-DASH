@@ -21,7 +21,7 @@
 
 <br/>
 
-<p><b>DASH V3</b> is a Blazing fast library to create functional and realtime dashboard for <b>ESP8266</b> & <b>ESP32</b> Microcontrollers. It is <b>not</b> dependent on Internet. DASH V3 has it's core routines rewritten to enhance performance and UI has been reworked to improve user accessibility.</p>
+<p><b>DASH V3</b> is a blazing fast library to create a functional & real-time dashboard for <b>ESP8266</b> & <b>ESP32</b> microcontrollers. This library provides you with various components & charts to create a perfect web-accessible dashboard for your project. ESP-DASH is <b>not</b> dependent on your internet connection and you can access it anytime via it's IP address.</p>
 
 <br/>
 
@@ -35,34 +35,14 @@
 <p>
   <ul style="list-style-position: inside;">
       <li>Works on Websockets</li>
-      <li>Realtime updates</li>
+      <li>Real-time push updates</li>
+      <li>Charts Support</li>
       <li>Interactive UI Components</li>
       <li>Uses Async Webserver for better performance</li>
   </ul>
 </p>
 
 <br/>
-<br/>
-
-<h2>Dependencies</h2>
-<p>
-  <h5>For ESP8266:</h5>
-  <ul style="list-style-position: inside;">
-      <li>ESP8266 Arduino Core - <b>(latest)</b></li>
-      <li>ESPAsyncTCP - <b>v1.2.0</b></li>
-  	  <li>ESPAsyncWebServer - <b>v1.2.0</b></li>
-      <li>ArduinoJson - <b>v6.8.0</b></li>
-  </ul>
-  
-  <h5>For ESP32:</h5>
-  <ul style="list-style-position: inside;">
-      <li>ESP32 Arduino Core - <b>(latest)</b></li>
-      <li>AsyncTCP - <b>v1.0.3</b></li>
-  	  <li>ESPAsyncWebServer - <b>v1.2.0</b></li>
-      <li>ArduinoJson - <b>v6.8.0</b></li>
-  </ul>
-</p>
-
 <br/>
 
 <h2>Documentation</h2>
@@ -73,9 +53,9 @@
 <br/>
 
 <h2>Contributions</h2>
-<p>Every contribution to this repository is highly appriciated! Don't fear to create pull requests which enhance or fix the library.</p>
+<p>Every contribution to this repository is highly appreciated! Don't fear to create issues / pull requests which enhance or fix the library, our maintainers are always ready to keep this library up & compiling.</p>
 <p>
-If you want to donate to the author then <b>you can buy me a coffee</b>, It really helps me keep these libraries updated:
+If you like this amazing library, You can buy me a coffee:
 <br/><br/>
 <a href="https://www.buymeacoffee.com/6QGVpSj" target="_blank"><img src="https://img.shields.io/badge/Buy%20me%20a%20coffee-%245-orange?style=for-the-badge&logo=buy-me-a-coffee" /></a>
 </p>
