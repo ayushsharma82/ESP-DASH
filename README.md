@@ -21,7 +21,7 @@
 
 <br/>
 
-<p><b>DASH V3</b> is a blazing fast library to create a functional & real-time dashboard for <b>ESP8266</b> & <b>ESP32</b> microcontrollers. This library provides you with various components & charts to create a perfect web-accessible dashboard for your project. ESP-DASH is <b>not</b> dependent on your internet connection and you can access it anytime via it's IP address.</p>
+<p align="center"><b>DASH V3</b> is a blazing fast library to create a functional & real-time dashboard for <b>ESP8266</b> & <b>ESP32</b> microcontrollers. This library includes charts, display cards, interactive buttons and many more components to create a perfect dashboard which is accessible locally via your device IP without the need of an internet connection. DASH aims at providing people with a C++ syntax to create a beautiful embedded dashboard without any hassle.</p>
 
 <br/>
 
@@ -65,7 +65,13 @@ If you like this amazing library, You can buy me a coffee:
 
 <h2>License</h2>
 ESP-DASH is licensed under General Public License v3 ( GPLv3 ).
+<br>
+<br>
+
+
+<h3>What about Commerical Usage?</h3>
+<p>
+If your company needs a custom embedded dashboard developed for commercial applications, you can send me a mail at: <a href="mailto:asrocks5@gmail.com">asrocks5@gmail.com</a>. We provide in-house software development services which are along the lines of merging low-power microcontrollers with famous web technologies. For example: ESP-DASH which consists of a C++ library and a lightweight Vuejs SPA to fit inside a microcontroller. Possibilities are endless.
+</p>
 <br/>
-<br/>
-<img src="https://img.shields.io/github/license/ayushsharma82/ESP-DASH.svg?style=for-the-badge" />
 </div>
