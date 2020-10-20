@@ -1,12 +1,5 @@
 #include "Chart.h"
 
-// Integral type to string pairs events
-// ID, type
-struct ChartNames chartTags[] = {
-  {BAR_CHART, "bar"},
-};
-
-
 /*
   Constructor
 */
@@ -95,59 +88,6 @@ void Chart::updateY(float arr_y[], size_t y_size){
   }
   _changed = true;
 }
-
-
-/*
-  Generate JSON for UI
-*/
-const String Chart::generateJSON(bool change_only){
-  String data = "";
-
-  DynamicJsonDocument doc(2048);
-  doc["id"] = _id;
-  if(!change_only){
-    doc["name"] = _name;
-    doc["type"] = chartTags[_type].type;
-  }
-
-  JsonArray xAxis = doc["x_axis"].to<JsonArray>();
-  switch (_x_axis_type) {
-    case GraphAxisType::INTEGER:
-      for(int i=0; i < _x_axis_i.Size(); i++)
-        xAxis.add(_x_axis_i[i]);
-      break;
-    case GraphAxisType::FLOAT:
-      for(int i=0; i < _x_axis_f.Size(); i++)
-        xAxis.add(_x_axis_f[i]);
-      break;
-    case GraphAxisType::STRING:
-      for(int i=0; i < _x_axis_s.Size(); i++)
-        xAxis.add(_x_axis_s[i].c_str());
-      break;
-    default:
-      // blank value
-      break;
-  }
-  
-  JsonArray yAxis = doc["y_axis"].to<JsonArray>();
-  switch (_y_axis_type) {
-    case GraphAxisType::INTEGER:
-      for(int i=0; i < _y_axis_i.Size(); i++)
-        yAxis.add(_y_axis_i[i]);
-      break;
-    case GraphAxisType::FLOAT:
-      for(int i=0; i < _y_axis_f.Size(); i++)
-        yAxis.add(_y_axis_f[i]);
-      break;
-    default:
-      // blank value
-      break;
-  }
-
-  serializeJson(doc, data);
-  return data;
-}
-
 
 /*
   Destructor

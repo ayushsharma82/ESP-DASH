@@ -1,5 +1,25 @@
 #include "ESPDash.h"
 
+
+// Integral type to string pairs events
+// ID, type
+struct CardNames cardTags[] = {
+  {GENERIC_CARD, "generic"},
+  {TEMPERATURE_CARD, "temperature"},
+  {HUMIDITY_CARD, "humidity"},
+  {STATUS_CARD, "status"},
+  {SLIDER_CARD, "slider"},
+  {BUTTON_CARD, "button"},
+  {PROGRESS_CARD, "progress"},
+};
+
+// Integral type to string pairs events
+// ID, type
+struct ChartNames chartTags[] = {
+  {BAR_CHART, "bar"},
+};
+
+
 /*
   Constructor
 */
@@ -134,7 +154,7 @@ String ESPDash::generateUpdatesJSON(bool toAll) {
     Card *p = cards[i];
     if(p->_changed || toAll){
       p->_changed = false;
-      cardsData += p->generateJSON(true);
+      cardsData += generateComponentJSON(p, true);
       cardsData += ",";
     }    
   }
@@ -149,7 +169,7 @@ String ESPDash::generateUpdatesJSON(bool toAll) {
     Chart *p = charts[i];
     if(p->_changed || toAll){
       p->_changed = false;
-      chartsData += p->generateJSON();
+      chartsData += generateComponentJSON(p, true);
       chartsData += ",";
     }
   }
@@ -201,7 +221,7 @@ String ESPDash::generateLayoutJSON(bool only_stats) {
   // Generate JSON for all Cards
   for (int i=0; i < cards.Size(); i++) {
     Card *p = cards[i];
-    cardsData += p->generateJSON();
+    cardsData += generateComponentJSON(p);
     cardsData += ",";
   }
 
@@ -216,7 +236,7 @@ String ESPDash::generateLayoutJSON(bool only_stats) {
   // Generate JSON for all Charts
   for (int i=0; i < charts.Size(); i++) {
     Chart *p = charts[i];
-    chartsData += p->generateJSON();
+    chartsData += generateComponentJSON(p);
     chartsData += ",";
   }
 
@@ -225,6 +245,97 @@ String ESPDash::generateLayoutJSON(bool only_stats) {
     chartsData.remove(chartsData.length()-1);
 
   return "{\"command\":\"updateLayout\", \"version\":\"1\", \"statistics\":{" + stats + "}, \"cards\":[" + cardsData + "], \"charts\":[" + chartsData + "]}";
+}
+
+
+/*
+  Generate Card JSON
+*/
+const String ESPDash::generateComponentJSON(Card* card, bool change_only){
+  String data = "";
+
+  StaticJsonDocument<256> doc;
+  doc["id"] = card->_id;
+  if(!change_only){
+    doc["name"] = card->_name;
+    doc["type"] = cardTags[card->_type].type;
+    doc["value_min"] = card->_value_min;
+    doc["value_max"] = card->_value_max;
+  }
+  doc["symbol"] = card->_symbol;
+
+  switch (card->_value_type) {
+    case Card::INTEGER:
+      doc["value"] = card->_value_i;
+      break;
+    case Card::FLOAT:
+      doc["value"] = String(card->_value_f, 2);
+      break;
+    case Card::STRING:
+      doc["value"] = card->_value_s;
+      break;
+    case Card::BOOLEAN:
+      doc["value"] = card->_value_b;
+      break;
+    default:
+      // blank value
+      break;
+  }
+
+  serializeJson(doc, data);
+  return data;
+}
+
+
+/*
+  Generate Chart JSON
+*/
+const String ESPDash::generateComponentJSON(Chart* chart, bool change_only){
+  String data = "";
+
+  DynamicJsonDocument doc(2048);
+  doc["id"] = chart->_id;
+  if(!change_only){
+    doc["name"] = chart->_name;
+    doc["type"] = chartTags[chart->_type].type;
+  }
+
+  JsonArray xAxis = doc["x_axis"].to<JsonArray>();
+  switch (chart->_x_axis_type) {
+    case GraphAxisType::INTEGER:
+      for(int i=0; i < chart->_x_axis_i.Size(); i++)
+        xAxis.add(chart->_x_axis_i[i]);
+      break;
+    case GraphAxisType::FLOAT:
+      for(int i=0; i < chart->_x_axis_f.Size(); i++)
+        xAxis.add(chart->_x_axis_f[i]);
+      break;
+    case GraphAxisType::STRING:
+      for(int i=0; i < chart->_x_axis_s.Size(); i++)
+        xAxis.add(chart->_x_axis_s[i].c_str());
+      break;
+    default:
+      // blank value
+      break;
+  }
+  
+  JsonArray yAxis = doc["y_axis"].to<JsonArray>();
+  switch (chart->_y_axis_type) {
+    case GraphAxisType::INTEGER:
+      for(int i=0; i < chart->_y_axis_i.Size(); i++)
+        yAxis.add(chart->_y_axis_i[i]);
+      break;
+    case GraphAxisType::FLOAT:
+      for(int i=0; i < chart->_y_axis_f.Size(); i++)
+        yAxis.add(chart->_y_axis_f[i]);
+      break;
+    default:
+      // blank value
+      break;
+  }
+
+  serializeJson(doc, data);
+  return data;
 }
 
 /* Send Card Updates to all clients */

@@ -62,6 +62,10 @@ class ESPDash{
     // Generate cards/charts update json
     String generateUpdatesJSON(bool toAll = false);
 
+    // Generate Component JSON
+    const String generateComponentJSON(Card* card, bool change_only = false);
+    const String generateComponentJSON(Chart* chart, bool change_only = false);
+
     // This method is called when a card/chart is added or removed
     void refreshLayout();
 

@@ -42,10 +42,6 @@ class Chart {
     Vector<int> _y_axis_i;
     Vector<float> _y_axis_f;
 
-  private:
-    // Utility Methods
-    const String generateJSON(bool change_only = false);
-
   public:
     Chart(ESPDash *dashboard, const int type, const char* name);
     void updateX(int arr_x[], size_t x_size);

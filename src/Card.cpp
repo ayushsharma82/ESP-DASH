@@ -1,17 +1,5 @@
 #include "Card.h"
 
-// Integral type to string pairs events
-// ID, type
-struct CardNames cardTags[] = {
-  {GENERIC_CARD, "generic"},
-  {TEMPERATURE_CARD, "temperature"},
-  {HUMIDITY_CARD, "humidity"},
-  {STATUS_CARD, "status"},
-  {SLIDER_CARD, "slider"},
-  {BUTTON_CARD, "button"},
-  {PROGRESS_CARD, "progress"},
-};
-
 /*
   Constructor
 */
@@ -126,46 +114,6 @@ void Card::update(bool value){
     _changed = true;
   _value_b = value;
 }
-
-
-/*
-  Generate JSON for UI
-*/
-const String Card::generateJSON(bool change_only){
-  String data = "";
-
-  StaticJsonDocument<256> doc;
-  doc["id"] = _id;
-  if(!change_only){
-    doc["name"] = _name;
-    doc["type"] = cardTags[_type].type;
-    doc["value_min"] = _value_min;
-    doc["value_max"] = _value_max;
-  }
-  doc["symbol"] = _symbol;
-
-  switch (_value_type) {
-    case Card::INTEGER:
-      doc["value"] = _value_i;
-      break;
-    case Card::FLOAT:
-      doc["value"] = String(_value_f, 2);
-      break;
-    case Card::STRING:
-      doc["value"] = _value_s;
-      break;
-    case Card::BOOLEAN:
-      doc["value"] = _value_b;
-      break;
-    default:
-      // blank value
-      break;
-  }
-
-  serializeJson(doc, data);
-  return data;
-}
-
 
 /*
   Destructor
