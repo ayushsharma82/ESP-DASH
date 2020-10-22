@@ -1,7 +1,7 @@
 <p>
   <br/>
 </p>
-<p align="center"><img src="/docs/img/logo.png?sanitize=true&raw=true" width="300"></p>
+<p align="center"><img src="/docs/src/assets/logo.png?sanitize=true&raw=true" width="300"></p>
 <br/>
 <br/>
 
@@ -26,7 +26,7 @@
 <br/>
 
 <h2>Preview</h2>
-<img src="/docs/img/preview.png?raw=true">
+<img src="/docs/src/assets/preview.png?raw=true">
 
 <br/>
 <br/>
