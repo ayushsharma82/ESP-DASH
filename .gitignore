@@ -1,5 +1,3 @@
-dist
-
 # Prerequisites
 *.d
 
@@ -35,3 +33,4 @@ dist
 
 /.vscode
 /build
+./vue-frontend/dist
