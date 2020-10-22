@@ -33,4 +33,5 @@
 
 /.vscode
 /build
+node_modules
 ./vue-frontend/dist
