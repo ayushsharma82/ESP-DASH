@@ -3,6 +3,7 @@ const path = require('path')
 
 module.exports = {
   base: '/ESP-DASH/',
+  dest: '../gh-docs',
   theme: "book",
   /**
    * Ref：https://v1.vuepress.vuejs.org/config/#title
