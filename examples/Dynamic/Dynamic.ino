@@ -30,8 +30,8 @@
 
 
 /* Your WiFi Credentials */
-const char* ssid = "H-FL1"; // SSID
-const char* password = "frenzy8284"; // Password
+const char* ssid = ""; // SSID
+const char* password = ""; // Password
 
 /* Start Webserver */
 AsyncWebServer server(80);
