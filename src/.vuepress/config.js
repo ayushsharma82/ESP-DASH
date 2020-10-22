@@ -64,6 +64,12 @@ module.exports = {
           collapsable: false,
           children: [
             ["/cards/generic", "Generic"],
+            ["/cards/temperature", "Temperature"],
+            ["/cards/humidity", "Humidity"],
+            ["/cards/status", "Status"],
+            ["/cards/progress", "Progress"],
+            ["/cards/slider", "Slider"],
+            ["/cards/toggle-button", "Toggle Button"],
           ]
         },
         {
