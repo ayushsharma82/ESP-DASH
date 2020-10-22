@@ -33,9 +33,11 @@
 const char* ssid = ""; // SSID
 const char* password = ""; // Password
 
-/* Start Webserver & ESPDash */
+/* Start Webserver */
 AsyncWebServer server(80);
-ESPDash dashboard(&server); // Attach ESPDash with our AsyncWebServer Instance
+
+/* Attach ESP-DASH to AsyncWebServer */
+ESPDash dashboard(&server); 
 
 /* 
   Dashboard Cards 
