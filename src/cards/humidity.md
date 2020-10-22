@@ -3,7 +3,7 @@
   "title": "ESP-DASH Wiki: Humidity Card"
 }
 ---
-## Temperature Card
+## Humidity Card
 
 This card adds a distinctive humidity icon, and just like generic card you can add a symbol which will be appended to your data.
 
