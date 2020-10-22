@@ -71,6 +71,6 @@ ESP-DASH is licensed under General Public License v3 ( GPLv3 ).
 
 <h3>What about Commerical Usage?</h3>
 <p>
-If your company needs a custom embedded dashboard developed for commercial applications, you can send me a mail at: <a href="mailto:asrocks5@gmail.com">asrocks5@gmail.com</a>. We provide in-house software development services which are along the lines of merging low-power microcontrollers with famous web technologies. For example: ESP-DASH which consists of a C++ library and a lightweight Vuejs SPA to fit inside a microcontroller. Possibilities are endless.
+If your company needs a embedded dashboard for commercial applications, you can send me a mail at: <a href="mailto:asrocks5@gmail.com">asrocks5@gmail.com</a>. We provide software development services which are along the lines of merging low-power microcontrollers with famous web technologies. For example: ESP-DASH which consists of a C++ library and a lightweight Vuejs SPA to fit inside a microcontroller. Possibilities are endless.
 </p>
 <br/>
