@@ -6,3 +6,12 @@
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
 }
+
+
+.btn-fade-enter-active, .btn-fade-leave-active {
+  transition: opacity .15s;
+}
+
+.btn-fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}

@@ -16,7 +16,7 @@ const HTML = `
 </head>
 <body style="overflow: hidden;">
     <noscript>
-        <strong>We're sorry but ElegantOTA doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+        <strong>We're sorry but ESP-DASH doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
     <div id=app></div>
     <script defer>${BUNDLE_JS}</script>
