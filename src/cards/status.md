@@ -9,17 +9,17 @@ As it's name suggests, status card is used to display some kind of status on you
 
 <br>
 
-**Type:** 
+#### Type:
 `STATUS_CARD`
 
 <br>
 
-**Valid Data Types:**
+#### Valid Data Types:
 - `String`
 
 <br>
 
-**Valid Statuses:**
+#### Valid Statuses:
 - `"success"` - Green
 - `"danger"` - Red
 - `"warning"` - Yellow
@@ -27,7 +27,7 @@ As it's name suggests, status card is used to display some kind of status on you
 
 <br>
 
-**Initializer:**
+#### Initializer:
 ```cpp
 /* 
   Status Card
@@ -38,7 +38,7 @@ Card card1(&dashboard, STATUS_CARD, "success");
 
 <br>
 
-**Updaters:**
+#### Updaters:
 
 Status card updater allows you to set a message:
 

@@ -69,7 +69,7 @@ module.exports = {
             ["/cards/status", "Status"],
             ["/cards/progress", "Progress"],
             ["/cards/slider", "Slider"],
-            ["/cards/toggle-button", "Toggle Button"],
+            ["/cards/button", "Button"],
           ]
         },
         {

@@ -9,19 +9,19 @@ This card adds a distinctive temperature icon, and just like generic card you ca
 
 <br>
 
-**Type:** 
+#### Type:
 `TEMPERATURE_CARD`
 
 <br>
 
-**Valid Data Types:**
+#### Valid Data Types:
 - `int`
 - `float`
 - `String`
 
 <br>
 
-**Initializer:**
+#### Initializer:
 ```cpp
 /* 
   Temperature Card
@@ -32,7 +32,7 @@ Card card1(&dashboard, TEMPERATURE_CARD, "°C");
 
 <br>
 
-**Updaters:**
+#### Updaters:
 
 ```cpp
 card1.update(int value);

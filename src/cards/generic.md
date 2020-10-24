@@ -9,12 +9,12 @@ If you can't find the type of card you are looking for, then generic card is wha
 
 <br>
 
-**Type:** 
+#### Type: 
 `GENERIC_CARD`
 
 <br>
 
-**Valid Data Types:**
+#### Valid Data Types:
 - `int`
 - `bool`
 - `float`
@@ -22,7 +22,7 @@ If you can't find the type of card you are looking for, then generic card is wha
 
 <br>
 
-**Initializer:**
+#### Initializer:
 ```cpp
 /* 
   Generic Card
@@ -33,7 +33,7 @@ Card card1(&dashboard, GENERIC_CARD);
 
 <br>
 
-**Updaters:**
+#### Updaters:
 
 ```cpp
 card1.update(int value);

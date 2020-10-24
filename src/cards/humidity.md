@@ -9,19 +9,19 @@ This card adds a distinctive humidity icon, and just like generic card you can a
 
 <br>
 
-**Type:** 
+#### Type:
 `HUMIDITY_CARD`
 
 <br>
 
-**Valid Data Types:**
+#### Valid Data Types:
 - `int`
 - `float`
 - `String`
 
 <br>
 
-**Initializer:**
+#### Initializer:
 ```cpp
 /* 
   Humidity Card
@@ -32,7 +32,7 @@ Card card1(&dashboard, HUMIDITY_CARD, "%");
 
 <br>
 
-**Updaters:**
+#### Updaters:
 
 ```cpp
 card1.update(int value);
