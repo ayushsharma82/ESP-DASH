@@ -1,1022 +1,354 @@
 #include "ESPDash.h"
-#include <functional>
 
-#ifdef DEBUG_MODE
-#define debugPrintln(...) Serial.println(__VA_ARGS__)
-#else
-#define debugPrintln(...)
-#endif
+// Integral type to string pairs events
+// ID, type
+struct CardNames cardTags[] = {
+  {GENERIC_CARD, "generic"},
+  {TEMPERATURE_CARD, "temperature"},
+  {HUMIDITY_CARD, "humidity"},
+  {STATUS_CARD, "status"},
+  {SLIDER_CARD, "slider"},
+  {BUTTON_CARD, "button"},
+  {PROGRESS_CARD, "progress"},
+};
 
-AsyncWebSocket ws("/dashws");
+// Integral type to string pairs events
+// ID, type
+struct ChartNames chartTags[] = {
+  {BAR_CHART, "bar"},
+};
 
 
-// Handle Websocket Requests
-void ESPDashClass::onWsEvent(AsyncWebSocket * server, AsyncWebSocketClient * client, AwsEventType type, void * arg, uint8_t *data, size_t len){
-    if(type == WS_EVT_CONNECT){
-        debugPrintln("[WEBSOCKET] Client connection received");
-    } else if(type == WS_EVT_DISCONNECT){
-        debugPrintln("[WEBSOCKET] Client disconnected");
-    } else if(type == WS_EVT_DATA){
-        AwsFrameInfo *info = (AwsFrameInfo*)arg;
-        if (info->final && info->index == 0 && info->len == len) {
-            String message = "";
-            if (info->opcode == WS_TEXT) {
-                for (size_t i=0; i<info->len; i++) message += (char)data[i];
-            } else {
-                char buff[3];
-                for (size_t i=0; i<info->len; i++) {
-                    sprintf(buff, "%02x ", (uint8_t) data[i]);
-                    message += buff ;
-                }
-            }
-            
-            debugPrintln("[WEBSOCKET] Message Received: "+message);
+/*
+  Constructor
+*/
+ESPDash::ESPDash(AsyncWebServer* server, bool enable_stats) {
+  _server = server;
+  stats_enabled = enable_stats;
 
-            StaticJsonDocument<500> doc;
-            DeserializationError err = deserializeJson(doc, message);
-            if (err) {
-                debugPrintln(F("deserializeJson() failed: "));
-                debugPrintln(err.c_str());
-            }else{
-                JsonObject object = doc.as<JsonObject>();
-                String command = object["command"];
-                if(command != ""){
-                    if(command == "getLayout"){
-                        debugPrintln("[WEBSOCKET] Got getLayout Command from Client "+String(client->id()));
-                        String result = "";
-                        ESPDash.generateLayoutResponse(result);
-                        ws.text(client->id(), result);
-                    }else if(command == "getStats"){
-                        debugPrintln("[WEBSOCKET] Got getStats Command from Client "+String(client->id()));
-                        String result = "";
-                        ESPDash.generateStatsResponse(result);
-                        ws.text(client->id(), result);
-                    }else if(command == "reboot"){
-                        String result = "";
-                        ESPDash.generateRebootResponse(result);
-                        ws.text(client->id(), result);
-                        #if defined(ESP8266)
-                            ESP.restart();
-                        #elif defined(ESP32)
-                            esp_task_wdt_init(1,true);
-                            esp_task_wdt_add(NULL);
-                            while(true);
-                        #endif
-                    }else if(command == "buttonClicked"){
-                        if(ESPDash._buttonClickFunc != NULL){
-                            const char* buttonId = object["id"];
-                            for(int i=0; i < BUTTON_CARD_LIMIT; i++){
-                                if(ESPDash.button_card_id[i] == buttonId){
-                                    ESPDash._buttonClickFunc(buttonId);
-                                    return;
-                                }
-                            }
+  // Initialize AsyncWebSocket
+  _ws = new AsyncWebSocket("/dashws");
 
-                            debugPrintln("buttonClicked Command didn't match any ID in our records! Rouge Request...");
-                        }
-                    } else if (command == "sliderChanged"){
-                        if(ESPDash._sliderChangedFunc != NULL){
-                            const char* sliderId = object["id"];
-                            int sliderValue = object["value"];
-                            for(int i=0; i < SLIDER_CARD_LIMIT; i++){
-                                if(ESPDash.slider_card_id[i] == sliderId){
-                                    ESPDash._sliderChangedFunc(sliderId, sliderValue);
-                                    // Send Confirmation
-                                    ESPDash.slider_card_value[i] = sliderValue;
-                                    ws.textAll("{\"response\": \"updateSliderCard\", \"id\": \""+(String)sliderId+"\", \"value\": "+sliderValue+"}");
-                                    return;
-                                }
-                            }
-
-                            debugPrintln("sliderChanged Command didn't match any ID in our records! Rouge Request...");
-                        }                    
-                    }
-                }else{
-                    debugPrintln("[WEBSOCKET] Invalid Command");
-                }
-            }
-        }
+  // Attach AsyncWebServer Routes
+  _server->on("/", HTTP_GET, [this](AsyncWebServerRequest *request){
+    if(basic_auth){
+      if(!request->authenticate(username, password))
+      return request->requestAuthentication();
     }
+    // respond with the compressed frontend
+    AsyncWebServerResponse *response = request->beginResponse_P(200, "text/html", DASH_HTML, DASH_HTML_SIZE);
+    response->addHeader("Content-Encoding","gzip");
+    request->send(response);        
+  });
+
+  // Websocket Callback Handler
+  _ws->onEvent([&](AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len){
+    StaticJsonDocument<200> json;
+    String response;
+
+    if (type == WS_EVT_DATA) {
+      AwsFrameInfo * info = (AwsFrameInfo * ) arg;
+      if (info -> final && info -> index == 0 && info -> len == len) {
+        if (info -> opcode == WS_TEXT) {
+          data[len] = 0;
+          deserializeJson(json, reinterpret_cast<const char*>(data));
+          // client side commands parsing
+          if (json["command"] == "getLayout")
+            response = generateLayoutJSON();
+          else if (json["command"] == "ping")
+            response = "{\"command\":\"pong\"}";
+          else if (json["command"] == "getStats")
+            response = generateLayoutJSON(true);
+          else if (json["command"] == "buttonClicked") {
+            // execute and reference card data struct to funtion
+            uint32_t id = json["id"].as<uint32_t>();
+            for(int i=0; i < cards.Size(); i++){
+              Card *p = cards[i];
+              if(id == p->_id){
+                if(p->_callback != nullptr){
+                  p->_callback(json["value"].as<bool>());
+                }
+              }
+            }
+            return;
+          } else if (json["command"] == "sliderChanged") {
+            // execute and reference card data struct to funtion
+            uint32_t id = json["id"].as<uint32_t>();
+            for(int i=0; i < cards.Size(); i++){
+              Card *p = cards[i];
+              if(id == p->_id){
+                if(p->_callback != nullptr){
+                  p->_callback(json["value"].as<int>());
+                }
+              }
+            }
+            response = generateUpdatesJSON();
+          }
+
+          // update only requested socket
+          _ws->text(client->id(), response);
+        }
+      }
+    }
+  });
+
+  // Attach Websocket Instance to AsyncWebServer
+  _server->addHandler(_ws);
 }
 
 
-//////////////////////
-// Public Functions //
-//////////////////////
+void ESPDash::setAuthentication(const char *user, const char *pass) {
+  username = user;
+  password = pass;
+  basic_auth = true;
+  _ws->setAuthentication(user, pass);
+}
 
-void ESPDashClass::init(AsyncWebServer& server){
-    server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
-        // Send File
-        AsyncWebServerResponse *response = request->beginResponse_P(200, "text/html", DASH_HTML, DASH_HTML_SIZE);
-        response->addHeader("Content-Encoding","gzip");
-        request->send(response);        
-    });
 
-    #ifdef DEBUG_MODE
-    server.on("/debug", HTTP_GET, [&](AsyncWebServerRequest *request){
-        String json = "";
-        generateLayoutResponse(json);
-        request->send(200, "application/json", json);
-    });
+// Add Card
+void ESPDash::add(Card *card) {
+  cards.PushBack(card);
+  refreshLayout();
+}
+
+// Remove Card
+void ESPDash::remove(Card *card) {
+  for(int i=0; i < cards.Size(); i++){
+    Card *p = cards[i];
+    if(p->_id == card->_id){
+      cards.Erase(i);
+      refreshLayout();
+      return;
+    }
+  }
+}
+
+
+// Add Chart
+void ESPDash::add(Chart *chart) {
+  charts.PushBack(chart);
+  refreshLayout();
+}
+
+// Remove Card
+void ESPDash::remove(Chart *chart) {
+  for(int i=0; i < charts.Size(); i++){
+    Chart *p = charts[i];
+    if(p->_id == chart->_id){
+      charts.Erase(i);
+      refreshLayout();
+      return;
+    }
+  }
+}
+
+
+// push updates to all connected clients
+String ESPDash::generateUpdatesJSON(bool toAll) {
+  String cardsData;
+  String chartsData;
+
+  // Generate JSON for all changed Cards
+  for (int i=0; i < cards.Size(); i++) {
+    Card *p = cards[i];
+    if(p->_changed || toAll){
+      p->_changed = false;
+      cardsData += generateComponentJSON(p, true);
+      cardsData += ",";
+    }    
+  }
+
+  // Remove Last Comma
+  if(cardsData.length() > 0)
+    cardsData.remove(cardsData.length()-1);
+
+  
+  // Generate JSON for all changed Charts
+  for (int i=0; i < charts.Size(); i++) {
+    Chart *p = charts[i];
+    if(p->_changed || toAll){
+      p->_changed = false;
+      chartsData += generateComponentJSON(p, true);
+      chartsData += ",";
+    }
+  }
+
+  // Remove Last Comma
+  if(chartsData.length() > 0)
+    chartsData.remove(chartsData.length()-1);
+
+  return "{\"command\":\"updateCards\", \"cards\":[" + cardsData + "], \"charts\":[" + chartsData + "]}";
+}
+
+
+// generates the layout JSON string to the frontend
+String ESPDash::generateLayoutJSON(bool only_stats) {
+  String cardsData;
+  String chartsData;
+  String stats;
+
+  if (stats_enabled) {
+    // No need to use json library to build response packet
+    stats += "\"enabled\":true,";
+    #if defined(ESP8266)
+    stats += "\"hardware\":\"ESP8266\",";
+    stats += "\"sdk\":\"" + ESP.getCoreVersion() + "\",";
+    stats += "\"chipId\":\"" + String(ESP.getChipId()) + "\",";
+    #elif defined(ESP32)
+    stats += "\"hardware\":\"ESP32\",";
+    stats += "\"sdk\":\"" + String(esp_get_idf_version()) + "\",";
+    stats += "\"chipId\":\"" + String((uint32_t) ESP.getEfuseMac()) + "\",";
     #endif
 
-    ws.onEvent(onWsEvent);
-    server.addHandler(&ws);
+    stats += "\"sketchHash\":\"" + ESP.getSketchMD5() + "\",";
+    stats += "\"macAddress\":\"" + WiFi.macAddress() + "\",";
+    stats += "\"freeHeap\":\"" + String(ESP.getFreeHeap()) + "\",";
+    stats += "\"wifiMode\":" + String(WiFi.getMode()) + ",";
+    stats += "\"wifiSignal\":" + String(WiFi.RSSI());
+  } else
+    stats = "\"enabled\":\"false\",";
+
+  // only status has been requested
+  if (only_stats) {
+    return "{\"command\":\"updateStats\", "
+    "\"statistics\":{" + stats + "}}";
+  }
+
+  /*
+    Generate Cards JSON
+  */
+
+  // Generate JSON for all Cards
+  for (int i=0; i < cards.Size(); i++) {
+    Card *p = cards[i];
+    cardsData += generateComponentJSON(p);
+    cardsData += ",";
+  }
+
+  // Remove Last Comma
+  if(cardsData.length() > 0)
+    cardsData.remove(cardsData.length()-1);
+
+  /* 
+    Generate Charts JSON
+  */
+  
+  // Generate JSON for all Charts
+  for (int i=0; i < charts.Size(); i++) {
+    Chart *p = charts[i];
+    chartsData += generateComponentJSON(p);
+    chartsData += ",";
+  }
+
+  // Remove Last Comma
+  if(chartsData.length() > 0)
+    chartsData.remove(chartsData.length()-1);
+
+  return "{\"command\":\"updateLayout\", \"version\":\"1\", \"statistics\":{" + stats + "}, \"cards\":[" + cardsData + "], \"charts\":[" + chartsData + "]}";
 }
 
 
+/*
+  Generate Card JSON
+*/
+const String ESPDash::generateComponentJSON(Card* card, bool change_only){
+  String data = "";
 
+  StaticJsonDocument<256> doc;
+  doc["id"] = card->_id;
+  if(!change_only){
+    doc["name"] = card->_name;
+    doc["type"] = cardTags[card->_type].type;
+    doc["value_min"] = card->_value_min;
+    doc["value_max"] = card->_value_max;
+  }
+  doc["symbol"] = card->_symbol;
 
-/////////////////
-// Number Card //
-/////////////////
+  switch (card->_value_type) {
+    case Card::INTEGER:
+      doc["value"] = card->_value_i;
+      break;
+    case Card::FLOAT:
+      doc["value"] = String(card->_value_f, 2);
+      break;
+    case Card::STRING:
+      doc["value"] = card->_value_s;
+      break;
+    default:
+      // blank value
+      break;
+  }
 
-
-// Add Number Card with Custom Value
-void ESPDashClass::addNumberCard(const char* _id, const char* _name, int _value){
-    if(_id != NULL){
-        for(int i=0; i < NUMBER_CARD_LIMIT; i++){
-            if(number_card_id[i] == ""){
-                debugPrintln("[DASH] Found an empty slot in Number Cards. Inserted New Card at Index ["+String(i)+"].");
-
-                number_card_id[i] = _id;
-                number_card_name[i] = _name;
-                number_card_value[i] = _value;
-
-                ws.textAll("{\"response\": \"updateLayout\"}");
-                break;
-            }
-        }
-        return;
-    }else{
-        return;
-    }
+  serializeJson(doc, data);
+  return data;
 }
 
 
-// Update Number Card with Custom Value
-void ESPDashClass::updateNumberCard(const char* _id, int _value){
-    for(int i=0; i < NUMBER_CARD_LIMIT; i++){
-        if(number_card_id[i] == _id){
-            debugPrintln("[DASH] Updated Number Card at Index ["+String(i)+"].");
+/*
+  Generate Chart JSON
+*/
+const String ESPDash::generateComponentJSON(Chart* chart, bool change_only){
+  String data = "";
 
-            number_card_value[i] = _value;
+  DynamicJsonDocument doc(2048);
+  doc["id"] = chart->_id;
+  if(!change_only){
+    doc["name"] = chart->_name;
+    doc["type"] = chartTags[chart->_type].type;
+  }
 
-            DynamicJsonDocument doc(250);
-            JsonObject object = doc.to<JsonObject>();
-            object["response"] = "updateNumberCard";
-            object["id"] = number_card_id[i];
-            object["value"] = number_card_value[i];
-            size_t len = measureJson(doc);
-            AsyncWebSocketMessageBuffer * buffer = ws.makeBuffer(len);
-            if (buffer) {
-                serializeJson(doc, (char *)buffer->get(), len + 1);
-                ws.textAll(buffer);
-            }else{
-                debugPrintln("[DASH] Websocket Buffer Error");
-            }
-            break;
-        }
-    }
-    return;
+  JsonArray xAxis = doc["x_axis"].to<JsonArray>();
+  switch (chart->_x_axis_type) {
+    case GraphAxisType::INTEGER:
+      for(int i=0; i < chart->_x_axis_i.Size(); i++)
+        xAxis.add(chart->_x_axis_i[i]);
+      break;
+    case GraphAxisType::FLOAT:
+      for(int i=0; i < chart->_x_axis_f.Size(); i++)
+        xAxis.add(chart->_x_axis_f[i]);
+      break;
+    case GraphAxisType::STRING:
+      for(int i=0; i < chart->_x_axis_s.Size(); i++)
+        xAxis.add(chart->_x_axis_s[i].c_str());
+      break;
+    default:
+      // blank value
+      break;
+  }
+  
+  JsonArray yAxis = doc["y_axis"].to<JsonArray>();
+  switch (chart->_y_axis_type) {
+    case GraphAxisType::INTEGER:
+      for(int i=0; i < chart->_y_axis_i.Size(); i++)
+        yAxis.add(chart->_y_axis_i[i]);
+      break;
+    case GraphAxisType::FLOAT:
+      for(int i=0; i < chart->_y_axis_f.Size(); i++)
+        yAxis.add(chart->_y_axis_f[i]);
+      break;
+    default:
+      // blank value
+      break;
+  }
+
+  serializeJson(doc, data);
+  return data;
+}
+
+/* Send Card Updates to all clients */
+void ESPDash::sendUpdates() {
+  _ws->textAll(generateUpdatesJSON(true));
+}
+
+void ESPDash::refreshLayout() {
+  _ws->textAll("{\"command\":\"refreshLayout\"}");
 }
 
 
-
-//////////////////////
-// Temperature Card //
-//////////////////////
-
-
-// Add Temperature Card with Custom Value
-void ESPDashClass::addTemperatureCard(const char* _id, const char* _name, int _type, int _value){
-    if(_id != NULL && _type >= 0 && _type <= TEMPERATURE_CARD_TYPES){
-        for(int i=0; i < TEMPERATURE_CARD_LIMIT; i++){
-            if(temperature_card_id[i] == ""){
-                debugPrintln("[DASH] Found an empty slot in Temperature Cards. Inserted New Card at Index ["+String(i)+"].");
-
-                temperature_card_id[i] = _id;
-                temperature_card_name[i] = _name;
-                temperature_card_type[i] = _type;
-                temperature_card_value[i] = _value;
-
-                ws.textAll("{\"response\": \"updateLayout\"}");
-                break;
-            }
-        }
-        return;
-    }else{
-        return;
-    }
+/*
+  Destructor
+*/
+ESPDash::~ESPDash(){
+  _server->removeHandler(_ws);
+  delete _ws;
 }
-
-
-// Update Temperature Card with custom value
-void ESPDashClass::updateTemperatureCard(const char* _id, int _value){
-    for(int i=0; i < TEMPERATURE_CARD_LIMIT; i++){
-        if(temperature_card_id[i] == _id){
-            debugPrintln("[DASH] Updated Temperature Card at Index ["+String(i)+"].");
-
-            temperature_card_value[i] = _value;
-
-            DynamicJsonDocument doc(250);
-            JsonObject object = doc.to<JsonObject>();
-            object["response"] = "updateTemperatureCard";
-            object["id"] = temperature_card_id[i];
-            object["value"] = temperature_card_value[i];
-            size_t len = measureJson(doc);
-            AsyncWebSocketMessageBuffer * buffer = ws.makeBuffer(len);
-            if (buffer) {
-                serializeJson(doc, (char *)buffer->get(), len + 1);
-                ws.textAll(buffer);
-            }else{
-                debugPrintln("[DASH] Websocket Buffer Error");
-            }
-            break;
-        }
-    }
-    return;
-}
-
-
-
-///////////////////
-// Humidity Card //
-///////////////////
-
-
-// Add Humidity Card with Custom Value
-void ESPDashClass::addHumidityCard(const char* _id, const char* _name, int _value){
-    if(_id != NULL){
-        for(int i=0; i < HUMIDITY_CARD_LIMIT; i++){
-            if(humidity_card_id[i] == ""){
-                debugPrintln("[DASH] Found an empty slot in Humidity Cards. Inserted New Card at Index ["+String(i)+"].");
-
-                humidity_card_id[i] = _id;
-                humidity_card_name[i] = _name;
-                humidity_card_value[i] = _value;
-
-                ws.textAll("{\"response\": \"updateLayout\"}");
-                break;
-            }
-        }
-        return;
-    }else{
-        return;
-    }
-}
-
-
-// Update Humidity Card with Custom Value
-void ESPDashClass::updateHumidityCard(const char* _id, int _value){
-    for(int i=0; i < HUMIDITY_CARD_LIMIT; i++){
-        if(humidity_card_id[i] == _id){
-            debugPrintln("[DASH] Updated Humidity Card at Index ["+String(i)+"].");
-
-            humidity_card_value[i] = _value;
-
-            DynamicJsonDocument doc(250);
-            JsonObject object = doc.to<JsonObject>();
-            object["response"] = "updateHumidityCard";
-            object["id"] = humidity_card_id[i];
-            object["value"] = humidity_card_value[i];
-            size_t len = measureJson(doc);
-            AsyncWebSocketMessageBuffer * buffer = ws.makeBuffer(len);
-            if (buffer) {
-                serializeJson(doc, (char *)buffer->get(), len + 1);
-                ws.textAll(buffer);
-            }else{
-                debugPrintln("[DASH] Websocket Buffer Error");
-            }
-            break;
-        }
-    }
-    return;
-}
-
-
-
-/////////////////
-// Status Card //
-/////////////////
-
-
-// Add Status Card with Custom Value
-void ESPDashClass::addStatusCard(const char* _id, const char* _name, int _value){
-    if(_id != NULL && _value >= 0 && _value <= STATUS_CARD_TYPES){
-        for(int i=0; i < STATUS_CARD_LIMIT; i++){
-            if(status_card_id[i] == ""){
-                debugPrintln("[DASH] Found an empty slot in Status Cards. Inserted New Card at Index ["+String(i)+"].");
-
-                status_card_id[i] = _id;
-                status_card_name[i] = _name;
-                status_card_value[i] = _value;
-
-                ws.textAll("{\"response\": \"updateLayout\"}");
-                break;
-            }
-        }
-        return;
-    }else{
-        return;
-    }
-}
-
-
-// Add Status Card with Custom Boolean Value
-void ESPDashClass::addStatusCard(const char* _id, const char* _name, bool _value){
-    addStatusCard(_id, _name, _value ? 1 : 0);
-}
-
-
-// Update Status Card with Custom Value
-void ESPDashClass::updateStatusCard(const char* _id, int _value){
-    if(_value >= 0 && _value <= STATUS_CARD_TYPES){
-        for(int i=0; i < STATUS_CARD_LIMIT; i++){
-            if(status_card_id[i] == _id){
-                debugPrintln("[DASH] Updated Status Card at Index ["+String(i)+"].");
-
-                status_card_value[i] = _value;
-
-                DynamicJsonDocument doc(250);
-                JsonObject object = doc.to<JsonObject>();
-                object["response"] = "updateStatusCard";
-                object["id"] = status_card_id[i];
-                object["value"] = status_card_value[i];
-                size_t len = measureJson(doc);
-                AsyncWebSocketMessageBuffer * buffer = ws.makeBuffer(len);
-                if (buffer) {
-                    serializeJson(doc, (char *)buffer->get(), len + 1);
-                    ws.textAll(buffer);
-                }else{
-                    debugPrintln("[DASH] Websocket Buffer Error");
-                }
-                break;
-            }
-        }
-        return;
-    }else{
-        return;
-    }
-}
-
-
-// Update Status Card with Custom Value
-void ESPDashClass::updateStatusCard(const char* _id, bool _value){
-    updateStatusCard(_id, _value ? 1 : 0);
-}
-
-
-
-/////////////////
-// Button Card //
-/////////////////
-
-// Add Button Card
-void ESPDashClass::addButtonCard(const char* _id, const char* _name){
-    if(_id != NULL){
-        for(int i=0; i < BUTTON_CARD_LIMIT; i++){
-            if(button_card_id[i] == ""){
-                debugPrintln("[DASH] Found an empty slot in Button Cards. Inserted New Card at Index ["+String(i)+"].");
-
-                button_card_id[i] = _id;
-                button_card_name[i] = _name;
-                break;
-            }
-        }
-        return;
-    }else{
-        return;
-    }
-}
-
-
-/////////////////
-// Slider Card //
-/////////////////
-
-// Add Slider Card
-void ESPDashClass::addSliderCard(const char* _id, const char* _name, int _type){
-    if(_id != NULL && _type >= 0 && _type <= SLIDER_CARD_TYPES){
-        for(int i=0; i < SLIDER_CARD_LIMIT; i++){
-            if(slider_card_id[i] == ""){
-                debugPrintln("[DASH] Found an empty slot in Slider Cards. Inserted New Card at Index ["+String(i)+"].");
-
-                slider_card_id[i]    = _id;
-                slider_card_name[i]  = _name;
-                slider_card_type[i]  = _type;
-                slider_card_value[i] = 0;
-
-                ws.textAll("{\"response\": \"updateLayout\"}");
-                break;
-            }
-        }
-        return;
-    }else{
-        return;
-    }
-}
-
-// Update Slider Card with Custom Value
-void ESPDashClass::updateSliderCard(const char* _id, int _value){
-    for(int i=0; i < SLIDER_CARD_LIMIT; i++){
-        if(slider_card_id[i] == _id){
-            debugPrintln("[DASH] Updated Slider Card at Index ["+String(i)+"].");
-
-            slider_card_value[i] = _value;
-
-            DynamicJsonDocument doc(250);
-            JsonObject object = doc.to<JsonObject>();
-            object["response"] = "updateSliderCard";
-            object["id"] = slider_card_id[i];
-            object["value"] = slider_card_value[i];
-            size_t len = measureJson(doc);
-            AsyncWebSocketMessageBuffer * buffer = ws.makeBuffer(len);
-            if (buffer) {
-                serializeJson(doc, (char *)buffer->get(), len + 1);
-                ws.textAll(buffer);
-            }else{
-                debugPrintln("[DASH] Websocket Buffer Error (updateSliderCard())");
-            }
-            break;
-        }
-    }
-    return;
-}
-
-
-
-////////////////
-// Line Chart //
-////////////////
-
-// Add Line Chart
-void ESPDashClass::addLineChart(const char* _id, const char* _name, int _x_axis_value[], int _x_axis_size, const char* _y_axis_name, int _y_axis_value[], int _y_axis_size){
-    if(_id != NULL){
-        for(int i=0; i < LINE_CHART_LIMIT; i++){
-            if(line_chart_id[i] == ""){
-                debugPrintln("[DASH] Found an empty slot in Line Charts. Inserted New Chart at Index ["+String(i)+"].");
-
-                line_chart_id[i] = _id;
-                line_chart_name[i] = _name;
-                line_chart_x_axis_type[i] = false;
-                line_chart_x_axis_size[i] = _x_axis_size;
-                line_chart_y_axis_size[i] = _y_axis_size;
-                line_chart_y_axis_name[i] = _y_axis_name;
-
-                for(int v=0; v < _x_axis_size; v++){
-                    line_chart_x_axis_value_int[i][v] = _x_axis_value[v];
-                }
-
-                for(int v=0; v < _y_axis_size; v++){
-                    line_chart_y_axis_value[i][v] = _y_axis_value[v];
-                }
-
-                ws.textAll("{\"response\": \"updateLayout\"}");
-                break;
-            }
-        }
-        return;
-    }else{
-        return;
-    }
-}
-
-// Add Line Chart
-void ESPDashClass::addLineChart(const char* _id, const char* _name, String _x_axis_value[], int _x_axis_size, const char* _y_axis_name, int _y_axis_value[], int _y_axis_size){
-    if(_id != NULL){
-        for(int i=0; i < LINE_CHART_LIMIT; i++){
-            if(line_chart_id[i] == ""){
-                debugPrintln("[DASH] Found an empty slot in Line Charts. Inserted New Chart at Index ["+String(i)+"].");
-
-                line_chart_id[i] = _id;
-                line_chart_name[i] = _name;
-                line_chart_x_axis_type[i] = true;
-                line_chart_x_axis_size[i] = _x_axis_size;
-                line_chart_y_axis_size[i] = _y_axis_size;
-                line_chart_y_axis_name[i] = _y_axis_name;
-
-                for(int v=0; v < _x_axis_size; v++){
-                    line_chart_x_axis_value_string[i][v] = _x_axis_value[v];
-                }
-
-                for(int v=0; v < _y_axis_size; v++){
-                    line_chart_y_axis_value[i][v] = _y_axis_value[v];
-                }
-
-                ws.textAll("{\"response\": \"updateLayout\"}");
-                break;
-            }
-        }
-        return;
-    }else{
-        return;
-    }
-}
-
-
-// Update Line Chart of Int x Axis
-void ESPDashClass::updateLineChart(const char* _id, int _x_axis_value[], int _x_axis_size, int _y_axis_value[], int _y_axis_size){
-    for(int i=0; i < LINE_CHART_LIMIT; i++){
-        if(line_chart_id[i] == _id){
-            debugPrintln("[DASH] Updated Line Chart at Index ["+String(i)+"].");
-
-            if(line_chart_x_axis_type[i] == false){
-                
-                DynamicJsonDocument doc(1000);
-                JsonObject object = doc.to<JsonObject>();
-                object["response"] = "updateLineChart";
-                object["id"] = line_chart_id[i];
-
-                line_chart_x_axis_size[i] = _x_axis_size;
-                line_chart_y_axis_size[i] = _y_axis_size;
-
-                JsonArray xaxis = object.createNestedArray("x_axis_value");
-                for(int v=0; v < _x_axis_size; v++){
-                    line_chart_x_axis_value_int[i][v] = _x_axis_value[v];
-                    xaxis.add(line_chart_x_axis_value_int[i][v]);
-                }
-
-                JsonArray yaxis = object.createNestedArray("y_axis_value");
-                for(int v=0; v < _y_axis_size; v++){
-                    line_chart_y_axis_value[i][v] = _y_axis_value[v];
-                    yaxis.add(line_chart_y_axis_value[i][v]);
-                }
-
-                size_t len = measureJson(doc);
-                AsyncWebSocketMessageBuffer * buffer = ws.makeBuffer(len);
-                if (buffer) {
-                    serializeJson(doc, (char *)buffer->get(), len + 1);
-                    ws.textAll(buffer);
-                }else{
-                    debugPrintln("[DASH] Websocket Buffer Error");
-                }
-            }
-            break;
-        }
-    }
-    return;
-}
-
-
-// Update Line Chart of String x Axis
-void ESPDashClass::updateLineChart(const char* _id, String _x_axis_value[], int _x_axis_size, int _y_axis_value[], int _y_axis_size){
-    for(int i=0; i < LINE_CHART_LIMIT; i++){
-        if(line_chart_id[i] == _id){
-            debugPrintln("[DASH] Updated Line Chart at Index ["+String(i)+"].");
-
-            if(line_chart_x_axis_type[i] == true){
-                
-                DynamicJsonDocument doc(1000);
-                JsonObject object = doc.to<JsonObject>();
-                object["response"] = "updateLineChart";
-                object["id"] = line_chart_id[i];
-
-                line_chart_x_axis_size[i] = _x_axis_size;
-                line_chart_y_axis_size[i] = _y_axis_size;
-
-                JsonArray xaxis = object.createNestedArray("x_axis_value");
-                for(int v=0; v < _x_axis_size; v++){
-                    line_chart_x_axis_value_string[i][v] = _x_axis_value[v];
-                    xaxis.add(line_chart_x_axis_value_string[i][v]);
-                }
-                
-                JsonArray yaxis = object.createNestedArray("y_axis_value");
-                for(int v=0; v < _y_axis_size; v++){
-                    line_chart_y_axis_value[i][v] = _y_axis_value[v];
-                    yaxis.add(line_chart_y_axis_value[i][v]);
-                }
-
-                size_t len = measureJson(doc);
-                AsyncWebSocketMessageBuffer * buffer = ws.makeBuffer(len);
-                if (buffer) {
-                    serializeJson(doc, (char *)buffer->get(), len + 1);
-                    ws.textAll(buffer);
-                }else{
-                    debugPrintln("[DASH] Websocket Buffer Error");
-                }
-            }
-            break;
-        }
-    }
-    return;
-}
-
-
-/////////////////
-// Gauge Chart //
-/////////////////
-
-// Add Gauge Card with Default Value
-void ESPDashClass::addGaugeChart(const char* _id, const char* _name, int _value){
-    if(_id != NULL){
-        for(int i=0; i < GAUGE_CHART_LIMIT; i++){
-            if(gauge_chart_id[i] == ""){
-                debugPrintln("[DASH] Found an empty slot in Gauge Cards. Inserted New Card at Index ["+String(i)+"].");
-
-                gauge_chart_id[i] = _id;
-                gauge_chart_name[i] = _name;
-                gauge_chart_value[i] = _value;
-                ws.textAll("{\"response\": \"updateLayout\"}");
-                break;
-            }
-        }
-        return;
-    }else{
-        return;
-    }
-}
-
-
-// Update Gauge Card with Custom Value
-void ESPDashClass::updateGaugeChart(const char* _id, int _value){
-    for(int i=0; i < GAUGE_CHART_LIMIT; i++){
-        if(gauge_chart_id[i] == _id){
-            debugPrintln("[DASH] Updated Gauge Chart at Index ["+String(i)+"].");
-
-            gauge_chart_value[i] = _value;
-
-            DynamicJsonDocument doc(250);
-            JsonObject object = doc.to<JsonObject>();
-            object["response"] = "updateGaugeChart";
-            object["id"] = gauge_chart_id[i];
-            object["value"] = gauge_chart_value[i];
-            size_t len = measureJson(doc);
-            AsyncWebSocketMessageBuffer * buffer = ws.makeBuffer(len);
-            if (buffer) {
-                serializeJson(doc, (char *)buffer->get(), len + 1);
-                ws.textAll(buffer);
-            }else{
-                debugPrintln("[DASH] Websocket Buffer Error");
-            }
-            break;
-        }
-    }
-    return;
-}
-
-
-
-///////////////////////
-// Private Functions //
-///////////////////////
-
-void ESPDashClass::generateLayoutResponse(String& result){
-    debugPrintln("Free HEAP = before = JSON Serialization: "+String(ESP.getFreeHeap()));
-
-    size_t CAPACITY = getTotalResponseCapacity();
-
-    DynamicJsonDocument doc(CAPACITY+1000);
-    JsonObject root = doc.to<JsonObject>();
-    root["response"] = "getLayout";
-    root["version"] = "1";
-    root["size"] = CAPACITY+1000;
-    // Add Stats
-    JsonObject stats = root.createNestedObject("statistics");
-    if(stats_enabled){
-        stats["enabled"] = true;
-        stats["hardware"] = HARDWARE;
-        #if defined(ESP8266)
-            stats["chipId"] = String(ESP.getChipId());
-            stats["sketchHash"] = ESP.getSketchMD5();
-            stats["macAddress"] = String(WiFi.macAddress());
-            stats["freeHeap"] = ESP.getFreeHeap();
-            stats["wifiMode"] = int(WiFi.getMode());
-        #elif defined(ESP32)
-            stats["chipId"] = String((uint32_t)ESP.getEfuseMac(), HEX);
-            stats["sketchHash"] = ESP.getSketchMD5();
-            stats["macAddress"] = String(WiFi.macAddress());
-            stats["freeHeap"] = ESP.getFreeHeap();
-            stats["wifiMode"] = int(WiFi.getMode());
-        #endif
-    }else{
-        stats["enabled"] = false;
-    }
-    // Add Cards
-    JsonArray cards = root.createNestedArray("cards");
-    for(int i=0; i < NUMBER_CARD_LIMIT; i++){
-        if(number_card_id[i] != ""){
-            DynamicJsonDocument carddoc(250);
-            JsonObject jsoncard = carddoc.to<JsonObject>();
-            jsoncard["id"] = number_card_id[i];
-            jsoncard["card_type"] = "number";
-            jsoncard["name"] = number_card_name[i];
-            jsoncard["value"] = number_card_value[i];
-            cards.add(jsoncard);
-        }
-    }
-
-    for(int i=0; i < TEMPERATURE_CARD_LIMIT; i++){
-        if(temperature_card_id[i] != ""){
-            DynamicJsonDocument carddoc(250);
-            JsonObject jsoncard = carddoc.to<JsonObject>();
-            jsoncard["id"] = temperature_card_id[i];
-            jsoncard["card_type"] = "temperature";
-            jsoncard["name"] = temperature_card_name[i];
-            jsoncard["value_type"] = temperature_card_type[i];
-            jsoncard["value"] = temperature_card_value[i];
-            cards.add(jsoncard);
-        }
-    }
-
-    for(int i=0; i < HUMIDITY_CARD_LIMIT; i++){
-        if(humidity_card_id[i] != ""){
-            DynamicJsonDocument carddoc(250);
-            JsonObject jsoncard = carddoc.to<JsonObject>();
-            jsoncard["id"] = humidity_card_id[i];
-            jsoncard["card_type"] = "humidity";
-            jsoncard["name"] = humidity_card_name[i];
-            jsoncard["value"] = humidity_card_value[i];
-            cards.add(jsoncard);
-        }
-    }
-
-    for(int i=0; i < STATUS_CARD_LIMIT; i++){
-        if(status_card_id[i] != ""){
-            DynamicJsonDocument carddoc(250);
-            JsonObject jsoncard = carddoc.to<JsonObject>();
-            jsoncard["id"] = status_card_id[i];
-            jsoncard["card_type"] = "status";
-            jsoncard["name"] = status_card_name[i];
-            jsoncard["value"] = status_card_value[i];
-            cards.add(jsoncard);
-        }
-    }
-
-    for(int i=0; i < BUTTON_CARD_LIMIT; i++){
-        if(button_card_id[i] != ""){
-            DynamicJsonDocument carddoc(250);
-            JsonObject jsoncard = carddoc.to<JsonObject>();
-            jsoncard["id"] = button_card_id[i];
-            jsoncard["card_type"] = "button";
-            jsoncard["name"] = button_card_name[i];
-            cards.add(jsoncard);
-        }
-    }
-
-    for(int i=0; i < LINE_CHART_LIMIT; i++){
-        if(line_chart_id[i] != ""){
-            DynamicJsonDocument carddoc(1000);
-            JsonObject jsoncard = carddoc.to<JsonObject>();
-            jsoncard["id"] = line_chart_id[i];
-            jsoncard["card_type"] = "lineChart";
-            jsoncard["name"] = line_chart_name[i];
-            JsonArray xaxis = jsoncard.createNestedArray("x_axis_value");
-            if(line_chart_x_axis_type[i]){ // If type = String
-                for(int v = 0; v < line_chart_x_axis_size[i]; v++){
-                    xaxis.add(line_chart_x_axis_value_string[i][v]);
-                }
-            }else{ // If type = Integer
-                for(int v = 0; v < line_chart_x_axis_size[i]; v++){
-                    xaxis.add(line_chart_x_axis_value_int[i][v]);
-                }
-            }
-
-            jsoncard["y_axis_name"] = line_chart_y_axis_name[i];
-            JsonArray yaxis = jsoncard.createNestedArray("y_axis_value");
-            for(int v=0; v < line_chart_y_axis_size[i]; v++){
-                yaxis.add(line_chart_y_axis_value[i][v]);
-            }
-
-            cards.add(jsoncard);
-        }
-    }
-
-    for(int i=0; i < GAUGE_CHART_LIMIT; i++){
-        if(gauge_chart_id[i] != ""){
-            DynamicJsonDocument carddoc(250);
-            JsonObject jsoncard = carddoc.to<JsonObject>();
-            jsoncard["id"] = gauge_chart_id[i];
-            jsoncard["card_type"] = "gaugeChart";
-            jsoncard["value"] = gauge_chart_value[i];
-            jsoncard["name"] = gauge_chart_name[i];
-            cards.add(jsoncard);
-        }
-    }
-
-    for(int i=0; i < SLIDER_CARD_LIMIT; i++){
-        if(slider_card_id[i] != ""){
-            DynamicJsonDocument carddoc(250);
-            JsonObject jsoncard = carddoc.to<JsonObject>();
-            jsoncard["id"] = slider_card_id[i];
-            jsoncard["card_type"] = "slider";
-            jsoncard["name"] = slider_card_name[i];
-            jsoncard["value"] = slider_card_value[i];
-            jsoncard["type"] = slider_card_type[i];
-            cards.add(jsoncard);
-        }
-    }
-
-    serializeJson(doc, result);
-
-    debugPrintln("Free HEAP = after = JSON Serialization: "+String(ESP.getFreeHeap()));
-
-    return;
-}
-
-
-
-void ESPDashClass::generateStatsResponse(String& result){
-    debugPrintln("Free HEAP = before = JSON Serialization: "+String(ESP.getFreeHeap()));
-
-    DynamicJsonDocument doc(500);
-    JsonObject stats = doc.to<JsonObject>();
-    if(stats_enabled){
-        stats["response"] = "getStats";
-        stats["enabled"] = true;
-        stats["hardware"] = HARDWARE;
-        #if defined(ESP8266)
-            stats["chipId"] = String(ESP.getChipId());
-            stats["sketchHash"] = ESP.getSketchMD5();
-            stats["macAddress"] = String(WiFi.macAddress());
-            stats["freeHeap"] = ESP.getFreeHeap();
-            stats["wifiMode"] = int(WiFi.getMode());
-        #elif defined(ESP32)
-            stats["chipId"] = String((uint32_t)ESP.getEfuseMac(), HEX);
-            stats["sketchHash"] = ESP.getSketchMD5();
-            stats["macAddress"] = String(WiFi.macAddress());
-            stats["freeHeap"] = ESP.getFreeHeap();
-            stats["wifiMode"] = int(WiFi.getMode());
-        #endif
-    }else{
-        stats["enabled"] = false;
-    }
-
-    serializeJson(doc, result);
-
-    debugPrintln("Free HEAP = after = JSON Serialization: "+String(ESP.getFreeHeap()));
-
-    return;
-}
-
-
-void ESPDashClass::generateRebootResponse(String& result){
-    debugPrintln("Free HEAP = before = JSON Serialization: "+String(ESP.getFreeHeap()));
-
-    DynamicJsonDocument doc(200);
-    JsonObject obj = doc.to<JsonObject>();
-        obj["response"] = "reboot";
-    if(stats_enabled){
-        obj["done"] = true;
-    }else{
-        obj["done"] = false;
-    }
-
-    serializeJson(doc, result);
-
-    debugPrintln("Free HEAP = after = JSON Serialization: "+String(ESP.getFreeHeap()));
-
-    return;
-}
-
-
-size_t ESPDashClass::getTotalResponseCapacity(){
-    size_t capacity = 0 + JSON_OBJECT_SIZE(3) + JSON_OBJECT_SIZE(10);
-    size_t totalCards = 0;
-
-    for(int i=0; i < NUMBER_CARD_LIMIT; i++){
-        if(number_card_id[i] != ""){
-            capacity += JSON_OBJECT_SIZE(3);
-            totalCards++;
-        }
-    }
-
-    for(int i=0; i < TEMPERATURE_CARD_LIMIT; i++){
-        if(temperature_card_id[i] != ""){
-            capacity += JSON_OBJECT_SIZE(5);
-            totalCards++;
-        }
-    }
-
-    for(int i=0; i < HUMIDITY_CARD_LIMIT; i++){
-        if(humidity_card_id[i] != ""){
-            capacity += JSON_OBJECT_SIZE(4);
-            totalCards++;
-        }
-    }
-
-    for(int i=0; i < STATUS_CARD_LIMIT; i++){
-        if(status_card_id[i] != ""){
-            capacity += JSON_OBJECT_SIZE(4);
-            totalCards++;
-        }
-    }
-
-    for(int i=0; i < BUTTON_CARD_LIMIT; i++){
-        if(button_card_id[i] != ""){
-            capacity += JSON_OBJECT_SIZE(3);
-            totalCards++;
-        }
-    }
-
-
-    for(int i=0; i < LINE_CHART_LIMIT; i++){
-        if(line_chart_id[i] != ""){
-            capacity +=  JSON_OBJECT_SIZE(4) + JSON_ARRAY_SIZE(line_chart_x_axis_size[i]) + JSON_ARRAY_SIZE(line_chart_y_axis_size[i]);
-            totalCards++;
-        }
-    }
-
-    for(int i=0; i < GAUGE_CHART_LIMIT; i++){
-        if(gauge_chart_id[i] != ""){
-            capacity +=  JSON_OBJECT_SIZE(3);
-            totalCards++;
-        }
-    }
-
-    for(int i=0; i < SLIDER_CARD_LIMIT; i++){
-        if(slider_card_id[i] != ""){
-            capacity += JSON_OBJECT_SIZE(5);
-            totalCards++;
-        }
-    }
-
-
-    capacity += JSON_ARRAY_SIZE(totalCards);
-    return capacity;
-}
-
-
-size_t ESPDashClass::getNumberCardsLen(){
-    size_t total = 0;
-    for(int i=0; i < NUMBER_CARD_LIMIT; i++){
-        if(number_card_id[i] != ""){
-            total++;
-        }
-    }
-    return total;
-}
-
-size_t ESPDashClass::getTemperatureCardsLen(){
-    size_t total = 0;
-    for(int i=0; i < TEMPERATURE_CARD_LIMIT; i++){
-        if(temperature_card_id[i] != ""){
-            total++;
-        }
-    }
-    return total;
-}
-
-size_t ESPDashClass::getHumidityCardsLen(){
-    size_t total = 0;
-    for(int i=0; i < HUMIDITY_CARD_LIMIT; i++){
-        if(humidity_card_id[i] != ""){
-            total++;
-        }
-    }
-    return total;
-}
-
-size_t ESPDashClass::getStatusCardsLen(){
-    size_t total = 0;
-    for(int i=0; i < STATUS_CARD_LIMIT; i++){
-        if(status_card_id[i] != ""){
-            total++;
-        }
-    }
-    return total;
-}
-
-size_t ESPDashClass::getButtonCardsLen(){
-    size_t total = 0;
-    for(int i=0; i < BUTTON_CARD_LIMIT; i++){
-        if(button_card_id[i] != ""){
-            total++;
-        }
-    }
-    return total;
-}
-
-size_t ESPDashClass::getLineChartsLen(){
-    size_t total = 0;
-    for(int i=0; i < LINE_CHART_LIMIT; i++){
-        if(line_chart_id[i] != ""){
-            total++;
-        }
-    }
-    return total;
-}
-
-size_t ESPDashClass::getGaugeChartsLen(){
-    size_t total = 0;
-    for(int i=0; i < GAUGE_CHART_LIMIT; i++){
-        if(gauge_chart_id[i] != ""){
-            total++;
-        }
-    }
-    return total;
-}
-
-size_t ESPDashClass::getSliderCardsLen(){
-    size_t total = 0;
-    for(int i=0; i < SLIDER_CARD_LIMIT; i++){
-        if(slider_card_id[i] != ""){
-            total++;
-        }
-    }
-    return total;
-}
-
-
-
-ESPDashClass ESPDash;

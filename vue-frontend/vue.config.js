@@ -1,4 +1,5 @@
 const WebpackShellPlugin = require('webpack-shell-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
   pluginOptions: {
@@ -21,9 +22,15 @@ module.exports = {
   },
   configureWebpack: {
       plugins: [
+        new BundleAnalyzerPlugin({ analyzerMode: (process.env.NODE_ENV !== "production")?'disabled':'static'}),
         new WebpackShellPlugin({
             onBuildEnd: (process.env.NODE_ENV == 'production')?['node finalize.js && echo Finalized Webpage for Production Mode']:['echo Skipping Finalizing Vuejs Webpage in Development Mode']
         })
-      ]
+      ],
+      resolve:{
+        alias:{
+          moment: 'moment/src/moment'
+        }
+      }
     }
 }

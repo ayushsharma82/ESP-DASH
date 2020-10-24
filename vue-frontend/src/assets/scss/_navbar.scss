@@ -1,0 +1,62 @@
+
+// Top Navbar Styles
+.navbar-logo {
+  text-align: left;
+
+  @media screen and (min-width: $tablet) {
+      text-align: center;
+  }
+}
+
+.navbar-logo>svg [fill]:not([fill=none]) {
+  fill: currentColor !important
+}
+
+.navbar-logo>svg {
+  opacity: 0.8;
+  width: 4rem;
+  height: 4rem;
+
+  @media screen and (min-width: $tablet) {
+      width: 8rem;
+      height: 8rem;
+  }
+}
+
+.navbar-burger{
+  border-radius: 0.55rem;
+}
+
+.navbar-burger:focus {
+  outline: none;
+  text-decoration: none;
+  background: transparent;
+}
+
+.navbar-menu{
+  box-shadow: none !important;
+}
+
+.navbar-end{
+  .navbar-item{
+    border-radius: 0.55rem;
+    padding: 0.55rem 1.25rem;
+    font-weight: 600;
+    color: lighten($dark, 20%);
+
+    @include touch{
+      margin-top: 1rem;
+    }
+  }
+
+  .navbar-item:not(:last-child){
+    @include desktop{
+      margin-right: 1rem;
+    }
+  }
+
+  .navbar-item.is-active{
+    color: #fff;
+    background: #2c2e33 !important;
+  }
+}

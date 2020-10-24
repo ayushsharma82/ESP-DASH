@@ -1,0 +1,77 @@
+@charset "utf-8";
+
+// Custom User Variables
+@import './variables';
+
+// Bulma.io SCSS Files
+@import '~bulma/sass/utilities/_all';
+
+// Base Styles
+@import '~bulma/sass/base/_all';
+@import '~bulma/sass/elements/_all';
+@import '~bulma/sass/form/_all';
+
+// Components
+@import '~bulma/sass/components/breadcrumb';
+@import '~bulma/sass/components/navbar';
+@import '~bulma/sass/components/menu';
+@import '~bulma/sass/components/level';
+@import '~bulma/sass/components/card';
+@import '~bulma/sass/components/modal';
+
+// Layout
+@import '~bulma/sass/grid/_all';
+@import '~bulma/sass/helpers/_all';
+@import '~bulma/sass/layout/_all';
+
+// Bulma-Slider Plugin
+@import '~bulma-slider/src/sass/index.sass';
+
+
+// Custom Styles
+@import './navbar';
+@import './layout';
+@import './button';
+@import './card';
+@import './icon';
+@import './transitions';
+
+html,
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    max-width: auto !important;
+}
+
+input{
+    box-shadow: none !important;
+}
+
+.align-middle {
+    vertical-align: middle;
+}
+
+.spinner {
+    animation-name: spin;
+    animation-duration: 1000ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+

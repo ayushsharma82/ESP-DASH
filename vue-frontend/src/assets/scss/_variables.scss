@@ -1,0 +1,29 @@
+
+$family-primary: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+$primary: #234dd6;
+$themeColor: $primary;
+$grey-dark: #2c2e33;
+$black: #2B2B2B;
+$text: $black;
+$light: #F9FBFD;
+$muted: #a1a8b4;
+$dark: #2B354F;
+$link: #335EEA;
+$info: #7C69EF;
+$success: #42BA96;
+$warning: #FAD776;
+$danger: #DF4759;
+
+// Menu Config
+$menu-item-radius: 0.3rem;
+$menu-item-hover-background-color: rgba(0, 0, 0, 0.02);
+$menu-item-active-background-color: rgba(0, 0, 0, 0.04) !important;
+$menu-item-active-color: $dark;
+
+// Slider
+$slider-thumb-border: 1px solid rgba(0, 0, 0, 0.1);
+$slider-output-background: $primary;
+
+.has-text-muted{
+  color: $muted;
+}

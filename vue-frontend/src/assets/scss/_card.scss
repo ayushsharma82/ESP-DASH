@@ -1,0 +1,90 @@
+
+// Card Itself
+.card {
+  background-color: #FFF;
+  box-shadow: 0px 0px 50px rgba(232, 232, 232, 0.9);
+  .card-name{
+    font-size: 1.05rem;
+    font-weight: 400 !important;
+  }
+
+  .card-icon{
+    border-radius: 0.45rem;
+  }
+}
+
+.card-content{
+  .slider{
+    margin: 0 !important;
+    margin-top: 0.5rem !important;
+    touch-action: none !important;
+  }
+}
+
+.graph-card {
+  padding-left: 0;
+  padding-right: 0;
+  padding-bottom: 0;
+}
+
+.card-loader {
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  margin: 15px;
+  color: lighten($black, 10%) !important;
+}
+
+// Card Activity Dots
+.dot {
+  display: none;
+  width: 8px !important;
+  height: 8px !important;
+  border-radius: 50%;
+  vertical-align: middle;
+  position: absolute;
+  top: 12px;
+  right: 13px;
+  opacity: 0.5;
+}
+
+.dot.active {
+  display: block;
+  background: $primary;
+}
+
+.dot.waiting {
+  display: block;
+  background: $warning;
+  animation: waitingdot 2s infinite;
+  -webkit-animation: waitingdot 2s infinite;
+}
+
+@keyframes waitingdot {
+  0% {
+      background: $warning;
+  }
+
+  50% {
+      background: transparent;
+  }
+
+  100% {
+      background: $warning;
+  }
+}
+
+@-webkit-keyframes waitingdot {
+  0% {
+      background: $warning;
+  }
+
+  50% {
+      background: transparent;
+  }
+
+  100% {
+      background: $warning;
+  }
+}
