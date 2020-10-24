@@ -76,9 +76,9 @@ void setup() {
 
   /* Attach Slider Callback */
   slider.attachCallback([&](int value){
-    /* Print our new button value received from dashboard */
+    /* Print our new slider value received from dashboard */
     Serial.println("Slider Triggered: "+String(value));
-    /* Make sure we update our button's value and send update to dashboard */
+    /* Make sure we update our slider's value and send update to dashboard */
     slider.update(value);
     dashboard.sendUpdates();
   });
