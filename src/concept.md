@@ -19,13 +19,13 @@ The whole concept of ESP-DASH is around the idea of having 'Cards' and 'Charts' 
 
 All of these classes serve their very own purpose and work harmoniously with a low heap footprint. Let's know more about the function of each class:
 
-#### 1. ESPDash Class ([Reference](/reference/espdash.html))
+#### 1. ESPDash Class
 ESPDash class handles the networking part of our dashboard. It takes AsyncWebServer as a argument and connects itself to serve DASH V3 webpage from our MCU's program memory. This class is responsible for the transfer of card/chart data between webpage and your sketch.
 
-#### 2. Card Class ([Reference](/reference/card.html))
+#### 2. Card Class
 Our dashboard comprises of 'Cards' & 'Charts' and in our library, these are primarly data handling classes. Their main purpose is just to store data in their relevant position.
 
-Card comprises of many sub-types ( for example: generic, temperature, humidity etc. ) which provides you with a great diversity of data visiualization choices.
+Card comprises of many sub-types ( for example: generic, temperature, humidity etc. ) which provides you great data visiualization choices.
 
-#### 3. Chart Class ([Reference](/reference/chart.html))
+#### 3. Chart Class
 Similar to Card Class, Chart handles the data for creating charts on our dashboard.

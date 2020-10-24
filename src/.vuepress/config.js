@@ -81,14 +81,6 @@ module.exports = {
             ["/charts/bar", "Bar"],
           ]
         },
-        {
-          title: 'Reference',
-          sidebarDepth: 0,
-          collapsable: false,
-          children: [
-            ["/reference/card", "Card Class"]
-          ]
-        }
       ],
     }
   },
