@@ -1,6 +1,5 @@
 #include "ESPDash.h"
 
-
 // Integral type to string pairs events
 // ID, type
 struct CardNames cardTags[] = {
@@ -180,6 +179,7 @@ String ESPDash::generateUpdatesJSON(bool toAll) {
 
   return "{\"command\":\"updateCards\", \"cards\":[" + cardsData + "], \"charts\":[" + chartsData + "]}";
 }
+
 
 // generates the layout JSON string to the frontend
 String ESPDash::generateLayoutJSON(bool only_stats) {

@@ -88,7 +88,7 @@ class ESPDash{
 
     // Notify client side to update values
     void sendUpdates();
-
+  
     ~ESPDash();
 };
 

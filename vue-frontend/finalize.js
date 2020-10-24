@@ -14,7 +14,7 @@ const HTML = `
     <link rel=icon href=/favicon.ico> <title>ESPDash</title>
     <script data-name="BMC-Widget" async src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="6QGVpSj" data-description="Support me on Buy me a coffee!" data-message="You can always support my work by buying me a coffee!" data-color="#FF813F" data-position="right" data-x_margin="24" data-y_margin="24"></script>
 </head>
-<body style="overflow: hidden;">
+<body>
     <noscript>
         <strong>We're sorry but ESP-DASH doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>

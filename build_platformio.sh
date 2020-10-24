@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-pio lib -g install "ESP Async WebServer@1.2.3" "ArduinoJson@6.15.2"
+pio lib -g install "ESP Async WebServer@1.2.3" "ArduinoJson@6.17.0"
 
 pio ci --lib=. --board esp32dev "examples/Basic"
 pio ci --lib=. --board esp32dev "examples/Chart"
