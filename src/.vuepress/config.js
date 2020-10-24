@@ -34,9 +34,10 @@ module.exports = {
     logo: '/logo.png',
     search: false,
     repo: 'ayushsharma82/ESP-DASH/',
-    editLinks: false,
-    docsDir: 'docs',
-    editLinkText: '',
+    editLinks: true,
+    docsDir: 'src',
+    docsBranch: 'gh-pages',
+    editLinkText: 'Help us improve this page!',
     lastUpdated: true,
     nav: [
       { text: "Home", link: "/" },
