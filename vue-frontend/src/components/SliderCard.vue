@@ -42,7 +42,6 @@
     data() {
       return {
         activity: true,
-        msg: "",
         displayValue: this.card.value
       }
     },
