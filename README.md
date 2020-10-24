@@ -17,11 +17,7 @@
 
 <br/>
 
-<h3>[WIP] This project is currently being developed. Please wait for the merge.</h3>
-
-<br/>
-
-<p align="center"><b>DASH V3</b> is a blazing fast library to create a functional & real-time dashboard for <b>ESP8266</b> & <b>ESP32</b> microcontrollers. This library includes charts, display cards, interactive buttons and many more components to create a perfect dashboard which is accessible locally via your device IP without the need of an internet connection. DASH aims at providing people with a C++ syntax to create a beautiful embedded dashboard without any hassle.</p>
+<p align="center"><b>DASH V3</b> is a blazing fast library to create a functional & real-time dashboard for <b>ESP8266</b> & <b>ESP32</b> microcontrollers. This library includes charts, display cards, interactive buttons and many more components to create a perfect dashboard which is accessible locally via your device IP without the need of an internet connection.</p>
 
 <br/>
 
@@ -38,7 +34,7 @@
       <li>Real-time push updates</li>
       <li>Charts Support</li>
       <li>Interactive UI Components</li>
-      <li>Uses Async Webserver for better performance</li>
+      <li>Uses AsyncWebserver for better performance</li>
   </ul>
 </p>
 
@@ -71,6 +67,8 @@ ESP-DASH is licensed under General Public License v3 ( GPLv3 ).
 
 <h3>What about Commerical Usage?</h3>
 <p>
-If your company needs a embedded dashboard for commercial applications, you can send me a mail at: <a href="mailto:asrocks5@gmail.com">asrocks5@gmail.com</a>. We provide software development services which are along the lines of merging low-power microcontrollers with famous web technologies. For example: ESP-DASH which consists of a C++ library and a lightweight Vuejs SPA to fit inside a microcontroller. Possibilities are endless.
+If your company needs a embedded dashboard for commercial applications, you can send me a mail at: <a href="mailto:asrocks5@gmail.com">asrocks5@gmail.com</a>. 
+
+We provide software development services which are along the lines of merging low-power microcontrollers with famous web technologies. For example: ESP-DASH which consists of a C++ library and a lightweight Vuejs SPA to fit inside a microcontroller. Possibilities are endless.
 </p>
 <br/>
