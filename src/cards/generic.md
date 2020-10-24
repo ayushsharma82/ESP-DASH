@@ -26,9 +26,9 @@ If you can't find the type of card you are looking for, then generic card is wha
 ```cpp
 /* 
   Generic Card
-  Valid Arguments: (ESPDash dashboard, Card Type, const char* symbol (optional) )
+  Valid Arguments: (ESPDash dashboard, Card Type, const char* name, const char* symbol (optional) )
 */
-Card card1(&dashboard, GENERIC_CARD);
+Card card1(&dashboard, GENERIC_CARD, "Generic1");
 ```
 
 <br>

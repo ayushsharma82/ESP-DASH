@@ -25,9 +25,9 @@ This card adds a distinctive humidity icon, and just like generic card you can a
 ```cpp
 /* 
   Humidity Card
-  Valid Arguments: (ESPDash dashboard, Card Type, const char* symbol (optional) )
+  Valid Arguments: (ESPDash dashboard, Card Type, const char* name, const char* symbol (optional) )
 */
-Card card1(&dashboard, HUMIDITY_CARD, "%");
+Card card1(&dashboard, HUMIDITY_CARD, "Humidity1", "%");
 ```
 
 <br>

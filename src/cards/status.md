@@ -31,9 +31,9 @@ As it's name suggests, status card is used to display some kind of status on you
 ```cpp
 /* 
   Status Card
-  Valid Arguments: (ESPDash dashboard, Card Type, const char* status (optional) )
+  Valid Arguments: (ESPDash dashboard, Card Type, const char* name, const char* status (optional) )
 */
-Card card1(&dashboard, STATUS_CARD, "success");
+Card card1(&dashboard, STATUS_CARD, "Test Status", "success");
 ```
 
 <br>

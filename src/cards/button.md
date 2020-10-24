@@ -23,9 +23,9 @@ This card adds a interactive toggle button to your dashboard. This provides you 
 ```cpp
 /* 
   Button Card
-  Valid Arguments: (ESPDash dashboard, Card Type)
+  Valid Arguments: (ESPDash dashboard, Card Type, const char* name)
 */
-Card card1(&dashboard, BUTTON_CARD);
+Card card1(&dashboard, BUTTON_CARD, "Test Button");
 ```
 
 <br>

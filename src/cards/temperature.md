@@ -25,9 +25,9 @@ This card adds a distinctive temperature icon, and just like generic card you ca
 ```cpp
 /* 
   Temperature Card
-  Valid Arguments: (ESPDash dashboard, Card Type, const char* symbol (optional) )
+  Valid Arguments: (ESPDash dashboard, Card Type, const char* name, const char* symbol (optional) )
 */
-Card card1(&dashboard, TEMPERATURE_CARD, "°C");
+Card card1(&dashboard, TEMPERATURE_CARD, "Temperature1", "°C");
 ```
 
 <br>

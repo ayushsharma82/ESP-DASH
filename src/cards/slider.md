@@ -24,9 +24,9 @@ With slider card, Initializer requires `min` & `max` range.
 ```cpp
 /* 
   Slider Card
-  Valid Arguments: (ESPDash dashboard, Card Type, const char* symbol (optional), int min, int max)
+  Valid Arguments: (ESPDash dashboard, Card Type, const char* name, const char* symbol (optional), int min, int max)
 */
-Card card1(&dashboard, SLIDER_CARD, "", 0, 255);
+Card card1(&dashboard, SLIDER_CARD, "Test Slider", "", 0, 255);
 ```
 
 <br>

@@ -25,9 +25,9 @@ With progress card, Initializer requires `min` & `max` range.
 ```cpp
 /* 
   Progress Card
-  Valid Arguments: (ESPDash dashboard, Card Type, const char* symbol (optional), int min, int max)
+  Valid Arguments: (ESPDash dashboard, Card Type, const char* name, const char* symbol (optional), int min, int max)
 */
-Card card1(&dashboard, PROGRESS_CARD, "", 0, 255);
+Card card1(&dashboard, PROGRESS_CARD, "Progress1", "", 0, 255);
 ```
 
 <br>
