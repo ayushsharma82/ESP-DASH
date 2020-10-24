@@ -13,6 +13,14 @@
   }
 }
 
+.card-content{
+  .slider{
+    margin: 0 !important;
+    margin-top: 0.5rem !important;
+    touch-action: none !important;
+  }
+}
+
 .graph-card {
   padding-left: 0;
   padding-right: 0;

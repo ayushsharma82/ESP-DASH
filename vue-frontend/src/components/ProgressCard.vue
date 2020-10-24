@@ -1,5 +1,5 @@
 <template>
-  <div class="column is-6-mobile is-4-tablet is-3-desktop">
+  <div class="column is-12-mobile is-4-tablet is-3-desktop">
     <div class="card">
       <span class="dot" :class="{'active': activity}"></span>
       <div class="card-content">

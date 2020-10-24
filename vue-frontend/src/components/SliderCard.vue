@@ -1,5 +1,5 @@
 <template>
-  <div class="column is-12-mobile is-4-tablet is-3-desktop">
+  <div class="column is-12-mobile is-6-tablet is-4-desktop is-3-fullhd">
     <div class="card">
       <span class="dot" :class="{'active': activity && !waiting, 'waiting': waiting}"></span>
       <div class="card-content">
@@ -24,7 +24,7 @@
             <h6 class="is-size-6 has-text-muted">{{card.name}} ( <span class="has-text-dark has-text-weight-semibold">{{ displayValue }} <small class="is-size-6 has-text-weight-semibold">{{card.symbol}}</small></span> )</h6>
             <input class="slider is-fullwidth"
               @change="sendValue"
-              style="margin: 0.5rem 0; touch-action: none;" step="1" :min="card.min" :max="card.max" v-model="displayValue"
+              step="1" :min="card.min" :max="card.max" v-model="displayValue"
               type="range">
           </div>
         </div>
