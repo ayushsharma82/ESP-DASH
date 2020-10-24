@@ -55,7 +55,7 @@ ESPDash dashboard(&server);
 #### Part 4: Create Cards
 In this step, we will creating ESP-DASH cards and passing our dasboard instance as a first argument so that they can add / remove themselves.
 
-*After we are done with this guide, Please take a look at [Card Class](/reference/card.html) reference to know more about the types of cards available to us.*
+*After we are done with this guide, Please take a look at Cards section to know more about the types of cards available to us.*
 ```cpp
 /* 
   Dashboard Cards 
