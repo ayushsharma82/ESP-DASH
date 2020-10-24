@@ -5,7 +5,7 @@
 
   Skill Level: Intermediate
 
-  In this example we will learn how to create a line chart
+  In this example we will learn how to create a bar chart
   and then update it at a regular interval.
 
   Github: https://github.com/ayushsharma82/ESP-DASH
@@ -43,11 +43,11 @@ ESPDash dashboard(&server);
   Dashboard Charts
   Format - (Dashboard Instance, Chart Type, Chart Name )
 */
-// Line Chart Data
+// Bar Chart Data
 String XAxis[] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
 int YAxis[] = {0, 0, 0, 0, 0, 0, 0};
 
-// Line Chart Instance
+// Bar Chart Instance
 Chart power(&dashboard, BAR_CHART, "Power Usage (kWh)");
 
 
