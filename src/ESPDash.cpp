@@ -66,8 +66,8 @@ ESPDash::ESPDash(AsyncWebServer* server, bool enable_stats) {
             for(int i=0; i < cards.Size(); i++){
               Card *p = cards[i];
               if(id == p->_id){
-                if(p->_btn_callback != nullptr){
-                  p->_btn_callback(json["value"].as<bool>());
+                if(p->_callback != nullptr){
+                  p->_callback(json["value"].as<bool>());
                 }
               }
             }
@@ -78,8 +78,8 @@ ESPDash::ESPDash(AsyncWebServer* server, bool enable_stats) {
             for(int i=0; i < cards.Size(); i++){
               Card *p = cards[i];
               if(id == p->_id){
-                if(p->_slider_callback != nullptr){
-                  p->_slider_callback(json["value"].as<int>());
+                if(p->_callback != nullptr){
+                  p->_callback(json["value"].as<int>());
                 }
               }
             }
@@ -273,9 +273,6 @@ const String ESPDash::generateComponentJSON(Card* card, bool change_only){
       break;
     case Card::STRING:
       doc["value"] = card->_value_s;
-      break;
-    case Card::BOOLEAN:
-      doc["value"] = card->_value_b;
       break;
     default:
       // blank value

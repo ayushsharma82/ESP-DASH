@@ -18,19 +18,11 @@ Card::Card(ESPDash *dashboard, const int type, const char* name, const char* sym
   _dashboard->add(this);
 }
 
-
 /*
-  Attach Function Callback for Button Card etc.
-*/
-void Card::attachCallback(std::function<void(bool value)> cb){
-  _btn_callback = cb;
-}
-
-/*
-  Attach Function Callback for Slider Card etc.
+  Attach Function Callback
 */
 void Card::attachCallback(std::function<void(int value)> cb){
-  _slider_callback = cb;
+  _callback = cb;
 }
 
 
@@ -101,18 +93,18 @@ void Card::update(const String &value){
 }
 
 void Card::update(bool value, const char* symbol){
-  _value_type = Card::BOOLEAN;
+  _value_type = Card::INTEGER;
   _symbol = symbol;
-  if(_value_b != value)
+  if(_value_i != value)
     _changed = true;
-  _value_b = value;
+  _value_i = value;
 }
 
 void Card::update(bool value){
-  _value_type = Card::BOOLEAN;
-  if(_value_b != value)
+  _value_type = Card::INTEGER;
+  if(_value_i != value)
     _changed = true;
-  _value_b = value;
+  _value_i = value;
 }
 
 /*
