@@ -6,7 +6,7 @@
 ## Installation
 
 ### Dependencies
-ESP-DASH depends on the following open-source libraries/boards. Make sure to install them before you instal ESP-DASH.
+ESP-DASH depends on the following open-source libraries/boards. Make sure to install them before you install ESP-DASH.
 
 #### For ESP8266:
 - [ESP8266 Arduino Core](https://github.com/esp8266/Arduino) - **(latest)**
