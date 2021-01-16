@@ -26,7 +26,7 @@ module.exports = {
     ['script', {
       "src": "https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js",
       "data-name": "BMC-Widget",
-      "id": "6QGVpSj",
+      "data-id": "6QGVpSj",
       "data-description": "Support me on Buy me a coffee!",
       "data-message": "Thank you for visiting. A cup of coffee keeps my eyes open for creating stuff like this. If you love my work then this is the button to click on.",
       "data-color": "#FFDD00",
