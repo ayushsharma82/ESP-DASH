@@ -3,7 +3,7 @@ version: ~> 1.0
 
 language: python
 python:
-    - "2.7"
+    - "3.9"
 sudo: false
 cache:
     directories:
