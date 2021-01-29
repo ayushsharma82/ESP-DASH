@@ -37,11 +37,11 @@ class Card {
     int   _type;
     bool  _changed;
     enum { INTEGER, FLOAT, STRING } _value_type;
-    union alignas(8) {
-        char *_value_s;
+    union alignas(4) {
         float _value_f;
         int _value_i;
     };
+    String _value_s;
     int _value_min;
     int _value_max;
     String _symbol;

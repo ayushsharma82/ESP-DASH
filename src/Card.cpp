@@ -61,35 +61,23 @@ void Card::update(float value){
 
 void Card::update(const String &value, const char* symbol){
   if(_value_type == Card::STRING){
-    if(strcmp(_value_s, value.c_str()) != 0)
+    if(strcmp(_value_s.c_str(), value.c_str()) != 0)
       _changed = true;
-
-    if(_value_s != NULL)
-      delete[] _value_s;
   }
   
   _value_type = Card::STRING;
   _symbol = symbol;
-
-  int size = value.length();
-  _value_s = new char[size+1];
-  strncpy(_value_s, value.c_str(), size);
+  _value_s = value;
 }
 
 void Card::update(const String &value){
     if(_value_type == Card::STRING){
-    if(strcmp(_value_s, value.c_str()) != 0)
+    if(strcmp(_value_s.c_str(), value.c_str()) != 0)
       _changed = true;
-
-    if(_value_s != NULL)
-      delete[] _value_s;
   }
   
   _value_type = Card::STRING;
-
-  int size = value.length();
-  _value_s = new char[size+1];
-  strncpy(_value_s, value.c_str(), size);
+  _value_s = value;
 }
 
 void Card::update(bool value, const char* symbol){
