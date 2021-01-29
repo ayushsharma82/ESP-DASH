@@ -65,8 +65,6 @@ void Card::update(float value, const char* symbol){
   if(_value_f != value)
     _changed = true;
   _value_f = value;
-
-  if(_value_type )
 }
 
 void Card::update(float value){
