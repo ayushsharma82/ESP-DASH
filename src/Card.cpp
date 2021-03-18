@@ -80,11 +80,11 @@ void Card::update(float value){
 }
 
 void Card::update(const String &value, const char* symbol){
-  this.update(value.c_str(), symbol);
+  update(value.c_str(), symbol);
 }
 
 void Card::update(const String &value){
-  this.update(value.c_str());
+  update(value.c_str());
 }
 
 void Card::update(const char* value, const char* symbol){
