@@ -99,6 +99,7 @@ export default {
         json.cards.forEach(card => {
           for(let existingcard of this.cards) {
             if(existingcard.id === card.id){
+              existingcard.symbol = card.symbol;
               existingcard.value = card.value;
             }
           }

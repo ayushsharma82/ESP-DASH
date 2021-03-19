@@ -42,7 +42,11 @@
       'card.value':function() {
         this.activity = true;
         setTimeout(() => {this.activity = false}, 100);
-      }
+      },
+      'card.symbol':function() {
+        this.activity = true;
+        setTimeout(() => {this.activity = false}, 100);
+      },
     },
 
     mounted() {
