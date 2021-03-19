@@ -56,6 +56,8 @@ class Card {
     void update(bool value, const char* symbol);
     void update(float value);
     void update(float value, const char* symbol);
+    void update(const char* value);
+    void update(const char* value, const char* symbol);
     void update(const String &value);
     void update(const String &value, const char* symbol);
     ~Card();

@@ -80,8 +80,16 @@ void Card::update(float value){
 }
 
 void Card::update(const String &value, const char* symbol){
+  update(value.c_str(), symbol);
+}
+
+void Card::update(const String &value){
+  update(value.c_str());
+}
+
+void Card::update(const char* value, const char* symbol){
   if(_value_type == Card::STRING){
-    if(strcmp(_value_s.c_str(), value.c_str()) != 0)
+    if(strcmp(_value_s.c_str(), value) != 0)
       _changed = true;
   }
   
@@ -90,9 +98,9 @@ void Card::update(const String &value, const char* symbol){
   _value_s = value;
 }
 
-void Card::update(const String &value){
+void Card::update(const char* value){
     if(_value_type == Card::STRING){
-    if(strcmp(_value_s.c_str(), value.c_str()) != 0)
+    if(strcmp(_value_s.c_str(), value) != 0)
       _changed = true;
   }
   
