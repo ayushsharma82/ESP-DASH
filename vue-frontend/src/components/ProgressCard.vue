@@ -11,7 +11,7 @@
           </div>
           <div class="column">
             <h6 class="is-size-6 has-text-muted">{{card.name}} ( <span class="has-text-dark has-text-weight-semibold">{{card.value}} <small class="is-size-6">{{card.symbol}}</small></span> )</h6>
-            <progress class="progress is-small is-primary mt-3" :value="card.value" :max="card.value_max">{{card.value}}%</progress>
+            <progress class="progress is-small is-primary mt-3" :value="card.value" :max="card.max" :min="card.min">{{card.value}}%</progress>
           </div>
         </div>
       </div>
