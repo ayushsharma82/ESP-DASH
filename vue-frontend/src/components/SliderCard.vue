@@ -1,5 +1,5 @@
 <template>
-  <div class="column is-12-mobile is-6-tablet is-4-desktop is-3-fullhd">
+  <div class="column is-12-mobile is-4-tablet is-4-desktop is-3-fullhd">
     <div class="card">
       <span class="dot" :class="{'active': activity && !waiting, 'waiting': waiting}"></span>
       <div class="card-content">

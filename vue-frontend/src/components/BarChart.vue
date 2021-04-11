@@ -23,7 +23,7 @@
         </div>
         <div class="columns">
           <div class="column is-12">
-            <bar-chartjs :chart-data="chartData" :options="options" height="250px"></bar-chartjs>
+            <bar-chartjs :chart-data="chartData" :options="options" height="200px"></bar-chartjs>
           </div>
         </div>
       </div>
