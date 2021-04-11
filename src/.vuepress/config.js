@@ -67,6 +67,7 @@ module.exports = {
           collapsable: false,
           children: [
             ["/guide/getting-started", "Getting Started 😃"],
+            ["/guide/card-indexing", "Changing Order of Cards (Pro)"],
             ["/guide/more-examples", "More Examples"]
           ]
         },
