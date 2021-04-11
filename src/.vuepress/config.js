@@ -78,6 +78,8 @@ module.exports = {
             ["/cards/generic", "Generic"],
             ["/cards/temperature", "Temperature"],
             ["/cards/humidity", "Humidity"],
+            ["/cards/air", "Air (Pro)"],
+            ["/cards/energy", "Energy (Pro)"],
             ["/cards/status", "Status"],
             ["/cards/progress", "Progress"],
             ["/cards/slider", "Slider"],
@@ -90,6 +92,9 @@ module.exports = {
           collapsable: false,
           children: [
             ["/charts/bar", "Bar"],
+            ["/charts/line", "Line (Pro)"],
+            ["/charts/area", "Area (Pro)"],
+            ["/charts/pie", "Pie (Pro)"],
           ]
         },
       ],

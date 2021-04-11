@@ -5,6 +5,15 @@
 ---
 ## Generic Card
 
+
+#### Preview:
+<br>
+
+<img src="~@assets/generic-card.png" width="280px" alt="Preview">
+
+<br>
+<br>
+
 If you can't find the type of card you are looking for, then generic card is what you should use in your project. It's a type of card which can be used in any scenario.
 
 <br>

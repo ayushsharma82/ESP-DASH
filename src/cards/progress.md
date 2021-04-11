@@ -5,6 +5,15 @@
 ---
 ## Progress Card
 
+
+#### Preview:
+<br>
+
+<img src="~@assets/progress-card.png" width="280px" alt="Preview">
+
+<br>
+<br>
+
 This card displays a horizontal range based on a `integer` or a `float` value. It makes data visualization user friendly.
 
 <br>

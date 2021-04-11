@@ -1,27 +1,32 @@
 ---
 {
-  "title": "ESP-DASH Wiki: Bar Chart"
+  "title": "ESP-DASH Wiki: Pie Chart"
 }
 ---
-## Bar Chart
+<h2>Pie Chart  - <small><span style="color: rgb(245, 75, 66)">Pro</span></small></h2>
 
 
 #### Preview:
 <br>
 
-<img src="~@assets/bar-chart.png" width="380px" alt="Preview">
+<img src="~@assets/pie-chart.png" width="380px" alt="Preview">
 
 <br>
 <br>
 
-It's a bar chart. period.
+<blockquote style="color: #000">
+<h4>This feature is included in ESPDASH <span style="color: rgb(245, 75, 66)">Pro</span></h4> <a href="https://espdash.pro" target="_blank">Know more</a>
+</blockquote>
 
-You can aggregate large amount of data in form of arrays and display them in a bar chart.
+<br>
+
+Pie chart is a circular chart used for displaying various data where you can represent your data in a circular form.
+
 
 <br>
 
 #### Type: 
-`BAR_CHART`
+`PIE_CHART`
 
 <br>
 
@@ -41,10 +46,10 @@ You can aggregate large amount of data in form of arrays and display them in a b
 #### Initializer:
 ```cpp
 /* 
-  Bar Chart
+  Pie Chart
   Valid Arguments: (ESPDash dashboard, Card Type, const char* name )
 */
-Chart chart1(&dashboard, BAR_CHART, "Chart Name");
+Chart chart1(&dashboard, PIE_CHART, "Chart Name");
 ```
 
 <br>
@@ -58,7 +63,7 @@ X-Axis updater uses `updateX` function.
   Data for X Axis of our Chart
   This array can be of: `int` / `float` or `String`
 */
-String XAxis[] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+String XAxis[] = {"Biscuits", "Cookies", "Milk", "Thing4", "Thing5"};
 
 /*
   Update Function for Chart is as follows:
@@ -69,7 +74,7 @@ String XAxis[] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
   or
   (String array[], size_t array_size)
 */
-chart1.updateX(XAxis, 7);
+chart1.updateX(XAxis, 5);
 ```
 
 ##### For Y-Axis:
@@ -79,7 +84,7 @@ Y-Axis updater uses `updateY` function.
   Data for Y Axis of our Chart
   This array can be of: `int` or `float`
 */
-int YAxis[] = {0, 0, 0, 0, 0, 0, 0};
+int YAxis[] = {0, 0, 0, 0, 0};
 
 /*
   Update Function for Chart is as follows:
@@ -88,5 +93,5 @@ int YAxis[] = {0, 0, 0, 0, 0, 0, 0};
   or 
   (float array[], size_t array_size)
 */
-chart1.updateY(YAxis, 7);
+chart1.updateY(YAxis, 5);
 ```

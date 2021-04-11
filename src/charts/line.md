@@ -1,27 +1,32 @@
 ---
 {
-  "title": "ESP-DASH Wiki: Bar Chart"
+  "title": "ESP-DASH Wiki: Line Chart"
 }
 ---
-## Bar Chart
+<h2>Line Chart  - <small><span style="color: rgb(245, 75, 66)">Pro</span></small></h2>
 
 
 #### Preview:
 <br>
 
-<img src="~@assets/bar-chart.png" width="380px" alt="Preview">
+<img src="~@assets/line-chart.png" width="380px" alt="Preview">
 
 <br>
 <br>
 
-It's a bar chart. period.
+<blockquote style="color: #000">
+<h4>This feature is included in ESPDASH <span style="color: rgb(245, 75, 66)">Pro</span></h4> <a href="https://espdash.pro" target="_blank">Know more</a>
+</blockquote>
 
-You can aggregate large amount of data in form of arrays and display them in a bar chart.
+<br>
+
+Second form of chart in ESP-DASH is the line chart. It lets you have linear data displayed in form of a connected line istead of bars. You can aggregate large amount of data in form of arrays and display them in a line chart.
+
 
 <br>
 
 #### Type: 
-`BAR_CHART`
+`LINE_CHART`
 
 <br>
 
@@ -41,10 +46,10 @@ You can aggregate large amount of data in form of arrays and display them in a b
 #### Initializer:
 ```cpp
 /* 
-  Bar Chart
+  Line Chart
   Valid Arguments: (ESPDash dashboard, Card Type, const char* name )
 */
-Chart chart1(&dashboard, BAR_CHART, "Chart Name");
+Chart chart1(&dashboard, LINE_CHART, "Chart Name");
 ```
 
 <br>

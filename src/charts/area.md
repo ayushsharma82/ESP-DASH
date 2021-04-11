@@ -1,27 +1,32 @@
 ---
 {
-  "title": "ESP-DASH Wiki: Bar Chart"
+  "title": "ESP-DASH Wiki: Area Chart"
 }
 ---
-## Bar Chart
+<h2>Area Chart  - <small><span style="color: rgb(245, 75, 66)">Pro</span></small></h2>
 
 
 #### Preview:
 <br>
 
-<img src="~@assets/bar-chart.png" width="380px" alt="Preview">
+<img src="~@assets/area-chart.png" width="380px" alt="Preview">
 
 <br>
 <br>
 
-It's a bar chart. period.
+<blockquote style="color: #000">
+<h4>This feature is included in ESPDASH <span style="color: rgb(245, 75, 66)">Pro</span></h4> <a href="https://espdash.pro" target="_blank">Know more</a>
+</blockquote>
 
-You can aggregate large amount of data in form of arrays and display them in a bar chart.
+<br>
+
+Similar to line chart, area chart fills the space below it with a color. You can aggregate large amount of data in form of arrays and display them in a area chart.
+
 
 <br>
 
 #### Type: 
-`BAR_CHART`
+`AREA_CHART`
 
 <br>
 
@@ -41,10 +46,10 @@ You can aggregate large amount of data in form of arrays and display them in a b
 #### Initializer:
 ```cpp
 /* 
-  Bar Chart
+  Area Chart
   Valid Arguments: (ESPDash dashboard, Card Type, const char* name )
 */
-Chart chart1(&dashboard, BAR_CHART, "Chart Name");
+Chart chart1(&dashboard, AREA_CHART, "Chart Name");
 ```
 
 <br>

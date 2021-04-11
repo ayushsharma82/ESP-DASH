@@ -5,6 +5,18 @@
 ---
 ## Status Card
 
+
+#### Preview:
+<br>
+
+<img src="~@assets/status-card-idle.png" width="280px" alt="Preview">
+<img src="~@assets/status-card-success.png" width="280px" alt="Preview">
+<img src="~@assets/status-card-warning.png" width="280px" alt="Preview">
+<img src="~@assets/status-card-danger.png" width="280px" alt="Preview">
+
+<br>
+<br>
+
 As it's name suggests, status card is used to display some kind of status on your dashboard. It can show 4 different kinds of status along with a short message.
 
 <br>

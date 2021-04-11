@@ -5,6 +5,15 @@
 ---
 ## Slider Card
 
+
+#### Preview:
+<br>
+
+<img src="~@assets/slider-card.png" width="280px" alt="Preview">
+
+<br>
+<br>
+
 This card adds a interactive horizontal slider to your dashboard. Slider card is useful when you require a integer input within a certain range. ( Example use case: LED brightness control )
 
 <br>

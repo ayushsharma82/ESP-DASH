@@ -5,6 +5,15 @@
 ---
 ## Temperature Card
 
+
+#### Preview:
+<br>
+
+<img src="~@assets/temperature-card.png" width="280px" alt="Preview">
+
+<br>
+<br>
+
 This card adds a distinctive temperature icon, and just like generic card you can add a symbol which will be appended to your data.
 
 <br>
