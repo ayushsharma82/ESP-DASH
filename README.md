@@ -24,6 +24,18 @@
 <h2>Preview</h2>
 <img src="/docs/preview.png?raw=true">
 
+<h2>Upgrade to Pro</h2>
+Checkout the Pro version of ESP-DASH which comes with extended functionality and exclusive cards & charts. ESP-DASH Pro supports custom order of cards and no "Buy me a coffee" button on the dashboard.
+
+<br> <b>Available Here: </b>
+<ol>
+  <li>https://espdash.pro</li>
+</ol>
+
+<a href="https://espdash.pro" target="_blank">
+  <img src="/docs/dashboard-mockup.png" alt="ESP-DASH Pro">
+</a>
+
 <br/>
 <br/>
 
@@ -38,8 +50,8 @@
   </ul>
 </p>
 
-<br/>
-<br/>
+<br>
+<br>
 
 <h2>Documentation</h2>
 <p>Learn more about Installation & Usage: <a href="https://ayushsharma82.github.io/ESP-DASH/">Click Here</a></p>
