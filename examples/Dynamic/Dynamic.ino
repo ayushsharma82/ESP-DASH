@@ -1,6 +1,6 @@
 /*
   -------------------------
-  ESPDASH - Dynamic Example
+  ESPDASH Lite - Dynamic Example
   -------------------------
 
   Skill Level: Advanced ( Must have good knowledge about heap, pointers and destructors )
@@ -12,6 +12,11 @@
   WiKi: https://ayushsharma82.github.io/ESP-DASH/
 
   Works with both ESP8266 & ESP32
+
+  -------------------------------
+
+  Upgrade to ESP-DASH Pro: https://espdash.pro
+
 */
 
 #include <Arduino.h>

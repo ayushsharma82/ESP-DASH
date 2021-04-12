@@ -1,6 +1,6 @@
 /*
   -----------------------
-  ESPDASH - Basic Example
+  ESPDASH Lite - Basic Example
   -----------------------
 
   Skill Level: Intermediate
@@ -12,6 +12,11 @@
   WiKi: https://ayushsharma82.github.io/ESP-DASH/
 
   Works with both ESP8266 & ESP32
+
+  -------------------------------
+
+  Upgrade to ESP-DASH Pro: https://espdash.pro
+
 */
 
 #include <Arduino.h>
