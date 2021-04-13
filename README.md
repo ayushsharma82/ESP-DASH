@@ -29,6 +29,7 @@ Checkout the Pro version of ESP-DASH which comes with extended functionality and
 
 <br> <b>Available Here: </b>
 <ol>
+  <li>https://www.buymeacoffee.com/6QGVpSj/e/28263</li>
   <li>https://espdash.pro</li>
 </ol>
 
