@@ -38,27 +38,6 @@ export default {
       setTimeout(() => {this.activity = false}, 100);
     }
   },
-  computed:{
-    getSymbol(){
-      switch(this.card.type){
-        case 0:
-          return "°C"; // Celsius
-        case 1:
-          return "°F";  // Fahrenheit
-        case 2:
-          return "K"; // Kelvin
-        case 3:
-          return "°R"; // Rakine
-        case 4:
-          return "°De"; // Delisle
-        case 5:
-          return "°N"; // Newton
-        default:
-          return "°C";
-      }
-    }
-  },
-
   mounted(){
     setTimeout(() => { this.activity = false }, 500);
   }
