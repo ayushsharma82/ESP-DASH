@@ -77,6 +77,6 @@ The callback will return the active direction of your joystick when it's moved. 
   `value` is the direction of joystick 'up', 'down', 'left', 'right' or 'idle'
 */
 joystick.attachCallback([&](const char* direction){
-  Serial.println("[Joystick] Current Direction: "+String(value));
+  Serial.println("[Joystick] Current Direction: "+String(direction));
 });
 ```
