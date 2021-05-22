@@ -86,6 +86,7 @@ module.exports = {
             ["/cards/slider", "Slider"],
             ["/cards/button", "Button"],
             ["/cards/text-input", "Text Input (Pro)"],
+            ["/cards/joystick", "Joystick (Pro)"],
           ]
         },
         {
