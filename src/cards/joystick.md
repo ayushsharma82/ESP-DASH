@@ -88,15 +88,15 @@ joystick.attachCallback([&](const char* direction){
 
 ##### Coordinates Callback:
 
-This callback will return the active coordinates of the thumb of your joystick when it's moved. It will provide x and y coordinates which range from `-60` to `60` on each axis.
+This callback will return the active coordinates of the thumb of your joystick when it's moved. It will provide x and y coordinates which ranges from `-60` to `60` on each axis.
 
 In case of X axis: `-60` is left, `60` is right.
 For Y axis: `-60` is up, and `60` is bottom.
 
 ```cpp
 /*
-  We provide our attachCallback with a lambda function to handle incomming data
-  `value` is the direction of joystick 'up', 'down', 'left', 'right' or 'idle'
+  We provide our attachCallback with a lambda function to handle incomming data.
+  In this case, we will be getting x and y axis coordinates in range of -60 to 60
 */
 joystick.attachCallback([&](int8_t x, int8_t y){
   Serial.printf("[Joystick] X Axis: %d, Y Axis: %d\n", x, y);
