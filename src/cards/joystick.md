@@ -64,7 +64,11 @@ By default, joystick works on both axis.
 #### Callback:
 Joystick Card requires a callback function which will be called when we receive a input from our dashboard. In setup block, we will be calling our `attachCallback` function and provide a lambda (callback) function with a `const char*` (character array) argument.
 
-The callback will return the active direction of your joystick when it's moved. It will be one of the following:
+Joystick card has 2 callbacks, `directional` and `coordinates`:
+
+##### Directional Callback:
+
+This callback will return the active direction of your joystick when it's moved. It will be one of the following:
 - `up`
 - `down`
 - `left`
@@ -78,5 +82,23 @@ The callback will return the active direction of your joystick when it's moved. 
 */
 joystick.attachCallback([&](const char* direction){
   Serial.println("[Joystick] Current Direction: "+String(direction));
+});
+```
+
+
+##### Coordinates Callback:
+
+This callback will return the active coordinates of the thumb of your joystick when it's moved. It will provide x and y coordinates which range from `-60` to `60` on each axis.
+
+In case of X axis: `-60` is left, `60` is right.
+For Y axis: `-60` is up, and `60` is bottom.
+
+```cpp
+/*
+  We provide our attachCallback with a lambda function to handle incomming data
+  `value` is the direction of joystick 'up', 'down', 'left', 'right' or 'idle'
+*/
+joystick.attachCallback([&](int8_t x, int8_t y){
+  Serial.printf("[Joystick] X Axis: %d, Y Axis: %d\n", x, y);
 });
 ```
