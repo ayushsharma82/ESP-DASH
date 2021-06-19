@@ -63,10 +63,10 @@ Checkout the Pro version of ESP-DASH which comes with extended functionality and
 
 <h2>Sponsor</h2>
 <p>
-This project was created in collaboration with:
+  This project was created in collaboration with <a href="https://naturalistic.io">Naturalistic Design Studio</a>:
 <br>
 <br>
-<a href="https://naturalistic.io" target="_blank"><img src="/docs/studio.png" alt="Naturalistic Studio" width="550px"></a>
+<a href="https://naturalistic.io" target="_blank"><img src="/docs/studio.png" alt="Naturalistic Studio" width="350px"></a>
 </p>
 
 <br/>
