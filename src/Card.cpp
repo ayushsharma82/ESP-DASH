@@ -1,21 +1,45 @@
 #include "Card.h"
+#include "ESPDash.h"
+#include "Tab.h"
+
+// Integral type to string pairs events
+// ID, type
+struct WidgetNames cardTags[] = {
+  {GENERIC_CARD, "generic"},
+  {TEMPERATURE_CARD, "temperature"},
+  {HUMIDITY_CARD, "humidity"},
+  {STATUS_CARD, "status"},
+  {SLIDER_CARD, "slider"},
+  {BUTTON_CARD, "button"},
+  {PROGRESS_CARD, "progress"},
+};
 
 /*
   Constructor
 */
-Card::Card(ESPDash *dashboard, const int type, const char* name, const char* symbol, const int min, const int max){
+Card::Card(ESPDash *dashboard, const int type, const char* name, const char* symbol, const int min, const int max):
+Widget()
+{
   _dashboard = dashboard;
-  #if defined(ESP8266)
-    _id = RANDOM_REG32;
-  #elif defined(ESP32)
-    _id = esp_random();
-  #endif
+  _tab = nullptr;
   _type = type;
   _name = name;
   _symbol = symbol;
   _value_min = min;
   _value_max = max;
   _dashboard->add(this);
+}
+Card::Card(Tab *tab, const int type, const char* name, const char* symbol, const int min, const int max):
+Widget()
+{
+  _dashboard = nullptr;
+  _tab = tab;
+  _type = type;
+  _name = name;
+  _symbol = symbol;
+  _value_min = min;
+  _value_max = max;
+  _tab->add(this);
 }
 
 /*
@@ -133,9 +157,38 @@ void Card::update(bool value){
   _value_i = value;
 }
 
+void Card::resolveCallback(int value) {
+  if (_callback) _callback(value);
+}
+
+Widget::JsonDocument Card::generateLayout() {
+  auto doc = generateUpdate();
+  doc["name"] = _name;
+  doc["type"] = cardTags[_type].type;
+  doc["value_min"] = _value_min;
+  doc["value_max"] = _value_max;
+  return std::move(doc);
+}
+
+Widget::JsonDocument Card::generateUpdate() {
+  Widget::JsonDocument doc(256);
+  doc["id"] = _id;
+  doc["symbol"] = _symbol;
+  switch (_value_type) {
+    case Card::INTEGER: doc["value"] = _value_i; break;
+    case Card::FLOAT: doc["value"] = _value_f; break;
+    case Card::STRING: doc["value"] = _value_s; break;
+    default: doc["value"] = "ERROR"; break;
+  }
+  return std::move(doc);
+}
+
 /*
   Destructor
 */
-Card::~Card(){
-  _dashboard->remove(this);
+Card::~Card() {
+  if (_dashboard)
+    _dashboard->remove(this);
+  if (_tab)
+    _tab->remove(this);
 }

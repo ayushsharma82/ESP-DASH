@@ -2,36 +2,30 @@
 #define __CHART_H
 
 #include <functional>
-#include "Arduino.h"
-#include "vector.h"
+#include <Arduino.h>
+#include <ArduinoJson.h>
 
-#include "ESPDash.h"
-#include "ArduinoJson.h"
+#include "vector.h"
+#include "Widget.h"
 
 // Default to Line Chart
 enum {
   BAR_CHART,
 };
 
-struct ChartNames {
-  int value;
-  const char* type;
-};
 
 enum GraphAxisType { INTEGER, FLOAT, STRING };
 
 // Forward Declaration
 class ESPDash;
+class Tab;
 
 // Chart Class
-class Chart {
+class Chart: public Widget{
   private:
     ESPDash *_dashboard;
+    Tab *_tab;
 
-    uint32_t _id;
-    String _name;
-    int   _type;
-    bool  _changed;
     GraphAxisType _x_axis_type;
     GraphAxisType _y_axis_type;
     /* X-Axis */
@@ -42,8 +36,12 @@ class Chart {
     Vector<int> _y_axis_i;
     Vector<float> _y_axis_f;
 
+    Widget::JsonDocument generateLayout() override;
+    Widget::JsonDocument generateUpdate() override;
+
   public:
     Chart(ESPDash *dashboard, const int type, const char* name);
+    Chart(Tab *tab, const int type, const char* name);
     void updateX(int arr_x[], size_t x_size);
     void updateX(float arr_x[], size_t x_size);
     void updateX(String arr_x[], size_t x_size);
@@ -51,7 +49,8 @@ class Chart {
     void updateY(float arr_y[], size_t y_size);
     ~Chart();
 
-  friend class ESPDash;
+  friend class ESPDash; // TODO: remove
+  friend class Tab;
 };
 
 #endif

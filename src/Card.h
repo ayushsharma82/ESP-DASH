@@ -3,15 +3,11 @@
 
 
 #include <functional>
-#include "Arduino.h"
+#include <Arduino.h>
+#include <ArduinoJson.h>
 
-#include "ESPDash.h"
-#include "ArduinoJson.h"
+#include "Widget.h"
 
-struct CardNames {
-  int value;
-  const char* type;
-};
 
 // functions defaults to zero (number card)
 enum {
@@ -26,16 +22,14 @@ enum {
 
 // Forward Declaration
 class ESPDash;
+class Tab;
 
 // Card Class
-class Card {
+class Card: public Widget {
   private:
     ESPDash *_dashboard;
+    Tab *_tab;
 
-    uint32_t _id;
-    String _name;
-    int   _type;
-    bool  _changed;
     enum { INTEGER, FLOAT, STRING } _value_type;
     union alignas(4) {
         float _value_f;
@@ -47,8 +41,14 @@ class Card {
     String _symbol;
     std::function<void(int value)> _callback = nullptr;
 
+    void resolveCallback(int value);
+
+    Widget::JsonDocument generateLayout() override;
+    Widget::JsonDocument generateUpdate() override;
+
   public:
     Card(ESPDash *dashboard, const int type, const char* name, const char* symbol = "", const int min = 0, const int max = 0);
+    Card(Tab *tab, const int type, const char* name, const char* symbol = "", const int min = 0, const int max = 0);
     void attachCallback(std::function<void(int)> cb);
     void update(int value);
     void update(int value, const char* symbol);
@@ -62,7 +62,8 @@ class Card {
     void update(const String &value, const char* symbol);
     ~Card();
   
-  friend class ESPDash;
+  friend class ESPDash; // TODO: remove
+  friend class Tab;
 };
 
 

@@ -36,12 +36,11 @@ Github URL: https://github.com/ayushsharma82/ESP-DASH
 
 #include "ESPAsyncWebServer.h"
 #include "ArduinoJson.h"
+#include "Widget.h"
 #include "Card.h"
 #include "Chart.h"
+#include "Tab.h"
 
-// Forward Declaration
-class Card;
-class Chart;
 
 // ESPDASH Class
 class ESPDash{
@@ -49,22 +48,29 @@ class ESPDash{
     AsyncWebServer* _server = nullptr;
     AsyncWebSocket* _ws = nullptr;
 
-    Vector<Card*> cards;
-    Vector<Chart*> charts;
+    Vector<Tab*> tabs;
+    Tab* home_screen;
     bool stats_enabled = false;
     bool basic_auth = false;
     const char *username;
     const char *password;
 
-    // Generate layout json
-    String generateLayoutJSON(bool only_stats = false);
+    using OnWebServerRequest = std::function<void(AsyncWebServerRequest*)>;
+    OnWebServerRequest onWebServerRequest();
+    using OnWebSocketEvent = std::function<void(
+            AsyncWebSocket*,
+            AsyncWebSocketClient*,
+            AwsEventType,
+            void*,
+            uint8_t*,
+            size_t)>;
+     OnWebSocketEvent onWebSocketEvent();
 
-    // Generate cards/charts update json
-    String generateUpdatesJSON(bool toAll = false);
+    // Generate statistics layout json
+    String generateStatsJSON();
 
-    // Generate Component JSON
-    const String generateComponentJSON(Card* card, bool change_only = false);
-    const String generateComponentJSON(Chart* chart, bool change_only = false);
+    using JsonDocument = Widget::JsonDocument;
+    JsonDocument generateLayout(uint32_t* id = nullptr);
 
     // This method is called when a card/chart is added or removed
     void refreshLayout();
@@ -76,20 +82,27 @@ class ESPDash{
     // Set Authentication
     void setAuthentication(const char *user, const char *pass);
 
+    // Add Tab
+    void add(Tab *tab);
+    // Remove Tab
+    void remove(Tab *tab);
+
     // Add Card
     void add(Card *card);
     // Remove Card
     void remove(Card *card);
 
     // Add Chart
-    void add(Chart *card);
+    void add(Chart *chart);
     // Remove Chart
-    void remove(Chart *card);
+    void remove(Chart *chart);
 
     // Notify client side to update values
     void sendUpdates();
   
     ~ESPDash();
+
+    friend class Tab;
 };
 
 #endif

@@ -2,7 +2,7 @@
 <div>
   <div class="section pt-1">
     <div class="container mt-6">
-      <navbar />
+      <navbar :tabs="tabs" :stats-enabled="stats.enabled" />
     </div>
   </div>
   <div class="section pt-2">
@@ -42,7 +42,8 @@ export default {
         wifiSignal: null
       },
       cards: [],
-      charts: []
+      charts: [],
+      tabs: [],
     }
   },
 
@@ -51,7 +52,8 @@ export default {
     Socket.$on("connected", () => {
       this.ws.connected = true;
       Socket.send(JSON.stringify({
-        "command": "getLayout"
+        "command": "getLayout",
+        "goto": this.$route.params.goto ? this.$route.params.goto : "",
       }));
     });
 
@@ -61,15 +63,12 @@ export default {
 
     Socket.$on("message", (json) => {
       this.ws.connected = true;
-
       if (json.command === "updateLayout") {
         this.stats.enabled = json.statistics.enabled;
-        if (this.stats.enabled) {
-          this.stats = json.statistics;
-        }
 
         this.cards = [];
         this.charts = [];
+        this.tabs = [];
         json.cards.forEach(card => {
           this.cards.push({
             id: card.id,
@@ -90,12 +89,20 @@ export default {
             y_axis: chart.y_axis,
           });
         });
+        json.tabs.forEach(tab => {
+          this.tabs.push({
+            id: tab.id,
+            name: tab.name,
+            navbarName: tab.navbarName,
+            header: tab.header,
+          });
+        });
       } else if (json.command === "updateStats") {
         this.stats.enabled = json.statistics.enabled;
         if (this.stats.enabled) {
           this.stats = json.statistics;
         }
-      } else if (json.command === "updateCards") {
+      } else if (json.command === "updates") {
         json.cards.forEach(card => {
           for(let existingcard of this.cards) {
             if(existingcard.id === card.id){
@@ -133,6 +140,13 @@ export default {
         "command": "sliderChanged",
         "id": msg.id,
         "value": msg.value
+      }));
+    });
+
+    EventBus.$on('tabClicked', msg => {
+      Socket.send(JSON.stringify({
+        "command": "tabClicked",
+        "id": msg.id,
       }));
     });
   }

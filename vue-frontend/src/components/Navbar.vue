@@ -36,10 +36,11 @@
 
       <div class="navbar-menu" :class="{ 'is-active': open }">
         <div class="navbar-end">
-          <router-link class="navbar-item" @click.native="open = false" to="/" exact>
-            Overview
+          <router-link class="navbar-item" v-for="tab in tabs" :key="tab.id" @click.native="sendClickEvent(tab.id)"
+                       :to="{path: '/tab/'+tab.name, params: {goto: tab.name, id: tab.id}}" exact>
+            {{ tab.navbarName }}
           </router-link>
-          <router-link class="navbar-item" @click.native="open = false" to="/statistics">
+          <router-link v-if="statsEnabled" class="navbar-item" @click.native="open = false" to="/statistics">
             Statistics
           </router-link>
         </div>
@@ -50,12 +51,20 @@
 </template>
 
 <script>
+import EventBus from '@/event-bus.js';
+
   export default {
-    props: ['connected', 'stats'],
+    props: ['connected', 'statsEnabled', 'tabs'],
 
     data() {
       return {
         open: false,
+      }
+    },
+
+    methods:{
+      sendClickEvent(id) {
+          EventBus.$emit('tabClicked', { id: id });
       }
     },
   }

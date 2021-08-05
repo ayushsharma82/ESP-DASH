@@ -19,13 +19,17 @@ export default new Router({
     */
     {
       path: '/',
-      name: 'Home',
+      redirect: '/tab/Home',
       component: Home
     },
     {
       path: '/statistics',
       name: 'Statistics',
       component: Stats
+    },
+    {
+      path: '/tab/:goto',
+      component: Home,
     }
   ]
 })
