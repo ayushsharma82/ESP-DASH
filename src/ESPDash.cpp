@@ -11,6 +11,8 @@ ESPDash::ESPDash(AsyncWebServer* server, bool enable_stats):
   _ws = new AsyncWebSocket("/dashws");
 
   home_screen = new Tab(this, "Home", "Overview", "");
+  current_tab_id = home_screen->getId();
+
   // Attach AsyncWebServer Routes
   _server->on("/", HTTP_GET, onWebServerRequest());
 
@@ -67,6 +69,15 @@ void ESPDash::remove(Chart *chart) {
   home_screen->remove(chart);
 }
 
+/* Send Card Updates to all clients */
+void ESPDash::sendUpdates() {
+  if (auto tab = getTab(current_tab_id)) {
+    String update;
+    serializeJson(tab->generateUpdates(false), update);
+    _ws->textAll(update);
+  } // else todo: log error
+}
+
 ESPDash::OnWebServerRequest ESPDash::onWebServerRequest() {
   return [this](AsyncWebServerRequest *request) {
     if(basic_auth){
@@ -94,37 +105,39 @@ ESPDash::OnWebSocketEvent ESPDash::onWebSocketEvent() {
           String command = json["command"];
           // client side commands parsing
           if (command == "getLayout") {
-            auto toId = [this](uint32_t& id, const String& path) -> bool {
+            // When navigating directly it is required to cast the path to tab id
+            auto toId = [this](uint32_t& id, const String& path) {
               for (int i = 0; i < tabs.Size(); ++i)
                 if (tabs[i]->getName() == path) {
                   id = tabs[i]->getId();
-                  return true;
+                  return;
                 }
-              return false;
             };
-            uint32_t id;
-            if (toId(id, json["goto"].as<String>()))
-              serializeJson(generateLayout(&id), response);
-            else
-              serializeJson(generateLayout(), response);
+            uint32_t id = current_tab_id;
+            toId(id, json["goto"].as<String>());
+            current_tab_id = id;
+            serializeJson(generateLayout(current_tab_id), response);
           }
           else if (command == "ping")
             response = "{\"command\":\"pong\"}";
           else if (command == "getStats")
             response = generateStatsJSON();
           else if (command == "buttonClicked") {
-            home_screen->resolveCardCallback(
-                    json["id"].as<uint32_t>(),
-                    json["value"].as<bool>());
+            if (auto tab = getTab(current_tab_id))
+              tab->resolveCardCallback(
+                      json["id"].as<uint32_t>(),
+                      json["value"].as<bool>());
             return;
           } else if (command == "sliderChanged") {
-            home_screen->resolveCardCallback(
-                    json["id"].as<uint32_t>(),
-                    json["value"].as<int>());
-            serializeJson(home_screen->generateUpdates(true), response);
+            if (auto tab = getTab(current_tab_id)) {
+              tab->resolveCardCallback(
+                      json["id"].as<uint32_t>(),
+                      json["value"].as<int>());
+              serializeJson(tab->generateUpdates(true), response);
+            } else return;
           } else if (command == "tabClicked") {
-            auto id = json["id"].as<uint32_t>();
-            serializeJson(generateLayout(&id), response);
+            current_tab_id = json["id"].as<uint32_t>();
+            serializeJson(generateLayout(current_tab_id), response);
           }
 
           // update only requested socket
@@ -133,6 +146,12 @@ ESPDash::OnWebSocketEvent ESPDash::onWebSocketEvent() {
       }
     }
   };
+}
+
+Tab* ESPDash::getTab(uint32_t id) {
+  for (int i = 0; i < tabs.Size(); ++i)
+    if (tabs[i]->getId() == id) return tabs[i];
+  return nullptr;
 }
 
 String ESPDash::generateStatsJSON() {
@@ -160,23 +179,8 @@ String ESPDash::generateStatsJSON() {
   return "{\"command\":\"updateStats\", \"statistics\":{" + stats + "}}";
 }
 
-/* Send Card Updates to all clients */
-void ESPDash::sendUpdates() {
-  String update;
-  serializeJson(home_screen->generateUpdates(false), update);
-  _ws->textAll(update);
-}
-
-ESPDash::JsonDocument ESPDash::generateLayout(uint32_t* id) {
-  auto findTab = [this](uint32_t* id) -> Tab* {
-    if (!id) return nullptr;
-    for (int i = 0; i < tabs.Size(); ++i)
-      if (tabs[i]->getId() == *id)
-        return tabs[i];
-    return nullptr;
-  };
-
-  auto tab = findTab(id);
+ESPDash::JsonDocument ESPDash::generateLayout(uint32_t id) {
+  auto tab = getTab(id);
 
   auto doc = tab ? tab->generateLayout() : home_screen->generateLayout();
 
@@ -201,3 +205,5 @@ ESPDash::~ESPDash(){
   delete _ws;
   delete home_screen;
 }
+
+

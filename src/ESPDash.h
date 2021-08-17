@@ -50,6 +50,7 @@ class ESPDash{
 
     Vector<Tab*> tabs;
     Tab* home_screen;
+    uint32_t current_tab_id;
     bool stats_enabled = false;
     bool basic_auth = false;
     const char *username;
@@ -64,13 +65,20 @@ class ESPDash{
             void*,
             uint8_t*,
             size_t)>;
-     OnWebSocketEvent onWebSocketEvent();
+    OnWebSocketEvent onWebSocketEvent();
+
+    // Get tab pointer from tab id
+    Tab* getTab(uint32_t id);
+
+    // Propagate event to cards in play
+    void resolveCardCallback(uint32_t id, int value);
 
     // Generate statistics layout json
     String generateStatsJSON();
 
     using JsonDocument = Widget::JsonDocument;
-    JsonDocument generateLayout(uint32_t* id = nullptr);
+    // Generate layout for specific tab id
+    JsonDocument generateLayout(uint32_t id);
 
     // This method is called when a card/chart is added or removed
     void refreshLayout();

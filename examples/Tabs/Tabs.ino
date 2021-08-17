@@ -52,6 +52,7 @@ Card temperature(&dashboard, TEMPERATURE_CARD, "Temperature", "°C");
 Card humidity(&dashboard, HUMIDITY_CARD, "Humidity", "%");
 Tab second_tab(&dashboard, "Second", "SecondNav", "SecondHeader");
 Card button(&second_tab, BUTTON_CARD, "ThisIsAText");
+Card value(&second_tab, GENERIC_CARD, "SomeValue");
 
 void setup() {
   Serial.begin(115200);
@@ -68,13 +69,20 @@ void setup() {
 
   /* Start AsyncWebServer */
   server.begin();
+
+  button.attachCallback([&button, &dashboard](bool value){
+    Serial.print("Got button new state: ");
+    Serial.println(value);
+    button.update(value);
+    dashboard.sendUpdates();
+  });
 }
 
 void loop() {
   /* Update Card Values */
   temperature.update((int)random(0, 50));
   humidity.update((int)random(0, 100));
-
+  value.update((int)random(42, 1337));
   /* Send Updates to our Dashboard (realtime) */
   dashboard.sendUpdates();
 

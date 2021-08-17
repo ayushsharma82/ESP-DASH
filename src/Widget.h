@@ -2,6 +2,8 @@
 
 #include <Arduino.h>
 #include <ArduinoJson.h>
+#include <cstdint>
+
 
 #define WIDGET_JSON_SIZE 1024
 
@@ -39,7 +41,7 @@ class Widget {
     bool isChanged() {
       return _changed;
     };
-    int getId() const {
+    uint32_t getId() const {
       return _id;
     };
     virtual ~Widget() = default;
