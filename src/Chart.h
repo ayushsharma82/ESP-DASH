@@ -49,8 +49,7 @@ class Chart: public Widget{
     void updateY(float arr_y[], size_t y_size);
     ~Chart();
 
-  friend class ESPDash; // TODO: remove
-  friend class Tab;
+    friend class Tab;
 };
 
 #endif

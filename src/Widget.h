@@ -15,22 +15,9 @@ struct WidgetNames {
 class Tab;
 
 class Widget {
-  protected:
-    uint32_t _id;
-    String _name;
-    int   _type;
-    bool  _changed;
-
-#if ARDUINOJSON_VERSION_MAJOR == 6
-    using JsonDocument = DynamicJsonDocument; // TODO: this should be in the else statement
-#else
-    using JsonDocument = DynamicJsonBuffer;
-#endif
-
-    virtual JsonDocument generateLayout() = 0;
-    virtual JsonDocument generateUpdate() = 0;
-
   public:
+    using JsonDocument = DynamicJsonDocument;
+
     Widget() {
       #if defined(ESP8266)
         _id = RANDOM_REG32;
@@ -45,6 +32,15 @@ class Widget {
       return _id;
     };
     virtual ~Widget() = default;
+
+  protected:
+    uint32_t _id;
+    String _name;
+    int   _type;
+    bool  _changed;
+
+    virtual JsonDocument generateLayout() = 0;
+    virtual JsonDocument generateUpdate() = 0;
 
     friend class Tab;
 };

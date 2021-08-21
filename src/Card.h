@@ -62,8 +62,7 @@ class Card: public Widget {
     void update(const String &value, const char* symbol);
     ~Card();
   
-  friend class ESPDash; // TODO: remove
-  friend class Tab;
+    friend class Tab;
 };
 
 
