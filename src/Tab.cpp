@@ -1,6 +1,10 @@
 #include "Tab.h"
 #include "ESPDash.h"
 
+#include <Arduino.h>
+#define ARDUINOJSON_NAMESPACE ArduinoJson
+#include <ArduinoJson.hpp>
+
 /*
   Constructor
 */
@@ -48,7 +52,7 @@ Tab::JsonDocument Tab::toJSON() {
 }
 
 template<class Object>
-void Tab::mergeEntitiesToJSON(Vector<Object*>& container, JsonArray& jsonEntities, bool onlyChanged) {
+void Tab::mergeEntitiesToJSON(Vector<Object*>& container, ArduinoJson::ArrayRef& jsonEntities, bool onlyChanged) {
   for(int i = 0; i < container.Size(); i++) {
     if (onlyChanged) {
       if (container[i]->isChanged())

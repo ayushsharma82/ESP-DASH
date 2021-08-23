@@ -15,27 +15,15 @@ Github URL: https://github.com/ayushsharma82/ESP-DASH
 #define ESPDash_h
 
 #include <functional>
-#include <stdint.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdint>
+#include <cstdlib>
 
-#include "Arduino.h"
-#include "stdlib_noniso.h"
+#include <WString.h>
+#include <ESPAsyncWebServer.h>
+
 #include "webpage.h"
 #include "vector.h"
 
-#if defined(ESP8266)
-    #define HARDWARE "ESP8266"
-    #include "ESP8266WiFi.h"
-    #include "ESPAsyncTCP.h"
-#elif defined(ESP32)
-    #define HARDWARE "ESP32"
-    #include "WiFi.h"
-    #include "AsyncTCP.h"
-#endif
-
-#include "ESPAsyncWebServer.h"
-#include "ArduinoJson.h"
 #include "Widget.h"
 #include "Card.h"
 #include "Chart.h"
@@ -69,9 +57,6 @@ class ESPDash{
 
     // Get tab pointer from tab id
     Tab* getTab(uint32_t id);
-
-    // Propagate event to cards in play
-    void resolveCardCallback(uint32_t id, int value);
 
     // Generate statistics layout json
     String generateStatsJSON();

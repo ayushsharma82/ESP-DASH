@@ -1,5 +1,8 @@
 #include "ESPDash.h"
 
+#define ARDUINOJSON_NAMESPACE ArduinoJson
+#include <ArduinoJson.hpp>
+
 /*
   Constructor
 */
@@ -73,7 +76,7 @@ void ESPDash::remove(Chart *chart) {
 void ESPDash::sendUpdates() {
   if (auto tab = getTab(current_tab_id)) {
     String update;
-    serializeJson(tab->generateUpdates(false), update);
+    ArduinoJson::serializeJson(tab->generateUpdates(false), update);
     _ws->textAll(update);
   } // else todo: log error
 }
@@ -93,7 +96,7 @@ ESPDash::OnWebServerRequest ESPDash::onWebServerRequest() {
 
 ESPDash::OnWebSocketEvent ESPDash::onWebSocketEvent() {
   return [this](AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len) {
-    StaticJsonDocument<200> json;
+    ArduinoJson::StaticJsonDocument<200> json;
     String response;
 
     if (type == WS_EVT_DATA) {

@@ -3,8 +3,8 @@
 
 
 #include <functional>
-#include <Arduino.h>
-#include <ArduinoJson.h>
+
+#include <WString.h>
 
 #include "Widget.h"
 
@@ -43,8 +43,8 @@ class Card: public Widget {
 
     void resolveCallback(int value);
 
-    Widget::JsonDocument generateLayout() override;
-    Widget::JsonDocument generateUpdate() override;
+    JsonDocument generateLayout() override;
+    JsonDocument generateUpdate() override;
 
   public:
     Card(ESPDash *dashboard, const int type, const char* name, const char* symbol = "", const int min = 0, const int max = 0);

@@ -1,9 +1,8 @@
 #pragma once
 
-#include <Arduino.h>
-#include <ArduinoJson.h>
 #include <cstdint>
-
+#include <WString.h>
+#include <Arduino.h>
 
 #define WIDGET_JSON_SIZE 1024
 
@@ -13,10 +12,15 @@ struct WidgetNames {
 };
 
 class Tab;
+namespace ArduinoJson {
+  template<typename allocator>
+  class BasicJsonDocument;
+  class DefaultAllocator;
+}
 
 class Widget {
   public:
-    using JsonDocument = DynamicJsonDocument;
+    using JsonDocument = ArduinoJson::BasicJsonDocument<ArduinoJson::DefaultAllocator>;
 
     Widget() {
       #if defined(ESP8266)

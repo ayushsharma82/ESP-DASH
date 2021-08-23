@@ -1,8 +1,7 @@
 #ifndef __TAB_H
 #define __TAB_H
 
-#include <Arduino.h>
-#include <ArduinoJson.h>
+#include <WString.h>
 
 #include "vector.h"
 #include "Widget.h"
@@ -11,6 +10,9 @@
 
 // Forward Declaration
 class ESPDash;
+namespace ArduinoJson {
+  class ArrayRef;
+}
 
 // Tab Class
 class Tab {
@@ -28,7 +30,7 @@ class Tab {
     using JsonDocument = Widget::JsonDocument;
     JsonDocument makeDocument(const String& command);
     template<class Object>
-    void mergeEntitiesToJSON(Vector<Object*>& container, JsonArray& jsonEntities, bool changeOnly);
+    void mergeEntitiesToJSON(Vector<Object*>& container, ArduinoJson::ArrayRef& jsonEntities, bool changeOnly);
 
     // Generate tab info as JSON document
     JsonDocument toJSON();

@@ -2,6 +2,9 @@
 #include "ESPDash.h"
 #include "Tab.h"
 
+#define ARDUINOJSON_NAMESPACE ArduinoJson
+#include <ArduinoJson.hpp>
+
 // Integral type to string pairs events
 // ID, type
 struct WidgetNames cardTags[] = {
@@ -161,7 +164,7 @@ void Card::resolveCallback(int value) {
   if (_callback) _callback(value);
 }
 
-Widget::JsonDocument Card::generateLayout() {
+Card::JsonDocument Card::generateLayout() {
   auto doc = generateUpdate();
   doc["name"] = _name;
   doc["type"] = cardTags[_type].type;
@@ -170,8 +173,8 @@ Widget::JsonDocument Card::generateLayout() {
   return std::move(doc);
 }
 
-Widget::JsonDocument Card::generateUpdate() {
-  Widget::JsonDocument doc(256);
+Card::JsonDocument Card::generateUpdate() {
+  Card::JsonDocument doc(256);
   doc["id"] = _id;
   doc["symbol"] = _symbol;
   switch (_value_type) {
@@ -182,6 +185,7 @@ Widget::JsonDocument Card::generateUpdate() {
   }
   return std::move(doc);
 }
+
 
 /*
   Destructor

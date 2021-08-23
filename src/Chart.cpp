@@ -2,6 +2,9 @@
 #include "ESPDash.h"
 #include "Tab.h"
 
+#define ARDUINOJSON_NAMESPACE ArduinoJson
+#include <ArduinoJson.hpp>
+
 // Integral type to string pairs events
 // ID, type
 struct WidgetNames chartTags[] = {
@@ -105,18 +108,18 @@ void Chart::updateY(float arr_y[], size_t y_size){
   _changed = true;
 }
 
-Widget::JsonDocument Chart::generateLayout() {
+Chart::JsonDocument Chart::generateLayout() {
   auto doc = generateUpdate();
   doc["name"] = _name;
   doc["type"] = chartTags[_type].type;
   return std::move(doc);
 }
 
-Widget::JsonDocument Chart::generateUpdate() {
-  Widget::JsonDocument doc(2048);
+Chart::JsonDocument Chart::generateUpdate() {
+  Chart::JsonDocument doc(2048);
   doc["id"] = _id;
 
-  JsonArray xAxis = doc["x_axis"].to<JsonArray>();
+  ArduinoJson::JsonArray xAxis = doc["x_axis"].to<ArduinoJson::JsonArray>();
   switch (_x_axis_type) {
     case GraphAxisType::INTEGER:
       for(int i=0; i < _x_axis_i.Size(); i++)
@@ -135,7 +138,7 @@ Widget::JsonDocument Chart::generateUpdate() {
       break;
   }
 
-  JsonArray yAxis = doc["y_axis"].to<JsonArray>();
+  ArduinoJson::JsonArray yAxis = doc["y_axis"].to<ArduinoJson::JsonArray>();
   switch (_y_axis_type) {
     case GraphAxisType::INTEGER:
       for(int i=0; i < _y_axis_i.Size(); i++)
