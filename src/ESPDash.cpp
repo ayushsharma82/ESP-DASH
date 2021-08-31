@@ -4,17 +4,32 @@
 #include <ArduinoJson.hpp>
 
 /*
-  Constructor
+  Constructors
 */
-ESPDash::ESPDash(AsyncWebServer* server, bool enable_stats):
-  _server(server),
-  stats_enabled(enable_stats)
+ESPDash::ESPDash()
 {
-  // Initialize AsyncWebSocket
-  _ws = new AsyncWebSocket("/dashws");
-
   home_screen = new Tab(this, "Home", "Overview", "");
   current_tab_id = home_screen->getId();
+}
+
+ESPDash::ESPDash(AsyncWebServer* server, bool enable_stats):
+  stats_enabled(enable_stats)
+{
+  init(server);
+  home_screen = new Tab(this, "Home", "Overview", "");
+  current_tab_id = home_screen->getId();
+}
+
+ESPDash& ESPDash::displayStatistics(bool enable_stats) {
+  stats_enabled = enable_stats;
+  return *this;
+}
+
+ESPDash& ESPDash::init(AsyncWebServer *server) {
+  _server = server;
+
+  // Initialize AsyncWebSocket
+  _ws = new AsyncWebSocket("/dashws");
 
   // Attach AsyncWebServer Routes
   _server->on("/", HTTP_GET, onWebServerRequest());
@@ -24,6 +39,8 @@ ESPDash::ESPDash(AsyncWebServer* server, bool enable_stats):
 
   // Attach Websocket Instance to AsyncWebServer
   _server->addHandler(_ws);
+
+  return *this;
 }
 
 
@@ -197,7 +214,8 @@ ESPDash::JsonDocument ESPDash::generateLayout(uint32_t id) {
 }
 
 void ESPDash::refreshLayout() {
-  _ws->textAll("{\"command\":\"refreshLayout\"}");
+  if (_ws)
+    _ws->textAll("{\"command\":\"refreshLayout\"}");
 }
 
 /*

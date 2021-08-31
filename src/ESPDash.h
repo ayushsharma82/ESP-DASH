@@ -69,8 +69,14 @@ class ESPDash{
     void refreshLayout();
 
   public:
-
+    ESPDash();
     ESPDash(AsyncWebServer* server, bool enable_stats = true);
+
+    // Enable/disable statistics
+    ESPDash& displayStatistics(bool enable_stats);
+
+    // Late initialize
+    ESPDash& init(AsyncWebServer* server);
 
     // Set Authentication
     void setAuthentication(const char *user, const char *pass);
