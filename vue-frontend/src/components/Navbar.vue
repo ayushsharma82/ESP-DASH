@@ -3,8 +3,9 @@
   <div class="card-content">
     <nav class="navbar" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
-        <router-link class="navbar-item" to="/">
-          <svg xmlns="http://www.w3.org/2000/svg" width="120px" viewBox="0 0 365.79 100.8">
+        <router-link class="navbar-item" to="/" @click.native="sendClickEvent(0)" >
+          <h2 v-if="header.length > 0" class="is-size-4 has-text-dark has-text-weight-semibold">{{header}}</h2>
+          <svg v-else xmlns="http://www.w3.org/2000/svg" width="120px" viewBox="0 0 365.79 100.8">
             <path
               d="M202.31,44.93a32.79,32.79,0,0,1,7.33-2.47c13.11-2.49,26.17,3.67,30,19.43a38.39,38.39,0,0,1,1,9V93.62c0,2.54-.9,3.42-3.47,3.42H224c-2,0-2.93-.94-2.93-2.94V69.93a11.8,11.8,0,0,0-1.41-5.73c-2.82-5.2-10.11-6.61-14.39-2.73-2.43,2.2-3,5.19-3,8.3v24c0,2.65-.59,3.23-3.23,3.23H185.53c-2.47,0-3.36-.9-3.36-3.4V6.32c0-2.44.88-3.32,3.29-3.32h13.66c2.26,0,3.18.91,3.18,3.18V44.93Z"
               style="fill:#2b2b2b" />
@@ -54,7 +55,7 @@
 import EventBus from '@/event-bus.js';
 
   export default {
-    props: ['connected', 'statsEnabled', 'tabs'],
+    props: ['connected', 'statsEnabled', 'tabs', 'header'],
 
     data() {
       return {

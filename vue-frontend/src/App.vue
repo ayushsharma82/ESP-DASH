@@ -2,7 +2,7 @@
 <div>
   <div class="section pt-1">
     <div class="container mt-6">
-      <navbar :tabs="tabs" :stats-enabled="stats.enabled" />
+      <navbar :header="header" :tabs="tabs" :stats-enabled="stats.enabled" />
     </div>
   </div>
   <div class="section pt-2">
@@ -44,6 +44,7 @@ export default {
       cards: [],
       charts: [],
       tabs: [],
+      header: "",
     }
   },
 
@@ -125,6 +126,9 @@ export default {
           "command": "getLayout"
         }));
       }
+
+      let path = this.tabs.find(info => info.name === this.$route.params.goto);
+      this.header = path ? path.header : "";
     });
 
     EventBus.$on('buttonClicked', data => {
