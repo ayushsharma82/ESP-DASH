@@ -152,6 +152,7 @@ Chart::JsonDocument Chart::generateUpdate() {
       // blank value
       break;
   }
+  _changed = false;
   return std::move(doc);
 }
 

@@ -183,6 +183,7 @@ Card::JsonDocument Card::generateUpdate() {
     case Card::STRING: doc["value"] = _value_s; break;
     default: doc["value"] = "ERROR"; break;
   }
+  _changed = false;
   return std::move(doc);
 }
 
