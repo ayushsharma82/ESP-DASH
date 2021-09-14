@@ -91,6 +91,7 @@ void ESPDash::remove(Chart *chart) {
 
 /* Send Card Updates to all clients */
 void ESPDash::sendUpdates() {
+  if (!_ws) return; // todo: log error
   if (auto tab = getTab(current_tab_id)) {
     String update;
     ArduinoJson::serializeJson(tab->generateUpdates(false), update);
