@@ -1,6 +1,24 @@
 name: Arduino Library CI
 
-on: [pull_request, push, repository_dispatch]
+on: 
+  push:
+    paths-ignore:
+      - '**/**.md'
+      - '**/**.yml'
+      - '/keywords.txt'
+      - '/library.json'
+      - '/library.properties'
+      - '/vue-frontend'
+      - '/docs'
+  pull_request:
+    paths-ignore:
+      - '**/**.md'
+      - '**/**.yml'
+      - '/keywords.txt'
+      - '/library.json'
+      - '/library.properties'
+      - '/vue-frontend'
+      - '/docs'
 
 jobs:
   build:
