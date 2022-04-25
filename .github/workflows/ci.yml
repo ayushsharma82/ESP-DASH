@@ -4,7 +4,6 @@ on:
   push:
     paths-ignore:
       - '**/**.md'
-      - '**/**.yml'
       - '/keywords.txt'
       - '/library.json'
       - '/library.properties'
@@ -13,7 +12,6 @@ on:
   pull_request:
     paths-ignore:
       - '**/**.md'
-      - '**/**.yml'
       - '/keywords.txt'
       - '/library.json'
       - '/library.properties'
