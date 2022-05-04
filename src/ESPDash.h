@@ -21,7 +21,7 @@ Github URL: https://github.com/ayushsharma82/ESP-DASH
 
 #include "Arduino.h"
 #include "stdlib_noniso.h"
-#include "webpage.h"
+#include "dash_webpage.h"
 #include "vector.h"
 
 #if defined(ESP8266)
@@ -60,7 +60,7 @@ class ESPDash{
     String generateLayoutJSON(bool only_stats = false);
 
     // Generate cards/charts update json
-    String generateUpdatesJSON(bool toAll = false);
+    String generateUpdatesJSON(bool force = false);
 
     // Generate Component JSON
     const String generateComponentJSON(Card* card, bool change_only = false);
@@ -87,7 +87,7 @@ class ESPDash{
     void remove(Chart *card);
 
     // Notify client side to update values
-    void sendUpdates();
+    void sendUpdates(bool force = false);
   
     ~ESPDash();
 };

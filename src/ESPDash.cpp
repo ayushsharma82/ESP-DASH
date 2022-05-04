@@ -82,7 +82,7 @@ ESPDash::ESPDash(AsyncWebServer* server, bool enable_stats) {
                 }
               }
             }
-            response = generateUpdatesJSON();
+            return;
           }
 
           // update only requested socket
@@ -144,14 +144,14 @@ void ESPDash::remove(Chart *chart) {
 
 
 // push updates to all connected clients
-String ESPDash::generateUpdatesJSON(bool toAll) {
+String ESPDash::generateUpdatesJSON(bool force) {
   String cardsData;
   String chartsData;
 
   // Generate JSON for all changed Cards
   for (int i=0; i < cards.Size(); i++) {
     Card *p = cards[i];
-    if(p->_changed || toAll){
+    if(p->_changed || force){
       p->_changed = false;
       cardsData += generateComponentJSON(p, true);
       cardsData += ",";
@@ -166,7 +166,7 @@ String ESPDash::generateUpdatesJSON(bool toAll) {
   // Generate JSON for all changed Charts
   for (int i=0; i < charts.Size(); i++) {
     Chart *p = charts[i];
-    if(p->_changed || toAll){
+    if(p->_changed || force){
       p->_changed = false;
       chartsData += generateComponentJSON(p, true);
       chartsData += ",";
@@ -189,7 +189,7 @@ String ESPDash::generateLayoutJSON(bool only_stats) {
 
   if (stats_enabled) {
     // No need to use json library to build response packet
-    stats += "\"enabled\":true,";
+    stats += "\"enabled\": true,";
     #if defined(ESP8266)
     stats += "\"hardware\":\"ESP8266\",";
     stats += "\"sdk\":\"" + ESP.getCoreVersion() + "\",";
@@ -206,11 +206,11 @@ String ESPDash::generateLayoutJSON(bool only_stats) {
     stats += "\"wifiMode\":" + String(WiFi.getMode()) + ",";
     stats += "\"wifiSignal\":" + String(WiFi.RSSI());
   } else
-    stats = "\"enabled\":\"false\",";
+    stats = "\"enabled\": false ";
 
   // only status has been requested
   if (only_stats) {
-    return "{\"command\":\"updateStats\", "
+    return "{\"command\":\"update:stats\", "
     "\"statistics\":{" + stats + "}}";
   }
 
@@ -336,8 +336,8 @@ const String ESPDash::generateComponentJSON(Chart* chart, bool change_only){
 }
 
 /* Send Card Updates to all clients */
-void ESPDash::sendUpdates() {
-  _ws->textAll(generateUpdatesJSON(true));
+void ESPDash::sendUpdates(bool force) {
+  _ws->textAll(generateUpdatesJSON(force));
 }
 
 void ESPDash::refreshLayout() {
