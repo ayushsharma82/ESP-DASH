@@ -53,13 +53,13 @@ ESPDash::ESPDash(AsyncWebServer* server, bool enable_stats) {
           data[len] = 0;
           deserializeJson(json, reinterpret_cast<const char*>(data));
           // client side commands parsing
-          if (json["command"] == "getLayout")
+          if (json["command"] == "get:layout")
             response = generateLayoutJSON();
           else if (json["command"] == "ping")
             response = "{\"command\":\"pong\"}";
-          else if (json["command"] == "getStats")
+          else if (json["command"] == "get:stats")
             response = generateLayoutJSON(true);
-          else if (json["command"] == "buttonClicked") {
+          else if (json["command"] == "button:clicked") {
             // execute and reference card data struct to funtion
             uint32_t id = json["id"].as<uint32_t>();
             for(int i=0; i < cards.Size(); i++){
@@ -71,7 +71,7 @@ ESPDash::ESPDash(AsyncWebServer* server, bool enable_stats) {
               }
             }
             return;
-          } else if (json["command"] == "sliderChanged") {
+          } else if (json["command"] == "slider:changed") {
             // execute and reference card data struct to funtion
             uint32_t id = json["id"].as<uint32_t>();
             for(int i=0; i < cards.Size(); i++){
@@ -177,7 +177,7 @@ String ESPDash::generateUpdatesJSON(bool toAll) {
   if(chartsData.length() > 0)
     chartsData.remove(chartsData.length()-1);
 
-  return "{\"command\":\"updateCards\", \"cards\":[" + cardsData + "], \"charts\":[" + chartsData + "]}";
+  return "{\"command\":\"update:cards\", \"cards\":[" + cardsData + "], \"charts\":[" + chartsData + "]}";
 }
 
 
@@ -244,7 +244,7 @@ String ESPDash::generateLayoutJSON(bool only_stats) {
   if(chartsData.length() > 0)
     chartsData.remove(chartsData.length()-1);
 
-  return "{\"command\":\"updateLayout\", \"version\":\"1\", \"statistics\":{" + stats + "}, \"cards\":[" + cardsData + "], \"charts\":[" + chartsData + "]}";
+  return "{\"command\":\"update:layout\", \"version\":\"1\", \"statistics\":{" + stats + "}, \"cards\":[" + cardsData + "], \"charts\":[" + chartsData + "]}";
 }
 
 
