@@ -223,7 +223,6 @@ size_t ESPDash::generateLayoutJSON(AsyncWebSocketClient *client, bool changes_on
 
   buf += "],\"stats\": [";
 
-  // TODO: Don't send default stats on changes only
   // Generate JSON for all Statistics
   // Check if default statistics are needed
   if (default_stats_enabled) {
@@ -274,17 +273,26 @@ size_t ESPDash::generateLayoutJSON(AsyncWebSocketClient *client, bool changes_on
     buf += ",";
   }
 
-  // TODO: Check if stat has been changed if only changes are requested
   // Loop through user defined stats
+  StaticJsonDocument<128> obj;
+  uint8_t stat_count = 0;
   for (int i=0; i < statistics.Size(); i++) {
-    StaticJsonDocument<128> obj;
     Statistic *s = statistics[i];
+    if (changes_only) {
+      if (s->_changed) {
+        s->_changed = false;
+      } else {
+        continue;
+      }
+    }
+    if (stat_count > 0) {
+      buf += ",";
+    }
     obj["k"] = s->_key;
     obj["v"] = s->_value;
     serializeJson(obj, buf);
-    if (i < statistics.Size() - 1) {
-      buf += ",";
-    }
+    obj.clear();
+    stat_count++;
   }
 
   buf += "]";
