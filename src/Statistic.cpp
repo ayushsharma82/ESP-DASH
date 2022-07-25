@@ -17,6 +17,7 @@ void Statistic::set(const char *key, const char *value) {
     // Safe copy
     strncpy(_key, key, sizeof(_key));
     strncpy(_value, value, sizeof(_value));
+    _changed = true;
 }
 
 Statistic::~Statistic() {

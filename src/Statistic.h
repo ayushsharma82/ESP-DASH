@@ -17,6 +17,7 @@ class Statistic {
         uint32_t _id;
         char _key[32];
         char _value[64];
+        bool _changed = false;
 
     public:
         Statistic(ESPDash *dashboard, const char *key, const char *value);
