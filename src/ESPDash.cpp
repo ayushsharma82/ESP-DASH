@@ -270,12 +270,10 @@ size_t ESPDash::generateLayoutJSON(AsyncWebSocketClient *client, bool changes_on
     signal["k"] = "WiFi Signal";
     signal["v"] = WiFi.RSSI();
     serializeJson(signal, buf);
-    buf += ",";
   }
 
   // Loop through user defined stats
   StaticJsonDocument<128> obj;
-  uint8_t stat_count = 0;
   for (int i=0; i < statistics.Size(); i++) {
     Statistic *s = statistics[i];
     if (changes_only) {
@@ -285,14 +283,11 @@ size_t ESPDash::generateLayoutJSON(AsyncWebSocketClient *client, bool changes_on
         continue;
       }
     }
-    if (stat_count > 0) {
-      buf += ",";
-    }
+    buf += ",";
     obj["k"] = s->_key;
     obj["v"] = s->_value;
     serializeJson(obj, buf);
     obj.clear();
-    stat_count++;
   }
 
   buf += "]";
