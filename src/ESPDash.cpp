@@ -36,7 +36,7 @@ ESPDash::ESPDash(AsyncWebServer* server, bool enable_default_stats) {
       return request->requestAuthentication();
     }
     // respond with the compressed frontend
-    AsyncWebServerResponse *response = request->beginResponse_P(200, "text/html", DASH_HTML, DASH_HTML_SIZE);
+    AsyncWebServerResponse *response = request->beginResponse_P(200, "text/html", DASH_HTML, sizeof(DASH_HTML));
     response->addHeader("Content-Encoding","gzip");
     request->send(response);        
   });
