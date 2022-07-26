@@ -303,8 +303,8 @@ size_t ESPDash::generateLayoutJSON(AsyncWebSocketClient *client, bool changes_on
   } else {
     _ws->textAll(buf.c_str(), total);
   }
-  Serial.println("Free Heap (During Update): "+String( ESP.getFreeHeap() ));
 
+  // Serial.println("Free Heap (During Update): "+String( ESP.getFreeHeap() ));
   // Return length
   return total;
 }
