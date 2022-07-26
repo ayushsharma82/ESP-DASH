@@ -1,7 +1,7 @@
 <p>
   <br/>
 </p>
-<p align="center"><img src="/docs/dash-github-splash2.png?sanitize=true&raw=true" width="100%"></p>
+<p align="center"><img src="/docs/dash-github-splash2.png?sanitize=true&raw=true" width="700"></p>
 <br/>
 <br/>
 
