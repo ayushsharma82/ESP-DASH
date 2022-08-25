@@ -53,3 +53,18 @@
 .img-dropshadow {
   filter: drop-shadow(0px 0px 10px rgba(0,0,0, 0.08));
 }
+
+.pro-label {
+  border: 1px solid rgba(250, 4, 4, 0.233);
+  padding: 20px;
+  border-radius: 10px;
+  background-color: rgba(241, 25, 25, 0.034);
+  max-width: 600px;
+  box-shadow: rgba(250, 4, 4, 0.05) 0px 4px 20px 0px;
+}
+
+[data-theme=dark] .pro-label {
+  border: 1px solid rgba(250, 4, 4, 0.233);
+  background-color: rgba(241, 25, 25, 0.151);
+  box-shadow: rgba(250, 4, 4, 0.137) 0px 4px 20px 0px;
+}

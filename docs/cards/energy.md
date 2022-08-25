@@ -4,8 +4,13 @@ sidebar_label: Energy (Pro)
 sidebar_position: 4
 ---
 
-<div style={{ border: '1px solid rgba(255,0,0, 0.03)', padding: 20, borderRadius: 14, backgroundColor: 'rgba(255,0,0, 0.03)', maxWidth: 600 }}>
-  <h4 style={{ fontWeight: '500', marginBottom: 5 }}>This feature is included only in DASH <span style={{ color: "#f54b42" }}>Pro</span></h4> <a href="https://espdash.pro" target="_blank">Know more</a>
+<div className="pro-label">
+    <i>
+        <h4 style={{ fontWeight: '500', marginBottom: 5 }}>
+            This feature is included only in DASH <span style={{ color: "#f54b42" }}>Pro</span>
+        </h4>
+        <a href="https://espdash.pro" target="_blank">Know more</a>
+    </i>
 </div>
 
 #### Preview:
