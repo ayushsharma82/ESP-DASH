@@ -5,7 +5,7 @@ sidebar_position: 7
 ---
 
 <div style={{ border: '1px solid rgba(255,0,0, 0.03)', padding: 20, borderRadius: 14, backgroundColor: 'rgba(255,0,0, 0.03)', maxWidth: 600 }}>
-  <h4 style={{ fontWeight: '500', marginBottom: 5 }}>This feature is included only in DASH <span style={{ color: "#f54b42" }}>Pro</span></h4> <a href="https://espdash.pro" target="_blank">Know more</a>
+  <h4 style={{ fontWeight: '500', marginBottom: 5 }}> This feature is available in <a target="_blank" style={{ color: "red" }} href="https://espdash.pro">DASH Pro</a> only.</h4>  
 </div>
 
 

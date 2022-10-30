@@ -7,9 +7,9 @@ sidebar_position: 4
 <div className="pro-label">
     <i>
         <h4 style={{ fontWeight: '500', marginBottom: 5 }}>
-            This feature is included only in DASH <span style={{ color: "#f54b42" }}>Pro</span>
+             This feature is available in <a target="_blank" style={{ color: "red" }} href="https://espdash.pro">DASH Pro</a> only.
         </h4>
-        <a href="https://espdash.pro" target="_blank">Know more</a>
+         
     </i>
 </div>
 
@@ -22,9 +22,11 @@ sidebar_position: 4
 <br/>
 <br/>
 
-If you are not familiar with the interface yet, the dashboard has an sidebar which can be expanded and collapsed by the user, in that case the logo switches between a "mini" version and a "full" version.
+If you are not familiar with the interface yet, the dashboard has an sidebar which can be expanded and collapsed by the user, in that case the logo switches between "mini" and "full" scale version.
 
 Both these logos can be changed by the user using a combination for compiler flags and class functions.
+
+<br/>
 
 
 ### Neccessary Compiler Flags
@@ -45,7 +47,7 @@ By default ESP-DASH treats all logos to be gzipped. If you are supplying a logo 
 
 This flag will disable the gzip header which is being sent along the response by default.
 
-
+<br/>
 
 ### Setting Custom Logo
 
