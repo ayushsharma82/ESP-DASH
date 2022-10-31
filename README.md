@@ -51,7 +51,7 @@ Checkout the Pro version of ESP-DASH which comes with extended functionality and
 </ol>
 
 <a href="https://espdash.pro" target="_blank">
-  <img src="/docs/dashboard-mockup.png" alt="ESP-DASH Pro">
+  <img src="/docs/pro-preview.png" alt="ESP-DASH Pro">
 </a>
 
 <br>
