@@ -50,7 +50,7 @@
 
 <h2>Upgrade to Pro</h2>
 
-Pro comes with the following extended functionality:
+ESP-DASH Pro comes with the following extended functionality:
 - More charts ( Line, Area, Pie )
 - More cards ( Air, Energy, Text Input & Joystick )
 - Tabs Support! Add multiple pages to your dashboard.
@@ -59,11 +59,12 @@ Pro comes with the following extended functionality:
 - Custom size support for cards & charts
 - Atlast, It is a fantastic way to support the developer for the time went into the making & maintaining the library.
 
-<br> <b>Available for purchase here: </b>
-<ol>
-  <li>https://www.buymeacoffee.com/6QGVpSj/e/28263</li>
-  <li>https://espdash.pro</li>
-</ol>
+<br> <b>Available here: </b>
+
+- [BMC Page](https://www.buymeacoffee.com/6QGVpSj/e/28263)
+- [Official Website](https://espdash.pro)
+
+<br/>
 
 <a href="https://espdash.pro" target="_blank">
   <img src="/docs/pro-preview.png" alt="ESP-DASH Pro">
@@ -74,16 +75,16 @@ Pro comes with the following extended functionality:
 
 <h2>Contributions</h2>
 <p>Every contribution to this repository is highly appreciated! If you spot any bug or problem, open a issue or pull request so that it can be rectified for everyone.</p>
-<p>
-If you love this library, you can buy me a coffee which in return helps the ball ( open-source projects ) keep rolling forward:
-<br/><br/>
-<a href="https://www.buymeacoffee.com/6QGVpSj" target="_blank"><img src="https://img.shields.io/badge/Buy%20me%20a%20coffee-%245-orange?style=for-the-badge&logo=buy-me-a-coffee" /></a>
-</p>
+
+**For feature requests:** Please open a issue and I'll add the feature in a future release once I get some time in my hands.
+
 <br/>
 <br/>
 
 
 <h2>License</h2>
-ESP-DASH is licensed under General Public License v3 ( GPLv3 ). If you are going to use ESP-DASH in a commercial project, please consider buying the pro version which comes with a less restrictive Apache-2.0 license.
+
+ESP-DASH is licensed under General Public License v3 ( GPLv3 ). If you are intending to use ESP-DASH in a commercial project, please consider buying the [ESP-DASH Pro](https://espdash.pro) which comes with a less restrictive Apache-2.0 license.
+
 <br>
 <br>
