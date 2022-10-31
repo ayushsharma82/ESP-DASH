@@ -15,14 +15,9 @@ sidebar_position: 3
 
 #### Preview:
 
-<img src="/img/v4/placeholder.png" width="380px" alt="Preview" />
+<img src="/img/v4/area-chart.png" width="500px" alt="Preview" />
 
 <br/>
-<br/>
-
-Similar to line chart, area chart fills the space below it with a color. You can aggregate large amount of data in form of arrays and display them in a area chart.
-
-
 <br/>
 
 #### Type: 

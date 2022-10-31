@@ -15,14 +15,9 @@ sidebar_position: 4
 
 #### Preview:
 
-<img src="/img/v4/placeholder.png" width="380px" alt="Preview" />
+<img src="/img/v4/pie-chart.png" width="380px" alt="Preview" />
 
 <br/>
-<br/>
-
-Pie chart is a circular chart used for displaying various data where you can represent your data in a circular form.
-
-
 <br/>
 
 #### Type: 

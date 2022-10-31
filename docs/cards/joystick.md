@@ -16,7 +16,7 @@ sidebar_position: 7
 
 #### Preview:
 
-<img src="/img/v4/placeholder.png" width="320px" alt="Preview" />
+<img src="/img/v4/joystick-card.png" width="280px" alt="Preview" />
 
 <br/>
 <br/>

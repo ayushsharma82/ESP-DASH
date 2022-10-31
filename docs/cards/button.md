@@ -6,9 +6,9 @@ sidebar_position: 5
 
 #### Preview:
 
-<img src="/img/v4/placeholder.png" width="280px" alt="Button Card Preview" />
-<br/>
-<img src="/img/v4/placeholder.png" width="280px" alt="Button Card Preview" />
+<img src="/img/v4/button-card-false.png" width="280px" alt="Button Card Preview" />
+ &nbsp; 
+<img src="/img/v4/button-card-true.png" width="280px" alt="Button Card Preview" />
 
 <br/>
 <br/>

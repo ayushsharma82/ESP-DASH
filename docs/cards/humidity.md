@@ -6,7 +6,7 @@ sidebar_position: 3
 
 #### Preview:
 
-<img src="/img/v4/placeholder.png" width="280px" alt="Preview" />
+<img src="/img/v4/humidity-card.png" width="280px" alt="Preview" />
 
 <br/>
 <br/>

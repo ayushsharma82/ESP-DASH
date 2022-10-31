@@ -16,7 +16,7 @@ sidebar_position: 7
 <br/>
 <br/>
 
-<img src="/img/v4/placeholder.png" alt="Concept Diagram" width="600px" />
+<img src="/img/v4/tabs.png" alt="Concept Diagram" width="300px" />
 
 <br/>
 <br/>

@@ -15,7 +15,7 @@ sidebar_position: 6
 
 #### Preview:
 
-<img src="/img/v4/placeholder.png" width="280px" alt="Energy Card Preview" />
+<img src="/img/v4/text-input-card.png" width="280px" alt="Energy Card Preview" />
 
 <br/>
 <br/>

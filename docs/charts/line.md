@@ -15,14 +15,10 @@ sidebar_position: 2
 
 #### Preview:
 
-<img src="/img/v4/placeholder.png" width="380px" alt="Preview" />
+<img src="/img/v4/line-chart.png" width="500px" alt="Preview" />
 
 <br/>
 <br/>
-
-Second form of chart in ESP-DASH is the line chart. It lets you have linear data displayed in form of a connected line istead of bars. You can aggregate large amount of data in form of arrays and display them in a line chart.
-
-
 <br/>
 
 #### Type: 

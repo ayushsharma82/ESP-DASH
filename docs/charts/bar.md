@@ -7,15 +7,9 @@ sidebar_position: 1
 
 #### Preview:
 
-<img src="/img/v4/placeholder.png" width="380px" alt="Preview" />
+<img src="/img/v4/bar-chart.png" width="500px" alt="Preview" />
 
 <br/>
-<br/>
-
-It's a bar chart. period.
-
-You can aggregate large amount of data in form of arrays and display them in a bar chart.
-
 <br/>
 
 #### Type: 

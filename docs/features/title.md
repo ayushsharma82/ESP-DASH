@@ -14,7 +14,7 @@ sidebar_position: 3
 
 <br/>
 
-<img src="/img/v4/placeholder.png" width="500px" alt="Energy Card Preview" />
+<img src="/img/v4/custom-title.png" width="500px" alt="Energy Card Preview" />
 <br/>
 <br/>
 
