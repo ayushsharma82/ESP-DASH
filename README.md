@@ -19,7 +19,7 @@
 
 <p><b>Note:</b> This is not a stable release yet. It is yet to be polished and pro version also has to be updated to v4 before this is merged with master branch.</p>
 <br/>
-<p align="center"><b>DASH V4</b> is the 4th generation of a blazing fast library to create a functional & real-time dashboard for <b>ESP8266</b> & <b>ESP32</b> microcontrollers. This library includes charts, display cards, interactive buttons and many more components to create a perfect dashboard which is accessible locally via your IoT device's IP. DASH does not require any kind of internet connection, everything is stored locally.</p>
+<p align="center"><b>DASH V4</b> is the 4th-gen blazing fast library to create a functional & real-time dashboard for <b>ESP8266</b> & <b>ESP32</b> microcontrollers. This library includes charts, display cards, interactive buttons and many more components to create a perfect dashboard which is accessible locally via your IoT device's IP. DASH does not require any kind of internet connection, everything is stored locally.</p>
 
 <br/>
 
@@ -48,7 +48,7 @@
 <br/>
 <br/>
 
-<h2>Upgrade to Pro</h2>
+<h2>Want More? Upgrade to Pro</h2>
 
 ESP-DASH Pro comes with the following extended functionality:
 - More charts ( Line, Area, Pie )
