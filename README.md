@@ -23,10 +23,24 @@
 
 <br/>
 
+<h2>Features</h2>
+
+- 🔥 Automatic webpage generation.
+- ⏱️ Realtime updates to all connected clients.
+- 🎷 No need to learn HTML/CSS/JS. ESP-DASH provides you with a C++ interface.
+- 🛫 Ready to use components for your data.
+- 🏀 It's dynamic! Add or remove components anytime from the webpage.
+- 📈 Inbuilt charts support.
+
+<br/>
+<br/>
+
 <h2>Preview</h2>
 <img src="/docs/preview.png?raw=true">
 
-<!--
+<br/>
+<br/>
+
 <h2>Upgrade to Pro</h2>
 Checkout the Pro version of ESP-DASH which comes with extended functionality and exclusive cards & charts. ESP-DASH Pro supports custom order of cards and no "Buy me a coffee" button on the dashboard.
 
@@ -39,21 +53,6 @@ Checkout the Pro version of ESP-DASH which comes with extended functionality and
 <a href="https://espdash.pro" target="_blank">
   <img src="/docs/dashboard-mockup.png" alt="ESP-DASH Pro">
 </a>
--->
-
-<br/>
-<br/>
-
-<h2>Features</h2>
-<p>
-  <ul style="list-style-position: inside;">
-      <li>Works on Websockets</li>
-      <li>Real-time push updates</li>
-      <li>Charts Support</li>
-      <li>Interactive UI Components</li>
-      <li>Uses AsyncWebserver for better performance</li>
-  </ul>
-</p>
 
 <br>
 <br>
