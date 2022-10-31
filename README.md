@@ -35,16 +35,31 @@
 <br/>
 <br/>
 
-<h2>Preview</h2>
+
+<h2>Documentation</h2>
+<p>Learn more about Installation & Usage: <a href="https://ayushsharma82.github.io/ESP-DASH/">Click Here</a></p>
+
+<br/>
+<br/>
+
+<h2>Open-Source Preview</h2>
 <img src="/docs/preview.png?raw=true">
 
 <br/>
 <br/>
 
 <h2>Upgrade to Pro</h2>
-Checkout the Pro version of ESP-DASH which comes with extended functionality and exclusive cards & charts. ESP-DASH Pro supports custom order of cards and no "Buy me a coffee" button on the dashboard.
 
-<br> <b>Available Here: </b>
+Pro comes with the following extended functionality:
+- More charts ( Line, Area, Pie )
+- More cards ( Air, Energy, Text Input & Joystick )
+- Tabs Support! Add multiple pages to your dashboard.
+- Custom title
+- Custom logo
+- Custom size support for cards & charts
+- Atlast, It is a fantastic way to support the developer for the time went into the making & maintaining the library.
+
+<br> <b>Available for purchase here: </b>
 <ol>
   <li>https://www.buymeacoffee.com/6QGVpSj/e/28263</li>
   <li>https://espdash.pro</li>
@@ -56,12 +71,6 @@ Checkout the Pro version of ESP-DASH which comes with extended functionality and
 
 <br>
 <br>
-
-<h2>Documentation</h2>
-<p>Learn more about Installation & Usage: <a href="https://ayushsharma82.github.io/ESP-DASH/">Click Here</a></p>
-
-<br/>
-<br/>
 
 <h2>Contributions</h2>
 <p>Every contribution to this repository is highly appreciated! If you spot any bug or problem, open a issue or pull request so that it can be rectified for everyone.</p>
