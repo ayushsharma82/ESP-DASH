@@ -7,7 +7,7 @@ sidebar_position: 1
 
 <br/>
 <br/>
-<img src="/img/dash-docs-logo2.svg" width="300px" />
+<img src="/img/dash-splash.png" width="300px" />
 <br/>
 <br/>
 

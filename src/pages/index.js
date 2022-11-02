@@ -14,8 +14,7 @@ function HomepageHeader() {
       <div className="container">
         <br/>
         <br/>
-        <img src="/img/dash-docs-logo.svg" width={280} />
-        <br/>
+        <img src="/img/dash-splash.png" width={280} />
         <br/>
         <br/>
         <p className="hero__subtitle">{siteConfig.tagline}</p>
@@ -24,13 +23,13 @@ function HomepageHeader() {
             className="button button--primary button--lg"
             style={{ background: '#72c766', borderColor: '#72c766', fontWeight: 500 }}
             to="/docs/intro">
-            Documentation
+            Docs
           </Link>
           <Link
             className="button button--lg"
             style={{ background: '#3b3c51', borderColor: '#72c766', fontWeight: 500 }}
             to="/docs/intro">
-            Buy Pro
+            Upgrade to Pro
           </Link>
         </div>
         <br/>

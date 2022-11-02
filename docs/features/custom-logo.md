@@ -16,7 +16,7 @@ sidebar_position: 4
 <br/>
 
 
-<img src="/img/v4/custom-logo-mini.png" width="205px" alt="Energy Card Preview" />
+<img src="/img/v4/custom-logo-mini.png" width="305px" alt="Energy Card Preview" />
 &nbsp;
 <img src="/img/v4/custom-logo-large.png" width="400px" alt="Energy Card Preview" />
 <br/>
@@ -48,7 +48,8 @@ Now once your custom logo has been prepared, let's set it in our ESP-DASH Pro li
 1. Go to `logo.h`
 2. Set `DASH_MINI_LOGO_MIME` to your image file type. To find your file's mime type, use this utility: https://www.htmlstrip.com/mime-file-type-checker
 3. Set `DASH_MINI_LOGO_WIDTH` & `DASH_MINI_LOGO_HEIGHT` according to your desired size which will be displayed on the webpage.
-4. Now open `logo.cpp`
-5. Replace the data inside `DASH_MINI_LOGO` with new data generated just before using File2Raw.
+4. Replace the array length of `DASH_MINI_LOGO` with the newly generated array length.
+5. Now open `logo.cpp`
+6. Replace the data inside `DASH_MINI_LOGO` with new data generated just before using File2Raw.
 
 Once done, you may repeat the same steps as above for `DASH_LARGE_LOGO`.

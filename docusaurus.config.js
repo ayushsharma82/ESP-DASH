@@ -8,7 +8,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const config = {
   title: 'DASH Docs',
   tagline: 'Create blazing fast dashboards for ESP32 & ESP8266 microcontrollers',
-  url: 'https://documentation.espdash.pro',
+  url: 'https://docs.espdash.pro',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -49,11 +49,7 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
-        title: 'DASH Docs',
-        logo: {
-          alt: 'ESP-DASH',
-          src: 'img/dash-docs-favicon.svg'
-        },
+        title: 'ESP-DASH',
         items: [
           {
             type: 'doc',
