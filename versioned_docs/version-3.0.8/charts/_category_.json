@@ -1,8 +1,0 @@
-{
-  "label": "Charts",
-  "position": 8,
-  "link": {
-    "type": "generated-index",
-    "description": "Charts let you display historical records and arrays in a easy-to-undestand manner. Charts in ESP-DASH are extremely useful when it comes to display data over span of time. The following charts are included in the library:"
-  }
-}

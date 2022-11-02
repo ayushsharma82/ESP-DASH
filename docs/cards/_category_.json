@@ -1,8 +1,0 @@
-{
-  "label": "Cards",
-  "position": 9,
-  "link": {
-    "type": "generated-index",
-    "description": "Cards are one of the key elements in ESP-DASH which let you display or recieve data back from the user. Below you can find every type of card which ESP-DASH provides you with:"
-  }
-}
