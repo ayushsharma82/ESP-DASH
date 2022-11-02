@@ -10,7 +10,7 @@ const config = {
   tagline: 'Create blazing fast dashboards for ESP32 & ESP8266 microcontrollers',
   url: 'https://docs.espdash.pro',
   baseUrl: '/',
-  onBrokenLinks: 'throw',
+  onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/dash-docs-favicon.ico',
 
@@ -35,11 +35,10 @@ const config = {
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
+          routeBasePath: '/',
           sidebarPath: require.resolve('./sidebars.js'),
         },
-        blog: {
-          showReadingTime: true,
-        },
+        blog: false,
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
         },
