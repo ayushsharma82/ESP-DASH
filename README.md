@@ -33,7 +33,7 @@
 
 
 <h2>Documentation</h2>
-<p>Learn more about Installation & Usage: <a href="https://ayushsharma82.github.io/ESP-DASH/">Click Here</a></p>
+<p>Learn more about Installation & Usage: <a href="https://docs.espdash.pro">Click Here</a></p>
 
 <br/>
 <br/>
