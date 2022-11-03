@@ -1,0 +1,4 @@
+[submodule "portal"]
+	path = portal
+	url = https://github.com/ayushsharma82/espdash-portal
+	branch = main

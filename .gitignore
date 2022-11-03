@@ -6,6 +6,7 @@
 *.lo
 *.o
 *.obj
+.docusaurus
 
 # Precompiled Headers
 *.gch
@@ -31,7 +32,9 @@
 *.out
 *.app
 
-/.vscode
-/build
 node_modules
+.DS_Store
+.vscode
 ./vue-frontend/dist
+/build
+/portal

@@ -21,15 +21,15 @@ Github URL: https://github.com/ayushsharma82/ESP-DASH
 
 #include "Arduino.h"
 #include "stdlib_noniso.h"
-#include "webpage.h"
+#include "dash_webpage.h"
 #include "vector.h"
 
 #if defined(ESP8266)
-    #define HARDWARE "ESP8266"
+    #define DASH_HARDWARE "ESP8266"
     #include "ESP8266WiFi.h"
     #include "ESPAsyncTCP.h"
 #elif defined(ESP32)
-    #define HARDWARE "ESP32"
+    #define DASH_HARDWARE "ESP32"
     #include "WiFi.h"
     #include "AsyncTCP.h"
 #endif
@@ -38,10 +38,32 @@ Github URL: https://github.com/ayushsharma82/ESP-DASH
 #include "ArduinoJson.h"
 #include "Card.h"
 #include "Chart.h"
+#include "Statistic.h"
+
+#ifndef DASH_LAYOUT_JSON_SIZE
+  #define DASH_LAYOUT_JSON_SIZE 1024 * 5
+#endif
+
+#ifndef DASH_STATISTICS_JSON_SIZE
+  #define DASH_STATISTICS_JSON_SIZE 1024 * 1
+#endif
+
+#ifndef DASH_CARD_JSON_SIZE
+  #define DASH_CARD_JSON_SIZE 256
+#endif
+
+#ifndef DASH_CHART_JSON_SIZE
+  #define DASH_CHART_JSON_SIZE 2048
+#endif
+
+#ifndef DASH_USE_LEGACY_CHART_STORAGE
+  #define DASH_USE_LEGACY_CHART_STORAGE 0
+#endif
 
 // Forward Declaration
 class Card;
 class Chart;
+class Statistic;
 
 // ESPDASH Class
 class ESPDash{
@@ -51,27 +73,25 @@ class ESPDash{
 
     Vector<Card*> cards;
     Vector<Chart*> charts;
-    bool stats_enabled = false;
+    Vector<Statistic*> statistics;
+    bool default_stats_enabled = false;
     bool basic_auth = false;
     const char *username;
     const char *password;
 
     // Generate layout json
-    String generateLayoutJSON(bool only_stats = false);
-
-    // Generate cards/charts update json
-    String generateUpdatesJSON(bool toAll = false);
+    size_t generateLayoutJSON(AsyncWebSocketClient *client, bool changes_only = false);
 
     // Generate Component JSON
-    const String generateComponentJSON(Card* card, bool change_only = false);
-    const String generateComponentJSON(Chart* chart, bool change_only = false);
+    void generateComponentJSON(JsonObject& obj, Card* card, bool change_only = false);
+    void generateComponentJSON(JsonObject& obj, Chart* chart, bool change_only = false);
 
     // This method is called when a card/chart is added or removed
     void refreshLayout();
 
   public:
 
-    ESPDash(AsyncWebServer* server, bool enable_stats = true);
+    ESPDash(AsyncWebServer* server, bool enable_default_stats = true);
 
     // Set Authentication
     void setAuthentication(const char *user, const char *pass);
@@ -86,9 +106,16 @@ class ESPDash{
     // Remove Chart
     void remove(Chart *card);
 
+    // Add Statistic
+    void add(Statistic *statistic);
+    // Remove Statistic
+    void remove(Statistic *statistic);
+
     // Notify client side to update values
-    void sendUpdates();
-  
+    void sendUpdates(bool force = false);
+
+    void refreshStatistics();
+    
     ~ESPDash();
 };
 

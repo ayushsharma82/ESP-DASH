@@ -1,8 +1,10 @@
 ESPDash	KEYWORD1
 Card	KEYWORD1
 Chart	KEYWORD1
+Statistic   KEYWORD1
 setAuthentication	KEYWORD2
 sendUpdates	KEYWORD2
+refreshLayout   KEYWORD2
 add	KEYWORD2
 remove	KEYWORD2
 update	KEYWORD2
