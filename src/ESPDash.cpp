@@ -67,7 +67,7 @@ ESPDash::ESPDash(AsyncWebServer* server, bool enable_default_stats) {
               Card *p = cards[i];
               if(id == p->_id){
                 if(p->_callback != nullptr){
-                  p->_callback(json["value"].as<bool>());
+                  p->_callback(json["value"].as<int>());
                 }
               }
             }
