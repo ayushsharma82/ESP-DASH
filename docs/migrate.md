@@ -10,7 +10,7 @@ This article will cover all the minor and breaking changing which come as part o
 
 
 
-## Minor Changes:
+## ⚠️ Minor Changes:
 
 
 - The second argument of ESPDash Class constructor now only disables system statistics. `ESPDash(AsyncWebServer* server, bool enable_default_stats = true);`. The statistics tab now gets automatically hidden when there are no custom stats added by user and when default (system) statistics are disabled as well.
@@ -18,9 +18,9 @@ This article will cover all the minor and breaking changing which come as part o
 - The `sendUpdates(bool force);` function now has a `force` argument which can be used to force refresh the whole layout on connected dashboards.
 
 
-## Breaking Changes:
+## ⚒️ Breaking Changes:
 
-### Button Callback:
+### Button Callback
 The button callback now gets called with a `int` rather than `bool` which lead to issues. The value returned by callback will be `1` or `0`.
 
 ```cpp
@@ -32,7 +32,7 @@ button.attachCallback([&](int value){
 ```
 
 
-### Charts:
+### Charts
 
 There is a major overhaul inside the library for the charts functionality to improve reliability of host microcontroller.
 
