@@ -23,7 +23,7 @@ Button card adds a interactive toggle button to your dashboard. This provides yo
 <br/>
 
 #### Valid Data Types:
-- `bool`
+- `int`
 
 <br/>
 
@@ -50,8 +50,8 @@ In the case of button card, the value sent by your dashboard will be opposite of
   We provide our attachCallback with a lambda function to handle incomming data
   `value` is the boolean sent from your dashboard
 */
-card1.attachCallback([&](bool value){
-  Serial.println("[Card1] Button Callback Triggered: "+String((value)?"true":"false"));
+card1.attachCallback([&](int value){
+  Serial.println("[Card1] Button Callback Triggered: "+String((value == 1)?"true":"false"));
   card1.update(value);
   dashboard.sendUpdates();
 });
@@ -69,5 +69,4 @@ card1.update(true);
 card1.update(false);
 ```
 <br/>
-
 <br/>
