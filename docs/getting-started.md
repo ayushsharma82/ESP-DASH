@@ -27,8 +27,6 @@ We have used conditional compilation in this part therefore the code will work f
 ```
 
 <br/>
-<hr/>
-<br/>
 
 
 #### Part 2: Create AsyncWebServer Instance
@@ -45,8 +43,6 @@ Note: You are not restricted to a single dashboard. You can host as many dashboa
 AsyncWebServer server(80);
 ```
 
-<br/>
-<hr/>
 <br/>
 
 #### Part 3: Attach ESP-DASH Instance
@@ -65,8 +61,6 @@ ESPDash dashboard(&server);
 ```
 
 <br/>
-<hr/>
-<br/>
 
 #### Part 4: Create Cards
 In this step, we will creating ESP-DASH cards and passing our dasboard instance as a first argument so that they can add / remove themselves.
@@ -81,8 +75,6 @@ Card temperature(&dashboard, TEMPERATURE_CARD, "Temperature", "°C");
 Card humidity(&dashboard, HUMIDITY_CARD, "Humidity", "%");
 ```
 
-<br/>
-<hr/>
 <br/>
 
 #### Part 5: Setup Block
@@ -106,8 +98,6 @@ void setup() {
 }
 ```
 
-<br/>
-<hr/>
 <br/>
 
 
@@ -149,8 +139,6 @@ void loop() {
 }
 ```
 
-<br/>
-<hr/>
 <br/>
 
 ### Final Code

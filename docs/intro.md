@@ -3,9 +3,9 @@ title: Intro
 hide_title: true
 sidebar_label: Introduction
 sidebar_position: 1
+slug: /
 ---
 
-<br/>
 <br/>
 <img src="/img/dash-splash.png" width="300px" />
 <br/>

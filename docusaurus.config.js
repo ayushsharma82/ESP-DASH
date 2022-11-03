@@ -50,14 +50,19 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
-        title: 'ESP-DASH',
+        title: "",
+        logo: {
+          src: 'img/dash-splash.png',
+          alt: 'ESP-DASH',
+          width: 84
+        },
         items: [
-          {
-            type: 'doc',
-            docId: 'intro',
-            position: 'left',
-            label: 'Docs',
-          },
+          // {
+          //   type: 'doc',
+          //   docId: 'intro',
+          //   position: 'left',
+          //   label: 'Docs',
+          // },
           // {to: '/blog', label: 'Blog', position: 'left'},
           {
             type: 'docsVersionDropdown',

@@ -4,31 +4,32 @@
  * work well for content-centric websites.
  */
 
+ @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,300;1,400;1,700&display=swap');
+ 
 /* You can override the default Infima variables here. */
 :root {
-  --ifm-color-primary: #2e8555;
-  --ifm-color-primary-dark: #29784c;
-  --ifm-color-primary-darker: #277148;
-  --ifm-color-primary-darkest: #205d3b;
-  --ifm-color-primary-light: #33925d;
-  --ifm-color-primary-lighter: #359962;
-  --ifm-color-primary-lightest: #3cad6e;
-  --ifm-code-font-size: 95%;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
-  --github-icon-color: rgba(0, 0, 0, 0.3);
+  --ifm-color-primary: #3a88fe;
+  --ifm-color-primary-dark: #1b75fe;
+  --ifm-color-primary-darker: #0b6cfe;
+  --ifm-color-primary-darkest: #0157d9;
+  --ifm-color-primary-light: #599bfe;
+  --ifm-color-primary-lighter: #69a4fe;
+  --ifm-color-primary-lightest: #97c0fe;
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme='dark'] {
-  --ifm-color-primary: #25c2a0;
-  --ifm-color-primary-dark: #21af90;
-  --ifm-color-primary-darker: #1fa588;
-  --ifm-color-primary-darkest: #1a8870;
-  --ifm-color-primary-light: #29d5b0;
-  --ifm-color-primary-lighter: #32d8b4;
-  --ifm-color-primary-lightest: #4fddbf;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
-  --github-icon-color: rgba(255, 255, 255, 0.3);
+  --ifm-color-primary: #74a7fe;
+  --ifm-color-primary-dark: #4f90fe;
+  --ifm-color-primary-darker: #3d84fe;
+  --ifm-color-primary-darkest: #0661fd;
+  --ifm-color-primary-light: #99befe;
+  --ifm-color-primary-lighter: #abcafe;
+  --ifm-color-primary-lightest: #e2edff;
+}
+
+body {
+  font-family: 'Roboto', sans-serif !important;
 }
 
 .header-github-link:hover {
@@ -67,4 +68,56 @@
   border: 1px solid rgba(250, 4, 4, 0.233);
   background-color: rgba(241, 25, 25, 0.151);
   box-shadow: rgba(250, 4, 4, 0.137) 0px 4px 20px 0px;
+}
+
+.menu__link {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  padding-left: 1rem;
+}
+
+.navbar {
+  height: 80px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 18px 20px -20px;
+}
+
+.navbar__brand {
+  margin-bottom: -.55rem;
+  margin-left: .75rem;
+}
+
+.navbar__logo {
+  max-height: 100% !important;
+  height: auto;
+}
+
+.navbar__items {
+  gap: .75rem;
+}
+
+.mdx-heading {
+  margin-top: .55rem;
+  margin-bottom: 1.55rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.mdx-heading h1{
+  margin-bottom: .55rem !important;
+  font-size: 2.55rem;
+}
+
+.docitem-content {
+  padding-left: 1rem;
+}
+
+.theme-doc-breadcrumbs {
+  margin-bottom: 0px !important;
+}
+
+.breadcrumb-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
 }
