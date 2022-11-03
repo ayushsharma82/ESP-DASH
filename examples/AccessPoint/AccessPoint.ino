@@ -9,7 +9,7 @@
   and initialize our dashboard which can be accessed via 192.168.4.1 
 
   Github: https://github.com/ayushsharma82/ESP-DASH
-  WiKi: https://ayushsharma82.github.io/ESP-DASH/
+  WiKi: https://docs.espdash.pro
 
   Works with both ESP8266 & ESP32
 

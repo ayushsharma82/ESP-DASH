@@ -9,7 +9,7 @@
   of some cards and then remove a card from dashboard after some time.
 
   Github: https://github.com/ayushsharma82/ESP-DASH
-  WiKi: https://ayushsharma82.github.io/ESP-DASH/
+  WiKi: https://docs.espdash.pro
 
   Works with both ESP8266 & ESP32
 

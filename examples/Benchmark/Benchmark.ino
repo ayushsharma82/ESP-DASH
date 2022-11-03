@@ -5,7 +5,7 @@
   Use this benchmark example to test if ESP-DASH is working properly on your platform.
 
   Github: https://github.com/ayushsharma82/ESP-DASH
-  WiKi: https://ayushsharma82.github.io/ESP-DASH/
+  WiKi: https://docs.espdash.pro
 
   Works with both ESP8266 & ESP32
   -------------------------------
