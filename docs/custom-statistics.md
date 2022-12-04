@@ -23,5 +23,5 @@ Statistic stat1(&dashboard, "Statistic 1", "Value 1");
 
 ##### Update Value:
 ```cpp
-stat1.set("Value 123");
+stat1.set("New Key", "New Value");
 ```
