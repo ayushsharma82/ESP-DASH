@@ -8,7 +8,7 @@
 <p align="center">
 <img src="https://img.shields.io/github/last-commit/ayushsharma82/ESP-DASH/master?style=for-the-badge" />
 &nbsp;
-<img src="https://img.shields.io/github/workflow/status/ayushsharma82/ESP-DASH/Arduino%20Library%20CI/master?style=for-the-badge" />
+<img src="https://img.shields.io/github/actions/workflow/status/ayushsharma82/ESP-DASH/ci.yml?branch=master&style=for-the-badge" />
 &nbsp;
 <img src="https://img.shields.io/github/license/ayushsharma82/ESP-DASH.svg?style=for-the-badge" />
 </p>
