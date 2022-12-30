@@ -8,15 +8,21 @@ Statistic::Statistic(ESPDash *dashboard, const char *key, const char *value) {
         _id = esp_random();
     #endif
     // Safe copy
-    strncpy(_key, key, sizeof(_key));
-    strncpy(_value, value, sizeof(_value));
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wstringop-truncation"
+        strncpy(_key, key, sizeof(_key));
+        strncpy(_value, value, sizeof(_value));
+    #pragma GCC diagnostic pop
     _dashboard->add(this);
 }
 
 void Statistic::set(const char *key, const char *value) {
     // Safe copy
-    strncpy(_key, key, sizeof(_key));
-    strncpy(_value, value, sizeof(_value));
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wstringop-truncation"
+        strncpy(_key, key, sizeof(_key));
+        strncpy(_value, value, sizeof(_value));
+    #pragma GCC diagnostic pop
     _changed = true;
 }
 
