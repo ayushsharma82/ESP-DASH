@@ -54,7 +54,6 @@ ESPDash::ESPDash(AsyncWebServer* server, bool enable_default_stats) {
           deserializeJson(json, reinterpret_cast<const char*>(data));
           // client side commands parsing
           if (json["command"] == "get:layout") {
-            Serial.println("Got get:layout");
             generateLayoutJSON(client, false);
           } else if (json["command"] == "ping") {
             return _ws->text(client->id(), "{\"command\":\"pong\"}");
