@@ -36,7 +36,7 @@ The logo used in DASH is image file converted to byte array. We'll go through th
 - Know the MIME file type of your image. You can use [HTTPStrip's mime utility](https://www.htmlstrip.com/mime-file-type-checker).
 
 #### Step 1: Procedure to convert logo into byte array
-1. Go to [File2Raw utility](https://ayushsharma82.github.io/file2raw/) ( which I created a few years back for the purpose of converting files into byte array for C++ applications ).
+1. Go to [File2Raw Utility](https://file2raw.labrat.one/) ( I created this utility a few years back for the purpose of converting files into byte array for C++ applications ).
 2. Select your logo.
 3. Select "Gzip Compress" & "Use PROGMEM (Arduino)".
 4. Click "Convert".
