@@ -437,7 +437,7 @@ void ESPDash::sendUpdates(bool force) {
 }
 
 void ESPDash::refreshLayout() {
-  _ws->textAll("{\"command\":\"refreshLayout\"}");
+  _ws->textAll("{\"command\":\"refresh:layout\"}");
 }
 
 void ESPDash::refreshStatistics() {
