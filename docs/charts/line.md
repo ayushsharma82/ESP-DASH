@@ -15,7 +15,7 @@ sidebar_position: 2
 
 #### Preview:
 
-<img src="/img/v4/line-chart.png" width="500px" alt="Preview" />
+<img class="card-preview" src="/img/v4/line-chart.png" width="500px" alt="Preview" />
 
 <br/>
 <br/>

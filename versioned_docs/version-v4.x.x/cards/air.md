@@ -15,7 +15,7 @@ sidebar_position: 4
 
 
 #### Preview:
-<img src="/img/v4/air-card.png" width="280px" alt="Preview" />
+<img class="card-preview" src="/img/v4/air-card.png" width="280px" alt="Preview" />
 
 <br/>
 

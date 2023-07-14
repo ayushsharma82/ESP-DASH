@@ -15,7 +15,7 @@ sidebar_position: 3
 
 #### Preview:
 
-<img src="/img/v4/area-chart.png" width="500px" alt="Preview" />
+<img class="card-preview" src="/img/v4/area-chart.png" width="500px" alt="Preview" />
 
 <br/>
 <br/>

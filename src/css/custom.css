@@ -121,3 +121,7 @@ body {
   justify-content: space-between;
   margin-bottom: 1rem;
 }
+
+.card-preview {
+  border-radius: 0.55rem;
+}

@@ -15,7 +15,7 @@ sidebar_position: 4
 
 #### Preview:
 
-<img src="/img/v4/pie-chart.png" width="380px" alt="Preview" />
+<img class="card-preview" src="/img/v4/pie-chart.png" width="380px" alt="Preview" />
 
 <br/>
 <br/>
