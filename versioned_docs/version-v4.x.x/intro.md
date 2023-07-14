@@ -14,7 +14,7 @@ slug: /
 <img src="https://img.shields.io/github/last-commit/ayushsharma82/ESP-DASH?style=for-the-badge" />
 &nbsp;
 &nbsp;
-<img src="https://img.shields.io/github/workflow/status/ayushsharma82/ESP-DASH/Arduino%20Library%20CI/master?style=for-the-badge" />
+<img src="https://img.shields.io/github/actions/workflow/status/ayushsharma82/ESP-DASH/ci.yml?branch=master&style=for-the-badge" />
 <br/>
 <br/>
 <br/>
