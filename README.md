@@ -48,7 +48,7 @@
 
 ESP-DASH Pro comes with the following extended functionality:
 - More charts ( Line, Area, Pie )
-- More cards ( Air, Energy, Text Input & Joystick )
+- More cards ( Air, Energy, Text Input, Joystick, Dropdown, Image )
 - Tabs Support! Add multiple pages to your dashboard.
 - Custom title
 - Custom logo
