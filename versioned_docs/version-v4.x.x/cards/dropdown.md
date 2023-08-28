@@ -49,6 +49,26 @@ Card card1(&dashboard, DROPDOWN_CARD, "Test Dropdown", "Option1,Option2,Option3,
 
 <br/>
 
+#### Callback:
+
+The Dropdown Card requires a callback function that will be invoked when input is received from the dashboard. This function should utilize the `attachCallback` method and provide a lambda function with a `const char*` parameter.
+
+**Note:** It's essential to immediately invoke the `update` function and `sendUpdates` after receiving a value in the callback. Failure to do so will result in the user's input not being registered on the dashboard.
+
+```cpp
+/*
+  Here, we use a lambda function within attachCallback to handle incoming data.
+  `value` represents the const char value sent from your dashboard which is equal to selected value.
+*/
+card1.attachCallback([&](const char* value){
+  Serial.println("[Card1] Dropdown Callback Triggered: "+String(value));
+  card1.update(value);
+  dashboard.sendUpdates();
+});
+```
+
+<br/>
+
 #### Updaters:
 
 This will change the selected value of our dropdown:
