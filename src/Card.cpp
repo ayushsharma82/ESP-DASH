@@ -36,10 +36,10 @@ void Card::update(int value, const char* symbol){
   }
   /* Store new value */
   _value_type = Card::INTEGER;
-  _symbol = symbol;
-  if(_value_i != value)
+  if(strcmp(_symbol.c_str(), symbol) != 0 || _value_i != value)
     _changed = true;
   _value_i = value;
+  _symbol = symbol;
 }
 
 void Card::update(int value){
@@ -61,10 +61,10 @@ void Card::update(float value, const char* symbol){
   }
   /* Store new value */
   _value_type = Card::FLOAT;
-  _symbol = symbol;
-  if(_value_f != value)
+  if(strcmp(_symbol.c_str(), symbol) != 0 || _value_f != value)
     _changed = true;
   _value_f = value;
+  _symbol = symbol;
 }
 
 void Card::update(float value){
@@ -92,7 +92,9 @@ void Card::update(const char* value, const char* symbol){
     if(strcmp(_value_s.c_str(), value) != 0)
       _changed = true;
   }
-  
+  if (strcmp(_symbol.c_str(), symbol) != 0) {
+    _changed = true;
+  }
   _value_type = Card::STRING;
   _symbol = symbol;
   _value_s = value;
@@ -115,10 +117,10 @@ void Card::update(bool value, const char* symbol){
   }
   /* Store new value */
   _value_type = Card::INTEGER;
-  _symbol = symbol;
-  if(_value_i != value)
+  if(strcmp(_symbol.c_str(), symbol) != 0 || _value_i != value)
     _changed = true;
   _value_i = value;
+  _symbol = symbol;
 }
 
 void Card::update(bool value){
