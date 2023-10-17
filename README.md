@@ -57,7 +57,6 @@ ESP-DASH Pro comes with the following extended functionality:
 
 <br> <b>Available here: </b>
 
-- [BMC Page](https://www.buymeacoffee.com/6QGVpSj/e/28263)
 - [Official Website](https://espdash.pro)
 
 <br/>
