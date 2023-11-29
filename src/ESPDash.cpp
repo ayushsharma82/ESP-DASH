@@ -22,7 +22,7 @@ struct ChartNames chartTags[] = {
 /*
   Constructor
 */
-ESPDash::ESPDash(AsyncWebServer* server, bool enable_default_stats) {
+ESPDash::ESPDash(AsyncWebServer* server, bool enable_default_stats, const char *location) {
   _server = server;
   default_stats_enabled = enable_default_stats;
 
@@ -30,15 +30,16 @@ ESPDash::ESPDash(AsyncWebServer* server, bool enable_default_stats) {
   _ws = new AsyncWebSocket("/dashws");
 
   // Attach AsyncWebServer Routes
-  _server->on("/", HTTP_GET, [this](AsyncWebServerRequest *request){
+  _server->on(location, HTTP_GET, [this](AsyncWebServerRequest *request){
     if(basic_auth){
-      if(!request->authenticate(username, password))
+      if(!request->authenticate(username.c_str(), password.c_str()))
       return request->requestAuthentication();
     }
     // respond with the compressed frontend
     AsyncWebServerResponse *response = request->beginResponse_P(200, "text/html", DASH_HTML, sizeof(DASH_HTML));
     response->addHeader("Content-Encoding","gzip");
-    request->send(response);        
+    response->addHeader("Cache-Control","public, max-age=900");
+    request->send(response);
   });
 
   // Websocket Callback Handler
@@ -94,11 +95,11 @@ ESPDash::ESPDash(AsyncWebServer* server, bool enable_default_stats) {
 }
 
 
-void ESPDash::setAuthentication(const char *user, const char *pass) {
+void ESPDash::setAuthentication(const String &user, const String &pass) {
   username = user;
   password = pass;
   basic_auth = true;
-  _ws->setAuthentication(user, pass);
+  _ws->setAuthentication(username.c_str(), password.c_str());
 }
 
 
@@ -167,7 +168,7 @@ size_t ESPDash::generateLayoutJSON(AsyncWebSocketClient *client, bool changes_on
   } else {
     buf += "{\"command\":\"update:layout\",";
   }
-  
+
   buf += "\"cards\":[";
 
   StaticJsonDocument<DASH_CARD_JSON_SIZE> carddoc;
@@ -273,20 +274,17 @@ size_t ESPDash::generateLayoutJSON(AsyncWebSocketClient *client, bool changes_on
 
   // Loop through user defined stats
   StaticJsonDocument<128> obj;
+  bool prevStatWritten = default_stats_enabled;
   for (int i=0; i < statistics.Size(); i++) {
     Statistic *s = statistics[i];
-    if (changes_only) {
-      if (s->_changed) {
-        s->_changed = false;
-      } else {
-        continue;
-      }
+    if (prevStatWritten) {
+      buf += ",";
     }
-    buf += ",";
     obj["k"] = s->_key;
     obj["v"] = s->_value;
     serializeJson(obj, buf);
     obj.clear();
+    prevStatWritten = true;
   }
 
   buf += "]";
@@ -399,7 +397,7 @@ void ESPDash::generateComponentJSON(JsonObject& doc, Chart* chart, bool change_o
       // blank value
       break;
   }
-  
+
   JsonArray yAxis = doc["y_axis"].to<JsonArray>();
   switch (chart->_y_axis_type) {
     case GraphAxisType::INTEGER:

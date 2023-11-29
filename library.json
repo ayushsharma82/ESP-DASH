@@ -17,7 +17,7 @@
   ],
   "version": "4.0.2",
   "frameworks": "arduino",
-  "platforms": "espressif",
+  "platforms": ["espressif32", "espressif8266"],
   "dependencies":
   [
     {
