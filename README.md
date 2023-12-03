@@ -47,12 +47,12 @@
 <h2>Want More? Upgrade to Pro</h2>
 
 ESP-DASH Pro comes with the following extended functionality:
-- More charts ( Line, Area, Pie )
-- More cards ( Air, Energy, Text Input, Joystick, Dropdown, Image )
-- Tabs Support! Add multiple pages to your dashboard.
-- Custom title
-- Custom logo
-- Custom size support for cards & charts
+- 11 Exclusive Widgets ( Line, Area, Pie, Text Input, Joystick and more! )
+- Tabs Support ~ Add multiple pages to your dashboard.
+- Custom Title
+- Custom Branding
+- Custom Widget Size
+- Enable/Disable Animations
 - Atlast, It is a fantastic way to support the developer for the time went into the making & maintaining the library.
 
 <br> <b>Available here: </b>
