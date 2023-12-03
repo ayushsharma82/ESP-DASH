@@ -91,7 +91,7 @@ class ESPDash{
 
   public:
     ESPDash(AsyncWebServer* server, const char* uri = "/", bool enable_default_stats = false);
-    ESPDash(AsyncWebServer* server, bool enable_default_stats);
+    ESPDash(AsyncWebServer* server, bool enable_default_stats = false);
 
     // Set Authentication
     void setAuthentication(const char* user, const char* pass);
