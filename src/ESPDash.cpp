@@ -233,50 +233,59 @@ size_t ESPDash::generateLayoutJSON(AsyncWebSocketClient *client, bool changes_on
   // Generate JSON for all Statistics
   // Check if default statistics are needed
   if (default_stats_enabled) {
-    // Hardware
-    StaticJsonDocument<64> hardware;
-    hardware["k"] = "Hardware";
-    hardware["v"] = DASH_HARDWARE;
-    serializeJson(hardware, buf);
-    buf += ",";
+    StaticJsonDocument<64> obj;
+    if (!changes_only) {
+      // Hardware
+      obj["i"] = -1;
+      obj["k"] = "Hardware";
+      obj["v"] = DASH_HARDWARE;
+      serializeJson(obj, buf);
+      obj.clear();
+      buf += ",";
 
-    // SDK Version
-    StaticJsonDocument<64> sdk;
-    sdk["k"] = "SDK Version";
-    #if defined(ESP8266)
-      sdk["v"] = ESP.getCoreVersion();
-    #elif defined(ESP32)
-      sdk["v"] = String(esp_get_idf_version());
-    #endif
-    serializeJson(sdk, buf);
-    buf += ",";
+      // SDK Version
+      obj["i"] = -2;
+      obj["k"] = "SDK Version";
+      #if defined(ESP8266)
+        obj["v"] = ESP.getCoreVersion();
+      #elif defined(ESP32)
+        obj["v"] = String(esp_get_idf_version());
+      #endif
+      serializeJson(obj, buf);
+      obj.clear();
+      buf += ",";
 
-    // MAC Address
-    StaticJsonDocument<64> mac;
-    mac["k"] = "MAC Address";
-    mac["v"] = WiFi.macAddress();
-    serializeJson(mac, buf);
-    buf += ",";
+      // MAC Address
+      obj["i"] = -3;
+      obj["k"] = "MAC Address";
+      obj["v"] = WiFi.macAddress();
+      serializeJson(obj, buf);
+      obj.clear();
+      buf += ",";
+    }
 
     // Free Heap
-    StaticJsonDocument<64> heap;
-    heap["k"] = "Free Heap (SRAM)";
-    heap["v"] = ESP.getFreeHeap();
-    serializeJson(heap, buf);
+    obj["i"] = -4;
+    obj["k"] = "Free Heap (SRAM)";
+    obj["v"] = ESP.getFreeHeap();
+    serializeJson(obj, buf);
+    obj.clear();
     buf += ",";
 
     // WiFi Mode
-    StaticJsonDocument<64> wmode;
-    wmode["k"] = "WiFi Mode";
-    wmode["v"] = WiFi.getMode();
-    serializeJson(wmode, buf);
+    obj["i"] = -5;
+    obj["k"] = "WiFi Mode";
+    obj["v"] = WiFi.getMode();
+    serializeJson(obj, buf);
+    obj.clear();
     buf += ",";
 
     // WiFi Signal
-    StaticJsonDocument<64> signal;
-    signal["k"] = "WiFi Signal";
-    signal["v"] = WiFi.RSSI();
-    serializeJson(signal, buf);
+    obj["i"] = -6;
+    obj["k"] = "WiFi Signal";
+    obj["v"] = WiFi.RSSI();
+    serializeJson(obj, buf);
+    obj.clear();
   }
 
   // Loop through user defined stats
@@ -284,9 +293,17 @@ size_t ESPDash::generateLayoutJSON(AsyncWebSocketClient *client, bool changes_on
   bool prevStatWritten = default_stats_enabled;
   for (int i=0; i < statistics.Size(); i++) {
     Statistic *s = statistics[i];
+    if (changes_only) {
+      if (s->_changed) {
+        s->_changed = false;
+      } else {
+        continue;
+      }
+    }
     if (prevStatWritten) {
       buf += ",";
     }
+    obj["i"] = s->_id;
     obj["k"] = s->_key;
     obj["v"] = s->_value;
     serializeJson(obj, buf);
@@ -295,7 +312,6 @@ size_t ESPDash::generateLayoutJSON(AsyncWebSocketClient *client, bool changes_on
   }
 
   buf += "]";
-
   // Close JSON
   buf += "}";
 
