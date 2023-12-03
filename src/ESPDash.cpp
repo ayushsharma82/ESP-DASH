@@ -94,14 +94,16 @@ ESPDash::ESPDash(AsyncWebServer* server, bool enable_default_stats, const char *
   _server->addHandler(_ws);
 }
 
-
-void ESPDash::setAuthentication(const String &user, const String &pass) {
-  username = user;
-  password = pass;
+void ESPDash::setAuthentication(const char* user, const char* pass) {
+  strncpy(username, user, sizeof(username));
+  strncpy(password, pass, sizeof(password));
   basic_auth = true;
   _ws->setAuthentication(username.c_str(), password.c_str());
 }
 
+void ESPDash::setAuthentication(const String &user, const String &pass) {
+  setAuthentication(user.c_str(), pass.c_str());
+}
 
 // Add Card
 void ESPDash::add(Card *card) {

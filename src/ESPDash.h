@@ -76,8 +76,8 @@ class ESPDash{
     Vector<Statistic*> statistics;
     bool default_stats_enabled = false;
     bool basic_auth = false;
-    String username;
-    String password;
+    char username[64];
+    char password[64];
 
     // Generate layout json
     size_t generateLayoutJSON(AsyncWebSocketClient *client, bool changes_only = false);
@@ -94,6 +94,7 @@ class ESPDash{
     ESPDash(AsyncWebServer* server, bool enable_default_stats = true, const char *location = "/");
 
     // Set Authentication
+    void setAuthentication(const char* user, const char* pass);
     void setAuthentication(const String &user, const String &pass);
 
     // Add Card
