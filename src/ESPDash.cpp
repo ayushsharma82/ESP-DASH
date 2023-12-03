@@ -20,9 +20,14 @@ struct ChartNames chartTags[] = {
 
 
 /*
-  Constructor
+  Constructors
 */
-ESPDash::ESPDash(AsyncWebServer* server, bool enable_default_stats, const char *location) {
+ESPDash::ESPDash(AsyncWebServer* server, bool enable_default_stats) {
+  // Call other constructor with default uri
+  ESPDash(server, "/", enable_default_stats);
+}
+
+ESPDash::ESPDash(AsyncWebServer* server, const char* uri, bool enable_default_stats) {
   _server = server;
   default_stats_enabled = enable_default_stats;
 
@@ -30,7 +35,7 @@ ESPDash::ESPDash(AsyncWebServer* server, bool enable_default_stats, const char *
   _ws = new AsyncWebSocket("/dashws");
 
   // Attach AsyncWebServer Routes
-  _server->on(location, HTTP_GET, [this](AsyncWebServerRequest *request){
+  _server->on(uri, HTTP_GET, [this](AsyncWebServerRequest *request){
     if(basic_auth){
       if(!request->authenticate(username.c_str(), password.c_str()))
       return request->requestAuthentication();

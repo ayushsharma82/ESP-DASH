@@ -90,8 +90,8 @@ class ESPDash{
     void refreshLayout();
 
   public:
-
-    ESPDash(AsyncWebServer* server, bool enable_default_stats = true, const char *location = "/");
+    ESPDash(AsyncWebServer* server, bool enable_default_stats);
+    ESPDash(AsyncWebServer* server, const char* uri, bool enable_default_stats);
 
     // Set Authentication
     void setAuthentication(const char* user, const char* pass);
