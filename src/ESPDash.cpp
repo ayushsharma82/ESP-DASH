@@ -75,7 +75,6 @@ ESPDash::ESPDash(AsyncWebServer* server, const char* uri, bool enable_default_st
                 }
               }
             }
-            return;
           } else if (json["command"] == "slider:changed") {
             // execute and reference card data struct to funtion
             uint32_t id = json["id"].as<uint32_t>();
@@ -87,7 +86,6 @@ ESPDash::ESPDash(AsyncWebServer* server, const char* uri, bool enable_default_st
                 }
               }
             }
-            return;
           }
         }
       }
