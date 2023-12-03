@@ -18,10 +18,15 @@ ESP-DASH has a dedicated page called "Statistics" on the dashboard which contain
 
 ##### Initializer:
 ```cpp
-Statistic stat1(&dashboard, "Statistic 1", "Value 1");
+Statistic stat1(&dashboard, "Key", "Value");
 ```
 
 ##### Update Value:
+```cpp
+stat1.set("New Value");
+```
+
+##### Update both Key & Value:
 ```cpp
 stat1.set("New Key", "New Value");
 ```

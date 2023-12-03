@@ -6,7 +6,7 @@ sidebar_position: 2
 
 #### Preview:
 
-<img class="card-preview" src="/img/v4/temperature-card.png" width="280px" alt="Preview" />
+<img className="card-preview" src="/img/v4/temperature-card.png" width="280px" alt="Preview" />
 
 <br/>
 <br/>

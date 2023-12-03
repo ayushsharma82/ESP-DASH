@@ -15,7 +15,7 @@ sidebar_position: 9
 
 
 #### Preview:
-<img class="card-preview" src="/img/v4/image-card.png" width="280px" alt="Preview" />
+<img className="card-preview" src="/img/v4/image-card.png" width="280px" alt="Preview" />
 
 <br/>
 

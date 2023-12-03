@@ -6,7 +6,7 @@ sidebar_position: 1
 
 #### Preview:
 
-<img class="card-preview" src="/img/v4/generic-card.png" width="280px" alt="Preview" />
+<img className="card-preview" src="/img/v4/generic-card.png" width="280px" alt="Preview" />
 
 <br/>
 <br/>

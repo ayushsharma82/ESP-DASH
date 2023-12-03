@@ -15,9 +15,9 @@ sidebar_position: 8
 
 
 #### Preview:
-<img class="card-preview" src="/img/v4/dropdown-card.png" width="280px" alt="Preview" />
+<img className="card-preview" src="/img/v4/dropdown-card.png" width="280px" alt="Preview" />
  &nbsp; 
-<img class="card-preview" src="/img/v4/dropdown-card-2.png" width="280px" alt="Preview" />
+<img className="card-preview" src="/img/v4/dropdown-card-2.png" width="280px" alt="Preview" />
 
 <br/>
 

@@ -15,7 +15,7 @@ sidebar_position: 6
 
 #### Preview:
 
-<img class="card-preview" src="/img/v4/text-input-card.png" width="280px" alt="Energy Card Preview" />
+<img className="card-preview" src="/img/v4/text-input-card.png" width="280px" alt="Text Input Card Preview" />
 
 <br/>
 <br/>
@@ -33,6 +33,7 @@ This card is very useful for saving WiFi credentials, passwords and general info
 
 #### Valid Data Types:
 - `String`
+- `char`
 
 <br/>
 
@@ -56,7 +57,6 @@ Text Input Card requires a callback function which will be called when we receiv
 ```cpp
 /*
   We provide our attachCallback with a lambda function to handle incomming data
-  `value` is the boolean sent from your dashboard
 */
 card1.attachCallback([&](const char* value){
   Serial.println("[Card1] Text Input Callback Triggered: "+String(value));

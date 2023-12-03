@@ -6,10 +6,10 @@ sidebar_position: 5
 
 #### Preview:
 
-<img class="card-preview" src="/img/v4/status-card-idle.png" width="280px" alt="Preview" />
-<img class="card-preview" src="/img/v4/status-card-warning.png" width="280px" alt="Preview" />
-<img class="card-preview" src="/img/v4/status-card-success.png" width="280px" alt="Preview" />
-<img class="card-preview" src="/img/v4/status-card-danger.png" width="280px" alt="Preview" />
+<img className="card-preview" src="/img/v4/status-card-idle.png" width="280px" alt="Preview" />
+<img className="card-preview" src="/img/v4/status-card-warning.png" width="280px" alt="Preview" />
+<img className="card-preview" src="/img/v4/status-card-success.png" width="280px" alt="Preview" />
+<img className="card-preview" src="/img/v4/status-card-danger.png" width="280px" alt="Preview" />
 
 <br/>
 <br/>

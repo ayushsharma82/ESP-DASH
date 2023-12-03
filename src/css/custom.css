@@ -125,3 +125,7 @@ body {
 .card-preview {
   border-radius: 0.55rem;
 }
+
+.rounded {
+  border-radius: 1rem !important;
+}
