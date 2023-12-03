@@ -37,7 +37,7 @@ ESPDash::ESPDash(AsyncWebServer* server, const char* uri, bool enable_default_st
   // Attach AsyncWebServer Routes
   _server->on(uri, HTTP_GET, [this](AsyncWebServerRequest *request){
     if(basic_auth){
-      if(!request->authenticate(username.c_str(), password.c_str()))
+      if(!request->authenticate(username, password))
       return request->requestAuthentication();
     }
     // respond with the compressed frontend
@@ -103,7 +103,7 @@ void ESPDash::setAuthentication(const char* user, const char* pass) {
   strncpy(username, user, sizeof(username));
   strncpy(password, pass, sizeof(password));
   basic_auth = true;
-  _ws->setAuthentication(username.c_str(), password.c_str());
+  _ws->setAuthentication(username, password);
 }
 
 void ESPDash::setAuthentication(const String &user, const String &pass) {
