@@ -90,7 +90,7 @@ class ESPDash{
     void refreshLayout();
 
   public:
-    ESPDash(AsyncWebServer* server, const char* uri, bool enable_default_stats);
+    ESPDash(AsyncWebServer* server, const char* uri, bool enable_default_stats = true);
     ESPDash(AsyncWebServer* server, bool enable_default_stats);
     ESPDash(AsyncWebServer* server);
 

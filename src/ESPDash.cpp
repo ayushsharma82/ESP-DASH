@@ -24,7 +24,7 @@ struct ChartNames chartTags[] = {
 */
 ESPDash::ESPDash(AsyncWebServer* server) {
   // Call other constructor with default uri
-  ESPDash(server, "/", false);
+  ESPDash(server, "/", true);
 }
 
 ESPDash::ESPDash(AsyncWebServer* server, bool enable_default_stats) {
