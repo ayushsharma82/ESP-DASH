@@ -20,8 +20,9 @@ class Statistic {
         bool _changed = false;
 
     public:
-        Statistic(ESPDash *dashboard, const char *key, const char *value);
+        Statistic(ESPDash *dashboard, const char *key, const char *value = "");
         void set(const char *key, const char *value);
+        void set(const char *value);
         ~Statistic();
 
     friend class ESPDash;

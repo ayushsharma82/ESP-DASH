@@ -1,8 +1,8 @@
 /*
-____ ____ ___  ___  ____ ____ _  _ 
-|___ [__  |__] |  \ |__| [__  |__| 
-|___ ___] |    |__/ |  | ___] |  | 
-                                   
+____ ____ ___  ___  ____ ____ _  _
+|___ [__  |__] |  \ |__| [__  |__|
+|___ ___] |    |__/ |  | ___] |  |
+
 ESP-DASH V3
 ---------------------
 Author: Ayush Sharma
@@ -76,8 +76,8 @@ class ESPDash{
     Vector<Statistic*> statistics;
     bool default_stats_enabled = false;
     bool basic_auth = false;
-    const char *username;
-    const char *password;
+    char username[64];
+    char password[64];
 
     // Generate layout json
     size_t generateLayoutJSON(AsyncWebSocketClient *client, bool changes_only = false);
@@ -90,11 +90,13 @@ class ESPDash{
     void refreshLayout();
 
   public:
-
-    ESPDash(AsyncWebServer* server, bool enable_default_stats = true);
+    ESPDash(AsyncWebServer* server, const char* uri, bool enable_default_stats = true);
+    ESPDash(AsyncWebServer* server, bool enable_default_stats);
+    ESPDash(AsyncWebServer* server);
 
     // Set Authentication
-    void setAuthentication(const char *user, const char *pass);
+    void setAuthentication(const char* user, const char* pass);
+    void setAuthentication(const String &user, const String &pass);
 
     // Add Card
     void add(Card *card);
@@ -115,7 +117,7 @@ class ESPDash{
     void sendUpdates(bool force = false);
 
     void refreshStatistics();
-    
+
     ~ESPDash();
 };
 

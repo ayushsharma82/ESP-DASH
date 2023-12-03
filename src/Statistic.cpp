@@ -20,6 +20,12 @@ void Statistic::set(const char *key, const char *value) {
     _changed = true;
 }
 
+void Statistic::set(const char *value) {
+    // Safe copy
+    strncpy(_value, value, sizeof(_value));
+    _changed = true;
+}
+
 Statistic::~Statistic() {
     _dashboard->remove(this);
 }
