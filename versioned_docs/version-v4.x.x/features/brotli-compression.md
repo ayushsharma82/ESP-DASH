@@ -22,9 +22,9 @@ sidebar_position: 6
 
 With ESP-DASH Pro v4.3.0 or more, there is an option to enable Brotli compression to further reduce the size of webpage (dashboard) and provide you more space for your code. We've noticed 40% extra reduction in size over gzip compression (default).
 
-The drawback *might be* that brotli is not supported by legacy browsers; If you know for sure that you will be using ESP-DASH on the latest browsers, then don't think twice on enabling brotli compression.  
+Please note that Brotli compression is only supported by Safari browser with unencrpyted HTTP protocol. Due to constraints set by other browsers ( Chrome, Edge, Firefox etc. ) you need to use HTTPS for brotli compression to work properly.
 
-*Note: Broti compression is disabled by default. You will have to manually edit a library file and enable it.*
+*Note: Broti compression is disabled by default. It's up to user to enable brotli if the above conditions are fine for your use-case.*
 
 #### How to enable:
 
