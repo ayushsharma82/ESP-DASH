@@ -163,7 +163,7 @@ void ESPDash::remove(Statistic *statistic) {
 }
 
 // generates the layout JSON string to the frontend
-size_t ESPDash::generateLayoutJSON(AsyncWebSocketClient *client, bool changes_only) {
+size_t ESPDash::generateLayoutJSON(AsyncWebSocketClient *client, bool changes_only, Card *onlyCard) {
   String buf = "";
   buf.reserve(DASH_LAYOUT_JSON_SIZE);
 
@@ -183,7 +183,7 @@ size_t ESPDash::generateLayoutJSON(AsyncWebSocketClient *client, bool changes_on
     if (changes_only) {
       if (c->_changed) {
         c->_changed = false;
-      } else {
+      } else if (onlyCard == nullptr || onlyCard->_id != c->_id) {
         continue;
       }
     }
@@ -459,6 +459,10 @@ void ESPDash::refreshLayout() {
 
 void ESPDash::refreshStatistics() {
   generateLayoutJSON(nullptr, true);
+}
+
+void ESPDash::refreshCard(Card *card) {
+  generateLayoutJSON(nullptr, true, card);
 }
 
 

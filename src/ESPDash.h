@@ -80,7 +80,7 @@ class ESPDash{
     char password[64];
 
     // Generate layout json
-    size_t generateLayoutJSON(AsyncWebSocketClient *client, bool changes_only = false);
+    size_t generateLayoutJSON(AsyncWebSocketClient *client, bool changes_only = false, Card *onlyCard = nullptr);
 
     // Generate Component JSON
     void generateComponentJSON(JsonObject& obj, Card* card, bool change_only = false);
@@ -117,6 +117,7 @@ class ESPDash{
     void sendUpdates(bool force = false);
 
     void refreshStatistics();
+    void refreshCard(Card *card);
 
     ~ESPDash();
 };
