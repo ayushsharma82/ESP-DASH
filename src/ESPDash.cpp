@@ -164,8 +164,21 @@ void ESPDash::remove(Statistic *statistic) {
 
 // generates the layout JSON string to the frontend
 size_t ESPDash::generateLayoutJSON(AsyncWebSocketClient *client, bool changes_only, Card *onlyCard) {
+  // https://github.com/me-no-dev/ESPAsyncWebServer#limiting-the-number-of-web-socket-clients
+  // Browsers sometimes do not correctly close the websocket connection, even when the close() function is called in javascript.
+  // This will eventually exhaust the web server's resources and will cause the server to crash.
+  // Use DEFAULT_MAX_WS_CLIENTS or DASH_MAX_WS_CLIENTS (specific to ESP-DASH) to set the maximum number of clients
+  _ws->cleanupClients();
+
+  const size_t clients = _ws->count();
+  
+  if (clients == 0) {
+    // do not consume cpu and memory if no client is connected
+    return 0;
+  }
+
   String buf = "";
-  buf.reserve(DASH_LAYOUT_JSON_SIZE);
+  buf.reserve(changes_only ? DASH_PARTIAL_UPDATE_JSON_SIZE : DASH_LAYOUT_JSON_SIZE);
 
   if (changes_only) {
     buf += "{\"command\":\"update:components\",";
@@ -315,6 +328,9 @@ size_t ESPDash::generateLayoutJSON(AsyncWebSocketClient *client, bool changes_on
   // Store the length of the JSON string
   size_t total = buf.length();
   // Send resp
+  #ifdef DASH_DEBUG
+  Serial.printf("client=%d, count=%d, changes_only=%d, total=%d\n%s\n", (client == nullptr ? -1 : client->id()), clients, changes_only, total, buf.c_str());
+  #endif
   if (client != nullptr) {
     _ws->text(client->id(), buf.c_str(), total);
   } else {
@@ -465,12 +481,11 @@ void ESPDash::refreshCard(Card *card) {
   generateLayoutJSON(nullptr, true, card);
 }
 
-void ESPDash::refreshCard(Card *card) {
-  generateLayoutJSON(nullptr, true, card);
-}
-
 uint32_t ESPDash::nextId() {
   return _idCounter++;
+}
+bool ESPDash::hasClient() {
+  return _ws->count() > 0;
 }
 
 /*

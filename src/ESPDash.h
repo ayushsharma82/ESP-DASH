@@ -44,8 +44,8 @@ Github URL: https://github.com/ayushsharma82/ESP-DASH
   #define DASH_LAYOUT_JSON_SIZE 1024 * 5
 #endif
 
-#ifndef DASH_STATISTICS_JSON_SIZE
-  #define DASH_STATISTICS_JSON_SIZE 1024 * 1
+#ifndef DASH_PARTIAL_UPDATE_JSON_SIZE
+  #define DASH_PARTIAL_UPDATE_JSON_SIZE DASH_LAYOUT_JSON_SIZE
 #endif
 
 #ifndef DASH_CARD_JSON_SIZE
@@ -58,6 +58,10 @@ Github URL: https://github.com/ayushsharma82/ESP-DASH
 
 #ifndef DASH_USE_LEGACY_CHART_STORAGE
   #define DASH_USE_LEGACY_CHART_STORAGE 0
+#endif
+
+#ifndef DASH_MAX_WS_CLIENTS
+  #define DASH_MAX_WS_CLIENTS DEFAULT_MAX_WS_CLIENTS
 #endif
 
 // Forward Declaration
@@ -121,6 +125,8 @@ class ESPDash{
     void refreshCard(Card *card);
 
     uint32_t nextId();
+
+    bool hasClient();
 
     ~ESPDash();
 };
