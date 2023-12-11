@@ -461,6 +461,9 @@ void ESPDash::refreshStatistics() {
   generateLayoutJSON(nullptr, true);
 }
 
+uint32_t ESPDash::nextId() {
+  return _idCounter++;
+}
 
 /*
   Destructor

@@ -5,11 +5,7 @@
 */
 Card::Card(ESPDash *dashboard, const int type, const char* name, const char* symbol, const int min, const int max){
   _dashboard = dashboard;
-  #if defined(ESP8266)
-    _id = RANDOM_REG32;
-  #elif defined(ESP32)
-    _id = esp_random();
-  #endif
+  _id = dashboard->nextId();
   _type = type;
   _name = name;
   _symbol = symbol;
