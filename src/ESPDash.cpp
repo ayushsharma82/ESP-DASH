@@ -465,6 +465,13 @@ void ESPDash::refreshCard(Card *card) {
   generateLayoutJSON(nullptr, true, card);
 }
 
+void ESPDash::refreshCard(Card *card) {
+  generateLayoutJSON(nullptr, true, card);
+}
+
+uint32_t ESPDash::nextId() {
+  return _idCounter++;
+}
 
 /*
   Destructor

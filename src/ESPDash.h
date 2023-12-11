@@ -78,6 +78,7 @@ class ESPDash{
     bool basic_auth = false;
     char username[64];
     char password[64];
+    uint32_t _idCounter = 0;
 
     // Generate layout json
     size_t generateLayoutJSON(AsyncWebSocketClient *client, bool changes_only = false, Card *onlyCard = nullptr);
@@ -118,6 +119,8 @@ class ESPDash{
 
     void refreshStatistics();
     void refreshCard(Card *card);
+
+    uint32_t nextId();
 
     ~ESPDash();
 };
