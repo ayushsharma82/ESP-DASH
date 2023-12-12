@@ -34,6 +34,11 @@ Github URL: https://github.com/ayushsharma82/ESP-DASH
     #include "AsyncTCP.h"
 #endif
 
+#define DASH_STATUS_IDLE "i"
+#define DASH_STATUS_SUCCESS "s"
+#define DASH_STATUS_WARNING "w"
+#define DASH_STATUS_DANGER "d"
+
 #include "ESPAsyncWebServer.h"
 #include "ArduinoJson.h"
 #include "Card.h"

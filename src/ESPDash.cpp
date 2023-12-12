@@ -302,7 +302,8 @@ size_t ESPDash::generateLayoutJSON(AsyncWebSocketClient *client, bool changes_on
     }
     obj["i"] = s->_id;
     obj["k"] = s->_key;
-    obj["v"] = s->_value;
+    if(changes_only || strlen(s->_value) > 0)
+      obj["v"] = s->_value;
     serializeJson(obj, buf);
     obj.clear();
     prevStatWritten = true;
@@ -333,22 +334,25 @@ size_t ESPDash::generateLayoutJSON(AsyncWebSocketClient *client, bool changes_on
 void ESPDash::generateComponentJSON(JsonObject& doc, Card* card, bool change_only){
   doc["id"] = card->_id;
   if(!change_only){
-    doc["name"] = card->_name;
-    doc["type"] = cardTags[card->_type].type;
-    doc["value_min"] = card->_value_min;
-    doc["value_max"] = card->_value_max;
+    doc["n"] = card->_name.c_str();
+    doc["t"] = cardTags[card->_type].type;
+    doc["min"] = card->_value_min;
+    doc["max"] = card->_value_max;
   }
-  doc["symbol"] = card->_symbol;
+  if(change_only || !card->_symbol.isEmpty())
+    doc["s"] = card->_symbol;
 
   switch (card->_value_type) {
     case Card::INTEGER:
-      doc["value"] = card->_value_i;
+      doc["v"] = card->_value_i;
       break;
     case Card::FLOAT:
-      doc["value"] = String(card->_value_f, 2);
+      doc["v"] = String(card->_value_f, 2);
       break;
     case Card::STRING:
-      doc["value"] = card->_value_s;
+      if(change_only || !card->_value_s.isEmpty()) {
+        doc["v"] = card->_value_s;
+      }
       break;
     default:
       // blank value
@@ -363,11 +367,11 @@ void ESPDash::generateComponentJSON(JsonObject& doc, Card* card, bool change_onl
 void ESPDash::generateComponentJSON(JsonObject& doc, Chart* chart, bool change_only){
   doc["id"] = chart->_id;
   if(!change_only){
-    doc["name"] = chart->_name;
-    doc["type"] = chartTags[chart->_type].type;
+    doc["n"] = chart->_name.c_str();
+    doc["t"] = chartTags[chart->_type].type;
   }
 
-  JsonArray xAxis = doc["x_axis"].to<JsonArray>();
+  JsonArray xAxis = doc["x"].to<JsonArray>();
   switch (chart->_x_axis_type) {
     case GraphAxisType::INTEGER:
       #if DASH_USE_LEGACY_CHART_STORAGE == 1
@@ -418,7 +422,7 @@ void ESPDash::generateComponentJSON(JsonObject& doc, Chart* chart, bool change_o
       break;
   }
 
-  JsonArray yAxis = doc["y_axis"].to<JsonArray>();
+  JsonArray yAxis = doc["y"].to<JsonArray>();
   switch (chart->_y_axis_type) {
     case GraphAxisType::INTEGER:
       #if DASH_USE_LEGACY_CHART_STORAGE == 1
