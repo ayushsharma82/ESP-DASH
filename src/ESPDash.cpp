@@ -42,7 +42,7 @@ ESPDash::ESPDash(AsyncWebServer* server, const char* uri, bool enable_default_st
     // respond with the compressed frontend
     AsyncWebServerResponse *response = request->beginResponse_P(200, "text/html", DASH_HTML, sizeof(DASH_HTML));
     response->addHeader("Content-Encoding","gzip");
-    response->addHeader("Cache-Control","public, max-age=900");
+    response->addHeader("Cache-Control", "public, max-age=900");
     request->send(response);
   });
 
@@ -484,6 +484,7 @@ void ESPDash::refreshCard(Card *card) {
 uint32_t ESPDash::nextId() {
   return _idCounter++;
 }
+
 bool ESPDash::hasClient() {
   return _ws->count() > 0;
 }
