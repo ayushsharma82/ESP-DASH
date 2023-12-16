@@ -10,6 +10,8 @@ struct CardNames cardTags[] = {
   {SLIDER_CARD, "slider"},
   {BUTTON_CARD, "button"},
   {PROGRESS_CARD, "progress"},
+  {LINK_CARD, "link"},
+  {FILE_UPLOAD_CARD, "fuc"},
 };
 
 // Integral type to string pairs events

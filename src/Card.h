@@ -21,7 +21,9 @@ enum {
   STATUS_CARD,
   SLIDER_CARD,
   BUTTON_CARD,
-  PROGRESS_CARD
+  PROGRESS_CARD,
+  LINK_CARD,
+  FILE_UPLOAD_CARD
 };
 
 // Forward Declaration
