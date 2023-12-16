@@ -34,6 +34,11 @@ Github URL: https://github.com/ayushsharma82/ESP-DASH
     #include "AsyncTCP.h"
 #endif
 
+#define DASH_STATUS_IDLE "i"
+#define DASH_STATUS_SUCCESS "s"
+#define DASH_STATUS_WARNING "w"
+#define DASH_STATUS_DANGER "d"
+
 #include "ESPAsyncWebServer.h"
 #include "ArduinoJson.h"
 #include "Card.h"
@@ -44,8 +49,8 @@ Github URL: https://github.com/ayushsharma82/ESP-DASH
   #define DASH_LAYOUT_JSON_SIZE 1024 * 5
 #endif
 
-#ifndef DASH_STATISTICS_JSON_SIZE
-  #define DASH_STATISTICS_JSON_SIZE 1024 * 1
+#ifndef DASH_PARTIAL_UPDATE_JSON_SIZE
+  #define DASH_PARTIAL_UPDATE_JSON_SIZE DASH_LAYOUT_JSON_SIZE
 #endif
 
 #ifndef DASH_CARD_JSON_SIZE
@@ -58,6 +63,10 @@ Github URL: https://github.com/ayushsharma82/ESP-DASH
 
 #ifndef DASH_USE_LEGACY_CHART_STORAGE
   #define DASH_USE_LEGACY_CHART_STORAGE 0
+#endif
+
+#ifndef DASH_MAX_WS_CLIENTS
+  #define DASH_MAX_WS_CLIENTS DEFAULT_MAX_WS_CLIENTS
 #endif
 
 // Forward Declaration
@@ -78,9 +87,10 @@ class ESPDash{
     bool basic_auth = false;
     char username[64];
     char password[64];
+    uint32_t _idCounter = 0;
 
     // Generate layout json
-    size_t generateLayoutJSON(AsyncWebSocketClient *client, bool changes_only = false);
+    size_t generateLayoutJSON(AsyncWebSocketClient *client, bool changes_only = false, Card *onlyCard = nullptr);
 
     // Generate Component JSON
     void generateComponentJSON(JsonObject& obj, Card* card, bool change_only = false);
@@ -117,6 +127,12 @@ class ESPDash{
     void sendUpdates(bool force = false);
 
     void refreshStatistics();
+
+    void refreshCard(Card *card);
+
+    uint32_t nextId();
+
+    bool hasClient();
 
     ~ESPDash();
 };

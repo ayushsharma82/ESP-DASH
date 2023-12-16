@@ -2,11 +2,7 @@
 
 Statistic::Statistic(ESPDash *dashboard, const char *key, const char *value) {
     _dashboard = dashboard;
-    #if defined(ESP8266)
-        _id = RANDOM_REG32;
-    #elif defined(ESP32)
-        _id = esp_random();
-    #endif
+    _id = dashboard->nextId();
     // Safe copy
     strncpy(_key, key, sizeof(_key));
     strncpy(_value, value, sizeof(_value));
@@ -15,15 +11,19 @@ Statistic::Statistic(ESPDash *dashboard, const char *key, const char *value) {
 
 void Statistic::set(const char *key, const char *value) {
     // Safe copy
-    strncpy(_key, key, sizeof(_key));
-    strncpy(_value, value, sizeof(_value));
-    _changed = true;
+    _changed = strcmp(_value, value) != 0 || strcmp(_key, key) != 0;
+    if(_changed) {
+        strncpy(_key, key, sizeof(_key));
+        strncpy(_value, value, sizeof(_value));
+    }
 }
 
 void Statistic::set(const char *value) {
     // Safe copy
-    strncpy(_value, value, sizeof(_value));
-    _changed = true;
+    _changed = strcmp(_value, value) != 0;
+    if(_changed)
+        strncpy(_value, value, sizeof(_value));
+    
 }
 
 Statistic::~Statistic() {

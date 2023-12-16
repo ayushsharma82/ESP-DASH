@@ -41,8 +41,8 @@ ESPDash::ESPDash(AsyncWebServer* server, const char* uri, bool enable_default_st
     }
     // respond with the compressed frontend
     AsyncWebServerResponse *response = request->beginResponse_P(200, "text/html", DASH_HTML, sizeof(DASH_HTML));
-    response->addHeader("Content-Encoding","gzip");
-    response->addHeader("Cache-Control","public, max-age=900");
+    response->addHeader("Content-Encoding", "gzip");
+    response->addHeader("Cache-Control", "public, max-age=900");
     request->send(response);
   });
 
@@ -163,9 +163,22 @@ void ESPDash::remove(Statistic *statistic) {
 }
 
 // generates the layout JSON string to the frontend
-size_t ESPDash::generateLayoutJSON(AsyncWebSocketClient *client, bool changes_only) {
+size_t ESPDash::generateLayoutJSON(AsyncWebSocketClient *client, bool changes_only, Card *onlyCard) {
+  // https://github.com/me-no-dev/ESPAsyncWebServer#limiting-the-number-of-web-socket-clients
+  // Browsers sometimes do not correctly close the websocket connection, even when the close() function is called in javascript.
+  // This will eventually exhaust the web server's resources and will cause the server to crash.
+  // Use DEFAULT_MAX_WS_CLIENTS or DASH_MAX_WS_CLIENTS (specific to ESP-DASH) to set the maximum number of clients
+  _ws->cleanupClients();
+
+  const size_t clients = _ws->count();
+  
+  if (clients == 0) {
+    // do not consume cpu and memory if no client is connected
+    return 0;
+  }
+
   String buf = "";
-  buf.reserve(DASH_LAYOUT_JSON_SIZE);
+  buf.reserve(changes_only ? DASH_PARTIAL_UPDATE_JSON_SIZE : DASH_LAYOUT_JSON_SIZE);
 
   if (changes_only) {
     buf += "{\"command\":\"update:components\",";
@@ -183,7 +196,7 @@ size_t ESPDash::generateLayoutJSON(AsyncWebSocketClient *client, bool changes_on
     if (changes_only) {
       if (c->_changed) {
         c->_changed = false;
-      } else {
+      } else if (onlyCard == nullptr || onlyCard->_id != c->_id) {
         continue;
       }
     }
@@ -302,6 +315,8 @@ size_t ESPDash::generateLayoutJSON(AsyncWebSocketClient *client, bool changes_on
     }
     obj["i"] = s->_id;
     obj["k"] = s->_key;
+    if(changes_only || strlen(s->_value) > 0)
+      obj["v"] = s->_value;
     obj["v"] = s->_value;
     serializeJson(obj, buf);
     obj.clear();
@@ -315,6 +330,9 @@ size_t ESPDash::generateLayoutJSON(AsyncWebSocketClient *client, bool changes_on
   // Store the length of the JSON string
   size_t total = buf.length();
   // Send resp
+  #ifdef DASH_DEBUG
+  Serial.printf("client=%d, count=%d, changes_only=%d, total=%d\n%s\n", (client == nullptr ? -1 : client->id()), clients, changes_only, total, buf.c_str());
+  #endif
   if (client != nullptr) {
     _ws->text(client->id(), buf.c_str(), total);
   } else {
@@ -333,22 +351,25 @@ size_t ESPDash::generateLayoutJSON(AsyncWebSocketClient *client, bool changes_on
 void ESPDash::generateComponentJSON(JsonObject& doc, Card* card, bool change_only){
   doc["id"] = card->_id;
   if(!change_only){
-    doc["name"] = card->_name;
-    doc["type"] = cardTags[card->_type].type;
-    doc["value_min"] = card->_value_min;
-    doc["value_max"] = card->_value_max;
+    doc["n"] = card->_name.c_str();
+    doc["t"] = cardTags[card->_type].type;
+    doc["min"] = card->_value_min;
+    doc["max"] = card->_value_max;
   }
-  doc["symbol"] = card->_symbol;
+  if(change_only || !card->_symbol.isEmpty())
+    doc["s"] = card->_symbol;
 
   switch (card->_value_type) {
     case Card::INTEGER:
-      doc["value"] = card->_value_i;
+      doc["v"] = card->_value_i;
       break;
     case Card::FLOAT:
-      doc["value"] = String(card->_value_f, 2);
+      doc["v"] = String(card->_value_f, 2);
       break;
     case Card::STRING:
-      doc["value"] = card->_value_s;
+      if(change_only || !card->_value_s.isEmpty()) {
+        doc["v"] = card->_value_s;
+      }
       break;
     default:
       // blank value
@@ -363,11 +384,11 @@ void ESPDash::generateComponentJSON(JsonObject& doc, Card* card, bool change_onl
 void ESPDash::generateComponentJSON(JsonObject& doc, Chart* chart, bool change_only){
   doc["id"] = chart->_id;
   if(!change_only){
-    doc["name"] = chart->_name;
-    doc["type"] = chartTags[chart->_type].type;
+    doc["n"] = chart->_name.c_str();
+    doc["t"] = chartTags[chart->_type].type;
   }
 
-  JsonArray xAxis = doc["x_axis"].to<JsonArray>();
+  JsonArray xAxis = doc["x"].to<JsonArray>();
   switch (chart->_x_axis_type) {
     case GraphAxisType::INTEGER:
       #if DASH_USE_LEGACY_CHART_STORAGE == 1
@@ -418,7 +439,7 @@ void ESPDash::generateComponentJSON(JsonObject& doc, Chart* chart, bool change_o
       break;
   }
 
-  JsonArray yAxis = doc["y_axis"].to<JsonArray>();
+  JsonArray yAxis = doc["y"].to<JsonArray>();
   switch (chart->_y_axis_type) {
     case GraphAxisType::INTEGER:
       #if DASH_USE_LEGACY_CHART_STORAGE == 1
@@ -461,6 +482,17 @@ void ESPDash::refreshStatistics() {
   generateLayoutJSON(nullptr, true);
 }
 
+void ESPDash::refreshCard(Card *card) {
+  generateLayoutJSON(nullptr, true, card);
+}
+
+uint32_t ESPDash::nextId() {
+  return _idCounter++;
+}
+
+bool ESPDash::hasClient() {
+  return _ws->count() > 0;
+}
 
 /*
   Destructor
