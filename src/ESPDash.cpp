@@ -357,6 +357,8 @@ void ESPDash::generateComponentJSON(JsonObject& doc, Card* card, bool change_onl
     doc["t"] = cardTags[card->_type].type;
     doc["min"] = card->_value_min;
     doc["max"] = card->_value_max;
+    if(card->_value_step != 1.0f)
+      doc["step"] = card->_value_step;
   }
   if(change_only || !card->_symbol.isEmpty())
     doc["s"] = card->_symbol;

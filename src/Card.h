@@ -44,11 +44,12 @@ class Card {
     String _value_s;
     int _value_min;
     int _value_max;
+    float _value_step;
     String _symbol;
     std::function<void(int value)> _callback = nullptr;
 
   public:
-    Card(ESPDash *dashboard, const int type, const char* name, const char* symbol = "", const int min = 0, const int max = 0);
+    Card(ESPDash *dashboard, const int type, const char* name, const char* symbol = "", const int min = 0, const int max = 0, const float step = 1);
     void attachCallback(std::function<void(int)> cb);
     void update(int value);
     void update(int value, const char* symbol);
