@@ -165,7 +165,7 @@ void ESPDash::remove(Statistic *statistic) {
 }
 
 // generates the layout JSON string to the frontend
-size_t ESPDash::generateLayoutJSON(AsyncWebSocketClient *client, bool changes_only, Card *onlyCard) {
+void ESPDash::generateLayoutJSON(AsyncWebSocketClient *client, bool changes_only, Card *onlyCard) {
   // https://github.com/me-no-dev/ESPAsyncWebServer#limiting-the-number-of-web-socket-clients
   // Browsers sometimes do not correctly close the websocket connection, even when the close() function is called in javascript.
   // This will eventually exhaust the web server's resources and will cause the server to crash.
@@ -176,23 +176,19 @@ size_t ESPDash::generateLayoutJSON(AsyncWebSocketClient *client, bool changes_on
   
   if (clients == 0) {
     // do not consume cpu and memory if no client is connected
-    return 0;
+    return;
   }
 
-  String buf = "";
-  buf.reserve(changes_only ? DASH_PARTIAL_UPDATE_JSON_SIZE : DASH_LAYOUT_JSON_SIZE);
+  StaticJsonDocument<DASH_JSON_SIZE> doc;
 
-  if (changes_only) {
-    buf += "{\"command\":\"update:components\",";
-  } else {
-    buf += "{\"command\":\"update:layout\",";
+  if (!changes_only) {
+    doc["command"] = changes_only ? "update:components" : "update:layout:begin";
+    send(client, doc);
   }
 
-  buf += "\"cards\":[";
-
-  StaticJsonDocument<DASH_CARD_JSON_SIZE> carddoc;
-  uint8_t card_count = 0;
   // Generate JSON for all Cards
+  doc["command"] = changes_only ? "update:components" : "update:layout:next";
+  size_t idx = 0;
   for (int i=0; i < cards.Size(); i++) {
     Card *c = cards[i];
     if (changes_only) {
@@ -202,23 +198,30 @@ size_t ESPDash::generateLayoutJSON(AsyncWebSocketClient *client, bool changes_on
         continue;
       }
     }
-    if (card_count > 0) {
-      buf += ",";
-    }
     // Generate JSON
-    JsonObject obj = carddoc.to<JsonObject>();
+    JsonObject obj = doc["cards"].createNestedObject();
     generateComponentJSON(obj, c, changes_only);
-    // Append to buf
-    serializeJson(carddoc, buf);
-    carddoc.clear();
-    card_count++;
+    
+    if (doc.overflowed()) {
+      doc["cards"].as<JsonArray>().remove(idx);
+      send(client, doc);
+#ifdef DASH_DEBUG
+    Serial.printf("overflow: %d %s\n", c->_id, c->_name);
+#endif
+      doc["command"] = changes_only ? "update:components" : "update:layout:next";
+      idx = 0;
+      JsonObject obj = doc["cards"].createNestedObject();
+      generateComponentJSON(obj, c, changes_only);
+    }
+
+    idx++;
   }
+  if (idx > 0)
+    send(client, doc);
 
-  buf += "],\"charts\":[";
-
-  DynamicJsonDocument chartdoc(DASH_CHART_JSON_SIZE);
-  uint8_t chart_count = 0;
   // Generate JSON for all Charts
+  doc["command"] = changes_only ? "update:components" : "update:layout:next";
+  idx = 0;
   for (int i=0; i < charts.Size(); i++) {
     Chart *c = charts[i];
     if (changes_only) {
@@ -228,81 +231,80 @@ size_t ESPDash::generateLayoutJSON(AsyncWebSocketClient *client, bool changes_on
         continue;
       }
     }
-    if (chart_count > 0) {
-      buf += ",";
-    }
     // Generate JSON
-    JsonObject obj = chartdoc.to<JsonObject>();
+    JsonObject obj = doc["charts"].createNestedObject();
     generateComponentJSON(obj, c, changes_only);
-    // Append to buf
-    serializeJson(chartdoc, buf);
-    chartdoc.clear();
-    chart_count++;
-  }
 
-  buf += "],\"stats\": [";
+    if (doc.overflowed()) {
+      doc["charts"].as<JsonArray>().remove(idx);
+      send(client, doc);
+#ifdef DASH_DEBUG
+    Serial.printf("overflow: %d %s\n", c->_id, c->_name);
+#endif
+      doc["command"] = changes_only ? "update:components" : "update:layout:next";
+      idx = 0;
+      JsonObject obj = doc["charts"].createNestedObject();
+      generateComponentJSON(obj, c, changes_only);
+    }
+
+    idx++;
+  }
+  if (idx > 0)
+    send(client, doc);
 
   // Generate JSON for all Statistics
   // Check if default statistics are needed
   if (default_stats_enabled) {
-    StaticJsonDocument<64> obj;
+    doc["command"] = changes_only ? "update:components" : "update:layout:next";
+    idx = 0;
+
     if (!changes_only) {
       // Hardware
-      obj["i"] = -1;
-      obj["k"] = "Hardware";
-      obj["v"] = DASH_HARDWARE;
-      serializeJson(obj, buf);
-      obj.clear();
-      buf += ",";
+      doc["stats"][idx]["i"] = -1;
+      doc["stats"][idx]["k"] = "Hardware";
+      doc["stats"][idx]["v"] = DASH_HARDWARE;
+      idx++;
 
       // SDK Version
-      obj["i"] = -2;
-      obj["k"] = "SDK Version";
+      doc["stats"][idx]["i"] = -2;
+      doc["stats"][idx]["k"] = "SDK Version";
       #if defined(ESP8266)
-        obj["v"] = ESP.getCoreVersion();
+        doc["stats"][idx]["v"] = ESP.getCoreVersion();
       #elif defined(ESP32)
-        obj["v"] = String(esp_get_idf_version());
+        doc["stats"][idx]["v"] = String(esp_get_idf_version());
       #endif
-      serializeJson(obj, buf);
-      obj.clear();
-      buf += ",";
+      idx++;
 
       // MAC Address
-      obj["i"] = -3;
-      obj["k"] = "MAC Address";
-      obj["v"] = WiFi.macAddress();
-      serializeJson(obj, buf);
-      obj.clear();
-      buf += ",";
+      doc["stats"][idx]["i"] = -3;
+      doc["stats"][idx]["k"] = "MAC Address";
+      doc["stats"][idx]["v"] = WiFi.macAddress();
+      idx++;
     }
 
     // Free Heap
-    obj["i"] = -4;
-    obj["k"] = "Free Heap (SRAM)";
-    obj["v"] = ESP.getFreeHeap();
-    serializeJson(obj, buf);
-    obj.clear();
-    buf += ",";
+    doc["stats"][idx]["i"] = -4;
+    doc["stats"][idx]["k"] = "Free Heap (SRAM)";
+    doc["stats"][idx]["v"] = ESP.getFreeHeap();
+    idx++;
 
     // WiFi Mode
-    obj["i"] = -5;
-    obj["k"] = "WiFi Mode";
-    obj["v"] = WiFi.getMode();
-    serializeJson(obj, buf);
-    obj.clear();
-    buf += ",";
+    doc["stats"][idx]["i"] = -5;
+    doc["stats"][idx]["k"] = "WiFi Mode";
+    doc["stats"][idx]["v"] = WiFi.getMode();
+    idx++;
 
     // WiFi Signal
-    obj["i"] = -6;
-    obj["k"] = "WiFi Signal";
-    obj["v"] = WiFi.RSSI();
-    serializeJson(obj, buf);
-    obj.clear();
+    doc["stats"][idx]["i"] = -6;
+    doc["stats"][idx]["k"] = "WiFi Signal";
+    doc["stats"][idx]["v"] = WiFi.RSSI();
+    
+    send(client, doc);
   }
 
   // Loop through user defined stats
-  StaticJsonDocument<128> obj;
-  bool prevStatWritten = default_stats_enabled;
+  doc["command"] = changes_only ? "update:components" : "update:layout:next";
+  idx = 0;
   for (int i=0; i < statistics.Size(); i++) {
     Statistic *s = statistics[i];
     if (changes_only) {
@@ -312,40 +314,48 @@ size_t ESPDash::generateLayoutJSON(AsyncWebSocketClient *client, bool changes_on
         continue;
       }
     }
-    if (prevStatWritten) {
-      buf += ",";
-    }
-    obj["i"] = s->_id;
-    obj["k"] = s->_key;
+    doc["stats"][idx]["i"] = s->_id;
+    doc["stats"][idx]["k"] = s->_key;
     if(changes_only || strlen(s->_value) > 0)
-      obj["v"] = s->_value;
-    obj["v"] = s->_value;
-    serializeJson(obj, buf);
-    obj.clear();
-    prevStatWritten = true;
+      doc["stats"][idx]["v"] = s->_value;
+    doc["stats"][idx]["v"] = s->_value;
+
+    if (doc.overflowed()) {
+      doc["stats"].as<JsonArray>().remove(idx);
+      send(client, doc);
+#ifdef DASH_DEBUG
+    Serial.printf("overflow: %d %s\n", s->_id, s->_key);
+#endif
+      doc["command"] = changes_only ? "update:components" : "update:layout:next";
+      idx = 0;
+      
+      doc["stats"][idx]["i"] = s->_id;
+      doc["stats"][idx]["k"] = s->_key;
+      if(changes_only || strlen(s->_value) > 0)
+        doc["stats"][idx]["v"] = s->_value;
+      doc["stats"][idx]["v"] = s->_value;
+    }
+
+    idx++;
   }
-
-  buf += "]";
-  // Close JSON
-  buf += "}";
-
-  // Store the length of the JSON string
-  size_t total = buf.length();
-  // Send resp
-  #ifdef DASH_DEBUG
-  Serial.printf("client=%d, count=%d, changes_only=%d, total=%d\n%s\n", (client == nullptr ? -1 : client->id()), clients, changes_only, total, buf.c_str());
-  #endif
-  if (client != nullptr) {
-    _ws->text(client->id(), buf.c_str(), total);
-  } else {
-    _ws->textAll(buf.c_str(), total);
-  }
-
-  // Serial.println("Free Heap (During Update): "+String( ESP.getFreeHeap() ));
-  // Return length
-  return total;
+  if (idx > 0)
+    send(client, doc);
 }
 
+void ESPDash::send(AsyncWebSocketClient *client, JsonDocument &json) {
+  String buffer;
+  buffer.reserve(json.memoryUsage());
+  serializeJson(json, buffer);
+#ifdef DASH_DEBUG
+  Serial.printf("client_id=%d, json_cap=%d, json_mem=%d, len=%d bytes\n%s\n", (client == nullptr ? -1 : client->id()), json.capacity(), json.memoryUsage(), buffer.length(), buffer.c_str());
+#endif
+  if (client != nullptr) {
+    client->text(buffer);
+  } else {
+    _ws->textAll(buffer);
+  }
+  json.clear();
+}
 
 /*
   Generate Card JSON

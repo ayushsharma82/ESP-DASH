@@ -45,20 +45,8 @@ Github URL: https://github.com/ayushsharma82/ESP-DASH
 #include "Chart.h"
 #include "Statistic.h"
 
-#ifndef DASH_LAYOUT_JSON_SIZE
-  #define DASH_LAYOUT_JSON_SIZE 1024 * 5
-#endif
-
-#ifndef DASH_PARTIAL_UPDATE_JSON_SIZE
-  #define DASH_PARTIAL_UPDATE_JSON_SIZE DASH_LAYOUT_JSON_SIZE
-#endif
-
-#ifndef DASH_CARD_JSON_SIZE
-  #define DASH_CARD_JSON_SIZE 256
-#endif
-
-#ifndef DASH_CHART_JSON_SIZE
-  #define DASH_CHART_JSON_SIZE 2048
+#ifndef DASH_JSON_SIZE
+  #define DASH_JSON_SIZE 2048
 #endif
 
 #ifndef DASH_USE_LEGACY_CHART_STORAGE
@@ -90,7 +78,8 @@ class ESPDash{
     uint32_t _idCounter = 0;
 
     // Generate layout json
-    size_t generateLayoutJSON(AsyncWebSocketClient *client, bool changes_only = false, Card *onlyCard = nullptr);
+    void generateLayoutJSON(AsyncWebSocketClient *client, bool changes_only = false, Card *onlyCard = nullptr);
+    void send(AsyncWebSocketClient *client, JsonDocument &json);
 
     // Generate Component JSON
     void generateComponentJSON(JsonObject& obj, Card* card, bool change_only = false);
