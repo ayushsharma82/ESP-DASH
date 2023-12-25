@@ -33,7 +33,7 @@ class Card {
     ESPDash *_dashboard;
 
     uint32_t _id;
-    String _name;
+    const char* _name;
     int   _type;
     bool  _changed;
     enum { INTEGER, FLOAT, STRING } _value_type;

@@ -353,7 +353,7 @@ size_t ESPDash::generateLayoutJSON(AsyncWebSocketClient *client, bool changes_on
 void ESPDash::generateComponentJSON(JsonObject& doc, Card* card, bool change_only){
   doc["id"] = card->_id;
   if(!change_only){
-    doc["n"] = card->_name.c_str();
+    doc["n"] = card->_name;
     doc["t"] = cardTags[card->_type].type;
     doc["min"] = card->_value_min;
     doc["max"] = card->_value_max;
@@ -386,7 +386,7 @@ void ESPDash::generateComponentJSON(JsonObject& doc, Card* card, bool change_onl
 void ESPDash::generateComponentJSON(JsonObject& doc, Chart* chart, bool change_only){
   doc["id"] = chart->_id;
   if(!change_only){
-    doc["n"] = chart->_name.c_str();
+    doc["n"] = chart->_name;
     doc["t"] = chartTags[chart->_type].type;
   }
 
