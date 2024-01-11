@@ -48,8 +48,12 @@ ESPDash::ESPDash(AsyncWebServer* server, const char* uri, bool enable_default_st
 
   // Websocket Callback Handler
   _ws->onEvent([&](AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len){
-    // Request Buffer
+  // Request Buffer
+#if ARDUINOJSON_VERSION_MAJOR == 7
+    JsonDocument json;
+#else
     StaticJsonDocument<200> json;
+#endif
 
     if (type == WS_EVT_DATA) {
       AwsFrameInfo * info = (AwsFrameInfo * ) arg;
@@ -59,11 +63,11 @@ ESPDash::ESPDash(AsyncWebServer* server, const char* uri, bool enable_default_st
           deserializeJson(json, reinterpret_cast<const char*>(data));
           // client side commands parsing
           if (json["command"] == "get:layout") {
+            _asyncAccessInProgress = true;
             generateLayoutJSON(client, false);
+            _asyncAccessInProgress = false;
           } else if (json["command"] == "ping") {
             return _ws->text(client->id(), "{\"command\":\"pong\"}");
-          } else if (json["command"] == "get:stats") {
-            generateLayoutJSON(client, true);
           } else if (json["command"] == "button:clicked") {
             // execute and reference card data struct to funtion
             uint32_t id = json["id"].as<uint32_t>();
@@ -71,7 +75,9 @@ ESPDash::ESPDash(AsyncWebServer* server, const char* uri, bool enable_default_st
               Card *p = cards[i];
               if(id == p->_id){
                 if(p->_callback != nullptr){
+                  _asyncAccessInProgress = true;
                   p->_callback(json["value"].as<int>());
+                  _asyncAccessInProgress = false;
                 }
               }
             }
@@ -82,7 +88,9 @@ ESPDash::ESPDash(AsyncWebServer* server, const char* uri, bool enable_default_st
               Card *p = cards[i];
               if(id == p->_id){
                 if(p->_callback != nullptr){
+                  _asyncAccessInProgress = true;
                   p->_callback(json["value"].as<int>());
+                  _asyncAccessInProgress = false;
                 }
               }
             }
@@ -112,7 +120,6 @@ void ESPDash::setAuthentication(const String &user, const String &pass) {
 // Add Card
 void ESPDash::add(Card *card) {
   cards.PushBack(card);
-  refreshLayout();
 }
 
 // Remove Card
@@ -121,7 +128,6 @@ void ESPDash::remove(Card *card) {
     Card *p = cards[i];
     if(p->_id == card->_id){
       cards.Erase(i);
-      refreshLayout();
       return;
     }
   }
@@ -131,7 +137,6 @@ void ESPDash::remove(Card *card) {
 // Add Chart
 void ESPDash::add(Chart *chart) {
   charts.PushBack(chart);
-  refreshLayout();
 }
 
 // Remove Card
@@ -140,7 +145,6 @@ void ESPDash::remove(Chart *chart) {
     Chart *p = charts[i];
     if(p->_id == chart->_id){
       charts.Erase(i);
-      refreshLayout();
       return;
     }
   }
@@ -149,7 +153,6 @@ void ESPDash::remove(Chart *chart) {
 // Add Statistic
 void ESPDash::add(Statistic *statistic) {
   statistics.PushBack(statistic);
-  refreshStatistics();
 }
 
 // Remove Statistic
@@ -158,205 +161,212 @@ void ESPDash::remove(Statistic *statistic) {
     Statistic *p = statistics[i];
     if(p->_id == statistic->_id){
       statistics.Erase(i);
-      refreshStatistics();
       return;
     }
   }
 }
 
 // generates the layout JSON string to the frontend
-size_t ESPDash::generateLayoutJSON(AsyncWebSocketClient *client, bool changes_only, Card *onlyCard) {
-  // https://github.com/me-no-dev/ESPAsyncWebServer#limiting-the-number-of-web-socket-clients
-  // Browsers sometimes do not correctly close the websocket connection, even when the close() function is called in javascript.
-  // This will eventually exhaust the web server's resources and will cause the server to crash.
-  // Use DEFAULT_MAX_WS_CLIENTS or DASH_MAX_WS_CLIENTS (specific to ESP-DASH) to set the maximum number of clients
-  _ws->cleanupClients();
+void ESPDash::generateLayoutJSON(AsyncWebSocketClient* client, bool changes_only, Card* onlyCard) {
+#if ARDUINOJSON_VERSION_MAJOR == 6
+  DynamicJsonDocument doc(DASH_JSON_DOCUMENT_ALLOCATION);
+#else
+  JsonDocument doc;
+#endif
 
-  const size_t clients = _ws->count();
-  
-  if (clients == 0) {
-    // do not consume cpu and memory if no client is connected
-    return 0;
-  }
-
-  String buf = "";
-  buf.reserve(changes_only ? DASH_PARTIAL_UPDATE_JSON_SIZE : DASH_LAYOUT_JSON_SIZE);
-
-  if (changes_only) {
-    buf += "{\"command\":\"update:components\",";
+  // preparing layout
+  if (!changes_only) {
+    doc["command"] = "update:layout:begin";
   } else {
-    buf += "{\"command\":\"update:layout\",";
+    doc["command"] = "update:components";
+  }
+  if (!changes_only) {
+    send(client, doc);
   }
 
-  buf += "\"cards\":[";
-
-  StaticJsonDocument<DASH_CARD_JSON_SIZE> carddoc;
-  uint8_t card_count = 0;
   // Generate JSON for all Cards
-  for (int i=0; i < cards.Size(); i++) {
-    Card *c = cards[i];
+  doc["command"] = changes_only ? "update:components" : "update:layout:next";
+  for (int i = 0; i < cards.Size(); i++) {
+    Card* c = cards[i];
     if (changes_only) {
-      if (c->_changed) {
-        c->_changed = false;
-      } else if (onlyCard == nullptr || onlyCard->_id != c->_id) {
+      if (!c->_changed && (onlyCard == nullptr || onlyCard->_id != c->_id)) {
         continue;
       }
     }
-    if (card_count > 0) {
-      buf += ",";
-    }
+
     // Generate JSON
-    JsonObject obj = carddoc.to<JsonObject>();
+#if ARDUINOJSON_VERSION_MAJOR == 6
+    JsonObject obj = doc["cards"].createNestedObject();
+#else
+    JsonObject obj = doc["cards"].add<JsonObject>();
+#endif
     generateComponentJSON(obj, c, changes_only);
-    // Append to buf
-    serializeJson(carddoc, buf);
-    carddoc.clear();
-    card_count++;
+
+    if (overflowed(doc)) {
+      doc["cards"].as<JsonArray>().remove(doc["cards"].as<JsonArray>().size() - 1);
+      send(client, doc);
+      doc["command"] = changes_only ? "update:components" : "update:layout:next";
+      i--;
+      continue;
+    }
+
+    // Clear change flags
+    if (changes_only) {
+      c->_changed = false;
+    }
   }
 
-  buf += "],\"charts\":[";
+  if (doc["cards"].as<JsonArray>().size() > 0)
+    send(client, doc);
 
-  DynamicJsonDocument chartdoc(DASH_CHART_JSON_SIZE);
-  uint8_t chart_count = 0;
   // Generate JSON for all Charts
-  for (int i=0; i < charts.Size(); i++) {
-    Chart *c = charts[i];
+  doc["command"] = changes_only ? "update:components" : "update:layout:next";
+  for (int i = 0; i < charts.Size(); i++) {
+    Chart* c = charts[i];
     if (changes_only) {
-      if (c->_changed) {
-        c->_changed = false;
-      } else {
+      if (!c->_changed) {
         continue;
       }
     }
-    if (chart_count > 0) {
-      buf += ",";
-    }
+
     // Generate JSON
-    JsonObject obj = chartdoc.to<JsonObject>();
+#if ARDUINOJSON_VERSION_MAJOR == 7
+    JsonObject obj = doc["charts"].add<JsonObject>();
+#else
+    JsonObject obj = doc["charts"].createNestedObject();
+#endif
     generateComponentJSON(obj, c, changes_only);
-    // Append to buf
-    serializeJson(chartdoc, buf);
-    chartdoc.clear();
-    chart_count++;
+
+    if (overflowed(doc)) {
+      doc["charts"].as<JsonArray>().remove(doc["charts"].as<JsonArray>().size() - 1);
+      send(client, doc);
+      doc["command"] = changes_only ? "update:components" : "update:layout:next";
+      i--;
+      continue;
+    }
+
+    // Clear change flags
+    if (changes_only) {
+      c->_changed = false;
+    }
   }
 
-  buf += "],\"stats\": [";
+  if (doc["charts"].as<JsonArray>().size() > 0)
+    send(client, doc);
 
   // Generate JSON for all Statistics
+  doc["command"] = changes_only ? "update:components" : "update:layout:next";
+  int idx = 0;
+
   // Check if default statistics are needed
   if (default_stats_enabled) {
-    StaticJsonDocument<64> obj;
     if (!changes_only) {
       // Hardware
-      obj["i"] = -1;
-      obj["k"] = "Hardware";
-      obj["v"] = DASH_HARDWARE;
-      serializeJson(obj, buf);
-      obj.clear();
-      buf += ",";
+      doc["stats"][idx]["i"] = -1;
+      doc["stats"][idx]["k"] = "Hardware";
+      doc["stats"][idx]["v"] = DASH_HARDWARE;
+      idx++;
 
       // SDK Version
-      obj["i"] = -2;
-      obj["k"] = "SDK Version";
-      #if defined(ESP8266)
-        obj["v"] = ESP.getCoreVersion();
-      #elif defined(ESP32)
-        obj["v"] = String(esp_get_idf_version());
-      #endif
-      serializeJson(obj, buf);
-      obj.clear();
-      buf += ",";
+      doc["stats"][idx]["i"] = -2;
+      doc["stats"][idx]["k"] = "SDK Version";
+#if defined(ESP8266)
+      doc["stats"][idx]["v"] = ESP.getCoreVersion();
+#elif defined(ESP32)
+      doc["stats"][idx]["v"] = String(esp_get_idf_version());
+#endif
+      idx++;
 
       // MAC Address
-      obj["i"] = -3;
-      obj["k"] = "MAC Address";
-      obj["v"] = WiFi.macAddress();
-      serializeJson(obj, buf);
-      obj.clear();
-      buf += ",";
+      doc["stats"][idx]["i"] = -3;
+      doc["stats"][idx]["k"] = "MAC Address";
+      doc["stats"][idx]["v"] = WiFi.macAddress();
+      idx++;
     }
 
     // Free Heap
-    obj["i"] = -4;
-    obj["k"] = "Free Heap (SRAM)";
-    obj["v"] = ESP.getFreeHeap();
-    serializeJson(obj, buf);
-    obj.clear();
-    buf += ",";
+    doc["stats"][idx]["i"] = -4;
+    doc["stats"][idx]["k"] = "Free Heap (SRAM)";
+    doc["stats"][idx]["v"] = ESP.getFreeHeap();
+    idx++;
 
     // WiFi Mode
-    obj["i"] = -5;
-    obj["k"] = "WiFi Mode";
-    obj["v"] = WiFi.getMode();
-    serializeJson(obj, buf);
-    obj.clear();
-    buf += ",";
+    doc["stats"][idx]["i"] = -5;
+    doc["stats"][idx]["k"] = "WiFi Mode";
+    doc["stats"][idx]["v"] = WiFi.getMode();
+    idx++;
 
     // WiFi Signal
-    obj["i"] = -6;
-    obj["k"] = "WiFi Signal";
-    obj["v"] = WiFi.RSSI();
-    serializeJson(obj, buf);
-    obj.clear();
+    doc["stats"][idx]["i"] = -6;
+    doc["stats"][idx]["k"] = "WiFi Signal";
+    doc["stats"][idx]["v"] = WiFi.RSSI();
+    idx++;
   }
 
   // Loop through user defined stats
-  StaticJsonDocument<128> obj;
-  bool prevStatWritten = default_stats_enabled;
-  for (int i=0; i < statistics.Size(); i++) {
-    Statistic *s = statistics[i];
+  for (int i = 0; i < statistics.Size(); i++) {
+    Statistic* s = statistics[i];
     if (changes_only) {
-      if (s->_changed) {
-        s->_changed = false;
-      } else {
+      if (!s->_changed) {
         continue;
       }
     }
-    if (prevStatWritten) {
-      buf += ",";
+
+    doc["stats"][idx]["i"] = s->_id;
+    doc["stats"][idx]["k"] = s->_key;
+    if (changes_only || strlen(s->_value) > 0)
+      doc["stats"][idx]["v"] = s->_value;
+    doc["stats"][idx]["v"] = s->_value;
+    idx++;
+
+    if (overflowed(doc)) {
+      doc["stats"].as<JsonArray>().remove(idx - 1);
+      send(client, doc);
+      doc["command"] = changes_only ? "update:components" : "update:layout:next";
+      i--;
+      idx = 0;
+      continue;
     }
-    obj["i"] = s->_id;
-    obj["k"] = s->_key;
-    if(changes_only || strlen(s->_value) > 0)
-      obj["v"] = s->_value;
-    obj["v"] = s->_value;
-    serializeJson(obj, buf);
-    obj.clear();
-    prevStatWritten = true;
+
+    // Clear change flags
+    if (changes_only) {
+      s->_changed = false;
+    }
   }
 
-  buf += "]";
-  // Close JSON
-  buf += "}";
-
-  // Store the length of the JSON string
-  size_t total = buf.length();
-  // Send resp
-  #ifdef DASH_DEBUG
-  Serial.printf("client=%d, count=%d, changes_only=%d, total=%d\n%s\n", (client == nullptr ? -1 : client->id()), clients, changes_only, total, buf.c_str());
-  #endif
-  if (client != nullptr) {
-    _ws->text(client->id(), buf.c_str(), total);
-  } else {
-    _ws->textAll(buf.c_str(), total);
-  }
-
-  // Serial.println("Free Heap (During Update): "+String( ESP.getFreeHeap() ));
-  // Return length
-  return total;
+  if (idx > 0)
+    send(client, doc);
 }
 
+void ESPDash::send(AsyncWebSocketClient* client, JsonDocument& doc) {
+  const size_t len = measureJson(doc);
+  AsyncWebSocketMessageBuffer* buffer = _ws->makeBuffer(len);
+  assert(buffer);
+  serializeJson(doc, buffer->get(), len);
+  if (client != nullptr) {
+    client->text(buffer);
+  } else {
+    _ws->textAll(buffer);
+  }
+  doc.clear();
+}
+
+bool ESPDash::overflowed(JsonDocument& doc) {
+  return doc.overflowed() || measureJson(doc.as<JsonObject>()) > DASH_JSON_SIZE;
+}
 
 /*
   Generate Card JSON
 */
 void ESPDash::generateComponentJSON(JsonObject& doc, Card* card, bool change_only){
   doc["id"] = card->_id;
-  if(!change_only){
-    doc["n"] = card->_name.c_str();
+  if (!change_only){
+    doc["n"] = card->_name;
     doc["t"] = cardTags[card->_type].type;
     doc["min"] = card->_value_min;
     doc["max"] = card->_value_max;
+    if (card->_value_step != 1)
+      doc["step"] = card->_value_step;
   }
   if(change_only || !card->_symbol.isEmpty())
     doc["s"] = card->_symbol;
@@ -386,7 +396,7 @@ void ESPDash::generateComponentJSON(JsonObject& doc, Card* card, bool change_onl
 void ESPDash::generateComponentJSON(JsonObject& doc, Chart* chart, bool change_only){
   doc["id"] = chart->_id;
   if(!change_only){
-    doc["n"] = chart->_name.c_str();
+    doc["n"] = chart->_name;
     doc["t"] = chartTags[chart->_type].type;
   }
 
@@ -473,18 +483,18 @@ void ESPDash::generateComponentJSON(JsonObject& doc, Chart* chart, bool change_o
 
 /* Send Card Updates to all clients */
 void ESPDash::sendUpdates(bool force) {
+  _ws->cleanupClients(DASH_MAX_WS_CLIENTS);
+  if (!hasClient()) {
+    return;
+  }
   generateLayoutJSON(nullptr, !force);
 }
 
-void ESPDash::refreshLayout() {
-  _ws->textAll("{\"command\":\"refresh:layout\"}");
-}
-
-void ESPDash::refreshStatistics() {
-  generateLayoutJSON(nullptr, true);
-}
-
 void ESPDash::refreshCard(Card *card) {
+  _ws->cleanupClients(DASH_MAX_WS_CLIENTS);
+  if (!hasClient()) {
+    return;
+  }
   generateLayoutJSON(nullptr, true, card);
 }
 

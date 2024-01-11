@@ -15,13 +15,12 @@ class Statistic {
     private:
         ESPDash *_dashboard;
         uint32_t _id;
-        char _key[32];
+        const char *_key;
         char _value[64];
         bool _changed = false;
 
     public:
         Statistic(ESPDash *dashboard, const char *key, const char *value = "");
-        void set(const char *key, const char *value);
         void set(const char *value);
         ~Statistic();
 

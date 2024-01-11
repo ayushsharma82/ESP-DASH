@@ -21,12 +21,10 @@
   "dependencies":
   [
     {
-      "name": "ESPAsyncWebServer-esphome",
-      "version": "^3.1.0"
+      "name": "ESP Async WebServer"
     },
     {
-      "name": "ArduinoJson",
-      "version": "^6.17.0"
+      "name": "ArduinoJson"
     }
   ]
 }

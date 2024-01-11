@@ -45,20 +45,12 @@ Github URL: https://github.com/ayushsharma82/ESP-DASH
 #include "Chart.h"
 #include "Statistic.h"
 
-#ifndef DASH_LAYOUT_JSON_SIZE
-  #define DASH_LAYOUT_JSON_SIZE 1024 * 5
+#ifndef DASH_JSON_SIZE
+#define DASH_JSON_SIZE 2048
 #endif
 
-#ifndef DASH_PARTIAL_UPDATE_JSON_SIZE
-  #define DASH_PARTIAL_UPDATE_JSON_SIZE DASH_LAYOUT_JSON_SIZE
-#endif
-
-#ifndef DASH_CARD_JSON_SIZE
-  #define DASH_CARD_JSON_SIZE 256
-#endif
-
-#ifndef DASH_CHART_JSON_SIZE
-  #define DASH_CHART_JSON_SIZE 2048
+#if ARDUINOJSON_VERSION_MAJOR == 6 && !defined(DASH_JSON_DOCUMENT_ALLOCATION)
+#define DASH_JSON_DOCUMENT_ALLOCATION DASH_JSON_SIZE * 3
 #endif
 
 #ifndef DASH_USE_LEGACY_CHART_STORAGE
@@ -89,15 +81,16 @@ class ESPDash{
     char password[64];
     uint32_t _idCounter = 0;
 
+    volatile bool _asyncAccessInProgress = false;
+
     // Generate layout json
-    size_t generateLayoutJSON(AsyncWebSocketClient *client, bool changes_only = false, Card *onlyCard = nullptr);
+    void generateLayoutJSON(AsyncWebSocketClient* client, bool changes_only = false, Card* onlyCard = nullptr);
+    void send(AsyncWebSocketClient* client, JsonDocument& doc);
+    bool overflowed(JsonDocument& doc);
 
     // Generate Component JSON
     void generateComponentJSON(JsonObject& obj, Card* card, bool change_only = false);
     void generateComponentJSON(JsonObject& obj, Chart* chart, bool change_only = false);
-
-    // This method is called when a card/chart is added or removed
-    void refreshLayout();
 
   public:
     ESPDash(AsyncWebServer* server, const char* uri, bool enable_default_stats = true);
@@ -125,14 +118,16 @@ class ESPDash{
 
     // Notify client side to update values
     void sendUpdates(bool force = false);
-
-    void refreshStatistics();
-
+    void refreshLayout() { sendUpdates(true); }
     void refreshCard(Card *card);
 
     uint32_t nextId();
 
     bool hasClient();
+
+    // can be used to check if the async_http task might currently access the cards data, 
+    // in which case you should not modify them
+    bool isAsyncAccessInProgress() { return _asyncAccessInProgress; }
 
     ~ESPDash();
 };
