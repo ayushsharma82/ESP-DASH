@@ -33,7 +33,7 @@ class Chart {
     ESPDash *_dashboard;
 
     uint32_t _id;
-    String _name;
+    const char *_name;
     int   _type;
     bool  _changed;
     GraphAxisType _x_axis_type;

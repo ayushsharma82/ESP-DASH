@@ -33,7 +33,7 @@ class Card {
     ESPDash *_dashboard;
 
     uint32_t _id;
-    String _name;
+    const char* _name;
     int   _type;
     bool  _changed;
     enum { INTEGER, FLOAT, STRING } _value_type;
@@ -44,11 +44,12 @@ class Card {
     String _value_s;
     int _value_min;
     int _value_max;
+    int _value_step;
     String _symbol;
     std::function<void(int value)> _callback = nullptr;
 
   public:
-    Card(ESPDash *dashboard, const int type, const char* name, const char* symbol = "", const int min = 0, const int max = 0);
+    Card(ESPDash *dashboard, const int type, const char* name, const char* symbol = "", const int min = 0, const int max = 0, const int step = 1);
     void attachCallback(std::function<void(int)> cb);
     void update(int value);
     void update(int value, const char* symbol);

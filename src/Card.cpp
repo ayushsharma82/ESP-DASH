@@ -3,7 +3,7 @@
 /*
   Constructor
 */
-Card::Card(ESPDash *dashboard, const int type, const char* name, const char* symbol, const int min, const int max){
+Card::Card(ESPDash *dashboard, const int type, const char* name, const char* symbol, const int min, const int max, const int step){
   _dashboard = dashboard;
   _id = dashboard->nextId();
   _type = type;
@@ -11,6 +11,7 @@ Card::Card(ESPDash *dashboard, const int type, const char* name, const char* sym
   _symbol = symbol;
   _value_min = min;
   _value_max = max;
+  _value_step = step;
   _dashboard->add(this);
 }
 
