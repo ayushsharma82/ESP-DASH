@@ -71,9 +71,9 @@ void setup() {
   Serial.println(WiFi.localIP());
 
   /* Attach Button Callback */
-  button.attachCallback([&](bool value){
+  button.attachCallback([&](int value){
     /* Print our new button value received from dashboard */
-    Serial.println("Button Triggered: "+String((value)?"true":"false"));
+    Serial.println("Button Triggered: "+String((value == 1)?"true":"false"));
     /* Make sure we update our button's value and send update to dashboard */
     button.update(value);
     dashboard.sendUpdates();
