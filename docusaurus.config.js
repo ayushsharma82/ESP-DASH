@@ -68,7 +68,10 @@ const config = {
         logo: {
           src: 'img/dash-splash.png',
           alt: 'ESP-DASH',
-          width: 84
+          width: 128,
+          style: {
+            borderRadius: "4px",
+          }
         },
         items: [
           // {
