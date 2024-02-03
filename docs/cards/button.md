@@ -1,7 +1,7 @@
 ---
 title: Toggle Button
 sidebar_label: Toggle Button
-sidebar_position: 5
+sidebar_position: 6
 ---
 
 #### Preview:

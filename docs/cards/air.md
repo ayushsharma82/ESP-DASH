@@ -1,17 +1,12 @@
 ---
 title: Air Card
 sidebar_label: Air (Pro)
-sidebar_position: 4
+sidebar_position: 8
 ---
 
-<div className="pro-label">
-    <i>
-        <h4 style={{ fontWeight: '500', marginBottom: 5 }}>
-             This feature is available in <a target="_blank" style={{ color: "red" }} href="https://espdash.pro">DASH Pro</a> only.
-        </h4>
-         
-    </i>
-</div>
+:::danger Pro Feature
+This is an exclusive feature of DASH Pro. Check it out [here](https://espdash.pro).
+:::
 
 
 #### Preview:
