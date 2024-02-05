@@ -8,7 +8,7 @@ sidebar_position: 18
 This is an exclusive feature of DASH Pro. Check it out [here](https://espdash.pro).
 :::
 
-<img className="card-preview" src="/img/v4/text-input-card.png" width="280px" alt="Text Input Card Preview" />
+<img className="card-preview" src="/img/v4/time-sync-card.png" width="280px" alt="Text Input Card Preview" />
 
 <br/>
 <br/>
