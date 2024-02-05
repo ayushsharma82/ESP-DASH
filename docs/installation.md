@@ -4,21 +4,39 @@ sidebar_label: Installation
 sidebar_position: 3
 ---
 
-ESP-DASH depends on the following open-source libraries/boards. Make sure to install them before you install ESP-DASH.
+This document explains the installation procedure for getting started with ESP-DASH.
 
-##### For ESP8266:
-- [ESP8266 Arduino Core](https://github.com/esp8266/Arduino) - **(latest)**
-- [ESPAsyncTCP](https://github.com/me-no-dev/ESPAsyncTCP) - **v1.2.0**
-- [ESPAsyncWebServer](https://github.com/me-no-dev/ESPAsyncWebServer) - **v1.2.3**
-- [ArduinoJson](https://github.com/bblanchon/ArduinoJson) - **v6.17.0**
+### Dependencies
 
-##### For ESP32:
-- [ESP32 Arduino Core](https://github.com/espressif/arduino-esp32) - **(latest)**
-- [AsyncTCP](https://github.com/me-no-dev/AsyncTCP) - **v1.0.3**
-- [ESPAsyncWebServer](https://github.com/me-no-dev/ESPAsyncWebServer) - **v1.2.3**
-- [ArduinoJson](https://github.com/bblanchon/ArduinoJson) - **v6.17.0**
+*ESP-DASH depends on the following libraries present in your libraries folder. Please stricly install the compatible versions of these dependencies only! Using any other version might break ESP-DASH or may cause ESP-DASH to work partially.*
 
-<br/>
+#### For ESP8266:
+- [ESP8266 Arduino Core](https://github.com/esp8266/Arduino) @ **latest**
+- [ESPAsyncTCP](https://github.com/me-no-dev/ESPAsyncTCP) @ **latest**
+- [ESPAsyncWebServer](https://github.com/me-no-dev/ESPAsyncWebServer) @ **latest**
+- [ArduinoJson](https://github.com/bblanchon/ArduinoJson) @ **v7.0.2**
+
+#### For ESP32:
+- [ESP32 Arduino Core](https://github.com/espressif/arduino-esp32) @ **latest**
+- [AsyncTCP](https://github.com/me-no-dev/AsyncTCP) @ **latest**
+- [ESPAsyncWebServer](https://github.com/me-no-dev/ESPAsyncWebServer) @ **latest**
+- [ArduinoJson](https://github.com/bblanchon/ArduinoJson) @ **v7.0.2**
+
+:::tip Recommended Dependencies
+
+Although ESP-DASH supports the **official** dependencies, If your dashboard contains a lot of components, It's advised to switch to the following **fork of dependencies** for a crash-free experience. These forks are drop-in replacements which contain bugfixes and offer much better performance.
+
+#### For ESP8266:
+- [esphome/ESPAsyncTCP](https://github.com/esphome/ESPAsyncTCP) @ **latest**
+- [mathieucarbou/ESPAsyncWebServer](https://github.com/mathieucarbou/ESPAsyncWebServer) @ **2.5.1**
+
+#### For ESP32:
+- [esphome/AsyncTCP](https://github.com/esphome/AsyncTCP) @ **latest**
+- [mathieucarbou/ESPAsyncWebServer](https://github.com/mathieucarbou/ESPAsyncWebServer) @ **2.5.1**
+
+*Please make sure to uninstall the 'original' dependencies from your libraries folder if you have installed any of these forks. If the previous dependencies remain are still installed, the compiler will throw an error.*
+:::
+
 
 ### Installing ESP-DASH 
 
