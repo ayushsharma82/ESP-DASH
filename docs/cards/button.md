@@ -4,10 +4,7 @@ sidebar_label: Toggle Button
 sidebar_position: 6
 ---
 
-#### Preview:
-
 <img className="card-preview" src="/img/v4/button-card-false.png" width="280px" alt="Button Card Preview" />
- &nbsp; 
 <img className="card-preview" src="/img/v4/button-card-true.png" width="280px" alt="Button Card Preview" />
 
 <br/>
@@ -15,19 +12,8 @@ sidebar_position: 6
 
 Button card adds a interactive toggle button to your dashboard. This provides you with a simple `1` or `0` input from your dashboard.
 
-<br/>
+### Initializer
 
-#### Type:
-`BUTTON_CARD`
-
-<br/>
-
-#### Valid Data Types:
-- `int`
-
-<br/>
-
-#### Initializer:
 ```cpp
 /* 
   Button Card
@@ -36,9 +22,8 @@ Button card adds a interactive toggle button to your dashboard. This provides yo
 Card card1(&dashboard, BUTTON_CARD, "Test Button");
 ```
 
-<br/>
+### Callback
 
-#### Callback:
 Button card requires a callback function which will be executed when we receive a input from our dashboard. In this example, we will use the `attachCallback` function and provide a lambda function with a boolean argument.
 
 In the case of button card, the value sent by your dashboard will be opposite of your current value. For Example: If your button is set to `0`, then clicking that button on dashboard will trigger this callback with `1`.
@@ -57,9 +42,7 @@ card1.attachCallback([&](int value){
 });
 ```
 
-<br/>
-
-#### Updaters:
+### Updater
 
 ```cpp
 card1.update(1);
@@ -68,5 +51,35 @@ card1.update(1);
 ```cpp
 card1.update(0);
 ```
-<br/>
-<br/>
+
+### Reference
+
+This is a reference sketch showing positions for intializer, callback and updater.
+
+<!-- A complete dummy sketch showing positions for intializer and updater -->
+```cpp
+
+...
+
+/* Button card initializer */
+Card button(&dashboard, BUTTON_CARD, "Test Button");
+
+
+void setup() {
+  ...
+
+  /* Button card callback */
+  button.attachCallback([&](int value){
+    Serial.println("Button Callback Triggered: "+String((value == 1)?"true":"false"));
+    /* Button card updater - you need to update the button with latest value upon firing of callback */
+    button.update(value);
+    /* Send update to dashboard */
+    dashboard.sendUpdates();
+  });
+}
+
+void loop() {
+  ...
+}
+
+```

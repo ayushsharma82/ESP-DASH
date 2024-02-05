@@ -4,8 +4,6 @@ sidebar_label: Temperature
 sidebar_position: 2
 ---
 
-#### Preview:
-
 <img className="card-preview" src="/img/v4/temperature-card.png" width="280px" alt="Preview" />
 
 <br/>
@@ -13,21 +11,8 @@ sidebar_position: 2
 
 This card adds a distinctive temperature icon, and just like generic card you can add a symbol which will be appended to your data.
 
-<br/>
+### Initializer
 
-#### Type:
-`TEMPERATURE_CARD`
-
-<br/>
-
-#### Valid Data Types:
-- `int`
-- `float`
-- `String`
-
-<br/>
-
-#### Initializer:
 ```cpp
 /* 
   Temperature Card
@@ -36,9 +21,13 @@ This card adds a distinctive temperature icon, and just like generic card you ca
 Card card1(&dashboard, TEMPERATURE_CARD, "Temperature1", "°C");
 ```
 
-<br/>
+### Callback
 
-#### Updaters:
+:::note
+*Temperature card doesn't require any callback.*
+:::
+
+### Updater
 
 ```cpp
 card1.update(int value);
@@ -58,5 +47,29 @@ Or you can also update the symbol along with the value like this:
 card1.update(value, "°F");
 ```
 
-<br/>
-<br/>
+### Reference
+
+This is a reference sketch showing positions for intializer and updater.
+
+
+<!-- A complete dummy sketch showing positions for intializer and updater -->
+```cpp
+
+...
+
+/* Temperature card initializer */
+Card temperature(&dashboard, TEMPERATURE_CARD, "Temperature1");
+
+
+void setup() {
+  ...
+
+  /* Temperature card updater - can be used anywhere (apart from global scope) */
+  temperature.update(100);
+}
+
+void loop() {
+  ...
+}
+
+```

@@ -8,33 +8,13 @@ sidebar_position: 4
 This is an exclusive feature of DASH Pro. Check it out [here](https://espdash.pro).
 :::
 
-#### Preview:
-
 <img className="card-preview" src="/img/v4/pie-chart.png" width="380px" alt="Preview" />
 
 <br/>
 <br/>
 
-#### Type: 
-`PIE_CHART`
+### Initializer
 
-<br/>
-
-#### Valid Data Types for X-Axis:
-- `int`
-- `float`
-- `String`
-- `const char*`
-
-<br/>
-
-#### Valid Data Types for Y-Axis:
-- `int`
-- `float`
-
-<br/>
-
-#### Initializer:
 ```cpp
 /* 
   Pie Chart
@@ -43,12 +23,12 @@ This is an exclusive feature of DASH Pro. Check it out [here](https://espdash.pr
 Chart chart1(&dashboard, PIE_CHART, "Chart Name");
 ```
 
-<br/>
+### Updater
 
-#### Updaters:
+#### For X-Axis
 
-##### For X-Axis:
 X-Axis updater uses `updateX` function.
+
 ```cpp
 /*
   Data for X Axis of our Chart
@@ -72,8 +52,19 @@ String XAxis[] = {"Biscuits", "Cookies", "Milk", "Thing4", "Thing5"};
 chart1.updateX(XAxis, 5);
 ```
 
-##### For Y-Axis:
+##### X-Axis Data Types
+
+- `int`
+- `float`
+- `String`
+- `const char*`
+
+---
+
+#### For Y-Axis
+
 Y-Axis updater uses `updateY` function.
+
 ```cpp
 /*
   Data for Y Axis of our Chart
@@ -91,4 +82,40 @@ int YAxis[] = {0, 0, 0, 0, 0};
   (float array[], size_t array_size)
 */
 chart1.updateY(YAxis, 5);
+```
+
+#### Y-Axis Data Types
+
+- `int`
+- `float`
+
+### Reference
+
+This is a reference sketch showing positions for intializer and updater.
+
+<!-- A complete dummy sketch showing positions for intializer and updater -->
+```cpp
+
+...
+
+/* Pie Chart initializer */
+Chart pie(&dashboard, PIE_CHART, "Chart Name");
+
+/* XAxis & YAxis data in global scope */
+int YAxis[] = {0, 0, 0, 0, 0};
+String XAxis[] = {"Biscuits", "Cookies", "Milk", "Thing4", "Thing5"};
+
+void setup() {
+  ...
+
+  /* Pie Chart x-axis updater - can be used anywhere (apart from global scope) */
+  pie.updateX(XAxis, 5); // Ideally only once in setup block
+
+  /* Pie Chart y-axis updater - can be used anywhere (apart from global scope) */
+  pie.updateY(YAxis, 5);
+}
+
+void loop() {
+  ...
+}
 ```

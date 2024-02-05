@@ -8,32 +8,16 @@ sidebar_position: 13
 This is an exclusive feature of DASH Pro. Check it out [here](https://espdash.pro).
 :::
 
-
-#### Preview:
 <img className="card-preview" src="/img/v4/dropdown-card.png" width="280px" alt="Preview" />
- &nbsp; 
 <img className="card-preview" src="/img/v4/dropdown-card-2.png" width="280px" alt="Preview" />
 
 <br/>
-
-
 <br/>
 
 This card adds a dropdown selectable list on your dashboard. You can pass "," comma separated list as it's secondary value with unlimited number of choices.
 
-<br/>
+### Initializer
 
-#### Type:
-`DROPDOWN_CARD`
-
-<br/>
-
-#### Valid Data Types:
-- `String`
-
-<br/>
-
-#### Initializer:
 ```cpp
 /* 
   Dropdown Card
@@ -42,9 +26,7 @@ This card adds a dropdown selectable list on your dashboard. You can pass "," co
 Card card1(&dashboard, DROPDOWN_CARD, "Test Dropdown", "Option1,Option2,Option3,Option4");
 ```
 
-<br/>
-
-#### Callback:
+### Callback
 
 The Dropdown Card requires a callback function that will be invoked when input is received from the dashboard. This function should utilize the `attachCallback` method and provide a lambda function with a `const char*` parameter.
 
@@ -62,9 +44,7 @@ card1.attachCallback([&](const char* value){
 });
 ```
 
-<br/>
-
-#### Updaters:
+### Updater
 
 This will change the selected value of our dropdown:
 
@@ -79,5 +59,34 @@ Or you can also update the choices along with the value like this:
 card1.update(const char* value, const char* choices);
 ```
 
-<br/>
-<br/>
+### Reference
+
+This is a reference sketch showing positions for intializer, callback and updater.
+
+<!-- A complete dummy sketch showing positions for intializer and updater -->
+```cpp
+
+...
+
+/* Dropdown card initializer */
+Card dropdown(&dashboard, DROPDOWN_CARD, "Test Dropdown", "Option1,Option2,Option3,Option4");
+
+
+void setup() {
+  ...
+
+  /* Dropdown card callback */
+  dropdown.attachCallback([&](const char* value){
+    Serial.println("Dropdown Callback Triggered: "+String(value));
+    /* Dropdown card updater - you need to update the button with latest value upon firing of callback */
+    dropdown.update(value);
+    /* Send update to dashboard */
+    dashboard.sendUpdates();
+  });
+}
+
+void loop() {
+  ...
+}
+
+```

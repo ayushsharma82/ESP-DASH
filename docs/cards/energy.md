@@ -8,8 +8,6 @@ sidebar_position: 9
 This is an exclusive feature of DASH Pro. Check it out [here](https://espdash.pro).
 :::
 
-#### Preview:
-
 <img className="card-preview" src="/img/v4/energy-card.png" width="280px" alt="Energy Card Preview" />
 
 <br/>
@@ -17,21 +15,8 @@ This is an exclusive feature of DASH Pro. Check it out [here](https://espdash.pr
 
 This card adds a distinctive energy/power icon, and just like generic card you can add a symbol which will be appended to your data. This card can be used to show something related to power consumption and usage etc.
 
-<br/>
+### Initializer
 
-#### Type:
-`ENERGY_CARD`
-
-<br/>
-
-#### Valid Data Types:
-- `int`
-- `float`
-- `String`
-
-<br/>
-
-#### Initializer:
 ```cpp
 /* 
   Energy Card
@@ -40,9 +25,13 @@ This card adds a distinctive energy/power icon, and just like generic card you c
 Card card1(&dashboard, ENERGY_CARD, "Power Consumption", "kWh");
 ```
 
-<br/>
+### Callback
 
-#### Updaters:
+:::note
+*Energy card doesn't require any callback.*
+:::
+
+### Updater
 
 ```cpp
 card1.update(int value);
@@ -62,6 +51,28 @@ Or you can also update the symbol along with the value like this:
 card1.update(value, "kWh");
 ```
 
-<br/>
+### Reference
 
-<br/>
+This is a reference sketch showing positions for intializer and updater.
+
+<!-- A complete dummy sketch showing positions for intializer and updater -->
+```cpp
+
+...
+
+/* Energy card initializer */
+Card energy(&dashboard, ENERGY_CARD, "Power Consumption", "kWh");
+
+
+void setup() {
+  ...
+
+  /* Energy card updater - can be used anywhere (apart from global scope) */
+  energy.update(100);
+}
+
+void loop() {
+  ...
+}
+
+```

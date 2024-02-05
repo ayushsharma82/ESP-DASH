@@ -9,29 +9,15 @@ This is an exclusive feature of DASH Pro. Check it out [here](https://espdash.pr
 :::
 
 
-#### Preview:
 <img className="card-preview" src="/img/v4/image-card.png" width="280px" alt="Preview" />
 
 <br/>
-
-
 <br/>
 
 This card adds a image on your dashboard. You can pass a absolute URL to this card and it will load that image within this card on the dashboard. If the size is a bit small for you, then you can even make the card bigger by using the size value together with `setSize` function.
 
-<br/>
+### Initializer
 
-#### Type:
-`IMAGE_CARD`
-
-<br/>
-
-#### Valid Data Types:
-- `String`
-
-<br/>
-
-#### Initializer:
 ```cpp
 /* 
   Image Card
@@ -40,9 +26,13 @@ This card adds a image on your dashboard. You can pass a absolute URL to this ca
 Card card1(&dashboard, IMAGE_CARD, "Test Image", "lg");
 ```
 
-<br/>
+### Callback
 
-#### Updaters:
+:::note
+*Image card doesn't require any callback.*
+:::
+
+### Updater
 
 After initialization, you will have to provide the URL of the image which you want to display.
 
@@ -57,5 +47,28 @@ Or you can also update the size of image using the second parameter. Supported s
 card1.update(const char* url, const char* size);
 ```
 
-<br/>
-<br/>
+### Reference
+
+This is a reference sketch showing positions for intializer and updater.
+
+<!-- A complete dummy sketch showing positions for intializer and updater -->
+```cpp
+
+...
+
+/* Image card initializer */
+Card image(&dashboard, IMAGE_CARD, "Test Image", "lg");
+
+
+void setup() {
+  ...
+
+  /* Image card updater - can be used anywhere (apart from global scope) */
+  image.update("https://fastly.picsum.photos/id/598/800/600.jpg?grayscale&hmac=SQ5T_OGiPMX4r1fb-gA2fU6pourJEfxmTz7g1HfXOSk");
+}
+
+void loop() {
+  ...
+}
+
+```
