@@ -15,7 +15,7 @@
       "maintainer": true
     }
   ],
-  "version": "4.1.0",
+  "version": "4.0.4",
   "frameworks": "arduino",
   "platforms": ["espressif32", "espressif8266"],
   "dependencies":
