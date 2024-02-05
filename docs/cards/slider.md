@@ -4,8 +4,6 @@ sidebar_label: Slider
 sidebar_position: 7
 ---
 
-#### Preview:
-
 <img className="card-preview" src="/img/v4/slider-card.png" width="380px" alt="Preview" />
 
 <br/>
@@ -13,31 +11,20 @@ sidebar_position: 7
 
 This card adds a interactive horizontal slider to your dashboard. Slider card is useful when you require a integer input within a certain range. ( Example use case: LED brightness control )
 
-<br/>
+### Initializer
 
-#### Type: 
-`SLIDER_CARD`
+With slider card, Initializer requires `min` & `max` range. Additionally you can also supply `step` as a seventh argument to set the step size of the slider.
 
-<br/>
-
-#### Valid Data Types:
-- `int`
-
-<br/>
-
-#### Initializer:
-With slider card, Initializer requires `min` & `max` range.
 ```cpp
 /* 
   Slider Card
   Valid Arguments: (ESPDash dashboard, Card Type, const char* name, const char* symbol (optional), int min, int max)
 */
-Card card1(&dashboard, SLIDER_CARD, "Test Slider", "", 0, 255);
+Card card1(&dashboard, SLIDER_CARD, "Test Slider", "", 0, 255, 1);
 ```
 
-<br/>
+### Callback
 
-#### Callback:
 Slider Card requires a callback function which will be called when we receive a input from our dashboard. We will be calling our `attachCallback` function and provide a lambda function with a `int` argument.
 
 **Note:** You need to call the `update` function and `sendUpdates` immediately once you receive the value in callback. Otherwise user input will not be registered on dashboard.
@@ -47,22 +34,57 @@ Slider Card requires a callback function which will be called when we receive a 
   We provide our attachCallback with a lambda function to handle incomming data
   `value` is the boolean sent from your dashboard
 */
-card1.attachCallback([&](int value){
+card1.attachCallback([&](float value){
   Serial.println("[Card1] Slider Callback Triggered: "+String(value));
   card1.update(value);
   dashboard.sendUpdates();
 });
 ```
 
-<br/>
-
-#### Updaters:
+### Updater
 
 ```cpp
 card1.update(int value);
 ```
 
+```cpp
+card1.update(float value);
+```
+
 Or, update symbol along your value:
+
 ```cpp
 card1.update(244, "%");
+```
+
+### Reference
+
+This is a reference sketch showing positions for intializer, callback and updater.
+
+<!-- A complete dummy sketch showing positions for intializer and updater -->
+```cpp
+
+...
+
+/* Slider card initializer */
+Card slider(&dashboard, SLIDER_CARD, "Test Slider", "", 0, 255, 1);
+
+
+void setup() {
+  ...
+
+  /* Slider card callback */
+  slider.attachCallback([&](float value){
+    Serial.println("Slider Callback Triggered: "+String(value));
+    /* Slider card updater - you need to update the slider with latest value upon firing of callback */
+    slider.update(value);
+    /* Send update to dashboard */
+    dashboard.sendUpdates();
+  });
+}
+
+void loop() {
+  ...
+}
+
 ```

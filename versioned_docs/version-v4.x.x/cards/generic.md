@@ -11,16 +11,8 @@ sidebar_position: 1
 
 Generic card is the 'fits-all-types' card, which you can use to display any kind of value. It's mostly used when you want to display numbers, strings etc which don't relate to any other card in the list.
 
-### Type
-`GENERIC_CARD`
-
-### Data Types
-- `int`
-- `bool`
-- `float`
-- `String`
-
 ### Initializer
+
 ```cpp
 /* 
   Generic Card
@@ -54,7 +46,8 @@ card1.update(String value);
 ```
 
 ### Reference
-This is a reference sketch showing positions for intializer, callback and updater.
+
+This is a reference sketch showing positions for intializer and updater.
 
 
 <!-- A complete dummy sketch showing positions for intializer and updater -->
@@ -62,7 +55,7 @@ This is a reference sketch showing positions for intializer, callback and update
 
 ...
 
-/* Generic Card Initializer */
+/* Generic card initializer */
 Card generic(&dashboard, GENERIC_CARD, "Generic1");
 
 

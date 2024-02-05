@@ -8,8 +8,6 @@ sidebar_position: 12
 This is an exclusive feature of DASH Pro. Check it out [here](https://espdash.pro).
 :::
 
-#### Preview:
-
 <img className="card-preview" src="/img/v4/text-input-card.png" width="280px" alt="Text Input Card Preview" />
 
 <br/>
@@ -19,32 +17,18 @@ Just like `Text Input` card, Password card gives you the ability to take String 
 
 This card is very useful for saving any kind of secret or password that requires the input value to be **not** visible on dashboard in plain text.
 
-<br/>
+### Initializer
 
-#### Type:
-`PASSWORD_CARD`
-
-<br/>
-
-#### Valid Data Types:
-- `String`
-- `char`
-
-<br/>
-
-#### Initializer:
 ```cpp
 /* 
-  Energy Card
+  Password Card
   Valid Arguments: (ESPDash dashboard, Card Type, const char* name)
 */
 Card card1(&dashboard, PASSWORD_CARD, "Test Pass");
 ```
 
-<br/>
+### Callback
 
-
-#### Callback:
 Password card requires a callback function which will be called when we receive a input from our dashboard. In setup block, we will be calling our `attachCallback` function and provide a lambda (callback) function with a `const char*` (character array) argument.
 ```cpp
 /*
@@ -55,8 +39,36 @@ card1.attachCallback([&](const char* value){
 });
 ```
 
-<br/>
+### Updater
 
-#### Updaters:
+:::note
+*Password card doesn't require any updater as value is not passed back to dashboard.*
+:::
 
-*Password card doesn't require its value to be updated.*
+### Reference
+
+This is a reference sketch showing positions for intializer and callback.
+
+<!-- A complete dummy sketch showing positions for intializer and updater -->
+```cpp
+
+...
+
+/* Password card initializer */
+Card pass(&dashboard, PASSWORD_CARD, "Test Pass");
+
+
+void setup() {
+  ...
+
+  /* Password card callback */
+  pass.attachCallback([&](const char* value){
+    Serial.println("Password Callback Triggered: "+String(value));
+  });
+}
+
+void loop() {
+  ...
+}
+
+```

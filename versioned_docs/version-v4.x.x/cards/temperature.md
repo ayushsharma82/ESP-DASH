@@ -11,16 +11,8 @@ sidebar_position: 2
 
 This card adds a distinctive temperature icon, and just like generic card you can add a symbol which will be appended to your data.
 
-
-### Type
-`TEMPERATURE_CARD`
-
-### Data Types
-- `int`
-- `float`
-- `String`
-
 ### Initializer
+
 ```cpp
 /* 
   Temperature Card
@@ -56,7 +48,8 @@ card1.update(value, "°F");
 ```
 
 ### Reference
-This is a reference sketch showing positions for intializer, callback and updater.
+
+This is a reference sketch showing positions for intializer and updater.
 
 
 <!-- A complete dummy sketch showing positions for intializer and updater -->
@@ -64,7 +57,7 @@ This is a reference sketch showing positions for intializer, callback and update
 
 ...
 
-/* Temperature Card Initializer */
+/* Temperature card initializer */
 Card temperature(&dashboard, TEMPERATURE_CARD, "Temperature1");
 
 
