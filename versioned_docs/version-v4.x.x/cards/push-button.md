@@ -27,7 +27,7 @@ Push button card adds a static button on your dashboard which has no state. When
 #### Initializer:
 ```cpp
 /* 
-  Button Card
+  Push Button Card
   Valid Arguments: (ESPDash dashboard, Card Type, const char* name)
 */
 Card card1(&dashboard, PUSH_BUTTON_CARD, "Push Button");

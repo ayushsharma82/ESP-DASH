@@ -34,7 +34,7 @@ Although ESP-DASH supports the **official** dependencies, If your dashboard cont
 - [esphome/AsyncTCP](https://github.com/esphome/AsyncTCP) @ **latest**
 - [mathieucarbou/ESPAsyncWebServer](https://github.com/mathieucarbou/ESPAsyncWebServer) @ **2.5.1**
 
-*Please make sure to uninstall the 'original' dependencies from your libraries folder if you have installed any of these forks. If the previous dependencies remain are still installed, the compiler will throw an error.*
+*Please make sure to uninstall the 'original' dependencies from your libraries folder if you have installed any of these forks. If previous dependencies remain installed, the compiler will throw an error.*
 :::
 
 

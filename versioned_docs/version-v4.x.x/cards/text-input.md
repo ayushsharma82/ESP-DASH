@@ -35,7 +35,7 @@ This card is very useful for saving WiFi credentials, user ID and general inform
 #### Initializer:
 ```cpp
 /* 
-  Energy Card
+  Text Input Card
   Valid Arguments: (ESPDash dashboard, Card Type, const char* name)
 */
 Card card1(&dashboard, TEXT_INPUT_CARD, "User Email");

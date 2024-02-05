@@ -35,7 +35,7 @@ This card is very useful for saving any kind of secret or password that requires
 #### Initializer:
 ```cpp
 /* 
-  Energy Card
+  Password Card
   Valid Arguments: (ESPDash dashboard, Card Type, const char* name)
 */
 Card card1(&dashboard, PASSWORD_CARD, "Test Pass");

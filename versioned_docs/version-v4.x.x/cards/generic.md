@@ -4,8 +4,6 @@ sidebar_label: Generic
 sidebar_position: 1
 ---
 
-#### Preview:
-
 <img className="card-preview" src="/img/v4/generic-card.png" width="280px" alt="Preview" />
 
 <br/>
@@ -13,26 +11,16 @@ sidebar_position: 1
 
 Generic card is the 'fits-all-types' card, which you can use to display any kind of value. It's mostly used when you want to display numbers, strings etc which don't relate to any other card in the list.
 
-<small>
-<b>Note:</b> If you can't find the card which you are looking for, you can always raise request for more cards on the repository by creating an issue.
-</small>
-
-<br/>
-
-#### Type: 
+### Type
 `GENERIC_CARD`
 
-<br/>
-
-#### Valid Data Types:
+### Data Types
 - `int`
 - `bool`
 - `float`
 - `String`
 
-<br/>
-
-#### Initializer:
+### Initializer
 ```cpp
 /* 
   Generic Card
@@ -41,9 +29,13 @@ Generic card is the 'fits-all-types' card, which you can use to display any kind
 Card card1(&dashboard, GENERIC_CARD, "Generic1");
 ```
 
-<br/>
+### Callback
 
-#### Updaters:
+:::note
+*Generic card doesn't require any callback.*
+:::
+
+### Updater
 
 ```cpp
 card1.update(int value);
@@ -61,6 +53,28 @@ card1.update(float value);
 card1.update(String value);
 ```
 
-<br/>
+### Reference
+This is a reference sketch showing positions for intializer, callback and updater.
 
-<br/>
+
+<!-- A complete dummy sketch showing positions for intializer and updater -->
+```cpp
+
+...
+
+/* Generic Card Initializer */
+Card generic(&dashboard, GENERIC_CARD, "Generic1");
+
+
+void setup() {
+  ...
+
+  /* Generic card updater - can be used anywhere (apart from global scope) */
+  generic.update(100);
+}
+
+void loop() {
+  ...
+}
+
+```

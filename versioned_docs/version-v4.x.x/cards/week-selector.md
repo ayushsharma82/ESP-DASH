@@ -33,7 +33,7 @@ Week selector card gives you a nice card in which days are selectable by users. 
 #### Initializer:
 ```cpp
 /* 
-  Energy Card
+  Week Selector Card
   Valid Arguments: (ESPDash dashboard, Card Type, const char* name)
 */
 Card card1(&dashboard, WEEK_SELECTOR_CARD, "Select Days");
