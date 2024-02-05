@@ -8,34 +8,13 @@ sidebar_position: 2
 This is an exclusive feature of DASH Pro. Check it out [here](https://espdash.pro).
 :::
 
-#### Preview:
-
 <img className="card-preview" src="/img/v4/line-chart.png" width="500px" alt="Preview" />
 
 <br/>
 <br/>
-<br/>
 
-#### Type: 
-`LINE_CHART`
+### Initializer
 
-<br/>
-
-#### Valid Data Types for X-Axis:
-- `int`
-- `float`
-- `String`
-- `const char*`
-
-<br/>
-
-#### Valid Data Types for Y-Axis:
-- `int`
-- `float`
-
-<br/>
-
-#### Initializer:
 ```cpp
 /* 
   Line Chart
@@ -44,17 +23,19 @@ This is an exclusive feature of DASH Pro. Check it out [here](https://espdash.pr
 Chart chart1(&dashboard, LINE_CHART, "Chart Name");
 ```
 
-<br/>
+### Updater
 
-#### Updaters:
+Use the following functions to update the chart:
 
-##### For X-Axis:
+#### For X-Axis
+
 X-Axis updater uses `updateX` function.
+
 ```cpp
 /*
   Data for X Axis of our Chart
-  This array can be of: `int` / `float` or `String`  
-
+  This array can be of: `int` / `float` or `String`
+    
   Note: this array should be kept in global scope. i.e. it should never be deleted from memory.
 */
 String XAxis[] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
@@ -73,8 +54,19 @@ String XAxis[] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
 chart1.updateX(XAxis, 7);
 ```
 
-##### For Y-Axis:
+#### X-Axis Data Types
+
+- `int`
+- `float`
+- `String`
+- `const char*`
+
+---
+
+#### For Y-Axis
+
 Y-Axis updater uses `updateY` function.
+
 ```cpp
 /*
   Data for Y Axis of our Chart
@@ -92,4 +84,41 @@ int YAxis[] = {0, 0, 0, 0, 0, 0, 0};
   (float array[], size_t array_size)
 */
 chart1.updateY(YAxis, 7);
+```
+
+#### Y-Axis Data Types
+
+- `int`
+- `float`
+
+### Reference
+
+This is a reference sketch showing positions for intializer and updater.
+
+<!-- A complete dummy sketch showing positions for intializer and updater -->
+```cpp
+
+...
+
+/* Line Chart initializer */
+Chart line(&dashboard, LINE_CHART, "Chart Name");
+
+/* XAxis & YAxis data in global scope */
+int YAxis[] = {0, 0, 0, 0, 0, 0, 0};
+String XAxis[] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+
+void setup() {
+  ...
+
+  /* Line chart x-axis updater - can be used anywhere (apart from global scope) */
+  line.updateX(XAxis, 7); // Ideally only once in setup block
+
+  /* Line chart y-axis updater - can be used anywhere (apart from global scope) */
+  line.updateY(YAxis, 7);
+}
+
+void loop() {
+  ...
+}
+
 ```

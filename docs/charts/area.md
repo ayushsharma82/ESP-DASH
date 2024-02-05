@@ -8,32 +8,13 @@ sidebar_position: 3
 This is an exclusive feature of DASH Pro. Check it out [here](https://espdash.pro).
 :::
 
-#### Preview:
-
 <img className="card-preview" src="/img/v4/area-chart.png" width="500px" alt="Preview" />
 
 <br/>
 <br/>
 
-#### Type: 
-`AREA_CHART`
+### Initializer
 
-<br/>
-
-#### Valid Data Types for X-Axis:
-- `int`
-- `float`
-- `String`
-
-<br/>
-
-#### Valid Data Types for Y-Axis:
-- `int`
-- `float`
-
-<br/>
-
-#### Initializer:
 ```cpp
 /* 
   Area Chart
@@ -42,12 +23,14 @@ This is an exclusive feature of DASH Pro. Check it out [here](https://espdash.pr
 Chart chart1(&dashboard, AREA_CHART, "Chart Name");
 ```
 
-<br/>
+### Updater
 
-#### Updaters:
+Use the following functions to update the chart:
 
-##### For X-Axis:
+#### For X-Axis
+
 X-Axis updater uses `updateX` function.
+
 ```cpp
 /*
   Data for X Axis of our Chart
@@ -71,8 +54,19 @@ String XAxis[] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
 chart1.updateX(XAxis, 7);
 ```
 
-##### For Y-Axis:
+#### X-Axis Data Types
+
+- `int`
+- `float`
+- `String`
+- `const char*`
+
+---
+
+#### For Y-Axis
+
 Y-Axis updater uses `updateY` function.
+
 ```cpp
 /*
   Data for Y Axis of our Chart
@@ -90,4 +84,41 @@ int YAxis[] = {0, 0, 0, 0, 0, 0, 0};
   (float array[], size_t array_size)
 */
 chart1.updateY(YAxis, 7);
+```
+
+#### Y-Axis Data Types
+
+- `int`
+- `float`
+
+### Reference
+
+This is a reference sketch showing positions for intializer and updater.
+
+<!-- A complete dummy sketch showing positions for intializer and updater -->
+```cpp
+
+...
+
+/* Area Chart initializer */
+Chart area(&dashboard, AREA_CHART, "Chart Name");
+
+/* XAxis & YAxis data in global scope */
+int YAxis[] = {0, 0, 0, 0, 0, 0, 0};
+String XAxis[] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+
+void setup() {
+  ...
+
+  /* Area chart x-axis updater - can be used anywhere (apart from global scope) */
+  area.updateX(XAxis, 7); // Ideally only once in setup block
+
+  /* Area chart y-axis updater - can be used anywhere (apart from global scope) */
+  area.updateY(YAxis, 7);
+}
+
+void loop() {
+  ...
+}
+
 ```
