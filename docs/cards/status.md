@@ -16,10 +16,10 @@ As it's name suggests, status card is used to display some kind of status on you
 
 ### Valid Statuses
 
-- `"success"` - Green
-- `"danger"` - Red
-- `"warning"` - Yellow
-- `"idle"` - Grey
+- `s` - Success (Green)
+- `d` - Danger (Red)
+- `w` - Warning (Yellow)
+- `i` - Idle (Grey)
 
 ### Initializer
 
@@ -28,7 +28,7 @@ As it's name suggests, status card is used to display some kind of status on you
   Status Card
   Valid Arguments: (ESPDash dashboard, Card Type, const char* name, const char* status (optional) )
 */
-Card card1(&dashboard, STATUS_CARD, "Test Status", "success");
+Card card1(&dashboard, STATUS_CARD, "Test Status", "s");
 ```
 
 ### Callback
@@ -48,7 +48,7 @@ card1.update("message");
 Or, message + status at the same time:
 
 ```cpp
-card1.update("Message", "success");
+card1.update("Message", "s");
 ```
 
 ### Reference
@@ -61,14 +61,14 @@ This is a reference sketch showing positions for intializer and updater.
 ...
 
 /* Status card initializer */
-Card status(&dashboard, STATUS_CARD, "Test Status", "success");
+Card status(&dashboard, STATUS_CARD, "Test Status", "s");
 
 
 void setup() {
   ...
 
   /* Status card updater - can be used anywhere (apart from global scope) */
-  status.update("Warning message", "warning");
+  status.update("Warning message", "w");
 }
 
 void loop() {
