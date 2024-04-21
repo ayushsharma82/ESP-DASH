@@ -18,13 +18,18 @@
   "version": "4.0.4",
   "frameworks": "arduino",
   "platforms": ["espressif32", "espressif8266"],
-  "dependencies":
-  [
+  "dependencies": [
     {
-      "name": "ESP Async WebServer"
+      "owner": "bblanchon",
+      "name": "ArduinoJson",
+      "version": "^7.0.4",
+      "platforms": ["espressif8266", "espressif32"]
     },
     {
-      "name": "ArduinoJson"
+      "owner": "mathieucarbou",
+      "name": "ESP Async WebServer",
+      "version": "^2.10.0",
+      "platforms": ["espressif8266", "espressif32"]
     }
   ]
 }

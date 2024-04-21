@@ -1,44 +1,118 @@
 name: Arduino Library CI
 
-on: 
+on:
   push:
     paths-ignore:
-      - '**/**.md'
-      - '/keywords.txt'
-      - '/library.json'
-      - '/library.properties'
-      - '/vue-frontend'
-      - '/docs'
+      - "**/**.md"
+      - "/keywords.txt"
+      - "/library.json"
+      - "/library.properties"
+      - "/vue-frontend"
+      - "/docs"
   pull_request:
     paths-ignore:
-      - '**/**.md'
-      - '/keywords.txt'
-      - '/library.json'
-      - '/library.properties'
-      - '/vue-frontend'
-      - '/docs'
+      - "**/**.md"
+      - "/keywords.txt"
+      - "/library.json"
+      - "/library.properties"
+      - "/vue-frontend"
+      - "/docs"
 
 jobs:
-  build:
+  arduino:
+    name: arduino ${{ matrix.platform }}
     runs-on: ubuntu-latest
-    
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [esp8266, esp32]
+
     steps:
       - uses: actions/setup-python@v1
         with:
-          python-version: '3.x'
-      
+          python-version: "3.x"
+
       - uses: actions/checkout@v2
 
       - uses: actions/checkout@v2
         with:
-           repository: ayushsharma82/ci-arduino
-           path: ci
+          repository: ayushsharma82/ci-arduino
+          path: ci
 
       - name: pre-install
         run: bash ci/actions_install.sh
-        
-      - name: install-deps
-        run: bash .github/scripts/dep-install.sh
 
-      - name: test platforms
-        run: python3 ci/build_platform.py esp8266 esp32
+      - name: Set configuration
+        run: arduino-cli config set library.enable_unsafe_install true
+
+      - name: Install AsyncTCP
+        run: arduino-cli lib install --git-url https://github.com/mathieucarbou/AsyncTCP#v3.1.2
+
+      - name: Install ESPAsyncWebServer
+        run: arduino-cli lib install --git-url https://github.com/mathieucarbou/ESPAsyncWebServer#v2.10.0
+
+      - name: Install ESPAsyncTCP
+        run: arduino-cli lib install --git-url https://github.com/mathieucarbou/esphome-ESPAsyncTCP#v2.0.0
+
+      - name: Install ArduinoJson
+        run: arduino-cli lib install --git-url https://github.com/bblanchon/ArduinoJson#v7.0.4
+
+      - name: Build Examples
+        run: python3 ci/build_platform.py ${{ matrix.platform }}
+
+  platformio:
+    name: pio ${{ matrix.name }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: esp32dev|arduino
+            board: esp32dev
+            platform: espressif32
+            opts:
+          - name: esp32dev|arduino-2
+            board: esp32dev
+            platform: espressif32@6.7.0
+            opts:
+          - name: esp32dev|arduino-3
+            board: esp32dev
+            platform: espressif32
+            opts: "--project-option 'platform_packages=platformio/framework-arduinoespressif32 @ https://github.com/espressif/arduino-esp32.git#3.0.0, platform_packages=platformio/framework-arduinoespressif32-libs @ https://github.com/espressif/arduino-esp32/releases/download/3.0.0/esp32-arduino-libs-3.0.0.zip'"
+          - name: esp32-s3-devkitc-1|arduino
+            board: esp32-s3-devkitc-1
+            platform: espressif32
+            opts:
+          - name: esp32-s3-devkitc-1|arduino-2
+            board: esp32-s3-devkitc-1
+            platform: espressif32@6.7.0
+            opts:
+          - name: esp32-s3-devkitc-1|arduino-3
+            board: esp32-s3-devkitc-1
+            platform: espressif32
+            opts: "--project-option 'platform_packages=platformio/framework-arduinoespressif32 @ https://github.com/espressif/arduino-esp32.git#3.0.0, platform_packages=platformio/framework-arduinoespressif32-libs @ https://github.com/espressif/arduino-esp32/releases/download/3.0.0/esp32-arduino-libs-3.0.0.zip'"
+          - name: huzzah|espressif8266
+            board: huzzah
+            platform: espressif8266
+            opts:
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.platformio
+            ~/.cache/pip
+          key: ${{ matrix.name }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - run: pip install platformio
+      - run: platformio platform install ${{ matrix.platform }}
+
+      - run: platformio ci "examples/AccessPoint/AccessPoint.ino" -l '.' -b ${{ matrix.board }} ${{ matrix.opts }}
+      - run: platformio ci "examples/Basic/Basic.ino" -l '.' -b ${{ matrix.board }} ${{ matrix.opts }}
+      - run: platformio ci "examples/Benchmark/Benchmark.ino" -l '.' -b ${{ matrix.board }} ${{ matrix.opts }}
+      - run: platformio ci "examples/Chart/Chart.ino" -l '.' -b ${{ matrix.board }} ${{ matrix.opts }}
+      - run: platformio ci "examples/Dynamic/Dynamic.ino" -l '.' -b ${{ matrix.board }} ${{ matrix.opts }}
+      - run: platformio ci "examples/Interactive/Interactive.ino" -l '.' -b ${{ matrix.board }} ${{ matrix.opts }}
