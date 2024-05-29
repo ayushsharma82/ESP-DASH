@@ -38,3 +38,6 @@ node_modules
 ./vue-frontend/dist
 /build
 /portal
+
+/.pio
+/logs
