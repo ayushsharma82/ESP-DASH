@@ -64,6 +64,8 @@ ESPDash::ESPDash(AsyncWebServer* server, const char* uri, bool enable_default_st
           // client side commands parsing
           if (json["command"] == "get:layout") {
             _asyncAccessInProgress = true;
+            if (_beforeUpdateCallback)
+              _beforeUpdateCallback(false);
             generateLayoutJSON(client, false);
             _asyncAccessInProgress = false;
           } else if (json["command"] == "ping") {
@@ -487,6 +489,8 @@ void ESPDash::sendUpdates(bool force) {
   if (!hasClient()) {
     return;
   }
+  if (_beforeUpdateCallback)
+    _beforeUpdateCallback(!force);
   generateLayoutJSON(nullptr, !force);
 }
 
@@ -495,6 +499,8 @@ void ESPDash::refreshCard(Card *card) {
   if (!hasClient()) {
     return;
   }
+  if (_beforeUpdateCallback)
+    _beforeUpdateCallback(true);
   generateLayoutJSON(nullptr, true, card);
 }
 
