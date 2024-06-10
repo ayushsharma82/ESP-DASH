@@ -5,16 +5,15 @@ Statistic::Statistic(ESPDash *dashboard, const char *key, const char *value) {
     _id = dashboard->nextId();
     // Safe copy
     _key = key;
-    strncpy(_value, value, sizeof(_value));
+    _value = value;
     _dashboard->add(this);
 }
 
 void Statistic::set(const char *value) {
     // Safe copy
-    _changed = strcmp(_value, value) != 0;
+    _changed = _value != value;
     if(_changed)
-        strncpy(_value, value, sizeof(_value));
-    
+        _value = value;
 }
 
 Statistic::~Statistic() {
