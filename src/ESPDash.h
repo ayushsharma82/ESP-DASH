@@ -82,8 +82,8 @@ class ESPDash{
     Vector<Statistic*> statistics;
     bool default_stats_enabled = false;
     bool basic_auth = false;
-    char username[64];
-    char password[64];
+    String username;
+    String password;
     uint32_t _idCounter = 0;
     BeforeUpdateCallback _beforeUpdateCallback = nullptr;
 
