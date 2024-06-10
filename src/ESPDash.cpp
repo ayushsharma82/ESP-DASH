@@ -378,7 +378,7 @@ void ESPDash::generateComponentJSON(JsonObject& doc, Card* card, bool change_onl
       doc["v"] = card->_value_i;
       break;
     case Card::FLOAT:
-      doc["v"] = String(card->_value_f, 2);
+      doc["v"] = roundf(card->_value_f * 100) / 100;
       break;
     case Card::STRING:
       if(change_only || !card->_value_s.isEmpty()) {
