@@ -64,17 +64,17 @@ This is a reference sketch showing positions for intializer, callback and update
 
 ...
 
-/* Text input card initializer */
+/* Week selector card initializer */
 Card week(&dashboard, WEEK_SELECTOR_CARD, "Select Days");
 
 
 void setup() {
   ...
 
-  /* Text input card callback */
+  /* Week selector card callback */
   week.attachCallback([&](const char* days){
     Serial.println("Week Selector Callback Triggered: "+String(value));
-    /* Text input card updater - you need to update the button with latest value upon firing of callback */
+    /* Week selector card updater - you need to update week selector with latest value upon firing of callback */
     week.update(value);
     /* Send update to dashboard */
     dashboard.sendUpdates();
