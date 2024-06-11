@@ -1,7 +1,7 @@
 ---
 title: Statistics
 sidebar_label: Statistics
-sidebar_position: 8
+sidebar_position: 3
 ---
 
 <img src="/img/v4/statistics.png" alt="Concept Diagram" width="940px" />

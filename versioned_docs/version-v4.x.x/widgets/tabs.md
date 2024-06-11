@@ -1,7 +1,7 @@
 ---
 title: Tabs
 sidebar_label: Tabs (Pro)
-sidebar_position: 7
+sidebar_position: 4
 ---
 
 :::danger Pro Feature
