@@ -11,20 +11,16 @@ This is an exclusive feature of DASH Pro. Check it out [here](https://espdash.pr
 <br/>
 
 
-<img src="/img/v4/custom-logo-mini.png" width="305px" alt="Energy Card Preview" />
-&nbsp;
-<img src="/img/v4/custom-logo-large.png" width="400px" alt="Energy Card Preview" />
+<img src="/img/v4/custom-logo.png" width="305px" alt="Logo Preview" />
 <br/>
 <br/>
 
-If you are not familiar with the interface yet, the dashboard has an sidebar which can be expanded and collapsed, in that case the logo switches between "mini" and "large" scale version.
-
-Both these logos can be changed by the user by modifying the `logo.h` & `logo.cpp` file in the library source directory.
+Your ESP-DASH dashboard's sidebar contains the spot which can be updated to add your own company/product logo. This enables you with complete customization and maintains your brand value among customers.
 
 
-### Setting Custom Logo
+### Setting Logo
 
-The logo used in DASH is image file converted to byte array. We'll go through the process below:
+The logo used in ESP-DASH is image file converted to byte array. We'll go through the process below:
 
 #### What you'll need
 - You'll need a compatible logo image <i>( jpeg / png / gif / tif etc. )</i> or an SVG file ( recommended due to small file size ). <i><b>Important: Please make sure your image is optimized and small in file size.</b></i>
@@ -38,13 +34,12 @@ The logo used in DASH is image file converted to byte array. We'll go through th
 
 #### Step 2: Setting custom logo in sketch
 
-Now once your custom logo has been prepared, let's set it in our ESP-DASH Pro library. To do so, the library contains 2 files which contain the variable that govern 'mini' and 'large' logos used by our webpage.
+Now once your custom logo has been prepared, let's set it in your ESP-DASH Pro library:
 
 1. Go to `logo.h`
-2. Set `DASH_MINI_LOGO_MIME` to your image file type. To find your file's mime type, use this utility: https://www.htmlstrip.com/mime-file-type-checker
-3. Set `DASH_MINI_LOGO_WIDTH` & `DASH_MINI_LOGO_HEIGHT` according to your desired size which will be displayed on the webpage.
-4. Replace the array length of `DASH_MINI_LOGO` with the newly generated array length.
+2. Set `DASH_LOGO_MIME` to your image file type. To find your file's mime type, use this utility: https://www.htmlstrip.com/mime-file-type-checker
+3. Set `DASH_LOGO_WIDTH` & `DASH_LOGO_HEIGHT` according to your desired size which will be displayed on the webpage.
+4. Replace the array length of `DASH_LOGO` with the newly generated array length.
 5. Now open `logo.cpp`
-6. Replace the data inside `DASH_MINI_LOGO` with new data generated just before using File2Raw.
+6. Replace the data inside `DASH_LOGO` with new data generated just before using File2Raw.
 
-Once done, you may repeat the same steps as above for `DASH_LARGE_LOGO`.
