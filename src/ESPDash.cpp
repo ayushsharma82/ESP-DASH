@@ -40,14 +40,14 @@ ESPDash::ESPDash(AsyncWebServer* server, const char* uri, bool enable_default_st
       return request->requestAuthentication();
     }
     // respond with the compressed frontend
-    AsyncWebServerResponse *response = request->beginResponse_P(200, "text/html", DASH_HTML, sizeof(DASH_HTML));
+    AsyncWebServerResponse *response = request->beginResponse(200, "text/html", DASH_HTML, sizeof(DASH_HTML));
     response->addHeader("Content-Encoding", "gzip");
     response->addHeader("Cache-Control", "public, max-age=900");
     request->send(response);
   });
 
   // Websocket Callback Handler
-  _ws->onEvent([&](AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len){
+  _ws->onEvent([&](__unused AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len){
   // Request Buffer
 #if ARDUINOJSON_VERSION_MAJOR == 7
     JsonDocument json;
