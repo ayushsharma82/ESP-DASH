@@ -64,7 +64,7 @@ jobs:
         run: ARDUINO_LIBRARY_ENABLE_UNSAFE_INSTALL=true arduino-cli lib install --git-url https://github.com/mathieucarbou/esphome-ESPAsyncTCP#v2.0.0
 
       - name: Install ESPAsyncWebServer
-        run: ARDUINO_LIBRARY_ENABLE_UNSAFE_INSTALL=true arduino-cli lib install --git-url https://github.com/mathieucarbou/ESPAsyncWebServer#v2.10.1
+        run: ARDUINO_LIBRARY_ENABLE_UNSAFE_INSTALL=true arduino-cli lib install --git-url https://github.com/mathieucarbou/ESPAsyncWebServer#v3.0.2
 
       - name: Install ArduinoJson
         run: ARDUINO_LIBRARY_ENABLE_UNSAFE_INSTALL=true arduino-cli lib install --git-url https://github.com/bblanchon/ArduinoJson#v7.0.4
@@ -97,31 +97,31 @@ jobs:
           - name: esp32dev|arduino
             board: esp32dev
             platform: espressif32
-            opts:
+            opts: "--project-option 'lib_compat_mode = strict'"
           - name: esp32dev|arduino-2
             board: esp32dev
             platform: espressif32@6.7.0
-            opts:
+            opts: "--project-option 'lib_compat_mode = strict'"
           - name: esp32dev|arduino-3
             board: esp32dev
             platform: espressif32
-            opts: "--project-option 'platform_packages=platformio/framework-arduinoespressif32 @ https://github.com/espressif/arduino-esp32.git#3.0.1, platform_packages=platformio/framework-arduinoespressif32-libs @ https://github.com/espressif/arduino-esp32/releases/download/3.0.1/esp32-arduino-libs-3.0.1.zip'"
+            opts: "--project-option 'lib_compat_mode = strict' --project-option 'platform_packages=platformio/framework-arduinoespressif32 @ https://github.com/espressif/arduino-esp32.git#3.0.1, platform_packages=platformio/framework-arduinoespressif32-libs @ https://github.com/espressif/arduino-esp32/releases/download/3.0.1/esp32-arduino-libs-3.0.1.zip'"
           - name: esp32-s3-devkitc-1|arduino
             board: esp32-s3-devkitc-1
             platform: espressif32
-            opts:
+            opts: "--project-option 'lib_compat_mode = strict'"
           - name: esp32-s3-devkitc-1|arduino-2
             board: esp32-s3-devkitc-1
             platform: espressif32@6.7.0
-            opts:
+            opts: "--project-option 'lib_compat_mode = strict'"
           - name: esp32-s3-devkitc-1|arduino-3
             board: esp32-s3-devkitc-1
             platform: espressif32
-            opts: "--project-option 'platform_packages=platformio/framework-arduinoespressif32 @ https://github.com/espressif/arduino-esp32.git#3.0.1, platform_packages=platformio/framework-arduinoespressif32-libs @ https://github.com/espressif/arduino-esp32/releases/download/3.0.1/esp32-arduino-libs-3.0.1.zip'"
+            opts: "--project-option 'lib_compat_mode = strict' --project-option 'platform_packages=platformio/framework-arduinoespressif32 @ https://github.com/espressif/arduino-esp32.git#3.0.1, platform_packages=platformio/framework-arduinoespressif32-libs @ https://github.com/espressif/arduino-esp32/releases/download/3.0.1/esp32-arduino-libs-3.0.1.zip'"
           - name: huzzah|espressif8266
             board: huzzah
             platform: espressif8266
-            opts:
+            opts: "--project-option 'lib_compat_mode = strict'"
     steps:
       - uses: actions/checkout@v4
       - name: Set up cache
