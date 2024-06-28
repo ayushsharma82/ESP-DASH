@@ -16,7 +16,7 @@ class Statistic {
         ESPDash *_dashboard;
         uint32_t _id;
         const char *_key;
-        char _value[64];
+        String _value;
         bool _changed = false;
 
     public:
