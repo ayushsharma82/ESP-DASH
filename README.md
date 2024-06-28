@@ -79,7 +79,7 @@ ESP-DASH Pro comes with the following extended functionality:
 
 <h2>License</h2>
 
-ESP-DASH is licensed under General Public License v3 ( GPLv3 ). If you are intending to use ESP-DASH in a commercial project, please consider buying the [ESP-DASH Pro](https://espdash.pro) which comes with a less restrictive SCL-1.0 license ( SOFTT Commercial License 1.0 ).
+ESP-DASH is licensed under General Public License v3 ( GPLv3 ). If you are intending to use ESP-DASH in a commercial project, please consider buying the [ESP-DASH Pro](https://espdash.pro) which comes with a less restrictive SCL-1.1 license ( SOFTT Commercial License 1.1 ).
 
 <br>
 <br>

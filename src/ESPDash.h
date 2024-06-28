@@ -68,6 +68,11 @@ class Statistic;
 
 // ESPDASH Class
 class ESPDash{
+  public:
+    // changes_only: true (equivalent to sendUpdates(false)) - when sending updates to the client
+    // changes_only: false (equivalent to sendUpdates(true)) - when sending the entire layout to the client or when forcing a full update
+    typedef std::function<void(bool changes_only)> BeforeUpdateCallback;
+
   private:
     AsyncWebServer* _server = nullptr;
     AsyncWebSocket* _ws = nullptr;
@@ -77,9 +82,10 @@ class ESPDash{
     Vector<Statistic*> statistics;
     bool default_stats_enabled = false;
     bool basic_auth = false;
-    char username[64];
-    char password[64];
+    String username;
+    String password;
     uint32_t _idCounter = 0;
+    BeforeUpdateCallback _beforeUpdateCallback = nullptr;
 
     volatile bool _asyncAccessInProgress = false;
 
@@ -128,6 +134,12 @@ class ESPDash{
     // can be used to check if the async_http task might currently access the cards data, 
     // in which case you should not modify them
     bool isAsyncAccessInProgress() { return _asyncAccessInProgress; }
+
+    // Register a callback that will be called before some updates will be sent to the client.
+    // This callback can be used for example to refresh some card values that never change after only when a full layout is request (i.e. on page reload).
+    // This allows to avoid spending time refreshing cards that never change, but still allows them to be refreshed hen the user refresh the dashboard.
+    // If called from the async_http task, isAsyncAccessInProgress() will return true while in this callback.
+    void onBeforeUpdate(BeforeUpdateCallback callback) { _beforeUpdateCallback = callback; }
 
     ~ESPDash();
 };

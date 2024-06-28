@@ -36,18 +36,18 @@ ESPDash::ESPDash(AsyncWebServer* server, const char* uri, bool enable_default_st
   // Attach AsyncWebServer Routes
   _server->on(uri, HTTP_GET, [this](AsyncWebServerRequest *request){
     if(basic_auth){
-      if(!request->authenticate(username, password))
+      if(!request->authenticate(username.c_str(), password.c_str()))
       return request->requestAuthentication();
     }
     // respond with the compressed frontend
-    AsyncWebServerResponse *response = request->beginResponse_P(200, "text/html", DASH_HTML, sizeof(DASH_HTML));
+    AsyncWebServerResponse *response = request->beginResponse(200, "text/html", DASH_HTML, sizeof(DASH_HTML));
     response->addHeader("Content-Encoding", "gzip");
     response->addHeader("Cache-Control", "public, max-age=900");
     request->send(response);
   });
 
   // Websocket Callback Handler
-  _ws->onEvent([&](AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len){
+  _ws->onEvent([&](__unused AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len){
   // Request Buffer
 #if ARDUINOJSON_VERSION_MAJOR == 7
     JsonDocument json;
@@ -64,6 +64,8 @@ ESPDash::ESPDash(AsyncWebServer* server, const char* uri, bool enable_default_st
           // client side commands parsing
           if (json["command"] == "get:layout") {
             _asyncAccessInProgress = true;
+            if (_beforeUpdateCallback)
+              _beforeUpdateCallback(false);
             generateLayoutJSON(client, false);
             _asyncAccessInProgress = false;
           } else if (json["command"] == "ping") {
@@ -105,11 +107,11 @@ ESPDash::ESPDash(AsyncWebServer* server, const char* uri, bool enable_default_st
 }
 
 void ESPDash::setAuthentication(const char *user, const char *pass) {
-  basic_auth = strlen(user) > 0 && strlen(pass) > 0;
+  username = user;
+  password = pass;
+  basic_auth = username.length() && password.length();
   if(basic_auth) {
-    strncpy(username, user, sizeof(username));
-    strncpy(password, pass, sizeof(password));
-    _ws->setAuthentication(user, pass);
+    _ws->setAuthentication(username.c_str(), password.c_str());
   }
 }
 
@@ -314,7 +316,7 @@ void ESPDash::generateLayoutJSON(AsyncWebSocketClient* client, bool changes_only
 
     doc["stats"][idx]["i"] = s->_id;
     doc["stats"][idx]["k"] = s->_key;
-    if (changes_only || strlen(s->_value) > 0)
+    if (changes_only || s->_value.length() > 0)
       doc["stats"][idx]["v"] = s->_value;
     doc["stats"][idx]["v"] = s->_value;
     idx++;
@@ -487,6 +489,8 @@ void ESPDash::sendUpdates(bool force) {
   if (!hasClient()) {
     return;
   }
+  if (_beforeUpdateCallback)
+    _beforeUpdateCallback(!force);
   generateLayoutJSON(nullptr, !force);
 }
 
@@ -495,6 +499,8 @@ void ESPDash::refreshCard(Card *card) {
   if (!hasClient()) {
     return;
   }
+  if (_beforeUpdateCallback)
+    _beforeUpdateCallback(true);
   generateLayoutJSON(nullptr, true, card);
 }
 
