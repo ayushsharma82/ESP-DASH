@@ -11,7 +11,7 @@ This document explains the installation procedure for getting started with ESP-D
 *ESP-DASH depends on the following libraries present in your libraries folder. Please stricly install the compatible versions of these dependencies only! Using any other version might break ESP-DASH or may cause ESP-DASH to work partially.*
 
 :::important Note on Dependencies
-As of v2, ESP-DASH has officially switched to using fork of ESPAsyncWebServer and its dependencies from [@mathieucarbou](https://github.com/mathieucarbou). This fork of ESPAsyncWebServer is being maintained regularly and contains many bug fixes along with arduino-esp32 core v3 support.
+As of v4.0.4, ESP-DASH has officially switched to using fork of ESPAsyncWebServer and its dependencies from [@mathieucarbou](https://github.com/mathieucarbou). This fork of ESPAsyncWebServer is being maintained regularly and contains many bug fixes along with arduino-esp32 core v3 support.
 
 It's suggested to migrate all your projects to using this fork as the original me-no-dev/ESPAsyncWebServer repo is not being maintained  *since years*.
 :::
@@ -20,15 +20,15 @@ It's suggested to migrate all your projects to using this fork as the original m
 
 - [ESP8266 Arduino Core](https://github.com/esp8266/Arduino) - **latest**
 - (mathieucarbou) [esphome-ESPAsyncTCP](https://github.com/mathieucarbou/esphome-ESPAsyncTCP#v2.0.0) - **v2.0.0**
-- (mathieucarbou) [ESPAsyncWebServer](https://github.com/mathieucarbou/ESPAsyncWebServer#v2.10.4) - **v2.10.4**
-- [ArduinoJson](https://github.com/bblanchon/ArduinoJson) - **v7.0.2**
+- (mathieucarbou) [ESPAsyncWebServer](https://github.com/mathieucarbou/ESPAsyncWebServer#v3.0.3) - **v3.0.3**
+- [ArduinoJson](https://github.com/bblanchon/ArduinoJson) - **v7.0.4**
 
 #### For ESP32
 
 - [ESP32 Arduino Core](https://github.com/espressif/arduino-esp32) @ **latest**
 - (mathieucarbou) [AsyncTCP](https://github.com/mathieucarbou/AsyncTCP#v3.1.4) @ **v3.1.4**
-- (mathieucarbou) [ESPAsyncWebServer](https://github.com/mathieucarbou/ESPAsyncWebServer#v2.10.4) - **v2.10.4**
-- [ArduinoJson](https://github.com/bblanchon/ArduinoJson) - **v7.0.2**
+- (mathieucarbou) [ESPAsyncWebServer](https://github.com/mathieucarbou/ESPAsyncWebServer#v3.0.3) - **v3.0.3**
+- [ArduinoJson](https://github.com/bblanchon/ArduinoJson) - **v7.0.4**
 
 ### Installing ESP-DASH
 
