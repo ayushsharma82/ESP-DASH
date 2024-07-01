@@ -35,7 +35,8 @@ class Chart {
     uint32_t _id;
     const char *_name;
     int   _type;
-    bool  _changed;
+    bool  _x_changed;
+    bool  _y_changed;
     GraphAxisType _x_axis_type;
     GraphAxisType _y_axis_type;
 
