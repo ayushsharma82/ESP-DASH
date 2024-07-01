@@ -20,14 +20,14 @@ It's suggested to migrate all your projects to using this fork as the original m
 
 - [ESP8266 Arduino Core](https://github.com/esp8266/Arduino) - **latest**
 - (mathieucarbou) [esphome-ESPAsyncTCP](https://github.com/mathieucarbou/esphome-ESPAsyncTCP#v2.0.0) - **v2.0.0**
-- (mathieucarbou) [ESPAsyncWebServer](https://github.com/mathieucarbou/ESPAsyncWebServer#v3.0.3) - **v3.0.3**
+- (mathieucarbou) [ESPAsyncWebServer](https://github.com/mathieucarbou/ESPAsyncWebServer#v3.0.5) - **v3.0.5**
 - [ArduinoJson](https://github.com/bblanchon/ArduinoJson) - **v7.0.4**
 
 #### For ESP32
 
 - [ESP32 Arduino Core](https://github.com/espressif/arduino-esp32) @ **latest**
 - (mathieucarbou) [AsyncTCP](https://github.com/mathieucarbou/AsyncTCP#v3.1.4) @ **v3.1.4**
-- (mathieucarbou) [ESPAsyncWebServer](https://github.com/mathieucarbou/ESPAsyncWebServer#v3.0.3) - **v3.0.3**
+- (mathieucarbou) [ESPAsyncWebServer](https://github.com/mathieucarbou/ESPAsyncWebServer#v3.0.5) - **v3.0.5**
 - [ArduinoJson](https://github.com/bblanchon/ArduinoJson) - **v7.0.4**
 
 ### Installing ESP-DASH 
