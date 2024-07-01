@@ -58,7 +58,7 @@ void Chart::updateX(int arr_x[], size_t x_size){
     _x_axis_i_ptr = arr_x;
     _x_axis_ptr_size = x_size;
   #endif
-  _changed = true;
+  _x_changed = true;
 }
 
 void Chart::updateX(float arr_x[], size_t x_size){
@@ -73,7 +73,7 @@ void Chart::updateX(float arr_x[], size_t x_size){
     _x_axis_f_ptr = arr_x;
     _x_axis_ptr_size = x_size;
   #endif
-  _changed = true;
+  _x_changed = true;
 }
 
 void Chart::updateX(String arr_x[], size_t x_size){
@@ -88,7 +88,7 @@ void Chart::updateX(String arr_x[], size_t x_size){
     _x_axis_s_ptr = arr_x;
     _x_axis_ptr_size = x_size;
   #endif
-  _changed = true;
+  _x_changed = true;
 }
 
 void Chart::updateX(const char* arr_x[], size_t x_size){
@@ -103,7 +103,7 @@ void Chart::updateX(const char* arr_x[], size_t x_size){
     _x_axis_char_ptr = arr_x;
     _x_axis_ptr_size = x_size;
   #endif
-  _changed = true;
+  _x_changed = true;
 }
 
 void Chart::updateY(int arr_y[], size_t y_size){
@@ -118,7 +118,7 @@ void Chart::updateY(int arr_y[], size_t y_size){
     _y_axis_i_ptr = arr_y;
     _y_axis_ptr_size = y_size;
   #endif
-  _changed = true;
+  _y_changed = true;
 }
 
 void Chart::updateY(float arr_y[], size_t y_size){
@@ -133,7 +133,7 @@ void Chart::updateY(float arr_y[], size_t y_size){
     _y_axis_f_ptr = arr_y;
     _y_axis_ptr_size = y_size;
   #endif
-  _changed = true;
+  _y_changed = true;
 }
 
 /*
