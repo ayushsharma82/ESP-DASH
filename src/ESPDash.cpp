@@ -343,6 +343,7 @@ void ESPDash::generateLayoutJSON(AsyncWebSocketClient* client, bool changes_only
 
 void ESPDash::send(AsyncWebSocketClient* client, JsonDocument& doc) {
   const size_t len = measureJson(doc);
+  // ESP_LOGW("ESPDash", "Required Heap size to build WebSocket message: %d bytes. Free Heap: %" PRIu32 " bytes", len, ESP.getFreeHeap());
   AsyncWebSocketMessageBuffer* buffer = _ws->makeBuffer(len);
   assert(buffer);
   serializeJson(doc, buffer->get(), len);
@@ -355,7 +356,13 @@ void ESPDash::send(AsyncWebSocketClient* client, JsonDocument& doc) {
 }
 
 bool ESPDash::overflowed(JsonDocument& doc) {
+#if DASH_JSON_SIZE > 0 // ArduinoJson 6 (mandatory) or 7
   return doc.overflowed() || measureJson(doc.as<JsonObject>()) > DASH_JSON_SIZE;
+#elif DASH_MIN_FREE_HEAP > 0 // ArduinoJson 7 only
+  return ESP.getFreeHeap() >= DASH_MIN_FREE_HEAP;
+#else // ArduinoJson 7 only
+  return doc.overflowed();
+#endif
 }
 
 /*
