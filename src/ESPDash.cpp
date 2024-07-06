@@ -226,7 +226,7 @@ void ESPDash::generateLayoutJSON(AsyncWebSocketClient* client, bool changes_only
   for (int i = 0; i < charts.Size(); i++) {
     Chart* c = charts[i];
     if (changes_only) {
-      if (!c->_changed) {
+      if (!c->_x_changed && !c->_y_changed) {
         continue;
       }
     }
@@ -249,7 +249,8 @@ void ESPDash::generateLayoutJSON(AsyncWebSocketClient* client, bool changes_only
 
     // Clear change flags
     if (changes_only) {
-      c->_changed = false;
+      c->_x_changed = false;
+      c->_y_changed = false;
     }
   }
 
@@ -342,6 +343,7 @@ void ESPDash::generateLayoutJSON(AsyncWebSocketClient* client, bool changes_only
 
 void ESPDash::send(AsyncWebSocketClient* client, JsonDocument& doc) {
   const size_t len = measureJson(doc);
+  // ESP_LOGW("ESPDash", "Required Heap size to build WebSocket message: %d bytes. Free Heap: %" PRIu32 " bytes", len, ESP.getFreeHeap());
   AsyncWebSocketMessageBuffer* buffer = _ws->makeBuffer(len);
   assert(buffer);
   serializeJson(doc, buffer->get(), len);
@@ -354,7 +356,13 @@ void ESPDash::send(AsyncWebSocketClient* client, JsonDocument& doc) {
 }
 
 bool ESPDash::overflowed(JsonDocument& doc) {
+#if DASH_JSON_SIZE > 0 // ArduinoJson 6 (mandatory) or 7
   return doc.overflowed() || measureJson(doc.as<JsonObject>()) > DASH_JSON_SIZE;
+#elif DASH_MIN_FREE_HEAP > 0 // ArduinoJson 7 only
+  return ESP.getFreeHeap() >= DASH_MIN_FREE_HEAP;
+#else // ArduinoJson 7 only
+  return doc.overflowed();
+#endif
 }
 
 /*
@@ -402,84 +410,88 @@ void ESPDash::generateComponentJSON(JsonObject& doc, Chart* chart, bool change_o
     doc["t"] = chartTags[chart->_type].type;
   }
 
-  JsonArray xAxis = doc["x"].to<JsonArray>();
-  switch (chart->_x_axis_type) {
-    case GraphAxisType::INTEGER:
-      #if DASH_USE_LEGACY_CHART_STORAGE == 1
-        for(int i=0; i < chart->_x_axis_i.Size(); i++)
-          xAxis.add(chart->_x_axis_i[i]);
-      #else
-        if (chart->_x_axis_i_ptr != nullptr) {
-          for(unsigned int i=0; i < chart->_x_axis_ptr_size; i++)
-            xAxis.add(chart->_x_axis_i_ptr[i]);
-        }
-      #endif
-      break;
-    case GraphAxisType::FLOAT:
-      #if DASH_USE_LEGACY_CHART_STORAGE == 1
-        for(int i=0; i < chart->_x_axis_f.Size(); i++)
-          xAxis.add(chart->_x_axis_f[i]);
-      #else
-        if (chart->_x_axis_f_ptr != nullptr) {
-          for(unsigned int i=0; i < chart->_x_axis_ptr_size; i++)
-            xAxis.add(chart->_x_axis_f_ptr[i]);
-        }
-      #endif
-      break;
-    case GraphAxisType::CHAR:
-      #if DASH_USE_LEGACY_CHART_STORAGE == 1
-        for(int i=0; i < chart->_x_axis_s.Size(); i++)
-          xAxis.add(chart->_x_axis_s[i].c_str());
-      #else
-        if (chart->_x_axis_char_ptr != nullptr) {
-          for(unsigned int i=0; i < chart->_x_axis_ptr_size; i++)
-            xAxis.add(chart->_x_axis_char_ptr[i]);
-        }
-      #endif
-      break;
-    case GraphAxisType::STRING:
-      #if DASH_USE_LEGACY_CHART_STORAGE == 1
-        for(int i=0; i < chart->_x_axis_s.Size(); i++)
-          xAxis.add(chart->_x_axis_s[i].c_str());
-      #else
-        if (chart->_x_axis_s_ptr != nullptr) {
-          for(unsigned int i=0; i < chart->_x_axis_ptr_size; i++)
-            xAxis.add(chart->_x_axis_s_ptr[i]);
-        }
-      #endif
-      break;
-    default:
-      // blank value
-      break;
+  if(!change_only || chart->_x_changed) {
+    JsonArray xAxis = doc["x"].to<JsonArray>();
+    switch (chart->_x_axis_type) {
+      case GraphAxisType::INTEGER:
+        #if DASH_USE_LEGACY_CHART_STORAGE == 1
+          for(int i=0; i < chart->_x_axis_i.Size(); i++)
+            xAxis.add(chart->_x_axis_i[i]);
+        #else
+          if (chart->_x_axis_i_ptr != nullptr) {
+            for(unsigned int i=0; i < chart->_x_axis_ptr_size; i++)
+              xAxis.add(chart->_x_axis_i_ptr[i]);
+          }
+        #endif
+        break;
+      case GraphAxisType::FLOAT:
+        #if DASH_USE_LEGACY_CHART_STORAGE == 1
+          for(int i=0; i < chart->_x_axis_f.Size(); i++)
+            xAxis.add(chart->_x_axis_f[i]);
+        #else
+          if (chart->_x_axis_f_ptr != nullptr) {
+            for(unsigned int i=0; i < chart->_x_axis_ptr_size; i++)
+              xAxis.add(chart->_x_axis_f_ptr[i]);
+          }
+        #endif
+        break;
+      case GraphAxisType::CHAR:
+        #if DASH_USE_LEGACY_CHART_STORAGE == 1
+          for(int i=0; i < chart->_x_axis_s.Size(); i++)
+            xAxis.add(chart->_x_axis_s[i].c_str());
+        #else
+          if (chart->_x_axis_char_ptr != nullptr) {
+            for(unsigned int i=0; i < chart->_x_axis_ptr_size; i++)
+              xAxis.add(chart->_x_axis_char_ptr[i]);
+          }
+        #endif
+        break;
+      case GraphAxisType::STRING:
+        #if DASH_USE_LEGACY_CHART_STORAGE == 1
+          for(int i=0; i < chart->_x_axis_s.Size(); i++)
+            xAxis.add(chart->_x_axis_s[i].c_str());
+        #else
+          if (chart->_x_axis_s_ptr != nullptr) {
+            for(unsigned int i=0; i < chart->_x_axis_ptr_size; i++)
+              xAxis.add(chart->_x_axis_s_ptr[i]);
+          }
+        #endif
+        break;
+      default:
+        // blank value
+        break;
+    }
   }
 
-  JsonArray yAxis = doc["y"].to<JsonArray>();
-  switch (chart->_y_axis_type) {
-    case GraphAxisType::INTEGER:
-      #if DASH_USE_LEGACY_CHART_STORAGE == 1
-        for(int i=0; i < chart->_y_axis_i.Size(); i++)
-          yAxis.add(chart->_y_axis_i[i]);
-      #else
-        if (chart->_y_axis_i_ptr != nullptr) {
-          for(unsigned int i=0; i < chart->_y_axis_ptr_size; i++)
-            yAxis.add(chart->_y_axis_i_ptr[i]);
-        }
-      #endif
-      break;
-    case GraphAxisType::FLOAT:
-      #if DASH_USE_LEGACY_CHART_STORAGE == 1
-        for(int i=0; i < chart->_y_axis_f.Size(); i++)
-          yAxis.add(chart->_y_axis_f[i]);
-      #else
-        if (chart->_y_axis_f_ptr != nullptr) {
-          for(unsigned int i=0; i < chart->_y_axis_ptr_size; i++)
-            yAxis.add(chart->_y_axis_f_ptr[i]);
-        }
-      #endif
-      break;
-    default:
-      // blank value
-      break;
+  if(!change_only || chart->_y_changed) {
+    JsonArray yAxis = doc["y"].to<JsonArray>();
+    switch (chart->_y_axis_type) {
+      case GraphAxisType::INTEGER:
+        #if DASH_USE_LEGACY_CHART_STORAGE == 1
+          for(int i=0; i < chart->_y_axis_i.Size(); i++)
+            yAxis.add(chart->_y_axis_i[i]);
+        #else
+          if (chart->_y_axis_i_ptr != nullptr) {
+            for(unsigned int i=0; i < chart->_y_axis_ptr_size; i++)
+              yAxis.add(chart->_y_axis_i_ptr[i]);
+          }
+        #endif
+        break;
+      case GraphAxisType::FLOAT:
+        #if DASH_USE_LEGACY_CHART_STORAGE == 1
+          for(int i=0; i < chart->_y_axis_f.Size(); i++)
+            yAxis.add(chart->_y_axis_f[i]);
+        #else
+          if (chart->_y_axis_f_ptr != nullptr) {
+            for(unsigned int i=0; i < chart->_y_axis_ptr_size; i++)
+              yAxis.add(chart->_y_axis_f_ptr[i]);
+          }
+        #endif
+        break;
+      default:
+        // blank value
+        break;
+    }
   }
 }
 

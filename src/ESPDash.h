@@ -45,11 +45,45 @@ Github URL: https://github.com/ayushsharma82/ESP-DASH
 #include "Chart.h"
 #include "Statistic.h"
 
+// If DASH_JSON_SIZE is set to a value, ESP-DASH will frequently measure the Json payload to make sure it remains within this size.
+// If the Json payload to send is larger, the payload will be split in several parts and sent in multiple messages.
+//
+// When this value is set:
+// - it should not be too large to avoid sending a big message, which takes longer to send and to build because of the frequent json size measurements. 4096 and 8192 are good values for large dashboards.
+// - it should not be too small to avoid sending too many messages, which can slow down the dashboard rendering and fill the websocket message queue. 2048 is a good minimum value.
+//
+// When using ArduinoJson 7, you can set this value to 0 (by default) to disable the websocket message fragmentation in smaller parts and to disable the measurements, to improve performance.
+// This will speed up the rendering, at the expense of risking to exhaust the heap in the case of large dashboard.
+// To workaround that, when using DASH_JSON_SIZE == 0 with ArduinoJson 7, you can also set DASH_MIN_FREE_HEAP to a value which is more than the size of the biggest payload for your dashboard.
+// For example, if your app is big and has a payload sie of 12kb, then you can set DASH_MIN_FREE_HEAP to 16384 (16kb) to make sure the heap is never exhausted.
+// When DASH_MIN_FREE_HEAP is set to a value, you instruct ESP-DASH to check the free heap to make sure there is enough heap to send the payload.
+//
+// In summary:
+//
+// - With ArduinoJson 6: DASH_JSON_SIZE should be set to a value greater than 0 and fragmentation is used.
+// - With ArduinoJson 7: DASH_JSON_SIZE can be set to 0 to disable the fragmentation and the measurements, at the risk of going out of heap. This option gives the best performance but you need to make sure to have enough heap in case your application is large.
+// - With ArduinoJson 7: if DASH_JSON_SIZE is set to 0 and DASH_MIN_FREE_HEAP is set to a value greater than 0, heap will be checked before sending the payload and fragmentation will trigger if not enough heap..
+// - DASH_MIN_FREE_HEAP will have no effect is DASH_JSON_SIZE is not set to 0
+// 
+// To help you decide, you can uncomment line 543 in the cpp which will display the free heap size and teh required heap size to build the websocket message.
+// ESP_LOGW("ESPDash", "Required Heap size to build WebSocket message: %d bytes. Free Heap: %" PRIu32 " bytes", len, ESP.getFreeHeap());
 #ifndef DASH_JSON_SIZE
+#if ARDUINOJSON_VERSION_MAJOR == 6 && !defined(DASH_JSON_DOCUMENT_ALLOCATION)
 #define DASH_JSON_SIZE 2048
+#else
+#define DASH_JSON_SIZE 0
+#endif // ARDUINOJSON_VERSION_MAJOR == 6 && !defined(DASH_JSON_DOCUMENT_ALLOCATION)
+#endif // DASH_JSON_SIZE
+
+// Only for ArduinoJson 7
+#ifndef DASH_MIN_FREE_HEAP
+#define DASH_MIN_FREE_HEAP 0
 #endif
 
 #if ARDUINOJSON_VERSION_MAJOR == 6 && !defined(DASH_JSON_DOCUMENT_ALLOCATION)
+#if DASH_JSON_SIZE == 0
+#error "DASH_JSON_SIZE must be set to a value greater than 0 when using ArduinoJson 6"
+#endif
 #define DASH_JSON_DOCUMENT_ALLOCATION DASH_JSON_SIZE * 3
 #endif
 
