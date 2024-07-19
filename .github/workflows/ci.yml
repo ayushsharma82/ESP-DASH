@@ -7,7 +7,6 @@ on:
       - "/keywords.txt"
       - "/library.json"
       - "/library.properties"
-      - "/vue-frontend"
       - "/docs"
   pull_request:
     paths-ignore:
@@ -15,7 +14,6 @@ on:
       - "/keywords.txt"
       - "/library.json"
       - "/library.properties"
-      - "/vue-frontend"
       - "/docs"
 
 jobs:
@@ -58,16 +56,16 @@ jobs:
         run: arduino-cli core install --additional-urls "${{ matrix.index_url }}" ${{ matrix.core }}
 
       - name: Install AsyncTCP
-        run: ARDUINO_LIBRARY_ENABLE_UNSAFE_INSTALL=true arduino-cli lib install --git-url https://github.com/mathieucarbou/AsyncTCP#v3.1.4
+        run: ARDUINO_LIBRARY_ENABLE_UNSAFE_INSTALL=true arduino-cli lib install --git-url https://github.com/mathieucarbou/AsyncTCP#v3.2.3
 
       - name: Install ESPAsyncTCP
         run: ARDUINO_LIBRARY_ENABLE_UNSAFE_INSTALL=true arduino-cli lib install --git-url https://github.com/mathieucarbou/esphome-ESPAsyncTCP#v2.0.0
 
       - name: Install ESPAsyncWebServer
-        run: ARDUINO_LIBRARY_ENABLE_UNSAFE_INSTALL=true arduino-cli lib install --git-url https://github.com/mathieucarbou/ESPAsyncWebServer#v3.0.2
+        run: ARDUINO_LIBRARY_ENABLE_UNSAFE_INSTALL=true arduino-cli lib install --git-url https://github.com/mathieucarbou/ESPAsyncWebServer#v3.1.1
 
       - name: Install ArduinoJson
-        run: ARDUINO_LIBRARY_ENABLE_UNSAFE_INSTALL=true arduino-cli lib install --git-url https://github.com/bblanchon/ArduinoJson#v7.0.4
+        run: ARDUINO_LIBRARY_ENABLE_UNSAFE_INSTALL=true arduino-cli lib install --git-url https://github.com/bblanchon/ArduinoJson#v7.1.0
 
       - name: Build AccessPoint
         run: arduino-cli compile --library . --warnings none -b ${{ matrix.board }} "examples/AccessPoint/AccessPoint.ino"
@@ -105,7 +103,7 @@ jobs:
           - name: esp32dev|arduino-3
             board: esp32dev
             platform: espressif32
-            opts: "--project-option 'lib_compat_mode = strict' --project-option 'platform_packages=platformio/framework-arduinoespressif32 @ https://github.com/espressif/arduino-esp32.git#3.0.2, platform_packages=platformio/framework-arduinoespressif32-libs @ https://github.com/espressif/arduino-esp32/releases/download/3.0.2/esp32-arduino-libs-3.0.2.zip'"
+            opts: "--project-option 'lib_compat_mode = strict' --project-option 'platform_packages=platformio/framework-arduinoespressif32 @ https://github.com/espressif/arduino-esp32.git#3.0.3, platform_packages=platformio/framework-arduinoespressif32-libs @ https://github.com/espressif/arduino-esp32/releases/download/3.0.3/esp32-arduino-libs-3.0.3.zip'"
           - name: esp32-s3-devkitc-1|arduino
             board: esp32-s3-devkitc-1
             platform: espressif32
@@ -117,7 +115,7 @@ jobs:
           - name: esp32-s3-devkitc-1|arduino-3
             board: esp32-s3-devkitc-1
             platform: espressif32
-            opts: "--project-option 'lib_compat_mode = strict' --project-option 'platform_packages=platformio/framework-arduinoespressif32 @ https://github.com/espressif/arduino-esp32.git#3.0.2, platform_packages=platformio/framework-arduinoespressif32-libs @ https://github.com/espressif/arduino-esp32/releases/download/3.0.2/esp32-arduino-libs-3.0.2.zip'"
+            opts: "--project-option 'lib_compat_mode = strict' --project-option 'platform_packages=platformio/framework-arduinoespressif32 @ https://github.com/espressif/arduino-esp32.git#3.0.3, platform_packages=platformio/framework-arduinoespressif32-libs @ https://github.com/espressif/arduino-esp32/releases/download/3.0.3/esp32-arduino-libs-3.0.3.zip'"
           - name: huzzah|espressif8266
             board: huzzah
             platform: espressif8266
