@@ -15,14 +15,14 @@
       "maintainer": true
     }
   ],
-  "version": "4.0.5",
+  "version": "4.0.6",
   "frameworks": "arduino",
   "platforms": ["espressif32", "espressif8266"],
   "dependencies": [
     {
       "owner": "bblanchon",
       "name": "ArduinoJson",
-      "version": "^7.0.4",
+      "version": "^7.1.0",
       "platforms": ["espressif8266", "espressif32"]
     },
     {
