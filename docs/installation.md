@@ -21,7 +21,7 @@ It's suggested to migrate all your projects to using this fork as the original m
 - [ESP8266 Arduino Core](https://github.com/esp8266/Arduino) - **v3.1.2**
 - (mathieucarbou) [esphome-ESPAsyncTCP](https://github.com/mathieucarbou/esphome-ESPAsyncTCP#v2.0.0) - **v2.0.0**
 - (mathieucarbou) [ESPAsyncWebServer](https://github.com/mathieucarbou/ESPAsyncWebServer#v3.1.1) - **v3.1.1**
-- [ArduinoJson](https://github.com/bblanchon/ArduinoJson) - **v7.0.4**
+- [ArduinoJson](https://github.com/bblanchon/ArduinoJson#v7.1.0) - **v7.1.0**
 
 #### For ESP32
 
