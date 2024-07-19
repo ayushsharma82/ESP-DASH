@@ -124,7 +124,7 @@ class ESPDash{
     volatile bool _asyncAccessInProgress = false;
 
     // Generate layout json
-    void generateLayoutJSON(AsyncWebSocketClient* client, bool changes_only = false, Card* onlyCard = nullptr);
+    void generateLayoutJSON(AsyncWebSocketClient* client, bool changes_only = false, Card* onlyCard = nullptr, Chart* onlyChart = nullptr);
     void send(AsyncWebSocketClient* client, JsonDocument& doc);
     bool overflowed(JsonDocument& doc);
 
@@ -160,6 +160,7 @@ class ESPDash{
     void sendUpdates(bool force = false);
     void refreshLayout() { sendUpdates(true); }
     void refreshCard(Card *card);
+    void refreshChart(Chart* chart);
 
     uint32_t nextId();
 

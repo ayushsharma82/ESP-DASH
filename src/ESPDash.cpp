@@ -169,7 +169,7 @@ void ESPDash::remove(Statistic *statistic) {
 }
 
 // generates the layout JSON string to the frontend
-void ESPDash::generateLayoutJSON(AsyncWebSocketClient* client, bool changes_only, Card* onlyCard) {
+void ESPDash::generateLayoutJSON(AsyncWebSocketClient* client, bool changes_only, Card* onlyCard, Chart* onlyChart) {
 #if ARDUINOJSON_VERSION_MAJOR == 6
   DynamicJsonDocument doc(DASH_JSON_DOCUMENT_ALLOCATION);
 #else
@@ -226,7 +226,7 @@ void ESPDash::generateLayoutJSON(AsyncWebSocketClient* client, bool changes_only
   for (int i = 0; i < charts.Size(); i++) {
     Chart* c = charts[i];
     if (changes_only) {
-      if (!c->_x_changed && !c->_y_changed) {
+      if (!c->_x_changed && !c->_y_changed && (onlyChart == nullptr || onlyChart->_id != c->_id)) {
         continue;
       }
     }
@@ -514,6 +514,16 @@ void ESPDash::refreshCard(Card *card) {
   if (_beforeUpdateCallback)
     _beforeUpdateCallback(true);
   generateLayoutJSON(nullptr, true, card);
+}
+
+void ESPDash::refreshChart(Chart* chart) {
+  _ws->cleanupClients(DASH_MAX_WS_CLIENTS);
+  if (!hasClient()) {
+    return;
+  }
+  if (_beforeUpdateCallback)
+    _beforeUpdateCallback(true);
+  generateLayoutJSON(nullptr, true, nullptr, chart);
 }
 
 uint32_t ESPDash::nextId() {
