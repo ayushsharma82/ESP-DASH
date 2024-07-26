@@ -15,6 +15,21 @@ Card::Card(ESPDash *dashboard, const int type, const char* name, const char* sym
   _dashboard->add(this);
 }
 
+Card::Card(ESPDash *dashboard, const int type, const char* name, const char* symbol, const float min, const float max, const float step){
+  _dashboard = dashboard;
+  _id = dashboard->nextId();
+  _type = type;
+  _name = name;
+  _symbol = symbol;
+  _value_min_f = min;
+  _value_max_f = max;
+  _value_step_f = step;
+
+  _value_type = Card::FLOAT;
+
+  _dashboard->add(this);
+}
+
 /*
   Attach Function Callback
 */
@@ -22,6 +37,12 @@ void Card::attachCallback(std::function<void(int value)> cb){
   _callback = cb;
 }
 
+/*
+  Attach Function Callback
+*/
+void Card::attachCallbackF(std::function<void(float value)> cb){
+  _callback_f = cb;
+}
 
 /*
   Value update methods
