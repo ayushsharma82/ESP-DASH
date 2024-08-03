@@ -42,15 +42,27 @@ class Card {
         int _value_i;
     };
     String _value_s;
-    int _value_min;
-    int _value_max;
-    int _value_step;
+    union alignas(4) {
+        float _value_min_f;
+        int _value_min;
+    };
+    union alignas(4) {
+        float _value_max_f;
+        int _value_max;
+    };
+    union alignas(4) {
+        float _value_step_f;
+        int _value_step;
+    };
     String _symbol;
     std::function<void(int value)> _callback = nullptr;
+    std::function<void(float value)> _callback_f = nullptr;
 
   public:
     Card(ESPDash *dashboard, const int type, const char* name, const char* symbol = "", const int min = 0, const int max = 0, const int step = 1);
+    Card(ESPDash *dashboard, const int type, const char* name, const char* symbol, const float min, const float max, const float step);
     void attachCallback(std::function<void(int)> cb);
+    void attachCallbackF(std::function<void(float)> cb);
     void update(int value);
     void update(int value, const char* symbol);
     void update(bool value);
