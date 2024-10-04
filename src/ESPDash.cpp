@@ -69,7 +69,7 @@ ESPDash::ESPDash(AsyncWebServer* server, const char* uri, bool enable_default_st
             generateLayoutJSON(client, false);
             _asyncAccessInProgress = false;
           } else if (json["command"] == "ping") {
-            return _ws->text(client->id(), "{\"command\":\"pong\"}");
+            _ws->text(client->id(), "{\"command\":\"pong\"}");
           } else if (json["command"] == "button:clicked") {
             // execute and reference card data struct to funtion
             uint32_t id = json["id"].as<uint32_t>();
