@@ -56,13 +56,13 @@ jobs:
         run: arduino-cli core install --additional-urls "${{ matrix.index_url }}" ${{ matrix.core }}
 
       - name: Install AsyncTCP
-        run: ARDUINO_LIBRARY_ENABLE_UNSAFE_INSTALL=true arduino-cli lib install --git-url https://github.com/mathieucarbou/AsyncTCP#v3.2.3
+        run: ARDUINO_LIBRARY_ENABLE_UNSAFE_INSTALL=true arduino-cli lib install --git-url https://github.com/mathieucarbou/AsyncTCP#v3.2.10
 
       - name: Install ESPAsyncTCP
         run: ARDUINO_LIBRARY_ENABLE_UNSAFE_INSTALL=true arduino-cli lib install --git-url https://github.com/mathieucarbou/esphome-ESPAsyncTCP#v2.0.0
 
       - name: Install ESPAsyncWebServer
-        run: ARDUINO_LIBRARY_ENABLE_UNSAFE_INSTALL=true arduino-cli lib install --git-url https://github.com/mathieucarbou/ESPAsyncWebServer#v3.1.1
+        run: ARDUINO_LIBRARY_ENABLE_UNSAFE_INSTALL=true arduino-cli lib install --git-url https://github.com/mathieucarbou/ESPAsyncWebServer#v3.3.14
 
       - name: Install ArduinoJson
         run: ARDUINO_LIBRARY_ENABLE_UNSAFE_INSTALL=true arduino-cli lib install --git-url https://github.com/bblanchon/ArduinoJson#v7.1.0
@@ -86,58 +86,72 @@ jobs:
         run: arduino-cli compile --library . --warnings none -b ${{ matrix.board }} "examples/Interactive/Interactive.ino"
 
   platformio:
-    name: pio ${{ matrix.name }}
+    name: "pio:${{ matrix.env }}:${{ matrix.board }}"
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         include:
-          - name: esp32dev|arduino
+          - env: ci-arduino-2
             board: esp32dev
-            platform: espressif32
-            opts: "--project-option 'lib_compat_mode = strict'"
-          - name: esp32dev|arduino-2
+          - env: ci-arduino-2
+            board: esp32-s2-saola-1
+          - env: ci-arduino-2
+            board: esp32-s3-devkitc-1
+          - env: ci-arduino-2
+            board: esp32-c3-devkitc-02
+
+          - env: ci-arduino-3
             board: esp32dev
-            platform: espressif32@6.7.0
-            opts: "--project-option 'lib_compat_mode = strict'"
-          - name: esp32dev|arduino-3
+          - env: ci-arduino-3
+            board: esp32-s2-saola-1
+          - env: ci-arduino-3
+            board: esp32-s3-devkitc-1
+          - env: ci-arduino-3
+            board: esp32-c3-devkitc-02
+          - env: ci-arduino-3
+            board: esp32-c6-devkitc-1
+
+          - env: ci-arduino-310rc1
             board: esp32dev
-            platform: espressif32
-            opts: "--project-option 'lib_compat_mode = strict' --project-option 'platform_packages=platformio/framework-arduinoespressif32 @ https://github.com/espressif/arduino-esp32.git#3.0.3, platform_packages=platformio/framework-arduinoespressif32-libs @ https://github.com/espressif/arduino-esp32/releases/download/3.0.3/esp32-arduino-libs-3.0.3.zip'"
-          - name: esp32-s3-devkitc-1|arduino
+          - env: ci-arduino-310rc1
+            board: esp32-s2-saola-1
+          - env: ci-arduino-310rc1
             board: esp32-s3-devkitc-1
-            platform: espressif32
-            opts: "--project-option 'lib_compat_mode = strict'"
-          - name: esp32-s3-devkitc-1|arduino-2
-            board: esp32-s3-devkitc-1
-            platform: espressif32@6.7.0
-            opts: "--project-option 'lib_compat_mode = strict'"
-          - name: esp32-s3-devkitc-1|arduino-3
-            board: esp32-s3-devkitc-1
-            platform: espressif32
-            opts: "--project-option 'lib_compat_mode = strict' --project-option 'platform_packages=platformio/framework-arduinoespressif32 @ https://github.com/espressif/arduino-esp32.git#3.0.3, platform_packages=platformio/framework-arduinoespressif32-libs @ https://github.com/espressif/arduino-esp32/releases/download/3.0.3/esp32-arduino-libs-3.0.3.zip'"
-          - name: huzzah|espressif8266
+          - env: ci-arduino-310rc1
+            board: esp32-c3-devkitc-02
+          - env: ci-arduino-310rc1
+            board: esp32-c6-devkitc-1
+
+          - env: ci-esp8266
             board: huzzah
-            platform: espressif8266
-            opts: "--project-option 'lib_compat_mode = strict'"
+          - env: ci-esp8266
+            board: d1_mini
     steps:
-      - uses: actions/checkout@v4
-      - name: Set up cache
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cache PlatformIO
         uses: actions/cache@v4
         with:
+          key: ${{ runner.os }}-pio
           path: |
-            ~/.platformio
             ~/.cache/pip
-          key: ${{ matrix.name }}
-      - uses: actions/setup-python@v5
+            ~/.platformio
+
+      - name: Python
+        uses: actions/setup-python@v5
         with:
           python-version: "3.x"
-      - run: pip install platformio
-      - run: platformio platform install ${{ matrix.platform }}
 
-      - run: platformio ci "examples/AccessPoint/AccessPoint.ino" -l '.' -b ${{ matrix.board }} ${{ matrix.opts }}
-      - run: platformio ci "examples/Basic/Basic.ino" -l '.' -b ${{ matrix.board }} ${{ matrix.opts }}
-      - run: platformio ci "examples/Benchmark/Benchmark.ino" -l '.' -b ${{ matrix.board }} ${{ matrix.opts }}
-      - run: platformio ci "examples/Chart/Chart.ino" -l '.' -b ${{ matrix.board }} ${{ matrix.opts }}
-      - run: platformio ci "examples/Dynamic/Dynamic.ino" -l '.' -b ${{ matrix.board }} ${{ matrix.opts }}
-      - run: platformio ci "examples/Interactive/Interactive.ino" -l '.' -b ${{ matrix.board }} ${{ matrix.opts }}
+      - name: Build
+        run: |
+          python -m pip install --upgrade pip
+          pip install --upgrade platformio
+      
+      - run: PLATFORMIO_SRC_DIR=examples/AccessPoint PIO_BOARD=${{ matrix.board }} pio run -e ${{ matrix.env }}
+      - run: PLATFORMIO_SRC_DIR=examples/Basic PIO_BOARD=${{ matrix.board }} pio run -e ${{ matrix.env }}
+      - run: PLATFORMIO_SRC_DIR=examples/Benchmark PIO_BOARD=${{ matrix.board }} pio run -e ${{ matrix.env }}
+      - run: PLATFORMIO_SRC_DIR=examples/Chart PIO_BOARD=${{ matrix.board }} pio run -e ${{ matrix.env }}
+      - run: PLATFORMIO_SRC_DIR=examples/Dynamic PIO_BOARD=${{ matrix.board }} pio run -e ${{ matrix.env }}
+      - run: PLATFORMIO_SRC_DIR=examples/Interactive PIO_BOARD=${{ matrix.board }} pio run -e ${{ matrix.env }}
