@@ -44,7 +44,7 @@
 <br/>
 <br/>
 
-<h2>Want More? Upgrade to Pro</h2>
+<h2>Looking for more? Upgrade to Pro.</h2>
 
 ESP-DASH Pro comes with the following extended functionality:
 - 11 Exclusive Widgets ( Line, Area, Pie, Text Input, Joystick and more! )
