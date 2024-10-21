@@ -69,7 +69,7 @@ ESPDash::ESPDash(AsyncWebServer* server, const char* uri, bool enable_default_st
             generateLayoutJSON(client, false);
             _asyncAccessInProgress = false;
           } else if (json["command"] == "ping") {
-            return _ws->text(client->id(), "{\"command\":\"pong\"}");
+            _ws->text(client->id(), "{\"command\":\"pong\"}");
           } else if (json["command"] == "button:clicked") {
             // execute and reference card data struct to funtion
             uint32_t id = json["id"].as<uint32_t>();
@@ -89,7 +89,11 @@ ESPDash::ESPDash(AsyncWebServer* server, const char* uri, bool enable_default_st
             for(int i=0; i < cards.Size(); i++){
               Card *p = cards[i];
               if(id == p->_id){
-                if(p->_callback != nullptr){
+                if(p->_callback_f != nullptr && p->_value_type == Card::FLOAT){
+                  _asyncAccessInProgress = true;
+                  p->_callback_f(json["value"].as<float>());
+                  _asyncAccessInProgress = false;
+                } else if(p->_callback != nullptr) {
                   _asyncAccessInProgress = true;
                   p->_callback(json["value"].as<int>());
                   _asyncAccessInProgress = false;
@@ -373,10 +377,17 @@ void ESPDash::generateComponentJSON(JsonObject& doc, Card* card, bool change_onl
   if (!change_only){
     doc["n"] = card->_name;
     doc["t"] = cardTags[card->_type].type;
-    doc["min"] = card->_value_min;
-    doc["max"] = card->_value_max;
-    if (card->_value_step != 1)
-      doc["step"] = card->_value_step;
+    if (card->_type == SLIDER_CARD || card->_type == PROGRESS_CARD) {
+      if(card->_value_type == Card::FLOAT) {
+        doc["min"] = String(card->_value_min_f, 2);
+        doc["max"] = String(card->_value_max_f, 2);
+        doc["step"] = String(card->_value_step_f, 2);
+      } else {
+        doc["min"] = card->_value_min;
+        doc["max"] = card->_value_max;
+        doc["step"] = card->_value_step;
+      }
+    }
   }
   if(change_only || !card->_symbol.isEmpty())
     doc["s"] = card->_symbol;
