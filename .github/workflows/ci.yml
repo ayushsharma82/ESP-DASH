@@ -4,17 +4,17 @@ on:
   push:
     paths-ignore:
       - "**/**.md"
-      - "/keywords.txt"
-      - "/library.json"
-      - "/library.properties"
-      - "/docs"
+      - "keywords.txt"
+      - "library.json"
+      - "library.properties"
+      - "docs/**"
   pull_request:
     paths-ignore:
       - "**/**.md"
-      - "/keywords.txt"
-      - "/library.json"
-      - "/library.properties"
-      - "/docs"
+      - "keywords.txt"
+      - "library.json"
+      - "library.properties"
+      - "docs/**"
 
 jobs:
   arduino:
