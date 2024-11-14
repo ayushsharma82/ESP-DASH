@@ -73,7 +73,7 @@ ESPDash::ESPDash(AsyncWebServer* server, const char* uri, bool enable_default_st
           } else if (json["command"] == "button:clicked") {
             // execute and reference card data struct to funtion
             uint32_t id = json["id"].as<uint32_t>();
-            for(int i=0; i < cards.Size(); i++){
+            for(int i=0; i < cards.size(); i++){
               Card *p = cards[i];
               if(id == p->_id){
                 if(p->_callback != nullptr){
@@ -86,7 +86,7 @@ ESPDash::ESPDash(AsyncWebServer* server, const char* uri, bool enable_default_st
           } else if (json["command"] == "slider:changed") {
             // execute and reference card data struct to funtion
             uint32_t id = json["id"].as<uint32_t>();
-            for(int i=0; i < cards.Size(); i++){
+            for(int i=0; i < cards.size(); i++){
               Card *p = cards[i];
               if(id == p->_id){
                 if(p->_callback_f != nullptr && p->_value_type == Card::FLOAT){
@@ -125,51 +125,33 @@ void ESPDash::setAuthentication(const String &user, const String &pass) {
 
 // Add Card
 void ESPDash::add(Card *card) {
-  cards.PushBack(card);
+  cards.push_back(card);
 }
 
 // Remove Card
 void ESPDash::remove(Card *card) {
-  for(int i=0; i < cards.Size(); i++){
-    Card *p = cards[i];
-    if(p->_id == card->_id){
-      cards.Erase(i);
-      return;
-    }
-  }
+  cards.erase(std::remove(cards.begin(), cards.end(), card), cards.end());
 }
 
 
 // Add Chart
 void ESPDash::add(Chart *chart) {
-  charts.PushBack(chart);
+  charts.push_back(chart);
 }
 
 // Remove Card
 void ESPDash::remove(Chart *chart) {
-  for(int i=0; i < charts.Size(); i++){
-    Chart *p = charts[i];
-    if(p->_id == chart->_id){
-      charts.Erase(i);
-      return;
-    }
-  }
+  charts.erase(std::remove(charts.begin(), charts.end(), chart), charts.end());
 }
 
 // Add Statistic
 void ESPDash::add(Statistic *statistic) {
-  statistics.PushBack(statistic);
+  statistics.push_back(statistic);
 }
 
 // Remove Statistic
 void ESPDash::remove(Statistic *statistic) {
-  for(int i=0; i < statistics.Size(); i++){
-    Statistic *p = statistics[i];
-    if(p->_id == statistic->_id){
-      statistics.Erase(i);
-      return;
-    }
-  }
+  statistics.erase(std::remove(statistics.begin(), statistics.end(), statistic), statistics.end());
 }
 
 // generates the layout JSON string to the frontend
@@ -192,7 +174,7 @@ void ESPDash::generateLayoutJSON(AsyncWebSocketClient* client, bool changes_only
 
   // Generate JSON for all Cards
   doc["command"] = changes_only ? "update:components" : "update:layout:next";
-  for (int i = 0; i < cards.Size(); i++) {
+  for (int i = 0; i < cards.size(); i++) {
     Card* c = cards[i];
     if (changes_only) {
       if (!c->_changed && (onlyCard == nullptr || onlyCard->_id != c->_id)) {
@@ -227,7 +209,7 @@ void ESPDash::generateLayoutJSON(AsyncWebSocketClient* client, bool changes_only
 
   // Generate JSON for all Charts
   doc["command"] = changes_only ? "update:components" : "update:layout:next";
-  for (int i = 0; i < charts.Size(); i++) {
+  for (int i = 0; i < charts.size(); i++) {
     Chart* c = charts[i];
     if (changes_only) {
       if (!c->_x_changed && !c->_y_changed && (onlyChart == nullptr || onlyChart->_id != c->_id)) {
@@ -311,7 +293,7 @@ void ESPDash::generateLayoutJSON(AsyncWebSocketClient* client, bool changes_only
   }
 
   // Loop through user defined stats
-  for (int i = 0; i < statistics.Size(); i++) {
+  for (int i = 0; i < statistics.size(); i++) {
     Statistic* s = statistics[i];
     if (changes_only) {
       if (!s->_changed) {
@@ -426,7 +408,7 @@ void ESPDash::generateComponentJSON(JsonObject& doc, Chart* chart, bool change_o
     switch (chart->_x_axis_type) {
       case GraphAxisType::INTEGER:
         #if DASH_USE_LEGACY_CHART_STORAGE == 1
-          for(int i=0; i < chart->_x_axis_i.Size(); i++)
+          for(int i=0; i < chart->_x_axis_i.size(); i++)
             xAxis.add(chart->_x_axis_i[i]);
         #else
           if (chart->_x_axis_i_ptr != nullptr) {
@@ -437,7 +419,7 @@ void ESPDash::generateComponentJSON(JsonObject& doc, Chart* chart, bool change_o
         break;
       case GraphAxisType::FLOAT:
         #if DASH_USE_LEGACY_CHART_STORAGE == 1
-          for(int i=0; i < chart->_x_axis_f.Size(); i++)
+          for(int i=0; i < chart->_x_axis_f.size(); i++)
             xAxis.add(chart->_x_axis_f[i]);
         #else
           if (chart->_x_axis_f_ptr != nullptr) {
@@ -448,7 +430,7 @@ void ESPDash::generateComponentJSON(JsonObject& doc, Chart* chart, bool change_o
         break;
       case GraphAxisType::CHAR:
         #if DASH_USE_LEGACY_CHART_STORAGE == 1
-          for(int i=0; i < chart->_x_axis_s.Size(); i++)
+          for(int i=0; i < chart->_x_axis_s.size(); i++)
             xAxis.add(chart->_x_axis_s[i].c_str());
         #else
           if (chart->_x_axis_char_ptr != nullptr) {
@@ -459,7 +441,7 @@ void ESPDash::generateComponentJSON(JsonObject& doc, Chart* chart, bool change_o
         break;
       case GraphAxisType::STRING:
         #if DASH_USE_LEGACY_CHART_STORAGE == 1
-          for(int i=0; i < chart->_x_axis_s.Size(); i++)
+          for(int i=0; i < chart->_x_axis_s.size(); i++)
             xAxis.add(chart->_x_axis_s[i].c_str());
         #else
           if (chart->_x_axis_s_ptr != nullptr) {
@@ -479,7 +461,7 @@ void ESPDash::generateComponentJSON(JsonObject& doc, Chart* chart, bool change_o
     switch (chart->_y_axis_type) {
       case GraphAxisType::INTEGER:
         #if DASH_USE_LEGACY_CHART_STORAGE == 1
-          for(int i=0; i < chart->_y_axis_i.Size(); i++)
+          for(int i=0; i < chart->_y_axis_i.size(); i++)
             yAxis.add(chart->_y_axis_i[i]);
         #else
           if (chart->_y_axis_i_ptr != nullptr) {
@@ -490,7 +472,7 @@ void ESPDash::generateComponentJSON(JsonObject& doc, Chart* chart, bool change_o
         break;
       case GraphAxisType::FLOAT:
         #if DASH_USE_LEGACY_CHART_STORAGE == 1
-          for(int i=0; i < chart->_y_axis_f.Size(); i++)
+          for(int i=0; i < chart->_y_axis_f.size(); i++)
             yAxis.add(chart->_y_axis_f[i]);
         #else
           if (chart->_y_axis_f_ptr != nullptr) {

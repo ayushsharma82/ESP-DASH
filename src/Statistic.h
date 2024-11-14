@@ -3,7 +3,6 @@
 
 #include <functional>
 #include "Arduino.h"
-#include "vector.h"
 
 #include "ESPDash.h"
 #include "ArduinoJson.h"
