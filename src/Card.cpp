@@ -1,5 +1,7 @@
 #include "Card.h"
 
+#include <utility>
+
 /*
   Constructor
 */
@@ -126,6 +128,28 @@ void Card::update(const char* value){
   
   _value_type = Card::STRING;
   _value_s = value;
+}
+
+void Card::update(String&& value, const char* symbol){
+  if(_value_type == Card::STRING){
+    if(_value_s != value)
+      _changed = true;
+  }
+  if (strcmp(_symbol.c_str(), symbol) != 0) {
+    _changed = true;
+  }
+  _value_type = Card::STRING;
+  _symbol = symbol;
+  _value_s = std::move(value);
+}
+
+void Card::update(String&& value){
+    if(_value_type == Card::STRING){
+    if(_value_s != value)
+      _changed = true;
+  }
+  _value_type = Card::STRING;
+  _value_s = std::move(value);
 }
 
 void Card::update(bool value, const char* symbol){
