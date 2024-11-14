@@ -22,7 +22,6 @@ Github URL: https://github.com/ayushsharma82/ESP-DASH
 #include "Arduino.h"
 #include "stdlib_noniso.h"
 #include "dash_webpage.h"
-#include "vector.h"
 
 #if defined(ESP8266)
     #define DASH_HARDWARE "ESP8266"
@@ -44,6 +43,8 @@ Github URL: https://github.com/ayushsharma82/ESP-DASH
 #include "Card.h"
 #include "Chart.h"
 #include "Statistic.h"
+
+#include <vector>
 
 // If DASH_JSON_SIZE is set to a value, ESP-DASH will frequently measure the Json payload to make sure it remains within this size.
 // If the Json payload to send is larger, the payload will be split in several parts and sent in multiple messages.
@@ -111,9 +112,9 @@ class ESPDash{
     AsyncWebServer* _server = nullptr;
     AsyncWebSocket* _ws = nullptr;
 
-    Vector<Card*> cards;
-    Vector<Chart*> charts;
-    Vector<Statistic*> statistics;
+    std::vector<Card*> cards;
+    std::vector<Chart*> charts;
+    std::vector<Statistic*> statistics;
     bool default_stats_enabled = false;
     bool basic_auth = false;
     String username;

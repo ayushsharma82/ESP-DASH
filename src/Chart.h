@@ -3,13 +3,16 @@
 
 #include <functional>
 #include "Arduino.h"
-#include "vector.h"
 
 #include "ESPDash.h"
 #include "ArduinoJson.h"
 
 #ifndef DASH_USE_LEGACY_CHART_STORAGE
   #define DASH_USE_LEGACY_CHART_STORAGE 0
+#endif
+
+#if DASH_USE_LEGACY_CHART_STORAGE == 1
+  #include <vector>
 #endif
 
 // Default to Line Chart
@@ -42,12 +45,12 @@ class Chart {
 
     #if DASH_USE_LEGACY_CHART_STORAGE == 1
       /* X-Axis */
-      Vector<int> _x_axis_i;
-      Vector<float> _x_axis_f;
-      Vector<String> _x_axis_s;
+      std::vector<int> _x_axis_i;
+      std::vector<float> _x_axis_f;
+      std::vector<String> _x_axis_s;
       /* Y-Axis */
-      Vector<int> _y_axis_i;
-      Vector<float> _y_axis_f;
+      std::vector<int> _y_axis_i;
+      std::vector<float> _y_axis_f;
 
       void emptyXAxisVectors();
       void emptyYAxisVectors();
