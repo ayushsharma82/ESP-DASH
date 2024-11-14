@@ -73,6 +73,8 @@ class Card {
     void update(const char* value, const char* symbol);
     void update(const String &value);
     void update(const String &value, const char* symbol);
+    void update(String &&value);
+    void update(String &&value, const char* symbol);
     ~Card();
   
   friend class ESPDash;

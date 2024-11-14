@@ -21,6 +21,8 @@ class Statistic {
     public:
         Statistic(ESPDash *dashboard, const char *key, const char *value = "");
         void set(const char *value);
+        void set(const String& value) { set(value.c_str()); }
+        void set(String&& value);
         ~Statistic();
 
     friend class ESPDash;

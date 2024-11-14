@@ -1,5 +1,7 @@
 #include "Statistic.h"
 
+#include <utility>
+
 Statistic::Statistic(ESPDash *dashboard, const char *key, const char *value) {
     _dashboard = dashboard;
     _id = dashboard->nextId();
@@ -14,6 +16,13 @@ void Statistic::set(const char *value) {
     _changed = _value != value;
     if(_changed)
         _value = value;
+}
+
+void Statistic::set(String&& value) {
+    // Safe copy
+    _changed = _value != value;
+    if(_changed)
+        _value = std::move(value);
 }
 
 Statistic::~Statistic() {
