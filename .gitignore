@@ -39,5 +39,6 @@ node_modules
 /build
 /portal
 
+.next
 /.pio
 /logs
