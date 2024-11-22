@@ -1,11 +1,10 @@
 <p>
-  <br/>
+  <img src="/docs/splash.png?sanitize=true&raw=true" width="1200">
 </p>
-<p align="center"><img src="/docs/dash-github-splash.png?sanitize=true&raw=true" width="700"></p>
 <br/>
 <br/>
 
-<p align="center">
+<p>
 <img src="https://img.shields.io/github/last-commit/ayushsharma82/ESP-DASH/master?style=for-the-badge" />
 &nbsp;
 <img src="https://img.shields.io/github/actions/workflow/status/ayushsharma82/ESP-DASH/ci.yml?branch=master&style=for-the-badge" />
@@ -15,7 +14,9 @@
 
 <br/>
 <br/>
-<p align="center"><b>DASH V4</b> is the 4th-gen blazing fast library to create a functional & real-time dashboard for <b>ESP8266</b> & <b>ESP32</b> microcontrollers. This library includes charts, display cards, interactive buttons and many more components to create a perfect dashboard which is accessible locally via your IoT device's IP. DASH does not require any kind of internet connection, everything is stored locally.</p>
+<p><b>ESP-DASH</b> is the 4th-gen blazing fast library to create a real-time, on-device dashboard for <b>ESP8266</b>, <b>ESP32</b> & <b>RP2040</b> microcontrollers.
+
+This library includes charts, display cards, interactive buttons and many more components to create a perfect dashboard which is accessible locally via your IoT device's IP. ESP-DASH does not require any kind of internet connection, everything is stored locally.</p>
 
 <br/>
 
@@ -47,7 +48,7 @@
 <h2>Looking for more? Upgrade to Pro.</h2>
 
 ESP-DASH Pro comes with the following extended functionality:
-- 11 Exclusive Widgets ( Line, Area, Pie, Text Input, Joystick and more! )
+- 14 Exclusive Widgets ( Line, Area, Pie, Text Input, Joystick and more! )
 - Tabs Support ~ Add multiple pages to your dashboard.
 - Custom Title
 - Custom Branding
@@ -79,7 +80,6 @@ ESP-DASH Pro comes with the following extended functionality:
 
 <h2>License</h2>
 
-ESP-DASH is licensed under General Public License v3 ( GPLv3 ). If you are intending to use ESP-DASH in a commercial project, please consider buying the [ESP-DASH Pro](https://espdash.pro) which comes with a less restrictive SCL-1.1 license ( SOFTT Commercial License 1.1 ).
+ESP-DASH Lite (open-source) is licensed under General Public License v3 ( GPLv3 ).
 
-<br>
-<br>
+If you are intending to use ESP-DASH in a commercial project, please consider purchasing [ESP-DASH Pro](https://espdash.pro) which comes with a less restrictive Softt Commercial License 1.2
