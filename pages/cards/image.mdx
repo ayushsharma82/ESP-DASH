@@ -1,0 +1,77 @@
+---
+title: Image Card
+description: A dashboard component that displays an image on your dashboard. Enables users to see an image directly on their dashboard.
+---
+
+import { Callout } from 'nextra/components'
+import ProCallout from '@/components/ProCallout';
+
+# Image Card
+
+<ProCallout />
+
+<img className="card-preview" src="/img/v4/image-card.png" width="280px" alt="Preview" />
+
+A dashboard component that displays an image on your dashboard. Enables users to see an image directly on their dashboard.
+
+## Initializer
+
+```cpp
+/* 
+  Image Card
+  Valid Arguments: (ESPDash dashboard, Card Type, const char* name, const char* size )
+*/
+Card card1(&dashboard, IMAGE_CARD, "Test Image", "lg");
+```
+
+<br/>
+
+## Callback
+
+<Callout>
+  Image card doesn't require any callback.
+</Callout>
+
+<br/>
+
+## Updater
+
+After initialization, you will have to provide the URL of the image which you want to display.
+
+```cpp
+card1.update(const char* url);
+```
+
+Or you can also update the size of image using the second parameter. Supported sizes: `lg` and `xl`
+
+```cpp
+// This will change the selected value and update the choices as well
+card1.update(const char* url, const char* size);
+```
+
+<br/>
+
+## Reference
+
+This is a reference sketch showing positions for intializer and updater.
+
+```cpp
+
+...
+
+/* Image card initializer */
+Card image(&dashboard, IMAGE_CARD, "Test Image", "lg");
+
+
+void setup() {
+  ...
+
+  /* Image card updater - can be used anywhere (apart from global scope) */
+  image.update("https://fastly.picsum.photos/id/598/800/600.jpg?grayscale&hmac=SQ5T_OGiPMX4r1fb-gA2fU6pourJEfxmTz7g1HfXOSk");
+}
+
+void loop() {
+  ...
+}
+
+```

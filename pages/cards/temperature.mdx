@@ -1,0 +1,80 @@
+---
+title: Temperature Card
+description: A specialized display card featuring a temperature icon and customizable symbol appending capability. Designed for presenting temperature-related data with visual indicators on the dashboard.
+---
+
+import { Callout } from 'nextra/components'
+
+# Temperature Card
+
+<img className="card-preview" src="/img/v4/temperature-card.png" width="280px" alt="Preview" />
+
+A specialized display card featuring a temperature icon and customizable symbol appending capability. Designed for presenting temperature-related data with visual indicators on the dashboard.
+
+## Initializer
+
+```cpp
+/* 
+  Temperature Card
+  Valid Arguments: (ESPDash dashboard, Card Type, const char* name, const char* symbol (optional) )
+*/
+Card card1(&dashboard, TEMPERATURE_CARD, "Temperature1", "°C");
+```
+
+<br/>
+
+## Callback
+
+<Callout>
+Temperature card doesn't require any callback.
+</Callout>
+
+<br/>
+
+## Updater
+
+```cpp
+card1.update(int value);
+```
+
+```cpp
+card1.update(float value);
+```
+
+```cpp
+card1.update(String value);
+```
+
+Or you can also update the symbol along with the value like this:
+
+```cpp
+card1.update(value, "°F");
+```
+
+<br/>
+
+## Reference
+
+This is a reference sketch showing positions for intializer and updater.
+
+
+```cpp
+
+...
+
+/* Temperature card initializer */
+Card temperature(&dashboard, TEMPERATURE_CARD, "Temperature1");
+
+
+void setup() {
+  ...
+
+  /* Temperature card updater - can be used anywhere (apart from global scope) */
+  temperature.update(100);
+}
+
+void loop() {
+  ...
+}
+
+```

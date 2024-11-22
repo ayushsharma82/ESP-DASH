@@ -1,0 +1,71 @@
+---
+title: Link Card
+description: A navigation component that enables user redirection through clickable URL links on the dashboard. Accepts and validates URL schemes for seamless page navigation and external linking.
+---
+
+import { Callout } from 'nextra/components'
+import ProCallout from '@/components/ProCallout';
+
+# Link Card
+
+<ProCallout />
+
+<img className="card-preview" src="/img/v4/link-card.png" width="280px" alt="Text Input Card Preview" />
+
+A navigation component that enables user redirection through clickable URL links on the dashboard. Accepts and validates URL schemes for seamless page navigation and external linking.
+
+## Initializer
+
+```cpp
+/* 
+  Link Card
+  Valid Arguments: (ESPDash dashboard, Card Type, const char* name)
+*/
+Card linkcard(&dashboard, LINK_CARD, "Test Link");
+```
+
+<br/>
+
+## Callback
+
+<Callout>
+Link card doesn't require any callback.
+</Callout>
+
+<br/>
+
+## Updater
+
+After initialization, you will have to provide the URL which has to be opened when user clicks on the card. You can do this by calling the `update` function.
+
+```cpp
+linkcard.update(const char* url);
+```
+
+<br/>
+
+## Reference
+
+This is a reference sketch showing positions for intializer and updater.
+
+
+```cpp
+
+...
+
+/* Link card initializer */
+Card linkcard(&dashboard, LINK_CARD, "Test Link");
+
+
+void setup() {
+  ...
+
+  /* Link card updater - can be used anywhere (apart from global scope) */
+  linkcard.update("https://espdash.pro");
+}
+
+void loop() {
+  ...
+}
+
+```

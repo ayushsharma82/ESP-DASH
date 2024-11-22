@@ -1,0 +1,87 @@
+---
+title: Status Card
+description: A status indicator component that displays state information with 4 distinct status types - idle, warning, success, and danger. Each status type can be accompanied by a custom message to provide contextual feedback on the dashboard.
+---
+
+import { Callout } from 'nextra/components'
+
+# Status Card
+
+<div className='flex flex-row'>
+  <img className="card-preview min-w-0 w-full" src="/img/v4/status-card-idle.png" width="280px" alt="Preview" />
+  <img className="card-preview min-w-0 w-full" src="/img/v4/status-card-warning.png" width="280px" alt="Preview" />
+  <img className="card-preview min-w-0 w-full" src="/img/v4/status-card-success.png" width="280px" alt="Preview" />
+  <img className="card-preview min-w-0 w-full" src="/img/v4/status-card-danger.png" width="280px" alt="Preview" />
+</div>
+
+A status indicator component that displays state information with 4 distinct status types - idle, warning, success, and danger. Each status type can be accompanied by a custom message to provide contextual feedback on the dashboard.
+
+## Valid Statuses
+
+- `DASH_STATUS_SUCCESS` - Success (Green)
+- `DASH_STATUS_WARNING` - Warning (Yellow)
+- `DASH_STATUS_DANGER` - Danger (Red)
+- `DASH_STATUS_IDLE` - Idle (Grey)
+
+<br/>
+
+## Initializer
+
+```cpp
+/* 
+  Status Card
+  Valid Arguments: (ESPDash dashboard, Card Type, const char* name, const char* status (optional) )
+*/
+Card card1(&dashboard, STATUS_CARD, "Test Status", DASH_STATUS_SUCCESS);
+```
+
+<br/>
+
+## Callback
+
+<Callout>
+Status card doesn't require any callback.
+</Callout>
+
+<br/>
+
+## Updater
+
+Status card updater allows you to set a message:
+
+```cpp
+card1.update("message");
+```
+
+Or, message + status at the same time:
+
+```cpp
+card1.update("Message", DASH_STATUS_SUCCESS);
+```
+
+<br/>
+
+## Reference
+
+This is a reference sketch showing positions for intializer and updater.
+
+```cpp
+
+...
+
+/* Status card initializer */
+Card status(&dashboard, STATUS_CARD, "Test Status", DASH_STATUS_SUCCESS);
+
+
+void setup() {
+  ...
+
+  /* Status card updater - can be used anywhere (apart from global scope) */
+  status.update("Warning message", DASH_STATUS_WARNING);
+}
+
+void loop() {
+  ...
+}
+
+```

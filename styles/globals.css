@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('./font.css');
+
+body {
+  font-family: 'Geist', Arial, Helvetica, sans-serif;
+}
+
+.card-preview {
+  border-radius: 0.55rem;
+  margin: 1.55rem 0.55rem;
+  opacity: 0.95;
+  box-shadow: 0 3px 40px 0 rgba(8, 149, 102, 0.2);
+  min-width: 0;
+  border: 2px solid #e5e7eb;
+  /* max-width: 280px; */
+  /* width: 100%; */
+}
+
+.dark .card-preview {
+  box-shadow: 0 3px 40px 0 rgba(8, 149, 102, 0.2);
+  border: 2px solid #1f2937;
+}

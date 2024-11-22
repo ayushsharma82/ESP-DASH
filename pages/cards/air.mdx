@@ -1,0 +1,82 @@
+---
+title: Air Card
+description: A specialized UI component that displays air/wind-related data with a distinctive icon. Supports numeric and string values with optional units/symbols, perfect for showing air pressure, wind speed, or similar measurements.
+---
+
+import { Callout } from 'nextra/components'
+import ProCallout from '@/components/ProCallout';
+
+# Air Card
+
+<ProCallout />
+
+<img className="card-preview" src="/img/v4/air-card.png" width="280px" alt="Preview" />
+
+A specialized UI component that displays air/wind-related data with a distinctive icon. Supports numeric and string values with optional units/symbols, perfect for showing air pressure, wind speed, or similar measurements.
+
+## Initializer
+
+```cpp
+/* 
+  Air Card
+  Valid Arguments: (ESPDash dashboard, Card Type, const char* name, const char* symbol (optional) )
+*/
+Card card1(&dashboard, AIR_CARD, "Power Consumption", "kWh");
+```
+
+<br/>
+
+## Callback
+
+<Callout>
+Air card doesn't require any callback.
+</Callout>
+
+<br/>
+
+## Updater
+
+```cpp
+card1.update(int value);
+```
+
+```cpp
+card1.update(float value);
+```
+
+```cpp
+card1.update(String value);
+```
+
+Or you can also update the symbol along with the value like this:
+
+```cpp
+card1.update(value, "kWh");
+```
+
+<br/>
+
+## Reference
+
+This is a reference sketch showing positions for intializer and updater.
+
+```cpp
+
+...
+
+/* Air card initializer */
+Card air(&dashboard, AIR_CARD, "Wind Speed", "kmph");
+
+
+void setup() {
+  ...
+
+  /* Air card updater - can be used anywhere (apart from global scope) */
+  air.update(100);
+}
+
+void loop() {
+  ...
+}
+
+```

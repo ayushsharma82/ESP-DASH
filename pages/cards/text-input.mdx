@@ -1,0 +1,91 @@
+---
+title: "Text Input Card"
+description: An input component that collects and stores text-based user input from the dashboard. Provides a text input field suitable for gathering various string data like WiFi credentials, user IDs, and other configurable information.
+---
+
+import { Callout } from 'nextra/components'
+import ProCallout from '@/components/ProCallout';
+
+# Text Input Card
+
+<ProCallout />
+
+<img className="card-preview" src="/img/v4/text-input-card.png" width="280px" alt="Text Input Card Preview" />
+
+An input component that collects and stores text-based user input from the dashboard. Provides a text input field suitable for gathering various string data like WiFi credentials, user IDs, and other configurable information.
+
+## Initializer
+
+```cpp
+/* 
+  Text Input Card
+  Valid Arguments: (ESPDash dashboard, Card Type, const char* name)
+*/
+Card card1(&dashboard, TEXT_INPUT_CARD, "User Email");
+```
+
+<br/>
+
+## Callback
+
+Text Input Card requires a callback function which will be called when we receive a input from our dashboard. In setup block, we will be calling our `attachCallback` function and provide a lambda (callback) function with a `const char*` (character array) argument.
+
+<Callout>
+You need to call the `update` function and `sendUpdates` immediately once you receive the value in callback. Otherwise user input will not be registered on dashboard and it will keep the card stuck in 'waiting' phase.
+</Callout>
+
+```cpp
+/*
+  We provide our attachCallback with a lambda function to handle incomming data
+*/
+card1.attachCallback([&](const char* value){
+  Serial.println("[Card1] Text Input Callback Triggered: "+String(value));
+  card1.update(value);
+  dashboard.sendUpdates();
+});
+```
+
+<br/>
+
+## Updater
+
+```cpp
+card1.update(const char* value);
+```
+
+```cpp
+card1.update(String value);
+```
+
+<br/>
+
+## Reference
+
+This is a reference sketch showing positions for intializer, callback and updater.
+
+```cpp
+
+...
+
+/* Week selector card initializer */
+Card text(&dashboard, TEXT_INPUT_CARD, "Test Email");
+
+
+void setup() {
+  ...
+
+  /* Week selector card callback */
+  text.attachCallback([&](const char* value){
+    Serial.println("Text Input Callback Triggered: "+String(value));
+    /* Week selector card updater - you need to update the button with latest value upon firing of callback */
+    text.update(value);
+    /* Send update to dashboard */
+    dashboard.sendUpdates();
+  });
+}
+
+void loop() {
+  ...
+}
+
+```

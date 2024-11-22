@@ -1,0 +1,78 @@
+---
+title: Generic Card
+description: A generic card that can be used to display any kind of value. It's mostly used when you want to display numbers, strings etc which don't relate to any other card in the list.
+---
+
+import { Callout } from 'nextra/components'
+
+# Generic Card
+
+<img className="card-preview" src="/img/v4/generic-card.png" width="280px" alt="Preview" />
+
+Generic card is the 'fits-all-types' card, which you can use to display any kind of value. It's mostly used when you want to display numbers, strings etc which don't relate to any other card in the list.
+
+## Initializer
+
+```cpp
+/* 
+  Generic Card
+  Valid Arguments: (ESPDash dashboard, Card Type, const char* name, const char* symbol (optional) )
+*/
+Card card1(&dashboard, GENERIC_CARD, "Generic1");
+```
+
+<br/>
+
+## Callback
+
+<Callout>
+Generic card doesn't require any callback.
+</Callout>
+
+<br/>
+
+## Updater
+
+```cpp
+card1.update(int value);
+```
+
+```cpp
+card1.update(bool value);
+```
+
+```cpp
+card1.update(float value);
+```
+
+```cpp
+card1.update(String value);
+```
+
+<br/>
+
+## Reference
+
+This is a reference sketch showing positions for intializer and updater.
+
+
+```cpp
+
+...
+
+/* Generic card initializer */
+Card generic(&dashboard, GENERIC_CARD, "Generic1");
+
+
+void setup() {
+  ...
+
+  /* Generic card updater - can be used anywhere (apart from global scope) */
+  generic.update(100);
+}
+
+void loop() {
+  ...
+}
+
+```

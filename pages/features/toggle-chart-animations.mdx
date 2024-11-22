@@ -1,0 +1,31 @@
+---
+title: Toggle Chart Animations
+description: Learn how to enable or disable animations in ESP-DASH Pro charts using the setChartAnimations function, particularly useful when handling high-frequency data updates.
+---
+
+import { Callout } from 'nextra/components'
+import ProCallout from '@/components/ProCallout';
+
+# Toggle Chart Animations
+
+<ProCallout />
+
+You can enable/disable chart animations with ease using the `setChartAnimations` function of ESPDash class. This is particularly helpful if you are updating your charts at an very fast pace.
+
+<Callout>
+Chart animations are enabled by default.
+</Callout>
+
+## Usage
+
+You can put this function anywhere in your setup block:
+
+### Enable
+```cpp
+dashboard.setChartAnimations(true); // Enable Chart Animations
+```
+
+### Disble
+```cpp
+dashboard.setChartAnimations(false); // Disable Chart Animations
+```

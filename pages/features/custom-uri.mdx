@@ -1,0 +1,14 @@
+---
+title: Custom URI
+description: Learn how to customize ESP-DASH's URL path by specifying a custom URI instead of serving the dashboard at the default root path.
+---
+
+# Custom URI
+
+If you want to serve ESP-DASH at a path other than 'root' (ie. `http://<Your IP>/`) then you can use the constructor to supply the path of your choice.
+
+```cpp
+ESPDash dashboard(&server, "/dash");
+```
+
+This will result in ESPDash being served at `http://<Your IP>/dash`.

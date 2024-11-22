@@ -1,0 +1,82 @@
+---
+title: Energy Card
+description: A card that displays energy usage with a distinctive energy/power icon. Supports numeric and string values with optional units/symbols, perfect for showing power consumption, usage, or similar measurements.
+---
+
+import { Callout } from 'nextra/components'
+import ProCallout from '@/components/ProCallout';
+
+# Energy Card
+
+<ProCallout />
+
+<img className="card-preview" src="/img/v4/energy-card.png" width="280px" alt="Energy Card Preview" />
+
+A card that displays energy usage with a distinctive energy/power icon. Supports numeric and string values with optional units/symbols, perfect for showing power consumption, usage, or similar measurements.
+
+## Initializer
+
+```cpp
+/* 
+  Energy Card
+  Valid Arguments: (ESPDash dashboard, Card Type, const char* name, const char* symbol (optional) )
+*/
+Card card1(&dashboard, ENERGY_CARD, "Power Consumption", "kWh");
+```
+
+<br/>
+
+## Callback
+
+<Callout>
+Energy card doesn't require any callback.
+</Callout>
+
+<br/>
+
+## Updater
+
+```cpp
+card1.update(int value);
+```
+
+```cpp
+card1.update(float value);
+```
+
+```cpp
+card1.update(String value);
+```
+
+Or you can also update the symbol along with the value like this:
+
+```cpp
+card1.update(value, "kWh");
+```
+
+<br/>
+
+## Reference
+
+This is a reference sketch showing positions for intializer and updater.
+
+```cpp
+
+...
+
+/* Energy card initializer */
+Card energy(&dashboard, ENERGY_CARD, "Power Consumption", "kWh");
+
+
+void setup() {
+  ...
+
+  /* Energy card updater - can be used anywhere (apart from global scope) */
+  energy.update(100);
+}
+
+void loop() {
+  ...
+}
+
+```

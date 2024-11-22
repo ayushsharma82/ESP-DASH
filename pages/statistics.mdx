@@ -1,0 +1,35 @@
+---
+title: Statistics
+description: Learn about ESP-DASH's Statistics page capabilities, including built-in system metrics and how to add custom key-value statistics to monitor your ESP device's performance and status.
+---
+
+import { Callout } from 'nextra/components'
+
+# Statistics
+
+<br/>
+
+<img src="/img/v4/statistics.png" alt="Concept Diagram" width="940px" />
+
+ESP-DASH has a dedicated page called "Statistics" on the dashboard which contain key-value pairs of system statistics ( heap, flash usage etc. ) by default. As of ESP-DASH v4, user defined statistics are now also part of the library! You can now add your own statitics to this page. 🎉
+
+<Callout>
+  System statistics can be turned off any time, you may look at [Disable Statistics](./security/disable-statistics.md) page.
+</Callout>
+
+## Reference
+
+### Create Statistic
+```cpp
+Statistic stat1(&dashboard, "Key", "Value");
+```
+
+### Update Value
+```cpp
+stat1.set("New Value");
+```
+
+### Update both Key & Value
+```cpp
+stat1.set("New Key", "New Value");
+```

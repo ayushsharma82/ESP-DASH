@@ -1,0 +1,76 @@
+---
+title: "Branding"
+description: Learn how to customize and brand your ESP-DASH Pro dashboard by replacing the default logo with your own custom logo image using byte array definitions in the library source code.
+---
+
+import ProCallout from '@/components/ProCallout';
+import { Callout, Steps } from 'nextra/components'
+
+# Branding
+
+<ProCallout />
+
+<br/>
+<img src="/img/v4/custom-logo.png" width="305px" alt="Logo Preview" />
+
+Branding in this context refers to the logo that is displayed on the ESP-DASH dashboard. You can customize the logo by defining the logo image as a byte array in the `logo.h` and `logo.cpp` files of the library's source code without even touching HTML or CSS.
+
+## Procedure
+
+To add your custom logo on the ESP-DASH Pro dashboard, follow these steps:
+
+<Steps>
+
+### Prepare logo
+
+First, you need to create or obtain the logo image you want to display on the dashboard. Ensure that the logo image is in a suitable format, such as a SVG (recommended) / PNG or JPG file and make sure your image is optimized & small in file size.
+
+### Convert logo to a byte array
+
+To include the logo in your library, you'll need to convert the image into a byte array.
+
+1. Go to [File2Raw utility](https://file2raw.labrat.one/) ( I created this utility a few years back for the purpose of converting files into byte array for C++ applications ).
+2. Select your logo.
+3. Select "Gzip Compress" & "Use PROGMEM (Arduino)".
+4. Click "Convert".
+
+### Modify `logo.h`
+
+1. Open the `logo.h` file in your ESP-DASH library source code.
+
+2. Locate the `DASH_LOGO` byte array declaration, which should look like this:
+
+   ```cpp
+   extern const uint8_t DASH_LOGO[];
+   ```
+
+3. Replace the length of the `DASH_LOGO` array with your custom logo's byte array length.
+
+4. Locate the `DASH_LOGO_MIME` variable, which defines the MIME type of your logo image. By default, it is set to `image/png`. If your logo is in a different format (e.g., JPEG), update the `DASH_LOGO_MIME` variable to the appropriate MIME type.
+
+5. Set `DASH_LOGO_WIDTH` & `DASH_LOGO_HEIGHT` according to your desired size which will be displayed on the webpage.
+
+### Modify `logo.cpp`
+
+1. Open the `logo.cpp` file in your ESP-DASH Pro library source code.
+
+2. Replace the contents of the `DASH_LOGO` array with your custom logo's byte array generated in File2Raw utility.
+
+
+### Upload firmware
+
+After making these changes, compile and upload the firmware with modified ESP-DASH Pro library to your device.
+
+</Steps>
+
+## Final Words
+
+Once you have uploaded the modified ESP-DASH Pro library to your device, the custom logo will be displayed on your dashboard.
+
+That's it! You have successfully added custom branding to the ESP-DASH Pro dashboard by defining the logo as a byte array in the `logo.h` and `logo.cpp` files.
+
+<br/>
+
+<Callout type="warning" emoji="⚠️">
+  Please note that branding, including logos and images, may be subject to copyright and trademark laws. Ensure you have the necessary rights or permissions to use any branding elements in your project.
+</Callout>

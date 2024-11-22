@@ -1,0 +1,76 @@
+---
+title: Time Sync Card
+description: A utility card for synchronizing device time with the MCU using browser time data. Enables precise timekeeping functionality while requiring both device and MCU to be in the same timezone for accurate synchronization.
+---
+
+import { Callout } from 'nextra/components'
+import ProCallout from '@/components/ProCallout';
+
+# Time Sync Card
+
+<ProCallout />
+
+<img className="card-preview" src="/img/v4/time-sync-card.png" width="280px" alt="Preview" />
+
+A utility card for synchronizing device time with the MCU using browser time data. Enables precise timekeeping functionality while requiring both device and MCU to be in the same timezone for accurate synchronization.
+
+<Callout>
+Time sync card grabs the time from your browser, so only use it when your device and MCU are known to be in the same geographical location/timezone.
+</Callout>
+
+## Initializer
+
+```cpp
+/* 
+  Time Sync Card
+  Valid Arguments: (ESPDash dashboard, Card Type, const char* name)
+*/
+Card timesync(&dashboard, TIME_SYNC_CARD, "Time Sync");
+```
+
+<br/>
+
+## Callback
+
+```cpp
+timesync.attachCallback([&](const char* value){
+  Serial.println("Time Sync Triggered: "+String(value));
+});
+```
+
+<br/>
+
+## Updater
+
+<Callout>
+Time sync card doesn't require any updater.
+</Callout>
+
+<br/>
+
+## Reference
+
+This is a reference sketch showing positions for intializer and callback.
+
+```cpp
+
+...
+
+/* Time sync card initializer */
+Card timesync(&dashboard, TIME_SYNC_CARD, "Time Sync");
+
+
+void setup() {
+  ...
+
+  /* Time sync card callback */
+  timesync.attachCallback([&](const char* value){
+    Serial.println("Time Sync Triggered: "+String(value));
+  });
+}
+
+void loop() {
+  ...
+}
+
+```

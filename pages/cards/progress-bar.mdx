@@ -1,0 +1,77 @@
+---
+title: Progress Bar Card
+description: A visual component that renders a horizontal progress bar, capable of displaying progress using both integer and floating-point values to represent completion or status.
+---
+
+import { Callout } from 'nextra/components'
+
+# Progress Bar Card
+
+<img className="card-preview" src="/img/v4/progress-card.png" width="280px" alt="Preview" />
+
+A visual component that renders a horizontal progress bar, capable of displaying progress using both integer and floating-point values to represent completion or status.
+
+## Initializer
+
+Initializer requires `min`, `max` of range you want to display.
+
+```cpp
+/* 
+  Progress Card
+  Valid Arguments: (ESPDash dashboard, Card Type, const char* name, const char* symbol (optional), int min, int max)
+*/
+Card card1(&dashboard, PROGRESS_CARD, "Progress1", "", 0, 255);
+```
+
+<br/>
+
+## Callback
+
+<Callout>
+Progress bar card doesn't require any callback.
+</Callout>
+
+<br/>
+
+## Updater
+
+```cpp
+card1.update(int value);
+```
+
+```cpp
+card1.update(float value);
+```
+
+Or, update symbol along your value:
+
+```cpp
+card1.update(244, "%");
+```
+
+<br/>
+
+## Reference
+
+This is a reference sketch showing positions for intializer and updater.
+
+```cpp
+
+...
+
+/* Progress card initializer */
+Card progress(&dashboard, PROGRESS_CARD, "Progress1", "", 0, 255);
+
+
+void setup() {
+  ...
+
+  /* Progress card updater - can be used anywhere (apart from global scope) */
+  progress.update(100);
+}
+
+void loop() {
+  ...
+}
+
+```
