@@ -119,7 +119,7 @@ void ESPDash::setAuthentication(const char *user, const char *pass) {
   }
 }
 
-void ESPDash::setAuthentication(const String &user, const String &pass) {
+void ESPDash::setAuthentication(const dash::string &user, const dash::string &pass) {
   setAuthentication(user.c_str(), pass.c_str());
 }
 
@@ -371,7 +371,7 @@ void ESPDash::generateComponentJSON(JsonObject& doc, Card* card, bool change_onl
       }
     }
   }
-  if(change_only || !card->_symbol.isEmpty())
+  if(change_only || card->_symbol.length())
     doc["s"] = card->_symbol;
 
   switch (card->_value_type) {
@@ -382,7 +382,7 @@ void ESPDash::generateComponentJSON(JsonObject& doc, Card* card, bool change_onl
       doc["v"] = String(card->_value_f, 2);
       break;
     case Card::STRING:
-      if(change_only || !card->_value_s.isEmpty()) {
+      if(change_only || card->_value_s.length()) {
         doc["v"] = card->_value_s;
       }
       break;
