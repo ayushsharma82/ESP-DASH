@@ -18,7 +18,7 @@ void Statistic::set(const char *value) {
         _value = value;
 }
 
-void Statistic::set(String&& value) {
+void Statistic::set(dash::string&& value) {
     // Safe copy
     _changed = _value != value;
     if(_changed)

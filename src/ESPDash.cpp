@@ -119,7 +119,7 @@ void ESPDash::setAuthentication(const char *user, const char *pass) {
   }
 }
 
-void ESPDash::setAuthentication(const String &user, const String &pass) {
+void ESPDash::setAuthentication(const dash::string &user, const dash::string &pass) {
   setAuthentication(user.c_str(), pass.c_str());
 }
 
