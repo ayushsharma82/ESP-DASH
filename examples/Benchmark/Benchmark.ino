@@ -53,7 +53,7 @@ Card slider(&dashboard, SLIDER_CARD, "Test Slider", "", 0, 255);
 Chart bar(&dashboard, BAR_CHART, "Power Usage (kWh)");
 
 // Bar Chart Data
-String XAxis[] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+dash::string XAxis[] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
 int YAxis[] = {0, 0, 0, 0, 0, 0, 0};
 
 

@@ -99,11 +99,11 @@ void Card::update(float value){
   _value_f = value;
 }
 
-void Card::update(const String &value, const char* symbol){
+void Card::update(const dash::string &value, const char* symbol){
   update(value.c_str(), symbol);
 }
 
-void Card::update(const String &value){
+void Card::update(const dash::string &value){
   update(value.c_str());
 }
 
@@ -130,7 +130,7 @@ void Card::update(const char* value){
   _value_s = value;
 }
 
-void Card::update(String&& value, const char* symbol){
+void Card::update(dash::string&& value, const char* symbol){
   if(_value_type == Card::STRING){
     if(_value_s != value)
       _changed = true;
@@ -143,7 +143,7 @@ void Card::update(String&& value, const char* symbol){
   _value_s = std::move(value);
 }
 
-void Card::update(String&& value){
+void Card::update(dash::string&& value){
     if(_value_type == Card::STRING){
     if(_value_s != value)
       _changed = true;

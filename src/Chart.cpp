@@ -76,7 +76,7 @@ void Chart::updateX(float arr_x[], size_t x_size){
   _x_changed = true;
 }
 
-void Chart::updateX(String arr_x[], size_t x_size){
+void Chart::updateX(dash::string arr_x[], size_t x_size){
   _x_axis_type = GraphAxisType::STRING;
   #if DASH_USE_LEGACY_CHART_STORAGE == 1
     emptyXAxisVectors();
@@ -96,7 +96,7 @@ void Chart::updateX(const char* arr_x[], size_t x_size){
   #if DASH_USE_LEGACY_CHART_STORAGE == 1
     emptyXAxisVectors();
     for(int i=0; i < x_size; i++){
-      _x_axis_s.push_back(String(arr_x[i]));
+      _x_axis_s.push_back(arr_x[i]);
     }
   #else
     clearXAxisPointers();

@@ -117,8 +117,8 @@ class ESPDash{
     std::vector<Statistic*> statistics;
     bool default_stats_enabled = false;
     bool basic_auth = false;
-    String username;
-    String password;
+    dash::string username;
+    dash::string password;
     uint32_t _idCounter = 0;
     BeforeUpdateCallback _beforeUpdateCallback = nullptr;
 
@@ -140,7 +140,7 @@ class ESPDash{
 
     // Set Authentication
     void setAuthentication(const char* user, const char* pass);
-    void setAuthentication(const String &user, const String &pass);
+    void setAuthentication(const dash::string &user, const dash::string &pass);
 
     // Add Card
     void add(Card *card);
