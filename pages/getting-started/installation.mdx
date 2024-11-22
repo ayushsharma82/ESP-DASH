@@ -3,7 +3,7 @@ title: "Installation"
 description: "Learn how to install and set up ESP-DASH, a comprehensive dashboard library for ESP8266, ESP32 & RP2040+W microcontrollers that enables real-time monitoring and control through an elegant web interface."
 ---
 
-import { Callout } from 'nextra/components'
+import { Callout, Tabs } from 'nextra/components'
 
 # Installation
 
@@ -21,78 +21,78 @@ As of v4.0.4, ESP-DASH has officially switched to using fork of ESPAsyncWebServe
 It's suggested to migrate all your projects to using this fork as the original me-no-dev/ESPAsyncWebServer repo is not being maintained  *since years*.
 </Callout>
 
-### ESP8266
+**Install dependencies based on your platform:**
 
-- [ESP8266 Arduino Core](https://github.com/esp8266/Arduino) - **v3.1.2**
-- (mathieucarbou) [esphome-ESPAsyncTCP](https://github.com/mathieucarbou/esphome-ESPAsyncTCP#v2.0.0) - **v2.0.0**
-- (mathieucarbou) [ESPAsyncWebServer](https://github.com/mathieucarbou/ESPAsyncWebServer#v3.3.14) - **v3.3.14**
-- [ArduinoJson](https://github.com/bblanchon/ArduinoJson#v7.1.0) - **v7.1.0**
-
-### ESP32
-
-- [ESP32 Arduino Core](https://github.com/espressif/arduino-esp32) @ **v3.0.4**
-- (mathieucarbou) [AsyncTCP](https://github.com/mathieucarbou/AsyncTCP#v3.2.10) @ **v3.2.10**
-- (mathieucarbou) [ESPAsyncWebServer](https://github.com/mathieucarbou/ESPAsyncWebServer#v3.3.14) - **v3.3.14**
-- [ArduinoJson](https://github.com/bblanchon/ArduinoJson#v7.1.0) - **v7.1.0**
-
-### RP2040+W
-
-- [Pico Arduino Core](https://github.com/earlephilhower/arduino-pico) @ **v4.2.1**
-- (khoih-prog) [AsyncTCP_RP2040W](https://github.com/khoih-prog/AsyncTCP_RP2040W#v1.2.0) @ **v1.2.0**
-- (mathieucarbou) [ESPAsyncWebServer](https://github.com/mathieucarbou/ESPAsyncWebServer#v3.3.14) - **v3.3.14**
-- [ArduinoJson](https://github.com/bblanchon/ArduinoJson#v7.1.0) - **v7.1.0**
-
+<Tabs items={['ESP8266', 'ESP32', 'RP2040+W']}>
+  <Tabs.Tab>
+    - [ESP8266 Arduino Core](https://github.com/esp8266/Arduino) - **v3.1.2**
+    - (mathieucarbou) [esphome-ESPAsyncTCP](https://github.com/mathieucarbou/esphome-ESPAsyncTCP#v2.0.0) - **v2.0.0**
+    - (mathieucarbou) [ESPAsyncWebServer](https://github.com/mathieucarbou/ESPAsyncWebServer#v3.3.14) - **v3.3.14**
+    - [ArduinoJson](https://github.com/bblanchon/ArduinoJson#v7.1.0) - **v7.1.0**
+  </Tabs.Tab>
+  <Tabs.Tab>
+    - [ESP32 Arduino Core](https://github.com/espressif/arduino-esp32) @ **v3.0.4**
+    - (mathieucarbou) [AsyncTCP](https://github.com/mathieucarbou/AsyncTCP#v3.2.10) @ **v3.2.10**
+    - (mathieucarbou) [ESPAsyncWebServer](https://github.com/mathieucarbou/ESPAsyncWebServer#v3.3.14) - **v3.3.14**
+    - [ArduinoJson](https://github.com/bblanchon/ArduinoJson#v7.1.0) - **v7.1.0**
+  </Tabs.Tab>
+  <Tabs.Tab>
+    - [Pico Arduino Core](https://github.com/earlephilhower/arduino-pico) @ **v4.2.1**
+    - (khoih-prog) [AsyncTCP_RP2040W](https://github.com/khoih-prog/AsyncTCP_RP2040W#v1.2.0) @ **v1.2.0**
+    - (mathieucarbou) [ESPAsyncWebServer](https://github.com/mathieucarbou/ESPAsyncWebServer#v3.3.14) - **v3.3.14**
+    - [ArduinoJson](https://github.com/bblanchon/ArduinoJson#v7.1.0) - **v7.1.0**
+  </Tabs.Tab>
+</Tabs>
 
 ## Platforms
 
-### Arduino IDE
+<Tabs items={['Arduino IDE', 'PlatformIO']}>
+  <Tabs.Tab>
+    #### Library Manager
 
-#### Library Manager
+    Go to Sketch > Include Library > Library Manager > Search for "ESP-DASH" > Install
 
-Go to Sketch > Include Library > Library Manager > Search for "ESP-DASH" > Install
+    #### Manual Installation
 
-#### Manual Installation
+    ##### Windows
 
-##### Windows
+    1. Download the [Repository](https://github.com/ayushsharma82/ESP-DASH/archive/master.zip)
+    2. Extract the .zip in `Documents > Arduino > Libraries > {Place "ESP-DASH" folder Here}`
 
-1. Download the [Repository](https://github.com/ayushsharma82/ESP-DASH/archive/master.zip)
-2. Extract the .zip in `Documents > Arduino > Libraries > {Place "ESP-DASH" folder Here}`
+    ##### Linux
 
-##### Linux
+    1. Download the [Repository](https://github.com/ayushsharma82/ESP-DASH/archive/master.zip)
+    2. Extract the .zip in `Sketchbook > Libraries > {Place "ESP-DASH" folder Here}`
 
-1. Download the [Repository](https://github.com/ayushsharma82/ESP-DASH/archive/master.zip)
-2. Extract the .zip in `Sketchbook > Libraries > {Place "ESP-DASH" folder Here}`
+    ##### Import through Arduino IDE
 
-##### Import through Arduino IDE
+    1. Download the [Repository](https://github.com/ayushsharma82/ESP-DASH/archive/master.zip)
+    2. Go to `Sketch > Include Library > Add .zip Library > Select the Downloaded .zip File.`
+  </Tabs.Tab>
+  <Tabs.Tab>
+    <Callout type="info">
+    <b>Required Changes in platformio.ini</b>
 
-1. Download the [Repository](https://github.com/ayushsharma82/ESP-DASH/archive/master.zip)
-2. Go to `Sketch > Include Library > Add .zip Library > Select the Downloaded .zip File.`
+    As ESP-DASH supports multiple architectures (ESP8266, ESP32 & RP2040), PlatformIO will try to include all the platform dependencies automatically which will often result in compilation errors. To mitigate this issue, please follow these steps:
 
-<br/>
+    1. Delete `.pio/libdeps` folder (if it exists) in your project before proceeding.
+    2. Open `platformio.ini` file of your project.
+    3. Add the following line inside your `platformio.ini` file:
 
-### PlatformIO
+        ```ini
+        lib_compat_mode = strict
+        ```
 
-<Callout type="info">
-<b>Required Changes in platformio.ini</b>
+    4. Save the changes to the `platformio.ini` file.
+    </Callout>
 
-As ESP-DASH supports multiple architectures (ESP8266, ESP32 & RP2040), PlatformIO will try to include all the platform dependencies automatically which will often result in compilation errors. To mitigate this issue, please follow these steps:
+    #### Library Manager
 
-1. Delete `.pio/libdeps` folder (if it exists) in your project before proceeding.
-2. Open `platformio.ini` file of your project.
-3. Add the following line inside your `platformio.ini` file:
+    Go to PlatformIO Menu > Libraries > Search for "ESP-DASH" > Install in your project.
 
-    ```ini
-    lib_compat_mode = strict
-    ```
+    #### Manual Installation
 
-4. Save the changes to the `platformio.ini` file.
-</Callout>
-
-#### Library Manager
-
-Go to PlatformIO Menu > Libraries > Search for "ESP-DASH" > Install in your project.
-
-#### Manual Installation
-
-1. Download the [Repository](https://github.com/ayushsharma82/ESP-DASH/archive/master.zip)
-2. Extract the .zip in `lib` folder of your project
+    1. Download the [Repository](https://github.com/ayushsharma82/ESP-DASH/archive/master.zip)
+    2. Extract the .zip in `lib` folder of your project
+  </Tabs.Tab>
+</Tabs>
