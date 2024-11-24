@@ -107,10 +107,10 @@ void loop() {
   generic.update((int)random(0, 100));
   temp.update((int)random(0, 100));
   hum.update((int)random(0, 100));
-  status1.update("success");
-  status2.update("warning");
-  status3.update("danger");
-  status4.update("idle");
+  status1.update(DASH_STATUS_SUCCESS);
+  status2.update(DASH_STATUS_WARNING);
+  status3.update(DASH_STATUS_DANGER);
+  status4.update(DASH_STATUS_IDLE);
   progress.update((int)random(0, 100));
   
   dashboard.sendUpdates();
