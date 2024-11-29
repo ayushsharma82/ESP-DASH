@@ -47,15 +47,14 @@ const char* password = ""; // Password
 AsyncWebServer server(80);
 
 /* Attach ESP-DASH to AsyncWebServer */
-ESPDash dashboard(&server); 
+ESPDash dashboard(server); 
 
 /* 
   Dashboard Cards 
   Format - (Dashboard Instance, Card Type, Card Name, Card Symbol(optional) )
 */
-Card temperature(&dashboard, TEMPERATURE_CARD, "Temperature", "°C");
-Card humidity(&dashboard, HUMIDITY_CARD, "Humidity", "%");
-
+dash::TemperatureCard temperature(dashboard, "Temperature");
+dash::HumidityCard humidity(dashboard, "Humidity");
 
 void setup() {
   Serial.begin(115200);
@@ -76,8 +75,8 @@ void setup() {
 
 void loop() {
   /* Update Card Values */
-  temperature.update((int)random(0, 50));
-  humidity.update((int)random(0, 100));
+  temperature.setValue((int)random(0, 50));
+  humidity.setValue((int)random(0, 100));
 
   /* Send Updates to our Dashboard (realtime) */
   dashboard.sendUpdates();
