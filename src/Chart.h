@@ -3,13 +3,27 @@
 
 #include <functional>
 #include "Arduino.h"
-#include "vector.h"
 
 #include "ESPDash.h"
 #include "ArduinoJson.h"
 
 #ifndef DASH_USE_LEGACY_CHART_STORAGE
   #define DASH_USE_LEGACY_CHART_STORAGE 0
+#endif
+
+#if DASH_USE_LEGACY_CHART_STORAGE == 1
+  #include <vector>
+#endif
+
+#ifdef DASH_USE_STL_STRING
+#include <string>
+namespace dash {
+  using string = std::string;
+}
+#else
+namespace dash {
+  using string = String;
+}
 #endif
 
 // Default to Line Chart
@@ -42,12 +56,12 @@ class Chart {
 
     #if DASH_USE_LEGACY_CHART_STORAGE == 1
       /* X-Axis */
-      Vector<int> _x_axis_i;
-      Vector<float> _x_axis_f;
-      Vector<String> _x_axis_s;
+      std::vector<int> _x_axis_i;
+      std::vector<float> _x_axis_f;
+      std::vector<dash::string> _x_axis_s;
       /* Y-Axis */
-      Vector<int> _y_axis_i;
-      Vector<float> _y_axis_f;
+      std::vector<int> _y_axis_i;
+      std::vector<float> _y_axis_f;
 
       void emptyXAxisVectors();
       void emptyYAxisVectors();
@@ -56,7 +70,7 @@ class Chart {
       int *_x_axis_i_ptr = nullptr;
       float *_x_axis_f_ptr = nullptr;
       const char **_x_axis_char_ptr = nullptr;
-      String *_x_axis_s_ptr = nullptr;
+      dash::string *_x_axis_s_ptr = nullptr;
       unsigned int _x_axis_ptr_size = 0;
       /* Y-Axis */
       int *_y_axis_i_ptr = nullptr;
@@ -71,7 +85,7 @@ class Chart {
     Chart(ESPDash *dashboard, const int type, const char* name);
     void updateX(int arr_x[], size_t x_size);
     void updateX(float arr_x[], size_t x_size);
-    void updateX(String arr_x[], size_t x_size);
+    void updateX(dash::string arr_x[], size_t x_size);
     void updateX(const char* arr_x[], size_t x_size);
     void updateY(int arr_y[], size_t y_size);
     void updateY(float arr_y[], size_t y_size);

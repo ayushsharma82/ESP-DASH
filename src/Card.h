@@ -8,6 +8,17 @@
 #include "ESPDash.h"
 #include "ArduinoJson.h"
 
+#ifdef DASH_USE_STL_STRING
+#include <string>
+namespace dash {
+  using string = std::string;
+}
+#else
+namespace dash {
+  using string = String;
+}
+#endif
+
 struct CardNames {
   int value;
   const char* type;
@@ -41,7 +52,7 @@ class Card {
         float _value_f;
         int _value_i;
     };
-    String _value_s;
+    dash::string _value_s;
     union alignas(4) {
         float _value_min_f;
         int _value_min;
@@ -54,7 +65,7 @@ class Card {
         float _value_step_f;
         int _value_step;
     };
-    String _symbol;
+    dash::string _symbol;
     std::function<void(int value)> _callback = nullptr;
     std::function<void(float value)> _callback_f = nullptr;
 
@@ -71,8 +82,10 @@ class Card {
     void update(float value, const char* symbol);
     void update(const char* value);
     void update(const char* value, const char* symbol);
-    void update(const String &value);
-    void update(const String &value, const char* symbol);
+    void update(const dash::string &value);
+    void update(const dash::string &value, const char* symbol);
+    void update(dash::string &&value);
+    void update(dash::string &&value, const char* symbol);
     ~Card();
   
   friend class ESPDash;
