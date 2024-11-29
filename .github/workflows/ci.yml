@@ -78,6 +78,9 @@ jobs:
       - name: Build Benchmark
         run: arduino-cli compile --library . --warnings none -b ${{ matrix.board }} "examples/Benchmark/Benchmark.ino"
 
+      - name: Build Benchmark5
+        run: arduino-cli compile --library . --warnings none -b ${{ matrix.board }} "examples/Benchmark5/Benchmark5.ino"
+
       - name: Build Chart
         run: arduino-cli compile --library . --warnings none -b ${{ matrix.board }} "examples/Chart/Chart.ino"
 
@@ -154,6 +157,7 @@ jobs:
       - run: PLATFORMIO_SRC_DIR=examples/AccessPoint PIO_BOARD=${{ matrix.board }} pio run -e ${{ matrix.env }}
       - run: PLATFORMIO_SRC_DIR=examples/Basic PIO_BOARD=${{ matrix.board }} pio run -e ${{ matrix.env }}
       - run: PLATFORMIO_SRC_DIR=examples/Benchmark PIO_BOARD=${{ matrix.board }} pio run -e ${{ matrix.env }}
+      - run: PLATFORMIO_SRC_DIR=examples/Benchmark5 PIO_BOARD=${{ matrix.board }} pio run -e ${{ matrix.env }}
       - run: PLATFORMIO_SRC_DIR=examples/Chart PIO_BOARD=${{ matrix.board }} pio run -e ${{ matrix.env }}
       - run: PLATFORMIO_SRC_DIR=examples/Dynamic PIO_BOARD=${{ matrix.board }} pio run -e ${{ matrix.env }}
       - run: PLATFORMIO_SRC_DIR=examples/Interactive PIO_BOARD=${{ matrix.board }} pio run -e ${{ matrix.env }}

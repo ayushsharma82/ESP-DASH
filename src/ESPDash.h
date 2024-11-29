@@ -14,78 +14,39 @@ Github URL: https://github.com/ayushsharma82/ESP-DASH
 #ifndef ESPDash_h
 #define ESPDash_h
 
-#include <functional>
-#include <stdint.h>
-#include <stdlib.h>
-#include <string.h>
-
 #include "Arduino.h"
-#include "stdlib_noniso.h"
 #include "dash_webpage.h"
+#include "stdlib_noniso.h"
 
 #if defined(ESP8266)
-    #define DASH_HARDWARE "ESP8266"
-    #include "ESP8266WiFi.h"
-    #include "ESPAsyncTCP.h"
+  #define DASH_HARDWARE "ESP8266"
+  #include "ESP8266WiFi.h"
+  #include "ESPAsyncTCP.h"
 #elif defined(ESP32)
-    #define DASH_HARDWARE "ESP32"
-    #include "WiFi.h"
-    #include "AsyncTCP.h"
+  #define DASH_HARDWARE "ESP32"
+  #include "AsyncTCP.h"
+  #include "WiFi.h"
 #endif
 
-#define DASH_STATUS_IDLE "i"
-#define DASH_STATUS_SUCCESS "s"
-#define DASH_STATUS_WARNING "w"
-#define DASH_STATUS_DANGER "d"
-
-#include "ESPAsyncWebServer.h"
 #include "ArduinoJson.h"
+#include "ESPAsyncWebServer.h"
+
+#include "dash/DashDefines.h"
+#include "dash/DashCards.h"
+#include "dash/DashCharts.h"
+#include "dash/DashComponent.h"
+#include "dash/DashStatistics.h"
+#include "dash/DashWidget.h"
+
+// deprecated classes, still there for backward compatibility
 #include "Card.h"
 #include "Chart.h"
 #include "Statistic.h"
 
-#include <vector>
-
-// If DASH_JSON_SIZE is set to a value, ESP-DASH will frequently measure the Json payload to make sure it remains within this size.
-// If the Json payload to send is larger, the payload will be split in several parts and sent in multiple messages.
-//
-// When this value is set:
-// - it should not be too large to avoid sending a big message, which takes longer to send and to build because of the frequent json size measurements. 4096 and 8192 are good values for large dashboards.
-// - it should not be too small to avoid sending too many messages, which can slow down the dashboard rendering and fill the websocket message queue. 2048 is a good minimum value.
-//
-// When using ArduinoJson 7, you can set this value to 0 (by default) to disable the websocket message fragmentation in smaller parts and to disable the measurements, to improve performance.
-// This will speed up the rendering, at the expense of risking to exhaust the heap in the case of large dashboard.
-// To workaround that, when using DASH_JSON_SIZE == 0 with ArduinoJson 7, you can also set DASH_MIN_FREE_HEAP to a value which is more than the size of the biggest payload for your dashboard.
-// For example, if your app is big and has a payload sie of 12kb, then you can set DASH_MIN_FREE_HEAP to 16384 (16kb) to make sure the heap is never exhausted.
-// When DASH_MIN_FREE_HEAP is set to a value, you instruct ESP-DASH to check the free heap to make sure there is enough heap to send the payload.
-//
-// In summary:
-//
-// - With ArduinoJson 6: DASH_JSON_SIZE should be set to a value greater than 0 and fragmentation is used.
-// - With ArduinoJson 7: DASH_JSON_SIZE can be set to 0 to disable the fragmentation and the measurements, at the risk of going out of heap. This option gives the best performance but you need to make sure to have enough heap in case your application is large.
-// - With ArduinoJson 7: if DASH_JSON_SIZE is set to 0 and DASH_MIN_FREE_HEAP is set to a value greater than 0, heap will be checked before sending the payload and fragmentation will trigger if not enough heap..
-// - DASH_MIN_FREE_HEAP will have no effect is DASH_JSON_SIZE is not set to 0
-// 
-// To help you decide, you can uncomment line 543 in the cpp which will display the free heap size and teh required heap size to build the websocket message.
-// ESP_LOGW("ESPDash", "Required Heap size to build WebSocket message: %d bytes. Free Heap: %" PRIu32 " bytes", len, ESP.getFreeHeap());
+// Controls the payload size: as soon as the payload size reaches this value, the payload is sent to the client
+// This allows to split in batches the payload to avoid sending too large payloads at once
 #ifndef DASH_JSON_SIZE
-#if ARDUINOJSON_VERSION_MAJOR == 6 && !defined(DASH_JSON_DOCUMENT_ALLOCATION)
-#define DASH_JSON_SIZE 2048
-#else
-#define DASH_JSON_SIZE 0
-#endif // ARDUINOJSON_VERSION_MAJOR == 6 && !defined(DASH_JSON_DOCUMENT_ALLOCATION)
-#endif // DASH_JSON_SIZE
-
-// Only for ArduinoJson 7
-#ifndef DASH_MIN_FREE_HEAP
-#define DASH_MIN_FREE_HEAP 0
-#endif
-
-#if ARDUINOJSON_VERSION_MAJOR == 6 && !defined(DASH_JSON_DOCUMENT_ALLOCATION)
-#if DASH_JSON_SIZE == 0
-#error "DASH_JSON_SIZE must be set to a value greater than 0 when using ArduinoJson 6"
-#endif
-#define DASH_JSON_DOCUMENT_ALLOCATION DASH_JSON_SIZE * 3
+  #define DASH_JSON_SIZE 2048
 #endif
 
 #ifndef DASH_USE_LEGACY_CHART_STORAGE
@@ -96,13 +57,8 @@ Github URL: https://github.com/ayushsharma82/ESP-DASH
   #define DASH_MAX_WS_CLIENTS DEFAULT_MAX_WS_CLIENTS
 #endif
 
-// Forward Declaration
-class Card;
-class Chart;
-class Statistic;
-
 // ESPDASH Class
-class ESPDash{
+class ESPDash {
   public:
     // changes_only: true (equivalent to sendUpdates(false)) - when sending updates to the client
     // changes_only: false (equivalent to sendUpdates(true)) - when sending the entire layout to the client or when forcing a full update
@@ -112,10 +68,8 @@ class ESPDash{
     AsyncWebServer* _server = nullptr;
     AsyncWebSocket* _ws = nullptr;
 
-    std::vector<Card*> cards;
-    std::vector<Chart*> charts;
-    std::vector<Statistic*> statistics;
-    bool default_stats_enabled = false;
+    std::list<dash::Component*> _components;      // all components
+    std::list<dash::Component*> _componentsOwned; // components created by ESPDash (like statistics), which should be deleted in the destructor
     bool basic_auth = false;
     dash::string username;
     dash::string password;
@@ -125,49 +79,34 @@ class ESPDash{
     volatile bool _asyncAccessInProgress = false;
 
     // Generate layout json
-    void generateLayoutJSON(AsyncWebSocketClient* client, bool changes_only = false, Card* onlyCard = nullptr, Chart* onlyChart = nullptr);
+    void generateLayoutJSON(AsyncWebSocketClient* client, bool changes_only, const dash::Component* onlyComponent);
+    size_t generateLayoutJSON(AsyncWebSocketClient* client, bool changes_only, const dash::Component* onlyComponent, JsonDocument& doc, dash::Component::Family family);
     void send(AsyncWebSocketClient* client, JsonDocument& doc);
-    bool overflowed(JsonDocument& doc);
 
-    // Generate Component JSON
-    void generateComponentJSON(JsonObject& obj, Card* card, bool change_only = false);
-    void generateComponentJSON(JsonObject& obj, Chart* chart, bool change_only = false);
+    static const char* jsonKey(const dash::Component* c) { return jsonKey(c->family()); }
+    static const char* jsonKey(dash::Component::Family family);
 
   public:
-    ESPDash(AsyncWebServer* server, const char* uri, bool enable_default_stats = true);
-    ESPDash(AsyncWebServer* server, bool enable_default_stats);
-    ESPDash(AsyncWebServer* server);
+    ESPDash(AsyncWebServer& server, const char* uri, bool enable_default_stats);
+    ESPDash(AsyncWebServer& server, bool enable_default_stats) : ESPDash(server, "/", enable_default_stats) {}
+    ESPDash(AsyncWebServer& server) : ESPDash(server, "/", true) {}
 
     // Set Authentication
     void setAuthentication(const char* user, const char* pass);
-    void setAuthentication(const dash::string &user, const dash::string &pass);
+    void setAuthentication(const dash::string& user, const dash::string& pass) { setAuthentication(user.c_str(), pass.c_str()); }
 
-    // Add Card
-    void add(Card *card);
-    // Remove Card
-    void remove(Card *card);
-
-    // Add Chart
-    void add(Chart *card);
-    // Remove Chart
-    void remove(Chart *card);
-
-    // Add Statistic
-    void add(Statistic *statistic);
-    // Remove Statistic
-    void remove(Statistic *statistic);
+    // Add a component to the dashboard and return true if the component was added, false if the component ID was already present
+    bool add(dash::Component& component);
+    void remove(dash::Component& component);
 
     // Notify client side to update values
     void sendUpdates(bool force = false);
     void refreshLayout() { sendUpdates(true); }
-    void refreshCard(Card *card);
-    void refreshChart(Chart* chart);
+    void refresh(const dash::Component& component);
 
-    uint32_t nextId();
+    bool hasClient() { return _ws->count() > 0; }
 
-    bool hasClient();
-
-    // can be used to check if the async_http task might currently access the cards data, 
+    // can be used to check if the async_http task might currently access the cards data,
     // in which case you should not modify them
     bool isAsyncAccessInProgress() { return _asyncAccessInProgress; }
 
@@ -178,6 +117,33 @@ class ESPDash{
     void onBeforeUpdate(BeforeUpdateCallback callback) { _beforeUpdateCallback = callback; }
 
     ~ESPDash();
+
+    // deprecations
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+    [[deprecated("use ESPDash(AsyncWebServer&, const char*, bool) instead")]]
+    ESPDash(AsyncWebServer* server, const char* uri, bool enable_default_stats) : ESPDash(*server, uri, enable_default_stats) {}
+    [[deprecated("use ESPDash(AsyncWebServer&, bool) instead")]]
+    ESPDash(AsyncWebServer* server, bool enable_default_stats) : ESPDash(*server, enable_default_stats) {}
+    [[deprecated("use ESPDash(AsyncWebServer&) instead")]]
+    ESPDash(AsyncWebServer* server) : ESPDash(*server) {}
+    [[deprecated("use add(dash::Component&) instead")]]
+    void add(Card* card) { add(*card); }
+    [[deprecated("use remove(dash::Component&) instead")]]
+    void remove(Card* card) { remove(*card); }
+    [[deprecated("use add(dash::Component&) instead")]]
+    void add(Chart* chart) { add(*chart); }
+    [[deprecated("use remove(dash::Component&) instead")]]
+    void remove(Chart* chart) { remove(*chart); }
+    [[deprecated("use add(dash::Component&) instead")]]
+    void add(Statistic* statistic) { add(*statistic); }
+    [[deprecated("use remove(dash::Component&) instead")]]
+    void remove(Statistic* statistic) { remove(*statistic); }
+    [[deprecated("use refresh(dash::Component&) instead")]]
+    void refreshCard(Card* card) { refresh(*card); }
+    [[deprecated("use refresh(dash::Component&) instead")]]
+    void refreshChart(Chart* chart) { refresh(*chart); }
+#pragma GCC diagnostic pop
 };
 
 #endif

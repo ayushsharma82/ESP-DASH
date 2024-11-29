@@ -42,10 +42,10 @@ ESPDash dashboard(&server);
 Card generic(&dashboard, GENERIC_CARD, "Generic");
 Card temp(&dashboard, TEMPERATURE_CARD, "Temperature", "°C");
 Card hum(&dashboard, HUMIDITY_CARD, "Humidity", "%");
-Card status1(&dashboard, STATUS_CARD, "Status 1", "success");
-Card status2(&dashboard, STATUS_CARD, "Status 2", "warning");
-Card status3(&dashboard, STATUS_CARD, "Status 3", "danger");
-Card status4(&dashboard, STATUS_CARD, "Status 4", "idle");
+Card status1(&dashboard, STATUS_CARD, "Status 1", DASH_STATUS_SUCCESS);
+Card status2(&dashboard, STATUS_CARD, "Status 2", DASH_STATUS_WARNING);
+Card status3(&dashboard, STATUS_CARD, "Status 3", DASH_STATUS_DANGER);
+Card status4(&dashboard, STATUS_CARD, "Status 4", DASH_STATUS_IDLE);
 Card progress(&dashboard, PROGRESS_CARD, "Progress", "", 0, 100);
 Card button(&dashboard, BUTTON_CARD, "Test Button");
 Card slider(&dashboard, SLIDER_CARD, "Test Slider", "", 0, 255);
@@ -61,14 +61,17 @@ void setup() {
   Serial.begin(115200);
 
   /* Connect WiFi */
-  WiFi.mode(WIFI_STA);
-  WiFi.begin(ssid, password);
-  if (WiFi.waitForConnectResult() != WL_CONNECTED) {
-      Serial.printf("WiFi Failed!\n");
-      return;
-  }
-  Serial.print("IP Address: ");
-  Serial.println(WiFi.localIP());
+  // WiFi.mode(WIFI_STA);
+  // WiFi.begin(ssid, password);
+  // if (WiFi.waitForConnectResult() != WL_CONNECTED) {
+  //     Serial.printf("WiFi Failed!\n");
+  //     return;
+  // }
+  // Serial.print("IP Address: ");
+  // Serial.println(WiFi.localIP());
+
+  WiFi.mode(WIFI_AP);
+  WiFi.softAP("esp-captive");
 
   bar.updateX(XAxis, 7);
 
@@ -107,10 +110,10 @@ void loop() {
   generic.update((int)random(0, 100));
   temp.update((int)random(0, 100));
   hum.update((int)random(0, 100));
-  status1.update(DASH_STATUS_SUCCESS);
-  status2.update(DASH_STATUS_WARNING);
-  status3.update(DASH_STATUS_DANGER);
-  status4.update(DASH_STATUS_IDLE);
+  status1.update("message 1", DASH_STATUS_SUCCESS);
+  status2.update("message 2", DASH_STATUS_WARNING);
+  status3.update("message 3", DASH_STATUS_DANGER);
+  status4.update("message 4", DASH_STATUS_IDLE);
   progress.update((int)random(0, 100));
   
   dashboard.sendUpdates();
