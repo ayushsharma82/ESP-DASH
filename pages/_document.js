@@ -1,9 +1,9 @@
 import { Head, Html, Main, NextScript } from "next/document";
 
 const promo_banner = [
-    "Black Friday Deals Are Live!",
-    "Enjoy Up to 33% Off!",
-    "Limited Time Offer Only."
+  "Cyber Monday Madness Starts Now!",
+  "Enjoy Up to 25% Off!",
+  "Limited Time Offer till 4th December '24."
 ];
 
 export default function Document() {
