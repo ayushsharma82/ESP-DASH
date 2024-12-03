@@ -1,47 +1,34 @@
 #ifndef __CARD_H
 #define __CARD_H
 
+#include "dash/DashCards.h"
 
-#include <functional>
-#include "Arduino.h"
+#define BUTTON_CARD         dash::Component::Type::CARD_BUTTON
+#define GENERIC_CARD        dash::Component::Type::CARD_GENERIC
+#define HUMIDITY_CARD       dash::Component::Type::CARD_HUMIDITY
+#define PROGRESS_CARD      dash::Component::Type::CARD_PROGRESS
+#define SLIDER_CARD        dash::Component::Type::CARD_SLIDER
+#define STATUS_CARD         dash::Component::Type::CARD_STATUS
+#define TEMPERATURE_CARD    dash::Component::Type::CARD_TEMPERATURE
 
-#include "ESPDash.h"
-#include "ArduinoJson.h"
-
-struct CardNames {
-  int value;
-  const char* type;
-};
-
-// functions defaults to zero (number card)
-enum {
-  GENERIC_CARD,
-  TEMPERATURE_CARD,
-  HUMIDITY_CARD,
-  STATUS_CARD,
-  SLIDER_CARD,
-  BUTTON_CARD,
-  PROGRESS_CARD
-};
-
-// Forward Declaration
-class ESPDash;
+#define DASH_STATUS_IDLE "i"
+#define DASH_STATUS_SUCCESS "s"
+#define DASH_STATUS_WARNING "w"
+#define DASH_STATUS_DANGER "d"
 
 // Card Class
-class Card {
+class [[deprecated("This class is deprecated. Use a dash::Card sub-class instead.")]] Card : public dash::Widget {
   private:
-    ESPDash *_dashboard;
+    ESPDash* _dashboard = nullptr;
 
-    uint32_t _id;
-    const char* _name;
-    int   _type;
-    bool  _changed;
-    enum { INTEGER, FLOAT, STRING } _value_type;
+    enum { INTEGER,
+           FLOAT,
+           STRING } _value_type;
     union alignas(4) {
         float _value_f;
         int _value_i;
     };
-    String _value_s;
+    dash::string _value_s;
     union alignas(4) {
         float _value_min_f;
         int _value_min;
@@ -54,29 +41,25 @@ class Card {
         float _value_step_f;
         int _value_step;
     };
-    String _symbol;
+    dash::string _symbol;
+
     std::function<void(int value)> _callback = nullptr;
     std::function<void(float value)> _callback_f = nullptr;
 
   public:
-    Card(ESPDash *dashboard, const int type, const char* name, const char* symbol = "", const int min = 0, const int max = 0, const int step = 1);
-    Card(ESPDash *dashboard, const int type, const char* name, const char* symbol, const float min, const float max, const float step);
-    void attachCallback(std::function<void(int)> cb);
-    void attachCallbackF(std::function<void(float)> cb);
-    void update(int value);
-    void update(int value, const char* symbol);
-    void update(bool value);
-    void update(bool value, const char* symbol);
-    void update(float value);
-    void update(float value, const char* symbol);
-    void update(const char* value);
-    void update(const char* value, const char* symbol);
-    void update(const String &value);
-    void update(const String &value, const char* symbol);
+    Card(ESPDash* dashboard, const dash::Component::Type type, const char* name, const char* symbol = "", const int min = 0, const int max = 0, const int step = 1);
+    Card(ESPDash* dashboard, const dash::Component::Type type, const char* name, const char* symbol, const float min, const float max, const float step);
+    void attachCallback(std::function<void(int)> cb) { _callback = cb; }
+    void attachCallbackF(std::function<void(float)> cb) { _callback_f = cb; }
+    void update(int value, const char* symbol = nullptr);
+    void update(bool value, const char* symbol = nullptr);
+    void update(float value, const char* symbol = nullptr);
+    void update(const char* value, const char* symbol = nullptr);
+    void update(const dash::string& value, const char* symbol = nullptr) { update(value.c_str(), symbol); }
+    void update(dash::string&& value, const char* symbol = nullptr);
+    virtual void toJson(const JsonObject& json, bool onlyChanges) const override;
+    virtual void onEvent(const JsonObject& json) override;
     ~Card();
-  
-  friend class ESPDash;
 };
-
 
 #endif
