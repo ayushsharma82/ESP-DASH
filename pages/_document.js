@@ -1,10 +1,6 @@
 import { Head, Html, Main, NextScript } from "next/document";
 
-const promo_banner = [
-  "Cyber Monday Madness Starts Now!",
-  "Enjoy Up to 25% Off!",
-  "Limited Time Offer till 4th December '24."
-];
+const promo_banner = [];
 
 export default function Document() {
   return (
@@ -12,7 +8,7 @@ export default function Document() {
       <Head />
       <body className="antialiased">
       {
-          promo_banner && (
+          promo_banner && promo_banner.length > 0 && (
             <div className="relative flex overflow-x-hidden text-zinc-200 font-semibold text-sm uppercase bg-indigo-600">
               <div className="py-2 animate-marquee whitespace-nowrap">
                 {
