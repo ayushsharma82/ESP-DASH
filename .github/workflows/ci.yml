@@ -114,17 +114,6 @@ jobs:
           - env: ci-arduino-3
             board: esp32-c6-devkitc-1
 
-          - env: ci-arduino-310rc1
-            board: esp32dev
-          - env: ci-arduino-310rc1
-            board: esp32-s2-saola-1
-          - env: ci-arduino-310rc1
-            board: esp32-s3-devkitc-1
-          - env: ci-arduino-310rc1
-            board: esp32-c3-devkitc-02
-          - env: ci-arduino-310rc1
-            board: esp32-c6-devkitc-1
-
           - env: ci-esp8266
             board: huzzah
           - env: ci-esp8266
