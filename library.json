@@ -22,13 +22,13 @@
     {
       "owner": "bblanchon",
       "name": "ArduinoJson",
-      "version": "^7.2.1",
+      "version": "^7.3.0",
       "platforms": ["espressif8266", "espressif32"]
     },
     {
-      "owner": "mathieucarbou",
+      "owner": "ESP32Async",
       "name": "ESPAsyncWebServer",
-      "version": "^3.3.23",
+      "version": "^3.6.0",
       "platforms": ["espressif8266", "espressif32"]
     }
   ]
