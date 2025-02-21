@@ -1,7 +1,7 @@
 {
   "name": "ESP-DASH",
-  "keywords": "EspDash, esp8266, esp32, ui, dashboard, user, ux, interface, gui, iot, arduino, Wifi, server",
-  "description": "A blazing fast library to create realtime dashboards for ESP8266's and ESP32's.",
+  "keywords": "espdash, esp8266, esp32, rp2040, rp2350, webserver, ui, dashboard, user, ux, interface, gui, iot, arduino, wifi, server",
+  "description": "ESP-DASH lets you create functional and beautiful self-hosted dashboards for your ESP8266, ESP32, RP2040 or RP2350 without the need of an internet connection.",
   "repository":
   {
     "type": "git",
@@ -15,21 +15,21 @@
       "maintainer": true
     }
   ],
-  "version": "4.0.8",
+  "version": "4.0.9",
   "frameworks": "arduino",
-  "platforms": ["espressif32", "espressif8266"],
+  "platforms": ["espressif8266", "espressif32", "raspberrypi"],
   "dependencies": [
     {
       "owner": "bblanchon",
       "name": "ArduinoJson",
-      "version": "^7.1.0",
-      "platforms": ["espressif8266", "espressif32"]
+      "version": "^7.3.0",
+      "platforms": ["espressif8266", "espressif32", "raspberrypi"]
     },
     {
-      "owner": "mathieucarbou",
+      "owner": "ESP32Async",
       "name": "ESPAsyncWebServer",
-      "version": "^3.3.14",
-      "platforms": ["espressif8266", "espressif32"]
+      "version": "^3.7.1",
+      "platforms": ["espressif8266", "espressif32", "raspberrypi"]
     }
   ]
 }

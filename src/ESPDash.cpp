@@ -281,6 +281,12 @@ void ESPDash::generateLayoutJSON(AsyncWebSocketClient* client, bool changes_only
       doc["stats"][idx]["v"] = ESP.getCoreVersion();
 #elif defined(ESP32)
       doc["stats"][idx]["v"] = String(esp_get_idf_version());
+#elif defined(TARGET_RP2040) || defined(PICO_RP2040) || defined(TARGET_RP2350) || defined(PICO_RP2350)
+      char sdk_version[16];
+      sprintf(sdk_version, "%s.%s.%s", ARDUINO_PICO_MAJOR, ARDUINO_PICO_MINOR, ARDUINO_PICO_REVISION);
+      doc["stats"][idx]["v"] = sdk_version;
+#else
+      doc["stats"][idx]["v"] = "Unknown Platform";
 #endif
       idx++;
 
@@ -294,7 +300,13 @@ void ESPDash::generateLayoutJSON(AsyncWebSocketClient* client, bool changes_only
     // Free Heap
     doc["stats"][idx]["i"] = -4;
     doc["stats"][idx]["k"] = "Free Heap (SRAM)";
+#if defined(ESP8266) || defined(ESP32)
     doc["stats"][idx]["v"] = ESP.getFreeHeap();
+#elif defined(TARGET_RP2040) || defined(PICO_RP2040) || defined(TARGET_RP2350) || defined(PICO_RP2350)
+    doc["stats"][idx]["v"] = rp2040.getFreeHeap();
+#else
+    doc["stats"][idx]["v"] = "Unknown Platform";
+#endif
     idx++;
 
     // WiFi Mode
@@ -389,7 +401,12 @@ void ESPDash::generateComponentJSON(JsonObject& doc, Card* card, bool change_onl
       }
     }
   }
+  
+#if defined(TARGET_RP2040) || defined(PICO_RP2040) || defined(TARGET_RP2350) || defined(PICO_RP2350)
+  if(change_only || card->_symbol.length() > 0)
+#else
   if(change_only || !card->_symbol.isEmpty())
+#endif
     doc["s"] = card->_symbol;
 
   switch (card->_value_type) {
@@ -400,7 +417,11 @@ void ESPDash::generateComponentJSON(JsonObject& doc, Card* card, bool change_onl
       doc["v"] = String(card->_value_f, 2);
       break;
     case Card::STRING:
+#if defined(TARGET_RP2040) || defined(PICO_RP2040) || defined(TARGET_RP2350) || defined(PICO_RP2350)
+      if(change_only || card->_value_s.length() > 0) {
+#else
       if(change_only || !card->_value_s.isEmpty()) {
+#endif
         doc["v"] = card->_value_s;
       }
       break;
