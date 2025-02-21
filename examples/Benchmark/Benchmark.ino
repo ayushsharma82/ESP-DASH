@@ -24,6 +24,11 @@
   #include <WiFi.h>
   #include <AsyncTCP.h>
   #include <ESPAsyncWebServer.h>
+#elif defined(TARGET_RP2040) || defined(TARGET_RP2350) || defined(PICO_RP2040) || defined(PICO_RP2350)
+  /* RP2040 or RP2350 Dependencies */
+  #include <WiFi.h>
+  #include <RPAsyncTCP.h>
+  #include <ESPAsyncWebServer.h>
 #endif
 
 #include <ESPDash.h>
