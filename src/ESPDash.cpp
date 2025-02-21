@@ -415,7 +415,7 @@ void ESPDash::generateComponentJSON(JsonObject& doc, Card* card, bool change_onl
       doc["v"] = String(card->_value_f, 2);
       break;
     case Card::STRING:
-#elif defined(TARGET_RP2040) || defined(PICO_RP2040) || defined(TARGET_RP2350) || defined(PICO_RP2350)
+#if defined(TARGET_RP2040) || defined(PICO_RP2040) || defined(TARGET_RP2350) || defined(PICO_RP2350)
       if(change_only || card->_value_s.length() > 0) {
 #else
       if(change_only || !card->_value_s.isEmpty()) {
