@@ -282,7 +282,9 @@ void ESPDash::generateLayoutJSON(AsyncWebSocketClient* client, bool changes_only
 #elif defined(ESP32)
       doc["stats"][idx]["v"] = String(esp_get_idf_version());
 #elif defined(TARGET_RP2040) || defined(PICO_RP2040) || defined(TARGET_RP2350) || defined(PICO_RP2350)
-      doc["stats"][idx]["v"] = String(ARDUINO_PICO_MAJOR+"."+ARDUINO_PICO_MINOR+"."+ARDUINO_PICO_REVISION);
+      char sdk_version[16];
+      sprintf(sdk_version, "%s.%s.%s", ARDUINO_PICO_MAJOR, ARDUINO_PICO_MINOR, ARDUINO_PICO_REVISION);
+      doc["stats"][idx]["v"] = sdk_version;
 #else
       doc["stats"][idx]["v"] = "Unknown Platform";
 #endif
