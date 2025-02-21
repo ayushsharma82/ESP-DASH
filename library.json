@@ -22,7 +22,7 @@
     {
       "owner": "bblanchon",
       "name": "ArduinoJson",
-      "version": "^7.1.0",
+      "version": "^7.3.0",
       "platforms": ["espressif8266", "espressif32", "raspberrypi"]
     },
     {
