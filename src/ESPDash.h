@@ -25,13 +25,21 @@ Github URL: https://github.com/ayushsharma82/ESP-DASH
 #include "vector.h"
 
 #if defined(ESP8266)
-    #define DASH_HARDWARE "ESP8266"
-    #include "ESP8266WiFi.h"
-    #include "ESPAsyncTCP.h"
+  #define DASH_HARDWARE "ESP8266"
+  #include "ESP8266WiFi.h"
+  #include "ESPAsyncTCP.h"
 #elif defined(ESP32)
-    #define DASH_HARDWARE "ESP32"
-    #include "WiFi.h"
-    #include "AsyncTCP.h"
+  #define DASH_HARDWARE "ESP32"
+  #include "WiFi.h"
+  #include "AsyncTCP.h"
+#elif defined(TARGET_RP2040) || defined(PICO_RP2040)
+  #define DASH_HARDWARE "RP2040"
+  #include "WiFi.h"
+  #include "RPAsyncTCP.h"
+#elif defined(TARGET_RP2350) || defined(PICO_RP2350)
+  #define DASH_HARDWARE "RP2350"
+  #include "WiFi.h"
+  #include "RPAsyncTCP.h"
 #endif
 
 #define DASH_STATUS_IDLE "i"
