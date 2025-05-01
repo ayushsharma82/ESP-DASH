@@ -65,7 +65,7 @@ namespace dash {
               json["n"] = name();
             break;
           case Family::STATISTIC:
-            json["i"] = id();
+            json["id"] = id();
             if (!onlyChanges || hasChanged(Property::NAME))
               json["k"] = name();
             break;

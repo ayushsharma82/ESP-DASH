@@ -1,21 +1,19 @@
 /*
-____ ____ ___  ___  ____ ____ _  _
-|___ [__  |__] |  \ |__| [__  |__|
-|___ ___] |    |__/ |  | ___] |  |
-
-ESP-DASH V5
----------------------
-Author: Ayush Sharma
+ ___ ___ ___     ___   _   ___ _  _ 
+| __/ __| _ \___|   \ /_\ / __| || |
+| _|\__ \  _/___| |) / _ \\__ \ __ |
+|___|___/_|     |___/_/ \_\___/_||_|
+                                                                                        
+Author: Ayush Sharma (Github @ayushsharma82)
 First Commit: Nov 5, 2017
-Github URL: https://github.com/ayushsharma82/ESP-DASH
-
+Repository URL: https://github.com/ayushsharma82/ESP-DASH
 */
 
 #ifndef ESPDash_h
 #define ESPDash_h
 
 #include "Arduino.h"
-#include "dash_webpage.h"
+// #include "edp.h"
 #include "stdlib_noniso.h"
 
 #if defined(ESP8266)
@@ -39,21 +37,17 @@ Github URL: https://github.com/ayushsharma82/ESP-DASH
 #include "ArduinoJson.h"
 #include "ESPAsyncWebServer.h"
 
-#include "dash/DashCards.h"
-#include "dash/DashCharts.h"
-#include "dash/DashComponent.h"
-#include "dash/DashDefines.h"
-#include "dash/DashStatistics.h"
-#include "dash/DashWidget.h"
+#include "DASH/DashDefines.h"
+#include "DASH/DashComponent.h"
+#include "DASH/DashWidget.h"
+#include "DASH/DashCards.h"
+#include "DASH/DashCharts.h"
+#include "DASH/DashStatistics.h"
 
 // Controls the payload size: as soon as the payload size reaches this value, the payload is sent to the client
 // This allows to split in batches the payload to avoid sending too large payloads at once
 #ifndef DASH_JSON_SIZE
   #define DASH_JSON_SIZE 2048
-#endif
-
-#ifndef DASH_USE_LEGACY_CHART_STORAGE
-  #define DASH_USE_LEGACY_CHART_STORAGE 0
 #endif
 
 #ifndef DASH_MAX_WS_CLIENTS
@@ -82,7 +76,7 @@ class ESPDash {
 
     // Generate layout json
     void generateLayoutJSON(AsyncWebSocketClient* client, bool changes_only, const dash::Component* onlyComponent);
-    size_t generateLayoutJSON(AsyncWebSocketClient* client, bool changes_only, const dash::Component* onlyComponent, JsonDocument& doc, dash::Component::Family family);
+    size_t generateLayoutJSON(AsyncWebSocketClient* client, bool changes_only, const dash::Component* onlyComponent, JsonDocument& doc, uint8_t familyMask);
     void send(AsyncWebSocketClient* client, JsonDocument& doc);
 
     static const char* jsonKey(const dash::Component* c) { return jsonKey(c->family()); }

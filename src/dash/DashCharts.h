@@ -58,13 +58,13 @@ namespace dash {
       size_t _y_axis_ptr_size = 0;
   };
 
-  // bar chart
+  // Bar Chart
   template <typename X, typename Y, std::enable_if_t<(std::is_integral_v<X> || std::is_floating_point_v<X> || std::is_same_v<X, dash::string> || std::is_same_v<X, const char*>) && (std::is_integral_v<Y> || std::is_floating_point_v<Y>), bool> = true>
   class BarChart : public Chart<X, Y> {
     public:
       BarChart(ESPDash& dashboard, const char* name) : Chart<X, Y>(dashboard, name) {}
       BarChart(const char* name) : Chart<X, Y>(name) {}
       virtual ~BarChart() = default;
-      virtual const char* type() const override { return "bar"; }
+      virtual const char* type() const override { return "bch"; }
   };
 } // namespace dash

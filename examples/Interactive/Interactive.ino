@@ -53,7 +53,7 @@ ESPDash dashboard(server);
   Button Card
   Format - (Dashboard Instance, Card Type, Card Name)
 */
-dash::SwitchCard button(dashboard, "Test Button");
+dash::ToggleButtonCard button(dashboard, "Test Button");
 
 /* 
   Slider Card

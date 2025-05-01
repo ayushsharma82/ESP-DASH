@@ -25,25 +25,6 @@ namespace dash {
       Card(ESPDash& dashboard, const char* name) : Widget(dashboard, name) {}
       // construct a new card without adding it to any dashboard
       Card(const char* name) : Widget(name) {}
-
-      // status names
-      static const char* _statusName(Status status) {
-        switch (status) {
-          case Status::NONE:
-            return "";
-          case Status::IDLE:
-            return "i";
-          case Status::SUCCESS:
-            return "s";
-          case Status::WARNING:
-            return "w";
-          case Status::DANGER:
-            return "d";
-          default:
-            assert(false);
-            return "";
-        }
-      }
   };
 
   // this is a card holding a value
@@ -106,7 +87,7 @@ namespace dash {
       std::optional<T> _value;
   };
 
-  // generic card
+  // Generic Card
   template <typename T = dash::string, uint8_t Precision = 2, std::enable_if_t<std::is_integral_v<T> || std::is_floating_point_v<T> || std::is_same_v<T, dash::string> || std::is_same_v<T, const char*>, bool> = true>
   class GenericCard : public ValueCard<T, Precision> {
     public:
@@ -135,14 +116,14 @@ namespace dash {
       const char* _symbol;
   };
 
-  // temperature card
+  // Temperature Card
   template <typename T = float, uint8_t Precision = 2, std::enable_if_t<std::is_integral_v<T> || std::is_floating_point_v<T>, bool> = true>
   class TemperatureCard : public ValueCard<T, Precision> {
     public:
       TemperatureCard(ESPDash& dashboard, const char* name, const char* unit = "°C") : ValueCard<T, Precision>(dashboard, name), _unit(unit) {}
       TemperatureCard(const char* name, const char* unit = "°C") : ValueCard<T, Precision>(name), _unit(unit) {}
       virtual ~TemperatureCard() = default;
-      virtual const char* type() const override { return "temperature"; }
+      virtual const char* type() const override { return "tc"; }
 
       const char* unit() const { return _unit; }
 
@@ -164,14 +145,14 @@ namespace dash {
       const char* _unit;
   };
 
-  // humidity card
+  // Humidity Card
   template <typename T = float, uint8_t Precision = 2, std::enable_if_t<std::is_integral_v<T> || std::is_floating_point_v<T>, bool> = true>
   class HumidityCard : public ValueCard<T, Precision> {
     public:
       HumidityCard(ESPDash& dashboard, const char* name, const char* unit = "%") : ValueCard<T, Precision>(dashboard, name), _unit(unit) {}
       HumidityCard(const char* name, const char* unit = "%") : ValueCard<T, Precision>(name), _unit(unit) {}
       virtual ~HumidityCard() = default;
-      virtual const char* type() const override { return "humidity"; }
+      virtual const char* type() const override { return "hc"; }
 
       const char* unit() const { return _unit; }
 
@@ -193,7 +174,7 @@ namespace dash {
       const char* _unit;
   };
 
-  // feedback card
+  // Feedback Card
   template <typename T = dash::string, std::enable_if_t<std::is_same_v<T, dash::string> || std::is_same_v<T, const char*>, bool> = true>
   class FeedbackCard : public ValueCard<T> {
     public:
@@ -204,7 +185,7 @@ namespace dash {
         setMessage(initialMessage);
       }
       virtual ~FeedbackCard() = default;
-      virtual const char* type() const override { return "status"; }
+      virtual const char* type() const override { return "fc"; }
 
       Status status() const { return _status; }
 
@@ -231,20 +212,44 @@ namespace dash {
       virtual void toJson(const JsonObject& json, bool onlyChanges) const override {
         ValueCard<T>::toJson(json, onlyChanges);
         if (!onlyChanges || ValueCard<T>::hasChanged(Component::Property::SYMBOL))
-          json["s"] = Card::_statusName(_status);
+          json["s"] = static_cast<uint8_t>(_status);
       }
 
     private:
       Status _status;
   };
 
-  // switch card
-  class SwitchCard : public ValueCard<bool> {
+  // Separator card
+  template <typename T = dash::string, std::enable_if_t<std::is_same_v<T, dash::string> || std::is_same_v<T, const char*>, bool> = true>
+  class SeparatorCard : public ValueCard<T> {
     public:
-      SwitchCard(ESPDash& dashboard, const char* name) : ValueCard<bool>(dashboard, name) {}
-      SwitchCard(const char* name) : ValueCard<bool>(name) {}
-      virtual ~SwitchCard() = default;
-      virtual const char* type() const override { return "button"; }
+      SeparatorCard(ESPDash& dashboard, const char* title, const char* initialMessage = "") : ValueCard<T>(dashboard, title) {
+        setSubtitle(initialMessage);
+        ValueCard<T>::setSize({12, 12, 12, 12, 12, 12});
+      }
+      SeparatorCard(const char* title, const char* initialMessage = "") : ValueCard<T>(title) {
+        setSubtitle(initialMessage);
+        ValueCard<T>::setSize({12, 12, 12, 12, 12, 12});
+      }
+      virtual ~SeparatorCard() = default;
+      virtual const char* type() const override { return "spc"; }
+
+      bool setSubtitle(const char* subtitle) { return ValueCard<T>::setValue(subtitle); }
+
+      virtual void toJson(const JsonObject& json, bool onlyChanges) const override {
+        ValueCard<T>::toJson(json, onlyChanges);
+      }
+
+    private:
+  };
+
+  // Toggle Button Card
+  class ToggleButtonCard : public ValueCard<bool> {
+    public:
+      ToggleButtonCard(ESPDash& dashboard, const char* name) : ValueCard<bool>(dashboard, name) {}
+      ToggleButtonCard(const char* name) : ValueCard<bool>(name) {}
+      virtual ~ToggleButtonCard() = default;
+      virtual const char* type() const override { return "tbc"; }
 
       bool toggle() { return ValueCard<bool>::setValue(!ValueCard<bool>::optional().value_or(false)); }
       bool on() { return ValueCard<bool>::setValue(true); }
@@ -267,14 +272,14 @@ namespace dash {
       std::function<void(bool state)> _callback = nullptr;
   };
 
-  // progress card
+  // Progress Card
   template <typename T = int, uint8_t Precision = 2, std::enable_if_t<std::is_integral_v<T> || std::is_floating_point_v<T>, bool> = true>
   class ProgressCard : public ValueCard<T, Precision> {
     public:
       ProgressCard(ESPDash& dashboard, const char* name, T minValue, T maxValue, const char* unit = "") : ValueCard<T, Precision>(dashboard, name), _minValue(minValue), _maxValue(maxValue), _unit(unit) {}
       ProgressCard(const char* name, T minValue, T maxValue, const char* unit = "") : ValueCard<T, Precision>(name), _minValue(minValue), _maxValue(maxValue), _unit(unit) {}
       virtual ~ProgressCard() = default;
-      virtual const char* type() const override { return "progress"; }
+      virtual const char* type() const override { return "pc"; }
 
       T min() const { return _minValue; }
       T max() const { return _maxValue; }
@@ -340,14 +345,14 @@ namespace dash {
       const char* _unit;
   };
 
-  // slider card
+  // Slider Card
   template <typename T = int, uint8_t Precision = 2, std::enable_if_t<std::is_integral_v<T> || std::is_floating_point_v<T>, bool> = true>
   class SliderCard : public ProgressCard<T, Precision> {
     public:
       SliderCard(ESPDash& dashboard, const char* name, T minValue, T maxValue, T step = 1, const char* unit = "") : ProgressCard<T, Precision>(dashboard, name, minValue, maxValue, unit), _step(step) {}
       SliderCard(const char* name, T minValue, T maxValue, T step = 1, const char* unit = "") : ProgressCard<T, Precision>(name, minValue, maxValue, unit), _step(step) {}
       virtual ~SliderCard() = default;
-      virtual const char* type() const override { return "slider"; }
+      virtual const char* type() const override { return "slc"; }
 
       T step() const { return _step; }
 

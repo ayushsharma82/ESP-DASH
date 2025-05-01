@@ -52,7 +52,7 @@ dash::SliderCard<float, 4> sliderFloatP4(dashboard, "Float Slider (4)", 0, 1, 0.
 dash::SliderCard<float> sliderFloatP2(dashboard, "Float Slider (2)", 0, 1, 0.01f);
 dash::SliderCard sliderInt(dashboard, "Int Slider", 0, 255, 1, "bits");
 dash::SliderCard<uint32_t> updateDelay(dashboard, "Update Delay", 1000, 20000, 1000, "ms");
-dash::SwitchCard button(dashboard, "Button");
+dash::ToggleButtonCard button(dashboard, "Button");
 dash::TemperatureCard temp(dashboard, "Temperature"); // default precision is 2
 
 // Charts
