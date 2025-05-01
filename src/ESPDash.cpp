@@ -1,8 +1,19 @@
 #include "ESPDash.h"
 
+// MessagePack info:
+// - https://msgpack.org
+// - https://github.com/kawanet/msgpack-lite
+// Both have online encoders/decoders
+// The following is the message pack for the pong message: {"command": "pong"}
+static const uint8_t PONG_MSG_PACK[] = {0x81, 0xA7, 0x63, 0x6F, 0x6D, 0x6D, 0x61, 0x6E, 0x64, 0xA4, 0x70, 0x6F, 0x6E, 0x67};
+
 dash::Component::Component(ESPDash& dashboard, const char* name) : _id(nextId()), _name(name) {
   dashboard.add(*this);
 }
+
+/*
+  Constructors
+*/
 
 ESPDash::ESPDash(AsyncWebServer& server, const char* uri, bool enable_default_stats) {
   _server = &server;
@@ -70,17 +81,17 @@ ESPDash::ESPDash(AsyncWebServer& server, const char* uri, bool enable_default_st
   _ws = new AsyncWebSocket("/dashws");
 
   // Attach AsyncWebServer Routes
-  _server->on(uri, HTTP_GET, [this](AsyncWebServerRequest* request) {
-    if (basic_auth) {
-      if (!request->authenticate(username.c_str(), password.c_str()))
-        return request->requestAuthentication();
-    }
-    // respond with the compressed frontend
-    AsyncWebServerResponse* response = request->beginResponse(200, "text/html", DASH_HTML, sizeof(DASH_HTML));
-    response->addHeader("Content-Encoding", "gzip");
-    response->addHeader("Cache-Control", "public, max-age=900");
-    request->send(response);
-  });
+  // _server->on(uri, HTTP_GET, [this](AsyncWebServerRequest* request) {
+  //   if (basic_auth) {
+  //     if (!request->authenticate(username.c_str(), password.c_str()))
+  //       return request->requestAuthentication();
+  //   }
+  //   // respond with the compressed frontend
+  //   AsyncWebServerResponse* response = request->beginResponse(200, "text/html", DASH_HTML, sizeof(DASH_HTML));
+  //   response->addHeader("Content-Encoding", "gzip");
+  //   response->addHeader("Cache-Control", "public, max-age=900");
+  //   request->send(response);
+  // });
 
   // Websocket Callback Handler
   _ws->onEvent([&](__unused AsyncWebSocket* server, AsyncWebSocketClient* client, AwsEventType type, __unused void* arg, uint8_t* data, size_t len) {
@@ -92,36 +103,30 @@ ESPDash::ESPDash(AsyncWebServer& server, const char* uri, bool enable_default_st
 #endif
 
     if (type == WS_EVT_DATA) {
-      AwsFrameInfo* info = (AwsFrameInfo*)arg;
-      if (info->final && info->index == 0 && info->len == len) {
-        if (info->opcode == WS_TEXT) {
-          data[len] = 0;
-          deserializeJson(json, reinterpret_cast<const char*>(data));
-          // client side commands parsing
-          if (json["command"] == "get:layout") {
+      deserializeMsgPack(json, data, len);
+      // client side commands parsing
+      if (json["command"] == "get:layout") {
+        _asyncAccessInProgress = true;
+        if (_beforeUpdateCallback)
+          _beforeUpdateCallback(false);
+        generateLayoutJSON(client, false, nullptr);
+        _asyncAccessInProgress = false;
+      } else if (json["command"] == "ping") {
+        _ws->binary(client->id(), PONG_MSG_PACK, sizeof(PONG_MSG_PACK));
+      } else if (json["id"].is<uint16_t>()) {
+        uint16_t id = json["id"].as<uint16_t>();
+        // find component with same id
+        for (auto c : _components) {
+          if (c->id() == id) {
             _asyncAccessInProgress = true;
-            if (_beforeUpdateCallback)
-              _beforeUpdateCallback(false);
-            generateLayoutJSON(client, false, nullptr);
-            _asyncAccessInProgress = false;
-          } else if (json["command"] == "ping") {
-            _ws->text(client->id(), "{\"command\":\"pong\"}");
-          } else if (json["id"].is<uint16_t>()) {
-            uint16_t id = json["id"].as<uint16_t>();
-            // find component with same id
-            for (auto c : _components) {
-              if (c->id() == id) {
-                _asyncAccessInProgress = true;
 #ifdef DASH_DEBUG
-                dash::string jsonEvent;
-                serializeJson(json, jsonEvent);
-                DASH_LOGD("ESPDash", "[%d] %s: onEvent(%s): %s", c->id(), c->name(), json["command"].as<const char*>(), jsonEvent.c_str());
+            dash::string jsonEvent;
+            serializeJson(json, jsonEvent);
+            DASH_LOGD("ESPDash", "[%d] %s: onEvent(%s): %s", c->id(), c->name(), json["command"].as<const char*>(), jsonEvent.c_str());
 #endif
-                c->onEvent(json.as<JsonObject>());
-                _asyncAccessInProgress = false;
-                break;
-              }
-            }
+            c->onEvent(json.as<JsonObject>());
+            _asyncAccessInProgress = false;
+            break;
           }
         }
       }
@@ -183,8 +188,7 @@ void ESPDash::generateLayoutJSON(AsyncWebSocketClient* client, bool changes_only
       // and try to pack as many updates as possible in the same payload
       size_t docSize = 0;
       docSize += generateLayoutJSON(client, true, onlyComponent, doc, dash::Component::Family::STATISTIC);
-      docSize += generateLayoutJSON(client, true, onlyComponent, doc, dash::Component::Family::CARD);
-      docSize += generateLayoutJSON(client, true, onlyComponent, doc, dash::Component::Family::CHART);
+      docSize += generateLayoutJSON(client, true, onlyComponent, doc, dash::Component::Family::CARD | dash::Component::Family::CHART);
       if (docSize > 0)
         send(client, doc);
     }
@@ -196,15 +200,16 @@ void ESPDash::generateLayoutJSON(AsyncWebSocketClient* client, bool changes_only
     if (generateLayoutJSON(client, false, nullptr, doc, dash::Component::Family::STATISTIC))
       send(client, doc);
 
-    if (generateLayoutJSON(client, false, nullptr, doc, dash::Component::Family::CARD))
-      send(client, doc);
-
-    if (generateLayoutJSON(client, false, nullptr, doc, dash::Component::Family::CHART))
+    if (generateLayoutJSON(client, false, nullptr, doc, dash::Component::Family::CARD | dash::Component::Family::CHART))
       send(client, doc);
   }
 }
 
-size_t ESPDash::generateLayoutJSON(AsyncWebSocketClient* client, bool changes_only, const dash::Component* onlyComponent, JsonDocument& doc, dash::Component::Family family) {
+size_t ESPDash::generateLayoutJSON(AsyncWebSocketClient* client, bool changes_only, const dash::Component* onlyComponent, JsonDocument& doc, uint8_t familyMask) {
+#ifdef DASH_DEBUG
+  DASH_LOGD("ESPDash", "generateLayoutJSON(%p, %d, %p, 0x%X)", client, changes_only, onlyComponent, familyMask);
+#endif
+
   size_t docSize = 0;
   doc["command"] = changes_only ? "update:components" : "update:layout:next";
 
@@ -214,7 +219,7 @@ size_t ESPDash::generateLayoutJSON(AsyncWebSocketClient* client, bool changes_on
       continue;
 
     const dash::Component::Family f = c->family();
-    if (f != family)
+    if ((f & familyMask) == 0)
       continue;
 
     // for auto-updatable components like statistics provider
@@ -247,7 +252,7 @@ size_t ESPDash::generateLayoutJSON(AsyncWebSocketClient* client, bool changes_on
       c->toJson(obj, changes_only);
     }
 
-    docSize += measureJson(obj);
+    docSize += measureMsgPack(obj);
 
     // check if we are above the payload size
     if (docSize > DASH_JSON_SIZE) {
@@ -269,7 +274,7 @@ size_t ESPDash::generateLayoutJSON(AsyncWebSocketClient* client, bool changes_on
 }
 
 void ESPDash::send(AsyncWebSocketClient* client, JsonDocument& doc) {
-  const size_t len = measureJson(doc);
+  const size_t len = measureMsgPack(doc);
 
 #ifdef DASH_DEBUG
   #if defined(ESP8266) || defined(ESP32)
@@ -286,11 +291,11 @@ void ESPDash::send(AsyncWebSocketClient* client, JsonDocument& doc) {
 
   AsyncWebSocketMessageBuffer* buffer = _ws->makeBuffer(len);
   assert(buffer);
-  serializeJson(doc, buffer->get(), len);
+  serializeMsgPack(doc, buffer->get(), len);
   if (client != nullptr) {
-    client->text(buffer);
+    client->binary(buffer);
   } else {
-    _ws->textAll(buffer);
+    _ws->binaryAll(buffer);
   }
   doc.clear();
 }
@@ -298,11 +303,11 @@ void ESPDash::send(AsyncWebSocketClient* client, JsonDocument& doc) {
 const char* ESPDash::jsonKey(dash::Component::Family family) {
   switch (family) {
     case dash::Component::Family::CARD:
-      return "cards";
+      return "widgets";
     case dash::Component::Family::CHART:
-      return "charts";
+      return "widgets";
     case dash::Component::Family::STATISTIC:
-      return "stats";
+      return "statistics";
     default:
       assert(false);
       return "";
