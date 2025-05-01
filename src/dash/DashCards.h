@@ -5,7 +5,7 @@
 namespace dash {
   enum class Status : uint8_t {
     NONE = 0,
-    IDLE = 1,
+    INFO = 1,
     SUCCESS = 2,
     WARNING = 3,
     DANGER = 4,

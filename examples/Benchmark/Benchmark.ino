@@ -178,7 +178,7 @@ void loop() {
     sliderFloatP2.setValue(random(0, 100) / 333.0);
     sliderFloatP4.setValue(random(0, 100) / 333.0);
 
-    // Loop through statuses
+    // Loop through feedbacks
     if (test_status == 0) {
       feedback.setFeedback("Success Msg!", dash::Status::SUCCESS);
       test_status = 1;
@@ -189,7 +189,10 @@ void loop() {
       feedback.setFeedback("Danger Msg!", dash::Status::DANGER);
       test_status = 3;
     } else if (test_status == 3) {
-      feedback.setFeedback("Idle Msg!", dash::Status::IDLE);
+      feedback.setFeedback("Info Msg!", dash::Status::INFO);
+      test_status = 4;
+    } else if (test_status == 4) {
+      feedback.setFeedback("Idle Msg!", dash::Status::NONE);
       test_status = 0;
     }
 
