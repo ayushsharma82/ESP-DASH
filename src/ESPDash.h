@@ -37,12 +37,12 @@ Repository URL: https://github.com/ayushsharma82/ESP-DASH
 #include "ArduinoJson.h"
 #include "ESPAsyncWebServer.h"
 
-#include "DASH/DashDefines.h"
-#include "DASH/DashComponent.h"
-#include "DASH/DashWidget.h"
-#include "DASH/DashCards.h"
-#include "DASH/DashCharts.h"
-#include "DASH/DashStatistics.h"
+#include "dash/DashDefines.h"
+#include "dash/DashComponent.h"
+#include "dash/DashWidget.h"
+#include "dash/DashCards.h"
+#include "dash/DashCharts.h"
+#include "dash/DashStatistics.h"
 
 // Controls the payload size: as soon as the payload size reaches this value, the payload is sent to the client
 // This allows to split in batches the payload to avoid sending too large payloads at once
