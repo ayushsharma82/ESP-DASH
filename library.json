@@ -15,7 +15,7 @@
       "maintainer": true
     }
   ],
-  "version": "4.0.9",
+  "version": "5.0.0",
   "frameworks": "arduino",
   "platforms": ["espressif8266", "espressif32", "raspberrypi"],
   "dependencies": [
