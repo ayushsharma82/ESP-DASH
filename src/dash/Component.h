@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DashDefines.h"
+#include "Defines.h"
 
 namespace dash {
   class Component {
@@ -57,15 +57,14 @@ namespace dash {
       virtual bool selfUpdate() { return false; }
 
       virtual void toJson(const JsonObject& json, bool onlyChanges) const {
+        json["id"] = id();
         switch (family()) {
           case Family::CARD:
           case Family::CHART:
-            json["id"] = id();
             if (!onlyChanges || hasChanged(Property::NAME))
               json["n"] = name();
             break;
           case Family::STATISTIC:
-            json["id"] = id();
             if (!onlyChanges || hasChanged(Property::NAME))
               json["k"] = name();
             break;

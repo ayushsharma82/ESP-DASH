@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DashWidget.h"
+#include "Widget.h"
 
 namespace dash {
   template <typename X, typename Y, std::enable_if_t<(std::is_integral_v<X> || std::is_floating_point_v<X> || std::is_same_v<X, dash::string> || std::is_same_v<X, const char*>) && (std::is_integral_v<Y> || std::is_floating_point_v<Y>), bool> = true>
