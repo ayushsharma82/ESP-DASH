@@ -83,7 +83,7 @@ export default async function RootLayout({ children }) {
           }
           editLink="Edit this page on GitHub"
           docsRepositoryBase="https://github.com/ayushsharma82/ESP-DASH/tree/docs"
-          sidebar={{ defaultMenuCollapseLevel: 1 }}
+          sidebar={{ defaultMenuCollapseLevel: 2 }}
           pageMap={pageMap}
         >
           {children}

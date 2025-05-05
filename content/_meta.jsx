@@ -6,27 +6,15 @@ const metadata = {
   },
   "getting-started": {
     "title": "Getting Started",
-    theme: {
-      collapsed: false,
-    }
   },
   "security": {
     title: "Security",
-    theme: {
-      collapsed: false,
-    }
   },
   "cards": {
     "title": "Cards",
-    theme: {
-      collapsed: false,
-    }
   },
   "charts": {
     "title": "Charts",
-    theme: {
-      collapsed: false,
-    }
   },
   "statistics": {
     title: "Statistics",
@@ -39,9 +27,6 @@ const metadata = {
     // head: {
     //   titleTemplate: '%s - Features'
     // },
-    theme: {
-      collapsed: false,
-    }
   },
   "branding": {
     title: <span className="flex items-center justify-center gap-2">Branding <Badge /></span>,
