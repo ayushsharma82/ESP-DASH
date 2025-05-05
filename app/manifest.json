@@ -1,0 +1,21 @@
+{
+  "name": "ESP-DASH Docs",
+  "short_name": "ESP-DASH Docs",
+  "description": "Get started with ESP-DASH by following these well documented guides and API reference",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000",
+  "theme_color": "#000",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

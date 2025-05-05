@@ -6,19 +6,27 @@ const metadata = {
   },
   "getting-started": {
     "title": "Getting Started",
-    open: true
+    theme: {
+      collapsed: false,
+    }
   },
   "security": {
     title: "Security",
-    open: true
+    theme: {
+      collapsed: false,
+    }
   },
   "cards": {
     "title": "Cards",
-    open: true
+    theme: {
+      collapsed: false,
+    }
   },
   "charts": {
     "title": "Charts",
-    open: true
+    theme: {
+      collapsed: false,
+    }
   },
   "statistics": {
     title: "Statistics",
@@ -28,10 +36,12 @@ const metadata = {
   },
   "features": {
     "title": "Features",
-    head: {
-      titleTemplate: '%s - Features'
-    },
-    open: true
+    // head: {
+    //   titleTemplate: '%s - Features'
+    // },
+    theme: {
+      collapsed: false,
+    }
   },
   "branding": {
     title: <span className="flex items-center justify-center gap-2">Branding <Badge /></span>,
