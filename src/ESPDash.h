@@ -1,16 +1,15 @@
 /*
- ___ ___ ___     ___   _   ___ _  _ 
+ ___ ___ ___     ___   _   ___ _  _
 | __/ __| _ \___|   \ /_\ / __| || |
 | _|\__ \  _/___| |) / _ \\__ \ __ |
 |___|___/_|     |___/_/ \_\___/_||_|
-                                                                                        
+
 Author: Ayush Sharma (Github @ayushsharma82)
 First Commit: Nov 5, 2017
 Repository URL: https://github.com/ayushsharma82/ESP-DASH
 */
 
-#ifndef ESPDash_h
-#define ESPDash_h
+#pragma once
 
 #include "Arduino.h"
 // #include "edp.h"
@@ -37,12 +36,12 @@ Repository URL: https://github.com/ayushsharma82/ESP-DASH
 #include "ArduinoJson.h"
 #include "ESPAsyncWebServer.h"
 
-#include "dash/DashDefines.h"
-#include "dash/DashComponent.h"
-#include "dash/DashWidget.h"
-#include "dash/DashCards.h"
-#include "dash/DashCharts.h"
-#include "dash/DashStatistics.h"
+#include "dash/Cards.h"
+#include "dash/Charts.h"
+#include "dash/Component.h"
+#include "dash/Defines.h"
+#include "dash/Statistics.h"
+#include "dash/Widget.h"
 
 // Controls the payload size: as soon as the payload size reaches this value, the payload is sent to the client
 // This allows to split in batches the payload to avoid sending too large payloads at once
@@ -113,5 +112,3 @@ class ESPDash {
     // If called from the async_http task, isAsyncAccessInProgress() will return true while in this callback.
     void onBeforeUpdate(BeforeUpdateCallback callback) { _beforeUpdateCallback = callback; }
 };
-
-#endif

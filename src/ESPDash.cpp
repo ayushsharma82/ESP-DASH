@@ -11,10 +11,6 @@ dash::Component::Component(ESPDash& dashboard, const char* name) : _id(nextId())
   dashboard.add(*this);
 }
 
-/*
-  Constructors
-*/
-
 ESPDash::ESPDash(AsyncWebServer& server, const char* uri, bool enable_default_stats) {
   _server = &server;
 

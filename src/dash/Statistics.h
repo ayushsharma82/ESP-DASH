@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DashComponent.h"
+#include "Component.h"
 
 namespace dash {
   // Statistic super class

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DashWidget.h"
+#include "Widget.h"
 
 namespace dash {
   enum class Status : uint8_t {

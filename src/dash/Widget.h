@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DashComponent.h"
+#include "Component.h"
 
 namespace dash {
   class Widget : public Component {
@@ -8,7 +8,8 @@ namespace dash {
       Widget(const char* name) : Component(name) {}
       Widget(ESPDash& dashboard, const char* name) : Component(dashboard, name) {}
 
-      virtual ~Widget() {}
+      virtual ~Widget() {
+      }
 
       // component type (for UI rendering)
       virtual const char* type() const = 0;
