@@ -75,7 +75,7 @@ jobs:
 
       - name: Install AsyncTCP (ESP32)
         if: ${{ matrix.core == 'esp32:esp32' }}
-        run: ARDUINO_LIBRARY_ENABLE_UNSAFE_INSTALL=true arduino-cli lib install --git-url https://github.com/ESP32Async/AsyncTCP#v3.3.5
+        run: ARDUINO_LIBRARY_ENABLE_UNSAFE_INSTALL=true arduino-cli lib install --git-url https://github.com/ESP32Async/AsyncTCP#v3.4.4
 
       - name: Install ESPAsyncTCP (ESP8266)
         if: ${{ matrix.core == 'esp8266:esp8266' }}
@@ -83,13 +83,13 @@ jobs:
 
       - name: Install RPAsyncTCP (RP2040)
         if: ${{ matrix.core == 'rp2040:rp2040' }}
-        run: ARDUINO_LIBRARY_ENABLE_UNSAFE_INSTALL=true arduino-cli lib install --git-url https://github.com/ayushsharma82/RPAsyncTCP#v1.3.0
+        run: ARDUINO_LIBRARY_ENABLE_UNSAFE_INSTALL=true arduino-cli lib install --git-url https://github.com/ayushsharma82/RPAsyncTCP#v1.3.2
 
       - name: Install ESPAsyncWebServer
-        run: ARDUINO_LIBRARY_ENABLE_UNSAFE_INSTALL=true arduino-cli lib install --git-url https://github.com/ESP32Async/ESPAsyncWebServer#v3.7.1
+        run: ARDUINO_LIBRARY_ENABLE_UNSAFE_INSTALL=true arduino-cli lib install --git-url https://github.com/ESP32Async/ESPAsyncWebServer#v3.7.9
 
       - name: Install ArduinoJson
-        run: ARDUINO_LIBRARY_ENABLE_UNSAFE_INSTALL=true arduino-cli lib install --git-url https://github.com/bblanchon/ArduinoJson#v7.3.0
+        run: ARDUINO_LIBRARY_ENABLE_UNSAFE_INSTALL=true arduino-cli lib install --git-url https://github.com/bblanchon/ArduinoJson#v7.4.2
 
       - name: Build AccessPoint
         run: arduino-cli compile --library . --warnings none -b ${{ matrix.board }} "examples/AccessPoint/AccessPoint.ino"
