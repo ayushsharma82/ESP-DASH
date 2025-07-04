@@ -1,0 +1,27 @@
+---
+title: Widget Index
+description: Learn how to reposition dashboard cards and charts using the setIndex function for customizable widget placement.
+---
+
+import { Callout } from 'nextra/components'
+import ProCallout from '@/components/ProCallout';
+
+# Widget Index
+
+<ProCallout />
+
+<br/>
+
+<img src="/img/v5/features/widget-indexing-dark.png" width="800px" alt="Preview" />
+
+Usually all widgets are placed in the order they are created. However, sometimes you may want to change the order of your cards or charts on the dashboard. ESP-DASH Pro provides you with a `setIndex` function in both cards and charts to modify the position of them on the dashboard. 
+
+```cpp
+card.setIndex(0); // Set your card index
+
+// -- OR --
+
+chart.setIndex(0); // Set your chart index
+```
+
+Indexing works in ascending format. The lowest card index will be placed in the front of the list and the highest index will be put in the end. It allows you to set the layout according to your wish.

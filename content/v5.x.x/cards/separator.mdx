@@ -1,0 +1,68 @@
+---
+title: Separator Card
+description: A card used to display a title and subtitle, acting as a visual separator. Updated for ESP-DASH v5 API.
+---
+
+import { Callout } from 'nextra/components'
+
+# Separator Card
+
+*Here's an preview of separator card (without the border):*
+<img className="my-6 p-4 border rounded-lg border-zinc-300 dark:border-zinc-800 hidden dark:block" src="/img/v5/cards/dark/separator.png" width="700px" alt="Preview" />
+<img className="my-6 p-4 border rounded-lg border-zinc-300 dark:border-zinc-800 dark:hidden" src="/img/v5/cards/light/separator.png" width="700px" alt="Preview" />
+
+The Separator Card is a non-interactive visual element used to organize and group related sections of your dashboard. It displays a prominent title and an optional subtitle, making it easy to break up your dashboard into logical areas or highlight important information.
+
+## Initializer
+
+To create a separator card in ESP-DASH v5, use the `dash::SeparatorCard` class.
+
+```cpp
+dash::SeparatorCard separator(dashboard, "Section Title", "Optional Subtitle");
+```
+
+## Methods
+
+### `setSubtitle(const char* subtitle)` / `setValue(const char* value)`
+Set or update the separator's subtitle (the text shown below the main title).
+```cpp
+separator.setSubtitle("Section details or description");
+// or, for compatibility:
+separator.setValue("Section details or description");
+```
+- **Signature:** `void setSubtitle(const char* subtitle)` / `void setValue(const char* value)`
+- **Parameters:**
+  - `const char* subtitle` — The subtitle or info text to display.
+- **Returns:** `void`
+
+### `value()`
+Get the current subtitle/info text of the separator card.
+```cpp
+const char* txt = separator.value();
+```
+- **Signature:** `const char* value()`
+- **Parameters:** None
+- **Returns:** `const char*` — The current subtitle/info text.
+
+<Callout>
+The main title is set in the initializer. Use `setSubtitle` or `setValue` to update the subtitle/info text at runtime.
+</Callout>
+
+## Reference
+
+```cpp
+// ...
+
+dash::SeparatorCard<dash::string> separator(dashboard, "My Section", "This is a subtitle");
+
+void setup() {
+  // ...
+
+  // Set or update separator text (optional)
+  separator.setSubtitle("Updated info for this section");
+}
+
+void loop() {
+  // ...
+}
+```

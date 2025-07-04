@@ -1,0 +1,99 @@
+---
+title: Statistics
+description: Learn how to use and manage statistics in ESP-DASH.
+---
+
+import { Callout } from 'nextra/components'
+
+# Statistics
+
+<img className="my-6 hidden dark:block w-full max-w-[1000px] rounded-lg" src="/img/v5/statistics-dark.png" alt="Preview" />
+<img className="my-6 dark:hidden w-full max-w-[1000px] rounded-lg" src="/img/v5/statistics-light.png" alt="Preview" />
+
+Statistics in ESP-DASH allow you to display key values and metrics on your dashboard in a dedicated "Statistics" tab. They are ideal for showing device information, sensor readings, or any other single data point that you want to highlight.
+
+## Types
+
+ESPDash provides two types of statistics widget:
+
+* **Statistic Value**: For displaying a static value that you manually update.
+* **Statistic Provider**: For displaying a value that is updated automatically by a provided function.
+
+## Initializing Statistics
+
+Statistics are initialized with the `ESPDash` instance and a name (or key). The name is used to identify the statistic on the dashboard.
+
+### Statistic Value
+
+```cpp
+dash::StatisticValue<const char*> hardwareStat(dashboard, "Hardware");
+dash::StatisticValue<uint32_t> freeHeapStat(dashboard, "Free Heap");
+```
+
+### Statistic Provider
+
+```cpp
+dash::StatisticProvider<uint32_t> heapProvider(dashboard, "Free Heap (SRAM)");
+```
+
+## Setters
+
+### Setting Value (Statistic Value)
+
+For `StatisticValue`, you can update the value using the `setValue()` method. This method returns `true` if the value has changed, and `false` otherwise.
+
+```cpp
+hardwareStat.setValue("ESP32");
+freeHeapStat.setValue(ESP.getFreeHeap());
+```
+
+### Setting Provider (Statistic Provider)
+
+For `StatisticProvider`, you set a callback function using `setProvider()`. This function will be called by ESP-DASH to get the latest value for the statistic.
+
+```cpp
+heapProvider.setProvider([]() {
+  return ESP.getFreeHeap();
+});
+```
+
+## Reference
+
+Here's an example demonstrating the initialization and usage of both `StatisticValue` and `StatisticProvider`:
+
+```cpp
+...
+
+// Statistic Value
+dash::StatisticValue<const char*> hardware(dashboard, "Hardware");
+dash::StatisticValue<dash::string> sdkVersion(dashboard, "SDK Version");
+
+// Statistic Provider
+dash::StatisticProvider<uint32_t> freeHeap(dashboard, "Free Heap (SRAM)");
+
+void setup() {
+  ...
+
+  // Set values for Statistic Value
+  hardware.setValue("my-custom-hardware");
+  sdkVersion.setValue(ESP.getSdkVersion());
+
+  // Set provider for Statistic Provider
+  freeHeap.setProvider([]() {
+    return ESP.getFreeHeap();
+  });
+
+}
+
+void loop() {
+  // You don't need to manually update StatisticProvider values in loop
+  // as they are fetched on-demand when the dashboard refreshes.
+  // -----
+  // However, if using StatisticValue then you will have to
+  // manually update whenever the data changes.
+  // For example:
+  // if (some_condition) {
+  //   hardware.setValue("New Hardware Value");
+  // }
+}
+```

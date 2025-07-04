@@ -1,0 +1,86 @@
+---
+title: File Upload Card
+description: A card for uploading files from the browser to the device. Updated for ESP-DASH v5 API.
+---
+
+import { Callout } from 'nextra/components'
+import ProCallout from '@/components/ProCallout';
+
+# File Upload Card
+
+<ProCallout />
+
+<img className="my-6 hidden dark:block" src="/img/v5/cards/dark/file-upload.png" width="280px" alt="Preview" />
+<img className="my-6 dark:hidden" src="/img/v5/cards/light/file-upload.png" width="280px" alt="Preview" />
+
+The File Upload Card allows users to upload files from their browser to the device. Useful for configuration, firmware, or data uploads.
+
+## Initializer
+
+To create a file upload card, use the `dash::FileUploadCard` class:
+
+```cpp
+dash::FileUploadCard fileUpload(dashboard, "Upload", ".txt");
+```
+- The third argument is the accepted file extension(s) (optional).
+
+## Methods
+
+### `setValue(const char* url)`
+Set the upload URL where the file will be sent.
+```cpp
+fileUpload.setValue("/upload-endpoint");
+```
+- **Signature:** `void setValue(const char* url)`
+- **Parameters:**
+  - `const char* url` — The URL to which the file will be uploaded.
+- **Returns:** `void`
+
+### `value()`
+Get the current upload URL.
+```cpp
+const char* url = fileUpload.value();
+```
+- **Signature:** `const char* value()`
+- **Parameters:** None
+- **Returns:** `const char*` — The current upload URL.
+
+### `setExtensions(const char* extensions)`
+Set the accepted file extensions for the upload dialog (e.g., ".txt,.jpg").
+```cpp
+fileUpload.setExtensions(".txt,.jpg");
+```
+- **Signature:** `void setExtensions(const char* extensions)`
+- **Parameters:**
+  - `const char* extensions` — Comma-separated list of accepted file extensions or MIME types.
+- **Returns:** `void`
+
+### `extensions()`
+Get the current accepted file extensions or MIME types.
+```cpp
+const char* ext = fileUpload.extensions();
+```
+- **Signature:** `const char* extensions()`
+- **Parameters:** None
+- **Returns:** `const char*` — The current accepted file extensions or MIME types.
+
+<Callout>
+The File Upload Card does not provide a callback for file upload events. It only allows you to set the upload URL and filter selectable file types.
+</Callout>
+
+## Reference
+
+```cpp
+// ...
+dash::FileUploadCard fileUpload(dashboard, "Upload", ".txt");
+
+void setup() {
+  // ...
+  fileUpload.setValue("/upload-endpoint");
+  fileUpload.setExtensions(".txt,.jpg");
+}
+
+void loop() {
+  // ...
+}
+```

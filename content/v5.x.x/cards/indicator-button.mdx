@@ -1,0 +1,104 @@
+---
+title: Indicator Button Card
+description: A button card with a status indicator. Updated for ESP-DASH v5 API.
+---
+
+import { Callout } from 'nextra/components'
+import ProCallout from '@/components/ProCallout';
+
+# Indicator Button Card
+
+<ProCallout />
+
+<div className='my-6 flex flex-row overflow-auto flex-wrap items-center gap-3'>
+  <img className="hidden dark:block" src="/img/v5/cards/dark/indicator-button-none.png" width="260px" alt="Preview" />
+  <img className="dark:hidden" src="/img/v5/cards/light/indicator-button-none.png" width="260px" alt="Preview" />
+
+  <img className="hidden dark:block" src="/img/v5/cards/dark/indicator-button-info.png" width="260px" alt="Preview" />
+  <img className="dark:hidden" src="/img/v5/cards/light/indicator-button-info.png" width="260px" alt="Preview" />
+
+  <img className="hidden dark:block" src="/img/v5/cards/dark/indicator-button-success.png" width="260px" alt="Preview" />
+  <img className="dark:hidden" src="/img/v5/cards/light/indicator-button-success.png" width="260px" alt="Preview" />
+
+  <img className="hidden dark:block" src="/img/v5/cards/dark/indicator-button-warning.png" width="260px" alt="Preview" />
+  <img className="dark:hidden" src="/img/v5/cards/light/indicator-button-warning.png" width="260px" alt="Preview" />
+
+  <img className="hidden dark:block" src="/img/v5/cards/dark/indicator-button-danger.png" width="260px" alt="Preview" />
+  <img className="dark:hidden" src="/img/v5/cards/light/indicator-button-danger.png" width="260px" alt="Preview" />
+</div>
+
+The Indicator Button Card is a push button with a built-in status indicator (color/status). Useful for showing state whenever the button is pressed, such as toggling a light or starting a process. It can display different statuses like success, warning, or danger.
+
+## Initializer
+
+To create an indicator button card, use the `dash::IndicatorButtonCard` class:
+
+```cpp
+dash::IndicatorButtonCard indicatorButton(dashboard, "Indicator Button");
+```
+
+## Methods
+
+### `setIndicator(bool show, dash::Status status)`
+Set the indicator state (on/off) and status (color).
+```cpp
+indicatorButton.setIndicator(true, dash::Status::SUCCESS);
+```
+- **Signature:** `bool setIndicator(bool show, dash::Status status)`
+- **Parameters:**
+  - `bool show` — Show or hide the indicator.
+  - `dash::Status status` — Status type (e.g., `NONE`, `INFO`, `SUCCESS`, `WARNING`, `DANGER`).
+- **Returns:** `bool` — True if the value changed.
+
+### `status()`
+Get the current status of the indicator.
+```cpp
+dash::Status status = indicatorButton.status();
+```
+- **Signature:** `dash::Status status()`
+- **Parameters:** None
+- **Returns:** `dash::Status` — The current status.
+
+### `setValue(T value)`
+Set the indicator value. The type of `value` must match the template type you chose for `T` (e.g., int, float, bool).
+```cpp
+indicatorButton.setValue(value); // value is of type T
+```
+- **Signature:** `void setValue(T value)`
+- **Parameters:**
+  - `T value` — The value to set (type matches template parameter `T`).
+- **Returns:** `void`
+
+> **Note:**
+> - `T` can be one of: `int`, `float`, or `bool` depending on how you instantiate the card.
+
+## Callback
+
+Register a callback to handle button presses from the dashboard UI.
+
+```cpp
+indicatorButton.onPush([]() {
+  Serial.println("Indicator button pressed!");
+});
+```
+- **Signature:** `void callback()`
+- **Description:** Called when the user presses the indicator button.
+
+## Reference
+
+```cpp
+// ...
+dash::IndicatorButtonCard indicatorButton(dashboard, "Indicator Button");
+
+void setup() {
+  // ...
+  indicatorButton.setIndicator(true, dash::Status::SUCCESS);
+  indicatorButton.onPush([]() {
+    Serial.println("Indicator button pressed!");
+  });
+}
+
+void loop() {
+  // ...
+}
+```

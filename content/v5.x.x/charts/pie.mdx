@@ -1,0 +1,122 @@
+---
+title: Pie Chart
+description: Learn how to create and update Pie Charts in ESP-DASH v5. Includes initialization, label and value updating examples with code snippets.
+---
+
+import { Callout } from 'nextra/components'
+import ProCallout from '@/components/ProCallout';
+
+# Pie Chart
+
+<ProCallout />
+
+<img className="my-6 hidden dark:block" src="/img/v5/charts/dark/pie.png" width="520px" alt="Preview" />
+<img className="my-6 dark:hidden" src="/img/v5/charts/light/pie.png" width="520px" alt="Preview" />
+
+Pie charts are great for showing proportions and percentages of a whole. In ESP-DASH v5, the `dash::PieChart<L, V>` class lets you create pie charts with flexible label and value types.
+
+## Initializer
+
+To create a pie chart, instantiate `dash::PieChart<L, V>` with your dashboard instance and a descriptive title. The template parameters `L` and `V` define the types for the labels and values, respectively. Choose types that match your data:
+
+#### Example 1: String labels, integer values
+```cpp
+// Labels: categories (strings), Values: int
+Dash::PieChart<const char*, int> pie(dashboard, "Market Share");
+```
+
+#### Example 2: Integer labels, float values
+```cpp
+// Labels: int, Values: float
+Dash::PieChart<int, float> pie2(dashboard, "Distribution");
+```
+
+Just make sure the arrays you pass to `setLabels` and `setValues` match the types you specify in the template.
+
+## Callback
+
+<Callout>
+Pie charts are for data visualization and do not require a callback for user interaction.
+</Callout>
+
+## Methods
+
+### `setLabels(L arr_labels[], size_t label_size)`
+Sets the labels for the pie chart. The type of `arr_labels` must match the template type you chose for `L`.
+```cpp
+// If L is const char* (labels):
+pie.setLabels(Labels, 3); // Labels is const char*[]
+
+// If L is int:
+pie2.setLabels(labelArray, 5); // labelArray is int[]
+```
+- **Signature:** `void setLabels(L arr_labels[], size_t label_size)`
+- **Parameters:**
+  - `L arr_labels[]` — Array of label values.
+  - `size_t label_size` — Number of elements in the array.
+- **Returns:** `void`
+
+### `setValues(V arr_values[], size_t value_size)`
+Sets the values for the pie chart. The type of `arr_values` must match the template type you chose for `V`.
+```cpp
+// If V is int:
+pie.setValues(Values, 3); // Values is int[]
+
+// If V is float:
+pie2.setValues(valueArray, 5); // valueArray is float[]
+```
+- **Signature:** `void setValues(V arr_values[], size_t value_size)`
+- **Parameters:**
+  - `V arr_values[]` — Array of value data.
+  - `size_t value_size` — Number of elements in the array.
+- **Returns:** `void`
+
+### `labels()`
+Returns a pointer to the current labels array. The return type matches your template type for `L`.
+```cpp
+// If L is const char*:
+const char** labels = pie.labels();
+
+// If L is int:
+int* labelsInt = pie2.labels();
+```
+- **Signature:** `L* labels()`
+- **Parameters:** None
+- **Returns:** `L*` — Pointer to the current labels array.
+
+### `values()`
+Returns a pointer to the current values array. The return type matches your template type for `V`.
+```cpp
+// If V is int:
+int* values = pie.values();
+
+// If V is float:
+float* valuesF = pie2.values();
+```
+- **Signature:** `V* values()`
+- **Parameters:** None
+- **Returns:** `V*` — Pointer to the current values array.
+
+## Reference
+
+Below is a complete example showing how to initialize and update a pie chart. Comments explain each step for clarity.
+
+```cpp
+// Create a pie chart for market share
+// Labels: product names
+// Values: market share percentages
+
+dash::PieChart<const char*, int> pie(dashboard, "Market Share");
+
+// Data arrays must be global so the chart can access them at any time
+const char* Labels[] = {"A", "B", "C"};
+int Values[] = {40, 30, 30};
+
+void setup() {
+  // Set labels and values for the chart
+  pie.setLabels(Labels, 3);
+  pie.setValues(Values, 3);
+}
+
+// Later in your code, you can update Values[] directly to update the chart in real time
+```

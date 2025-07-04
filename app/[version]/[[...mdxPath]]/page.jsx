@@ -6,6 +6,7 @@ import { useMDXComponents as getMDXComponents } from '@/mdx-components'
 import { Layout, Navbar } from 'nextra-theme-docs'
 import { getPageMap } from 'nextra/page-map'
 import { Logo } from '@/components/Logo'
+import OldVersionBanner from '@/components/OldVersionBanner';
 
 export async function generateStaticParams() {
   const contentDir = path.join(process.cwd(), 'content');
@@ -104,6 +105,7 @@ export default async function Page(props) {
       sidebar={{ defaultMenuCollapseLevel: 2 }}
       pageMap={filteredPageMap}
     >
+      <OldVersionBanner />
       <Wrapper toc={toc} metadata={metadata}>
         <span className='hidden' data-pagefind-filter="version">{version}</span>
         <MDXContent {...props} params={props.params} />

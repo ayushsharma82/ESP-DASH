@@ -1,0 +1,23 @@
+---
+title: Custom Title
+description: Learn how to customize your ESP-DASH Pro dashboard's title using the setTitle function to replace the default browser tab text.
+---
+
+import { Callout } from 'nextra/components'
+import ProCallout from '@/components/ProCallout';
+
+# Custom Title
+
+<ProCallout />
+
+<img className="my-6 hidden dark:block max-w-[500px] rounded-lg" src="/img/v5/features/custom-title-dark.png" alt="Preview" />
+<img className="my-6 dark:hidden max-w-[500px] rounded-lg" src="/img/v5/features/custom-title-light.png" alt="Preview" />
+<small>
+*(This preview screenshot is of ESP-DASH loaded inside Arc browser)*
+</small>
+
+ESP-DASH Pro provides you with a <code>setTitle</code> function in the main ESPDash class. You can use this function to change the default title of your dashboard.
+
+```cpp
+dashboard.setTitle("New Dashboard XYZ");
+```

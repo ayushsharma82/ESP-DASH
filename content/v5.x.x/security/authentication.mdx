@@ -1,0 +1,15 @@
+---
+title: Authentication
+description: Learn how to implement HTTP Basic Authentication in ESP-DASH dashboards to secure access control with username and password protection.
+---
+
+# Authentication
+<br/>
+
+<img src="/img/v4/authentication.png" width="500px" alt="Auth Preview" />
+
+ESP-DASH comes with basic HTTP authentication support. You can enable basic HTTP based user authentication to control who can view your dashboard using `setAuthentication` function.
+
+```cpp
+dashboard.setAuthentication("username", "password");
+```

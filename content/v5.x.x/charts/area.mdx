@@ -1,0 +1,128 @@
+---
+title: Area Chart
+description: Learn how to create and update Area Charts in ESP-DASH v5. Includes initialization, X-axis and Y-axis updating examples with code snippets.
+---
+
+import { Callout } from 'nextra/components'
+import ProCallout from '@/components/ProCallout';
+
+# Area Chart
+
+<ProCallout />
+
+<img className="my-6 hidden dark:block" src="/img/v5/charts/dark/area.png" width="520px" alt="Preview" />
+<img className="my-6 dark:hidden" src="/img/v5/charts/light/area.png" width="520px" alt="Preview" />
+
+Area charts are useful for visualizing cumulative totals over time or categories. In ESP-DASH v5, the `dash::AreaChart<X, Y>` class provides a flexible, type-safe way to create and update area charts with a variety of data types.
+
+## Initializer
+
+To create an area chart, instantiate `dash::AreaChart<X, Y>` with your dashboard instance and a descriptive title. The template parameters `X` and `Y` define the types for the X and Y axes, respectively. Choose types that match your data:
+
+#### Example 1: String labels (months), integer values
+```cpp
+// X-axis: months (labels), Y-axis: rainfall (int)
+dash::AreaChart<const char*, int> area(dashboard, "Cumulative Rainfall");
+```
+
+#### Example 2: Integer X, float Y
+```cpp
+// X-axis: time (days), Y-axis: growth (float)
+dash::AreaChart<int, float> area2(dashboard, "Growth");
+```
+
+#### Example 3: Float X and Y
+```cpp
+// X-axis: float (e.g., time), Y-axis: float (e.g., value)
+dash::AreaChart<float, float> area3(dashboard, "Value");
+```
+
+Just make sure the arrays you pass to `setX` and `setY` match the types you specify in the template.
+
+## Callback
+
+<Callout>
+Area charts are for data visualization and do not require a callback for user interaction.
+</Callout>
+
+## Methods
+
+### `setX(X arr_x[], size_t x_size)`
+Sets the values for the X-axis. The type of `arr_x` must match the template type you chose for `X`.
+```cpp
+// If X is const char* (labels):
+area.setX(XAxis, 4); // XAxis is const char*[]
+
+// If X is int:
+area2.setX(timeArray, 10); // timeArray is int[]
+```
+- **Signature:** `void setX(X arr_x[], size_t x_size)`
+- **Parameters:**
+  - `X arr_x[]` — Array of X-axis values.
+  - `size_t x_size` — Number of elements in the array.
+- **Returns:** `void`
+
+### `setY(Y arr_y[], size_t y_size)`
+Sets the values for the Y-axis. The type of `arr_y` must match the template type you chose for `Y`.
+```cpp
+// If Y is int:
+area.setY(YAxis, 4); // YAxis is int[]
+
+// If Y is float:
+area2.setY(growthArray, 10); // growthArray is float[]
+```
+- **Signature:** `void setY(Y arr_y[], size_t y_size)`
+- **Parameters:**
+  - `Y arr_y[]` — Array of Y-axis values.
+  - `size_t y_size` — Number of elements in the array.
+- **Returns:** `void`
+
+### `x()`
+Returns a pointer to the current X-axis data array. The return type matches your template type for `X`.
+```cpp
+// If X is const char*:
+const char** labels = area.x();
+
+// If X is int:
+int* times = area2.x();
+```
+- **Signature:** `X* x()`
+- **Parameters:** None
+- **Returns:** `X*` — Pointer to the current X-axis data array.
+
+### `y()`
+Returns a pointer to the current Y-axis data array. The return type matches your template type for `Y`.
+```cpp
+// If Y is int:
+int* values = area.y();
+
+// If Y is float:
+float* growths = area2.y();
+```
+- **Signature:** `Y* y()`
+- **Parameters:** None
+- **Returns:** `Y*` — Pointer to the current Y-axis data array.
+
+## Reference
+
+Below is a complete example showing how to initialize and update an area chart. Comments explain each step for clarity.
+
+```cpp
+// Create an area chart for cumulative rainfall
+// X-axis: months (labels)
+// Y-axis: rainfall values
+
+dash::AreaChart<const char*, int> area(dashboard, "Cumulative Rainfall");
+
+// Data arrays must be global so the chart can access them at any time
+const char* XAxis[] = {"Jan", "Feb", "Mar", "Apr"};
+int YAxis[] = {10, 25, 40, 60};
+
+void setup() {
+  // Set X and Y axis data for the chart
+  area.setX(XAxis, 4);
+  area.setY(YAxis, 4);
+}
+
+// Later in your code, you can update YAxis[] values directly to update the chart in real time
+```

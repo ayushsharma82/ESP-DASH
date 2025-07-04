@@ -1,0 +1,109 @@
+---
+title: Toggle Button Card
+description: A card with a toggle button to control a boolean value. Updated for ESP-DASH v5 API.
+---
+
+import { Callout } from 'nextra/components'
+
+# Toggle Button Card
+
+<div className='my-6 flex flex-row overflow-auto flex-wrap items-center gap-3'>
+  <img className="hidden dark:block" src="/img/v5/cards/dark/toggle-button-false.png" width="280px" alt="Preview" />
+  <img className="dark:hidden" src="/img/v5/cards/light/toggle-button-false.png" width="280px" alt="Preview" />
+
+  <img className="hidden dark:block" src="/img/v5/cards/dark/toggle-button-true.png" width="280px" alt="Preview" />
+  <img className="dark:hidden" src="/img/v5/cards/light/toggle-button-true.png" width="280px" alt="Preview" />
+</div>
+
+The Toggle Button Card allows you to display and control a boolean (on/off) value directly from your dashboard. It functions as a clickable button that changes its state and value.
+
+## Initializer
+
+To create a toggle button card in ESP-DASH v5, use the `dash::ToggleButtonCard` class.
+
+```cpp
+dash::ToggleButtonCard toggle(dashboard, "Light");
+```
+
+## Callback
+
+Register a callback function to be called when the toggle state changes:
+```cpp
+toggle.onChange([](bool state) {
+  // Handle toggle state change
+});
+```
+
+## Methods
+
+### `setValue(bool state)`
+Set the toggle button's state.
+```cpp
+toggle.setValue(true); // Turn on
+toggle.setValue(false); // Turn off
+```
+- **Signature:** `void setValue(bool state)`
+- **Parameters:**
+  - `bool state` — The state to set (true for ON, false for OFF).
+- **Returns:** `void`
+
+### `value()`
+Get the current toggle state.
+```cpp
+bool state = toggle.value();
+```
+- **Signature:** `bool value()`
+- **Parameters:** None
+- **Returns:** `bool` — The current toggle state.
+
+### `toggle()`
+Toggle the button state (on/off).
+```cpp
+toggle.toggle();
+```
+- **Signature:** `void toggle()`
+- **Parameters:** None
+- **Returns:** `void`
+
+### `on()`
+Set the toggle button to ON.
+```cpp
+toggle.on();
+```
+- **Signature:** `void on()`
+- **Parameters:** None
+- **Returns:** `void`
+
+### `off()`
+Set the toggle button to OFF.
+```cpp
+toggle.off();
+```
+- **Signature:** `void off()`
+- **Parameters:** None
+- **Returns:** `void`
+
+## Reference
+
+```cpp
+// ...
+
+dash::ToggleButtonCard toggle(dashboard, "Light");
+
+void setup() {
+  // ...
+
+  // Register callback for toggle changes
+  toggle.onChange([](bool state) {
+    Serial.printf("Toggle state: %d\n", state);
+    // Optionally update hardware or logic here
+  });
+  
+  // Set initial state
+  toggle.setValue(false);
+}
+
+void loop() {
+  // ...
+}
+```

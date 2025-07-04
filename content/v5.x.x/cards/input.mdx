@@ -1,0 +1,91 @@
+---
+title: Input Card
+description: A card that allows users to input text or numeric values.
+---
+
+import { Callout } from 'nextra/components'
+import ProCallout from '@/components/ProCallout';
+
+# Input Card
+
+<ProCallout />
+
+<img className="my-6 hidden dark:block" src="/img/v5/cards/dark/input.png" width="280px" alt="Preview" />
+<img className="my-6 dark:hidden" src="/img/v5/cards/light/input.png" width="280px" alt="Preview" />
+
+The Input Card allows users to enter textual or numeric data. You can specify the type and precision.
+
+## Initializer
+
+To create a input card in ESP-DASH v5, use the `dash::InputCard<T, Precision>` class. The template parameters allow you to control the value type and decimal precision:
+- `T`: Value type (e.g., dash::string, int, float, const char*)
+- `Precision`: Number of decimal places for floating point values (default: 2)
+
+#### Example 1: String value (default)
+```cpp
+dash::InputCard<dash::string> input(dashboard, "Input");
+```
+
+#### Example 2: Float value, custom precision (3 decimals)
+```cpp
+dash::InputCard<float, 3> inputFloat(dashboard, "Enter float");
+```
+
+#### Example 3: Integer value
+```cpp
+dash::InputCard<int> inputInt(dashboard, "Enter int");
+```
+
+## Callback
+
+Register a callback function to be called when the text changes:
+```cpp
+input.onChange([](const char* newText) {
+  // Handle text change
+  Serial.printf("Text changed: %s\n", newText);
+});
+```
+
+## Methods
+
+### `setValue(T value)`
+Set the input value. The type of `value` must match the template type you chose for `T` (e.g., dash::string, int, float, const char*).
+```cpp
+input.setValue(value); // value is of type T
+```
+- **Signature:** `void setValue(T value)`
+- **Parameters:**
+  - `T value` — The value to set (type matches template parameter `T`).
+- **Returns:** `void`
+
+### `value()`
+Get the current input value. The return type matches your template type for `T` (e.g., dash::string, int, float, const char*).
+```cpp
+T txt = input.value();
+```
+- **Signature:** `T value()`
+- **Parameters:** None
+- **Returns:** `T` — The current value (type matches template parameter `T`).
+
+> **Note:**
+> - `T` can be one of: `dash::string`, `int`, `float`, or `const char*` depending on how you instantiate the card.
+
+## Reference
+
+Below is a reference code showing how to integrate this widget in a real project, including initialization and value updates usage.
+
+```cpp
+// ...
+
+// Create a input card (string, default)
+dash::InputCard<dash::string> textCard(dashboard, "Input");
+
+void setup() {
+  // ...
+  textCard.setValue("Hello");
+}
+
+void loop() {
+  // ...
+}
+```

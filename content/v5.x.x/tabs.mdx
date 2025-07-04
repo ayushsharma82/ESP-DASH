@@ -1,0 +1,156 @@
+---
+title: Tabs
+description: Learn how to organize your ESP-DASH Pro dashboard using Tabs to create multiple pages and efficiently manage large numbers of widgets, cards, and charts in a structured layout.
+---
+
+import { Callout } from 'nextra/components'
+import ProCallout from '@/components/ProCallout';
+import { HomeIcon, CogIcon, SunIcon, MoonIcon, SunMoonIcon, DatabaseIcon, ComputerIcon, JoystickIcon, AlarmClockIcon, ActivityIcon, AudioWaveformIcon } from 'lucide-react';
+
+# Tabs
+
+<ProCallout />
+
+<img className="my-6 hidden dark:block max-w-[300px] rounded-lg" src="/img/v5/tabs-dark.png" alt="Preview" />
+<img className="my-6 dark:hidden max-w-[300px] rounded-lg" src="/img/v5/tabs-light.png" alt="Preview" />
+
+Tabs in ESP-DASH Pro allow you to create multiple pages to organize and sort your various widgets (cards & charts). This feature comes particularly useful when there are all a lot of widgets.
+
+By default, ESP-DASH puts everything into 'Overview' Tab.
+
+<Callout>
+  If every card or chart is assigned a custom tab, then the dashboard will intelligently hide the overview tab from sidebar.
+</Callout>
+
+## Create Tab
+Initializer should be kept in global scope. ( ie. outside of any function in your sketch )
+
+```cpp
+Tab tab1(&dashboard, "Custom Tab 1", dash::Icon::COG_ICON);
+```
+
+As of v5, you can assign a icon to the tab using `dash::Icon` enum. This icon will be displayed in the sidebar next to the tab name. Here are the available icons:
+
+<div class="my-4 relative overflow-x-auto shadow-md sm:rounded-lg max-w-[500px]">
+    <table class="w-full text-sm text-left rtl:text-right text-zinc-500 dark:text-zinc-400">
+        <thead class="text-xs text-zinc-700 uppercase bg-zinc-100 dark:bg-zinc-900 dark:text-zinc-400">
+            <tr>
+                <th scope="col" class="px-6 py-3">
+                  Icon
+                </th>
+                <th scope="col" class="px-6 py-3">
+                  Value
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="odd:bg-white odd:dark:bg-zinc-950 even:bg-zinc-50 even:dark:bg-zinc-900 border-b dark:border-zinc-800 border-zinc-200">
+                <th scope="row" class="px-6 py-2 font-medium text-zinc-900 whitespace-nowrap dark:text-white">
+                  None (default)
+                </th>
+                <td class="px-6 py-4">
+                  `UNASSIGNED_ICON`
+                </td>
+            </tr>
+            <tr class="odd:bg-white odd:dark:bg-zinc-950 even:bg-zinc-50 even:dark:bg-zinc-900 border-b dark:border-zinc-800 border-zinc-200">
+                <th scope="row" class="px-6 py-2 font-medium text-zinc-900 whitespace-nowrap dark:text-white">
+                  <HomeIcon className="size-5 self-auto" />
+                </th>
+                <td class="px-6 py-4">
+                  `HOME_ICON`
+                </td>
+            </tr>
+            <tr class="odd:bg-white odd:dark:bg-zinc-950 even:bg-zinc-50 even:dark:bg-zinc-900 border-b dark:border-zinc-800 border-zinc-200">
+                <th scope="row" class="px-6 py-2 font-medium text-zinc-900 whitespace-nowrap dark:text-white">
+                  <CogIcon className="size-5 self-auto" />
+                </th>
+                <td class="px-6 py-4">
+                  `COG_ICON`
+                </td>
+            </tr>
+            <tr class="odd:bg-white odd:dark:bg-zinc-950 even:bg-zinc-50 even:dark:bg-zinc-900 border-b dark:border-zinc-800 border-zinc-200">
+                <th scope="row" class="px-6 py-2 font-medium text-zinc-900 whitespace-nowrap dark:text-white">
+                  <SunIcon className="size-5 self-auto" />
+                </th>
+                <td class="px-6 py-4">
+                  `SUN_ICON`
+                </td>
+            </tr>
+            <tr class="odd:bg-white odd:dark:bg-zinc-950 even:bg-zinc-50 even:dark:bg-zinc-900 border-b dark:border-zinc-800 border-zinc-200">
+                <th scope="row" class="px-6 py-2 font-medium text-zinc-900 whitespace-nowrap dark:text-white">
+                  <MoonIcon className="size-5 self-auto" />
+                </th>
+                <td class="px-6 py-4">
+                  `MOON_ICON`
+                </td>
+            </tr>
+            <tr class="odd:bg-white odd:dark:bg-zinc-950 even:bg-zinc-50 even:dark:bg-zinc-900 border-b dark:border-zinc-800 border-zinc-200">
+                <th scope="row" class="px-6 py-2 font-medium text-zinc-900 whitespace-nowrap dark:text-white">
+                  <SunMoonIcon className="size-5 self-auto" />
+                </th>
+                <td class="px-6 py-4">
+                  `SUN_MOON_ICON`
+                </td>
+            </tr>
+            <tr class="odd:bg-white odd:dark:bg-zinc-950 even:bg-zinc-50 even:dark:bg-zinc-900 border-b dark:border-zinc-800 border-zinc-200">
+                <th scope="row" class="px-6 py-2 font-medium text-zinc-900 whitespace-nowrap dark:text-white">
+                  <DatabaseIcon className="size-5 self-auto" />
+                </th>
+                <td class="px-6 py-4">
+                  `DATABASE_ICON`
+                </td>
+            </tr>
+            <tr class="odd:bg-white odd:dark:bg-zinc-950 even:bg-zinc-50 even:dark:bg-zinc-900 border-b dark:border-zinc-800 border-zinc-200">
+                <th scope="row" class="px-6 py-2 font-medium text-zinc-900 whitespace-nowrap dark:text-white">
+                  <ComputerIcon className="size-5 self-auto" />
+                </th>
+                <td class="px-6 py-4">
+                  `COMPUTER_ICON`
+                </td>
+            </tr>
+            <tr class="odd:bg-white odd:dark:bg-zinc-950 even:bg-zinc-50 even:dark:bg-zinc-900 border-b dark:border-zinc-800 border-zinc-200">
+                <th scope="row" class="px-6 py-2 font-medium text-zinc-900 whitespace-nowrap dark:text-white">
+                  <ActivityIcon className="size-5 self-auto" />
+                </th>
+                <td class="px-6 py-4">
+                  `ACTIVITY_ICON`
+                </td>
+            </tr>
+            <tr class="odd:bg-white odd:dark:bg-zinc-950 even:bg-zinc-50 even:dark:bg-zinc-900 border-b dark:border-zinc-800 border-zinc-200">
+                <th scope="row" class="px-6 py-2 font-medium text-zinc-900 whitespace-nowrap dark:text-white">
+                  <AlarmClockIcon className="size-5 self-auto" />
+                </th>
+                <td class="px-6 py-4">
+                  `ALARM_ICON`
+                </td>
+            </tr>
+            <tr class="odd:bg-white odd:dark:bg-zinc-950 even:bg-zinc-50 even:dark:bg-zinc-900 border-b dark:border-zinc-800 border-zinc-200">
+                <th scope="row" class="px-6 py-2 font-medium text-zinc-900 whitespace-nowrap dark:text-white">
+                  <AudioWaveformIcon className="size-5 self-auto" />
+                </th>
+                <td class="px-6 py-4">
+                  `AUDIO_ICON`
+                </td>
+            </tr>
+            <tr class="odd:bg-white odd:dark:bg-zinc-950 even:bg-zinc-50 even:dark:bg-zinc-900 border-b dark:border-zinc-800 border-zinc-200">
+                <th scope="row" class="px-6 py-2 font-medium text-zinc-900 whitespace-nowrap dark:text-white">
+                  <JoystickIcon className="size-5 self-auto" />
+                </th>
+                <td class="px-6 py-4">
+                  `JOYSTICK_ICON`
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+## Set Tab
+Once a tab has been created, you need to set the tab for relevant cards and charts using `setTab` function of Card or Chart class. `setTab` accepts a pointer to the tab which we just created.
+
+```cpp
+card1.setTab(&tab1);
+```
+
+```cpp
+chart1.setTab(&tab1);
+```

@@ -1,0 +1,104 @@
+---
+title: Week Selector Card
+description: A card for selecting days of the week. Updated for ESP-DASH v5 API.
+---
+
+import { Callout } from 'nextra/components'
+import ProCallout from '@/components/ProCallout';
+
+# Week Selector Card
+
+<ProCallout />
+
+<img className="my-6 hidden dark:block" src="/img/v5/cards/dark/week-selector.png" width="280px" alt="Preview" />
+<img className="my-6 dark:hidden" src="/img/v5/cards/light/week-selector.png" width="280px" alt="Preview" />
+
+The Week Selector Card allows users to select days of the week. The output is a comma-separated string of selected days.
+
+## Initializer
+
+To create a week selector card in ESP-DASH v5, use the `dash::WeekCard` class (no template type needed).
+
+```cpp
+dash::WeekCard<const char*> week(dashboard, "Select Days");
+```
+
+## Callback
+
+Register a callback function to be called when the week selection changes:
+```cpp
+week.onChange([](const dash::string& days) {
+  // Handle week selection
+  Serial.printf("Selected days: %s\n", days.c_str());
+});
+```
+
+## Methods
+
+### `setValue(T value)`
+Set the week value. The type of `value` must match the template type you chose for `T` (e.g., int, dash::string, const char*).
+```cpp
+week.setValue(value); // value is of type T
+```
+- **Signature:** `void setValue(T value)`
+- **Parameters:**
+  - `T value` — The value to set (type matches template parameter `T`).
+- **Returns:** `void`
+
+### `value()`
+Get the currently selected value. The return type matches your template type for `T` (e.g., int, dash::string, const char*).
+```cpp
+T v = week.value();
+```
+- **Signature:** `T value()`
+- **Parameters:** None
+- **Returns:** `T` — The currently selected value (type matches template parameter `T`).
+
+> **Note:**
+> - `T` can be one of: `int`, `dash::string`, or `const char*` depending on how you instantiate the card.
+
+### `setExtended(bool extended)`
+In extended mode, the day buttons display full names ("Sun", "Mon", "Tue", etc.) instead of single-letter abbreviations ("S", "M", ...).
+```cpp
+week.setExtended(true);
+```
+- **Signature:** `void setExtended(bool extended)`
+- **Parameters:**
+  - `bool extended` — Whether to enable extended mode.
+- **Returns:** `void`
+
+### `isExtended()`
+Check if the week selector is in extended mode.
+```cpp
+bool ext = week.isExtended();
+```
+- **Signature:** `bool isExtended()`
+- **Parameters:** None
+- **Returns:** `bool` — True if extended mode is enabled.
+
+## Reference
+
+Below is a more complete example showing how to integrate a week selector card in a real project, including initialization, setup, value updates, and callback usage.
+
+```cpp
+// ...
+
+dash::WeekCard<const char*> week(dashboard, "Select Days");
+
+void setup() {
+  // ...
+
+  // Register a callback for selection changes
+  week.onChange([](const dash::string& days) {
+    Serial.printf("Selected days: %s\n", days.c_str());
+  });
+
+  // These functions can be called from anywhere (expect from global scope)
+  week.setValue("mon,tue,wed"); 
+  week.setExtended(true);
+}
+
+void loop() {
+  // ...
+}
+```

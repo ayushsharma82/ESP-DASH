@@ -56,7 +56,6 @@ export default async function RootLayout({ children }) {
         <link rel="shortcut icon" href="/favicon.ico" />
       </Head>
       <body className={`${geistFont.variable} ${geistMonoFont.variable} font-sans`}>
-        <OldVersionBanner />
         { children }
       </body>
     </html>

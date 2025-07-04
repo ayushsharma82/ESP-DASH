@@ -1,0 +1,85 @@
+---
+title: Time Sync Card
+description: A utility card for synchronizing device time with the MCU using browser time data. Updated for ESP-DASH v5 API.
+---
+
+import { Callout } from 'nextra/components'
+import ProCallout from '@/components/ProCallout';
+
+# Time Sync Card
+
+<ProCallout />
+
+<img className="my-6 hidden dark:block" src="/img/v5/cards/dark/time-sync.png" width="280px" alt="Preview" />
+<img className="my-6 dark:hidden" src="/img/v5/cards/light/time-sync.png" width="280px" alt="Preview" />
+
+A utility card for synchronizing device time with the MCU using browser time data.
+
+## Initializer
+
+To create a time sync card in ESP-DASH v5, use the `dash::TimeSyncCard` class.
+
+```cpp
+dash::TimeSyncCard timesync(dashboard, "Time Sync");
+```
+
+## Callback
+
+You can register a callback to handle time sync events:
+
+```cpp
+timesync.onSync([](const timeval& tv) {
+  Serial.printf("Time Sync: %ld\n", tv.tv_sec);
+});
+```
+
+## Methods
+
+### setTimezoneSpec
+
+Set the timezone specification string (IANA TZ or POSIX format) for the time sync card. This is optional, but allows you to control the timezone used for synchronization.
+
+```cpp
+timesync.setTimezoneSpec("CET-1CEST,M3.5.0,M10.5.0/3");
+```
+- **Signature:** `void setTimezoneSpec(const char* tzSpec)`
+- **Parameters:**
+  - `const char* tzSpec` — The timezone specification string.
+- **Returns:** `void`
+
+### timezoneSpec
+
+Get the current timezone specification string.
+
+```cpp
+const char* tz = timesync.timezoneSpec();
+```
+- **Signature:** `const char* timezoneSpec()`
+- **Parameters:** None
+- **Returns:** `const char*` — The current timezone specification string.
+
+<Callout>
+All time sync events are handled via the callback. Use the methods above to set or get the timezone specification if needed.
+</Callout>
+
+## Reference
+
+```cpp
+dash::TimeSyncCard timesync(dashboard, "Time Sync");
+
+void setup() {
+  // ...
+
+  timesync.onSync([](const timeval& tv) {
+    Serial.printf("Time Sync: %ld\n", tv.tv_sec);
+    // Set system time, etc.
+  });
+  
+  // Optionally set timezone
+  timesync.setTimezoneSpec("CET-1CEST,M3.5.0,M10.5.0/3");
+}
+
+void loop() {
+  // No periodic update needed; callback handles sync
+}
+```

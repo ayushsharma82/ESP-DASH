@@ -1,0 +1,80 @@
+---
+title: Action Button Card
+description: A confirmation button card for actions that require user approval. Updated for ESP-DASH v5 API.
+---
+
+import { Callout } from 'nextra/components'
+import ProCallout from '@/components/ProCallout';
+
+# Action Button Card
+
+<ProCallout />
+
+<div className='my-6 flex flex-row overflow-auto flex-wrap items-center gap-3'>
+  <img className="hidden dark:block" src="/img/v5/cards/dark/action-button.png" width="260px" alt="Preview" />
+  <img className="dark:hidden" src="/img/v5/cards/light/action-button.png" width="260px" alt="Preview" />
+
+  <img className="hidden dark:block" src="/img/v5/cards/dark/action-button-dialog.png" width="600px" alt="Preview" />
+  <img className="dark:hidden" src="/img/v5/cards/light/action-button-dialog.png" width="600px" alt="Preview" />
+</div>
+
+The Action Button Card is a confirmation button, typically used for actions that require user approval (e.g., "Are you sure?").
+
+## Initializer
+
+To create an action button card, use the `dash::ActionButtonCard` class:
+
+```cpp
+dash::ActionButtonCard actionButton(dashboard, "Restart Device", "Are you sure you want to restart the device?", "This action will restart the device and any unsaved data will be lost.");
+```
+
+The initializer takes the following parameters:
+- **dashboard**: The dashboard instance to which this card belongs.
+- **name**: The name of the action button (e.g., "Restart Device").
+- **dialogTitle**: The title of the confirmation dialog (e.g., "Are you sure you want to restart the device?").
+- **dialogMessage**: The message displayed in the confirmation dialog (e.g., "This action will restart the device and any unsaved data will be lost.").
+
+## Methods
+
+<Callout>
+The Action Button Card is primarily event-driven and does not have additional user-facing methods beyond the callback.
+</Callout>
+
+## Callback
+
+Register a callback to handle user confirmation or cancellation from the dashboard UI.
+
+```cpp
+actionButton.onAction([](bool confirm) {
+  if (confirm) {
+    Serial.println("Action confirmed!");
+  } else {
+    Serial.println("Action cancelled.");
+  }
+});
+```
+- **Signature:** `void callback(bool confirm)`
+- **Parameter:** `bool confirm` — True if the user confirmed, false if user clicked cancel button.
+- **Description:** Called when the user interacts with the action button (e.g., confirms or cancels an action).
+
+## Reference
+
+```cpp
+// ...
+dash::ActionButtonCard actionButton(dashboard, "Restart Device", "Are you sure you want to restart the device?", "This action will restart the device and any unsaved data will be lost.");
+
+void setup() {
+  // ...
+  actionButton.onAction([](bool confirm) {
+    if (confirm) {
+      Serial.println("Action confirmed!");
+    } else {
+      Serial.println("Action cancelled.");
+    }
+  });
+}
+
+void loop() {
+  // ...
+}
+```

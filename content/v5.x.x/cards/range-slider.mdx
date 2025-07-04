@@ -1,0 +1,157 @@
+---
+title: Range Slider Card
+description: A slider card for selecting a range of values. Updated for ESP-DASH v5 API.
+---
+
+import { Callout } from 'nextra/components'
+import ProCallout from '@/components/ProCallout';
+
+# Range Slider Card
+
+<ProCallout />
+
+<img className="my-6 hidden dark:block" src="/img/v5/cards/dark/range-slider.png" width="280px" alt="Preview" />
+<img className="my-6 dark:hidden" src="/img/v5/cards/light/range-slider.png" width="280px" alt="Preview" />
+
+The Range Slider Card allows users to select a range (min and max) using a dual-thumb slider. Useful for filtering, thresholds, or any scenario where a value range is needed.
+
+## Initializer
+
+To create a range slider card, use the `dash::RangeSliderCard` class. You can specify the value type (e.g., `int`, `float`) and optionally the step and unit.
+
+```cpp
+dash::RangeSliderCard<uint8_t> rangeSlider(dashboard, "Range Slider", 0, 100, 1, "%");
+```
+
+## Callback
+
+Register a callback to handle range changes from the dashboard UI.
+
+```cpp
+rangeSlider.onChange([](const dash::Range<uint8_t>& range) {
+  Serial.printf("Range: %s\n", range.to_string().c_str());
+  // Optionally update the card and dashboard
+  rangeSlider.setValue(range);
+  dashboard.refresh(rangeSlider);
+});
+```
+- **Parameter:** `const dash::Range<T>& range` — The new range selected by the user.
+
+## Methods
+
+### `setValue(const dash::Range<T>& value)`
+Set the current range value for the slider.
+```cpp
+rangeSlider.setValue({25, 75});
+```
+- **Signature:** `bool setValue(const dash::Range<T>& value)`
+- **Parameters:**
+  - `const dash::Range<T>& value` — The new range value (e.g., `{min, max}`).
+- **Returns:** `bool` — True if the value changed.
+
+### `value()`
+Get the current range value.
+```cpp
+auto range = rangeSlider.value();
+```
+- **Signature:** `dash::Range<T> value()`
+- **Parameters:** None
+- **Returns:** `dash::Range<T>` — The current range value.
+
+### `setMin(T min)`
+Set the minimum value for the range slider.
+```cpp
+rangeSlider.setMin(min); // min is of type T
+```
+- **Signature:** `bool setMin(T min)`
+- **Parameters:**
+  - `T min` — The minimum value (type matches template parameter `T`).
+- **Returns:** `bool` — True if the value changed.
+
+### `setMax(T max)`
+Set the maximum value for the range slider.
+```cpp
+rangeSlider.setMax(max); // max is of type T
+```
+- **Signature:** `bool setMax(T max)`
+- **Parameters:**
+  - `T max` — The maximum value (type matches template parameter `T`).
+- **Returns:** `bool` — True if the value changed.
+
+### `setStep(T step)`
+Set the step size for the range slider.
+```cpp
+rangeSlider.setStep(step); // step is of type T
+```
+- **Signature:** `bool setStep(T step)`
+- **Parameters:**
+  - `T step` — The step size (type matches template parameter `T`).
+- **Returns:** `bool` — True if the value changed.
+
+### `setUnit(const char* unit)`
+Set the unit label for the slider.
+```cpp
+rangeSlider.setUnit("%");
+```
+- **Signature:** `bool setUnit(const char* unit)`
+- **Parameters:**
+  - `const char* unit` — The unit string.
+- **Returns:** `bool` — True if the value changed.
+
+### `min()`
+Get the current minimum value.
+```cpp
+T min = rangeSlider.min();
+```
+- **Signature:** `T min()`
+- **Parameters:** None
+- **Returns:** `T` — The current minimum value (type matches template parameter `T`).
+
+### `max()`
+Get the current maximum value.
+```cpp
+T max = rangeSlider.max();
+```
+- **Signature:** `T max()`
+- **Parameters:** None
+- **Returns:** `T` — The current maximum value (type matches template parameter `T`).
+
+### `step()`
+Get the current step size.
+```cpp
+T step = rangeSlider.step();
+```
+- **Signature:** `T step()`
+- **Parameters:** None
+- **Returns:** `T` — The current step size (type matches template parameter `T`).
+
+### `unit()`
+Get the current unit string.
+```cpp
+const char* unit = rangeSlider.unit();
+```
+- **Signature:** `const char* unit()`
+- **Parameters:** None
+- **Returns:** `const char*` — The current unit string.
+
+## Reference
+
+```cpp
+// Create a range slider card
+// ...
+dash::RangeSliderCard<uint8_t> rangeSlider(dashboard, "Range Slider", 0, 100, 1, "%");
+
+void setup() {
+  // ...
+  rangeSlider.setValue({25, 75});
+  rangeSlider.onChange([](const dash::Range<uint8_t>& range) {
+    Serial.printf("Range: %s\n", range.to_string().c_str());
+    rangeSlider.setValue(range);
+    dashboard.refresh(rangeSlider);
+  });
+}
+
+void loop() {
+  // ...
+}
+```

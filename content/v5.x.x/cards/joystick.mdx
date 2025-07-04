@@ -1,0 +1,88 @@
+---
+title: Joystick Card
+description: A dashboard component that provides a joystick for directional input. Updated for ESP-DASH v5 API.
+---
+
+import { Callout } from 'nextra/components'
+import ProCallout from '@/components/ProCallout';
+
+# Joystick Card
+
+<ProCallout />
+
+<img className="my-6 hidden dark:block" src="/img/v5/cards/dark/joystick.png" width="280px" alt="Preview" />
+<img className="my-6 dark:hidden" src="/img/v5/cards/light/joystick.png" width="280px" alt="Preview" />
+
+The Joystick Card provides a joystick for directional input and coordinates.
+
+## Initializer
+
+To create a joystick card in ESP-DASH v5, use the `dash::JoystickCard` class. You can optionally lock the direction.
+
+```cpp
+dash::JoystickCard joystick(dashboard, "Joystick 1");
+dash::JoystickCard joystickX(dashboard, "Joystick 1", dash::JoystickLock::X);
+dash::JoystickCard joystickY(dashboard, "Joystick 1", dash::JoystickLock::Y);
+```
+
+## Callback
+
+Register a callback function to be called when the joystick is moved. The callback receives a `dash::Joystick` object, which provides:
+- `x()`: X axis value (int8_t, range: -60 to 60, left to right)
+- `y()`: Y axis value (int8_t, range: -60 to 60, up to down)
+- `direction()`: Direction as a string (e.g., "up", "down", "left", "right", "idle")
+
+```cpp
+joystick.onChange([](dash::Joystick joy) {
+  Serial.printf("Joystick: x=%d, y=%d, dir=%s\n", joy.x(), joy.y(), joy.direction().c_str());
+  // Use joy.x(), joy.y(), joy.direction() as needed
+});
+```
+
+## Methods
+
+### `setLock(dash::JoystickLock lock)`
+Lock the joystick to the X or Y axis, or unlock it for free movement.
+```cpp
+joystick.setLock(dash::JoystickLock::X); // Lock to X axis
+joystick.setLock(dash::JoystickLock::Y); // Lock to Y axis
+joystick.setLock(dash::JoystickLock::NONE); // Unlock
+```
+- **Signature:** `void setLock(dash::JoystickLock lock)`
+- **Parameters:**
+  - `dash::JoystickLock lock` — The lock state to set (X, Y, or NONE).
+- **Returns:** `void`
+
+### `lock()`
+Get the current lock state.
+```cpp
+dash::JoystickLock currentLock = joystick.lock();
+```
+- **Signature:** `dash::JoystickLock lock()`
+- **Parameters:** None
+- **Returns:** `dash::JoystickLock` — The current lock state.
+
+## Reference
+
+A complete example showing how to use the Joystick Card in a real project. This demonstrates initialization, callback usage (with dash::Joystick), lock control, and sending updates.
+
+```cpp
+dash::JoystickCard joystick(dashboard, "Joystick 1");
+
+void setup() {
+  // ...
+
+  // Register callback for joystick movement
+  joystick.onChange([](dash::Joystick joy) {
+    Serial.printf("Joystick: x=%d, y=%d, dir=%s\n", joy.x(), joy.y(), joy.direction().c_str());
+    // Use joy.x(), joy.y(), joy.direction() as needed
+  });
+
+  // Optionally lock to X or Y axis
+  joystick.setLock(dash::JoystickLock::X); // or JoystickLock::Y
+}
+
+void loop() {
+  // ...
+}
+```

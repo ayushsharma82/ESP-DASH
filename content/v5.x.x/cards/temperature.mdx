@@ -1,0 +1,96 @@
+---
+title: Temperature Card
+description: A card specifically designed to display temperature values. Updated for ESP-DASH v5 API.
+---
+
+import { Callout } from 'nextra/components'
+
+# Temperature Card
+
+<img className="my-6 hidden dark:block" src="/img/v5/cards/dark/temperature.png" width="280px" alt="Preview" />
+<img className="my-6 dark:hidden" src="/img/v5/cards/light/temperature.png" width="280px" alt="Preview" />
+
+The Temperature Card displays temperature readings, supporting different units.
+
+## Initializer
+
+To create a temperature card in ESP-DASH v5, use the `dash::TemperatureCard<T, Precision>` class. The template parameters allow you to control the value type and decimal precision:
+- `T`: Value type (e.g., float, int)
+- `Precision`: Number of decimal places for floating point values (default: 2)
+
+#### Example 1: Float value, default precision (2 decimals)
+```cpp
+dash::TemperatureCard<float> temp(dashboard, "Temperature");
+```
+
+#### Example 2: Float value, custom precision (3 decimals)
+```cpp
+dash::TemperatureCard<float, 3> temp3(dashboard, "Temperature", "°C");
+```
+
+#### Example 3: Integer value
+```cpp
+dash::TemperatureCard<int> tempInt(dashboard, "Temperature", "°C");
+```
+
+## Methods
+
+### `setValue(T value)`
+Set the temperature value. The type of `value` must match the template type you chose for `T` (e.g., int, float).
+```cpp
+temperature.setValue(value); // value is of type T
+```
+- **Signature:** `void setValue(T value)`
+- **Parameters:**
+  - `T value` — The value to display (type matches template parameter `T`).
+- **Returns:** `void`
+
+### `value()`
+Get the current temperature value. The return type matches your template type for `T` (e.g., int, float).
+```cpp
+T v = temperature.value();
+```
+- **Signature:** `T value()`
+- **Parameters:** None
+- **Returns:** `T` — The current value displayed by the card (type matches template parameter `T`).
+
+> **Note:**
+> - `T` can be one of: `int` or `float` depending on how you instantiate the card.
+
+### `setUnit(const char* unit)`
+Set the unit or symbol for the temperature card (e.g., "°C", "°F").
+```cpp
+temperature.setUnit("°F");
+```
+- **Signature:** `void setUnit(const char* unit)`
+- **Parameters:**
+  - `const char* unit` — The unit or symbol to display.
+- **Returns:** `void`
+
+### `unit()`
+Get the current unit or symbol for the temperature card.
+```cpp
+const char* unit = temperature.unit();
+```
+- **Signature:** `const char* unit()`
+- **Parameters:** None
+- **Returns:** `const char*` — The current unit or symbol for the card.
+
+## Reference
+
+Below is a reference code showing how to integrate this widget in a real project, including initialization and value updates usage.
+
+```cpp
+// Create a temperature card (float, 2 decimals by default)
+dash::TemperatureCard<float> tempCard(dashboard, "Temperature", "°C");
+
+void setup() {
+  // ...
+  tempCard.setValue(23.5f);
+  tempCard.setUnit("°C");
+}
+
+void loop() {
+  // ...
+}
+```

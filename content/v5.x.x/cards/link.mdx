@@ -1,0 +1,64 @@
+---
+title: Link Card
+description: A navigation component for clickable URL links. Updated for ESP-DASH v5 API.
+---
+
+import { Callout } from 'nextra/components'
+import ProCallout from '@/components/ProCallout';
+
+# Link Card
+
+<ProCallout />
+
+<img className="my-6 hidden dark:block" src="/img/v5/cards/dark/link.png" width="280px" alt="Preview" />
+<img className="my-6 dark:hidden" src="/img/v5/cards/light/link.png" width="280px" alt="Preview" />
+
+The Link Card enables user redirection through clickable URL links on the dashboard.
+
+## Initializer
+
+To create a link card in ESP-DASH v5, use the `dash::LinkCard` class.
+
+```cpp
+dash::LinkCard link(dashboard, "Test Link");
+```
+
+## Methods
+
+### `setValue(const char* url)`
+Set the URL to open when the card is clicked.
+```cpp
+link.setValue("https://espdash.pro");
+```
+- **Signature:** `void setValue(const char* url)`
+- **Parameters:**
+  - `const char* url` — The URL to open.
+- **Returns:** `void`
+
+### `value()`
+Get the current URL value.
+```cpp
+const char* url = link.value();
+```
+- **Signature:** `const char* value()`
+- **Parameters:** None
+- **Returns:** `const char*` — The current URL value.
+
+## Reference
+
+A complete example showing how to use the Link Card in a real project. This demonstrates initialization, setting the URL, and updating it dynamically.
+
+```cpp
+dash::LinkCard link(dashboard, "Test Link");
+
+void setup() {
+  // ...
+
+  // Set URL for the link
+  link.setValue("https://espdash.pro");
+}
+
+void loop() {
+  // ...
+}
+```

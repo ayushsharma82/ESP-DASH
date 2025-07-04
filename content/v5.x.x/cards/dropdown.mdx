@@ -1,0 +1,115 @@
+---
+title: Dropdown Card
+description: A dashboard component that provides a selectable dropdown list. Updated for ESP-DASH v5 API.
+---
+
+import { Callout } from 'nextra/components'
+import ProCallout from '@/components/ProCallout';
+
+# Dropdown Card
+
+<ProCallout />
+
+<div className='my-6 flex flex-row overflow-auto flex-wrap items-start gap-3'>
+  <img className="hidden dark:block" src="/img/v5/cards/dark/dropdown.png" width="280px" alt="Preview" />
+  <img className="dark:hidden" src="/img/v5/cards/light/dropdown.png" width="280px" alt="Preview" />
+
+  <img className="hidden dark:block" src="/img/v5/cards/dark/dropdown-open.png" width="280px" alt="Preview" />
+  <img className="dark:hidden" src="/img/v5/cards/light/dropdown-open.png" width="280px" alt="Preview" />
+</div>
+
+A dashboard component that provides a selectable dropdown list with support for unlimited comma-separated choices. Enables users to make selections from a customizable list of options directly on their dashboard.
+
+## Initializer
+
+To create a dropdown card in ESP-DASH v5, use the `dash::DropdownCard<T, Precision>` class. The template parameters allow you to control the value type and decimal precision:
+- `T`: Value type (e.g., int, float, dash::string, const char*)
+- `Precision`: Number of decimal places for floating point values (default: 2)
+
+#### Example 1: String value (default)
+```cpp
+dash::DropdownCard<dash::string> dropdown(dashboard, "Dropdown", "Option1,Option2,Option3");
+```
+
+#### Example 2: Float value, custom precision (3 decimals)
+```cpp
+dash::DropdownCard<float, 3> dropdownFloat(dashboard, "Float Dropdown", "1.234,2.345,3.456");
+```
+
+#### Example 3: Integer value
+```cpp
+dash::DropdownCard<int> dropdownInt(dashboard, "Int Dropdown", "1,2,3,4");
+```
+
+## Callback
+
+Register a callback function to be called when the dropdown value changes:
+```cpp
+dropdown.onChange([](auto value) {
+  // Handle dropdown selection
+});
+```
+
+## Methods
+
+### `setOptions(const char* options[], size_t count)`
+Set the dropdown options.
+```cpp
+dropdown.setOptions(options, 3);
+```
+- **Signature:** `void setOptions(const char* options[], size_t count)`
+- **Parameters:**
+  - `const char* options[]` — Array of option strings.
+  - `size_t count` — Number of options.
+- **Returns:** `void`
+
+### `options()`
+Get the current dropdown options.
+```cpp
+const char* opts = dropdown.options();
+```
+- **Signature:** `const char* options()`
+- **Parameters:** None
+- **Returns:** `const char*` — The current options as a comma-separated string.
+
+### `setValue(T value)`
+Set the dropdown value. The type of `value` must match the template type you chose for `T` (e.g., int, float, dash::string, const char*).
+```cpp
+dropdown.setValue(value); // value is of type T
+```
+- **Signature:** `void setValue(T value)`
+- **Parameters:**
+  - `T value` — The value to select (type matches template parameter `T`).
+- **Returns:** `void`
+
+### `value()`
+Get the currently selected value. The return type matches your template type for `T` (e.g., int, float, dash::string, const char*).
+```cpp
+T v = dropdown.value();
+```
+- **Signature:** `T value()`
+- **Parameters:** None
+- **Returns:** `T` — The currently selected value (type matches template parameter `T`).
+
+> **Note:**
+> - `T` can be one of: `int`, `float`, `dash::string`, or `const char*` depending on how you instantiate the card.
+
+## Reference
+
+Below is a reference code showing how to integrate this widget in a real project, including initialization and value updates usage.
+
+```cpp
+// ...
+
+// Create a dropdown card (string, default)
+dash::DropdownCard<dash::string> dropdownCard(dashboard, "Dropdown", "Option1,Option2,Option3");
+
+void setup() {
+  // ...
+  dropdownCard.setValue("Option1");
+}
+
+void loop() {
+  // ...
+}
+```

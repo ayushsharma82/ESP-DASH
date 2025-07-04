@@ -1,0 +1,135 @@
+---
+title: Progress Card
+description: A card that displays a progress value within a defined range. Updated for ESP-DASH v5 API.
+---
+
+import { Callout } from 'nextra/components'
+
+# Progress Card
+
+<img className="my-6 hidden dark:block" src="/img/v5/cards/dark/progress-bar.png" width="280px" alt="Preview" />
+<img className="my-6 dark:hidden" src="/img/v5/cards/light/progress-bar.png" width="280px" alt="Preview" />
+
+The Progress Card visualizes a value as a progress bar, within a specified minimum and maximum range.
+
+## Initializer
+
+To create a progress bar card in ESP-DASH v5, use the `dash::ProgressCard<T, Precision>` class. The template parameters allow you to control the value type and decimal precision:
+- `T`: Value type (e.g., int, float)
+- `Precision`: Number of decimal places for floating point values (default: 2)
+
+#### Example 1: Integer value (default)
+```cpp
+dash::ProgressCard<int> progress(dashboard, "Progress", 0, 100, "%");
+```
+
+#### Example 2: Float value, custom precision (4 decimals)
+```cpp
+dash::ProgressCard<float, 4> progressFloat(dashboard, "Progress", 0, 1, "kWh");
+```
+
+## Callback
+
+<Callout>
+Progress card doesn't require any callback.
+</Callout>
+
+## Methods
+
+### `setValue(T value)`
+Set the progress bar's value. The type of `value` must match the template type you chose for `T` (e.g., int, float).
+```cpp
+progressBar.setValue(value); // value is of type T
+```
+- **Signature:** `void setValue(T value)`
+- **Parameters:**
+  - `T value` — The value to display (type matches template parameter `T`).
+- **Returns:** `void`
+
+### `value()`
+Get the current progress value. The return type matches your template type for `T` (e.g., int, float).
+```cpp
+T v = progressBar.value();
+```
+- **Signature:** `T value()`
+- **Parameters:** None
+- **Returns:** `T` — The current value displayed by the card (type matches template parameter `T`).
+
+> **Note:**
+> - `T` can be one of: `int` or `float` depending on how you instantiate the card.
+
+### `setMin(T min)`
+Set the minimum value for the progress bar.
+```cpp
+progressBar.setMin(min); // min is of type T
+```
+- **Signature:** `void setMin(T min)`
+- **Parameters:**
+  - `T min` — The minimum value (type matches template parameter `T`).
+- **Returns:** `void`
+
+### `setMax(T max)`
+Set the maximum value for the progress bar.
+```cpp
+progressBar.setMax(max); // max is of type T
+```
+- **Signature:** `void setMax(T max)`
+- **Parameters:**
+  - `T max` — The maximum value (type matches template parameter `T`).
+- **Returns:** `void`
+
+### `min()`
+Get the minimum value for the progress bar.
+```cpp
+T minVal = progressBar.min();
+```
+- **Signature:** `T min()`
+- **Parameters:** None
+- **Returns:** `T` — The minimum value (type matches template parameter `T`).
+
+### `max()`
+Get the maximum value for the progress bar.
+```cpp
+T maxVal = progressBar.max();
+```
+- **Signature:** `T max()`
+- **Parameters:** None
+- **Returns:** `T` — The maximum value (type matches template parameter `T`).
+
+### `setUnit(const char* unit)`
+Set the unit or symbol for the progress bar.
+```cpp
+progressBar.setUnit("%");
+```
+- **Signature:** `void setUnit(const char* unit)`
+- **Parameters:**
+  - `const char* unit` — The unit or symbol to display.
+- **Returns:** `void`
+
+### `unit()`
+Get the unit or symbol for the progress bar.
+```cpp
+const char* unit = progressBar.unit();
+```
+- **Signature:** `const char* unit()`
+- **Parameters:** None
+- **Returns:** `const char*` — The current unit or symbol for the card.
+
+## Reference
+
+Below is a reference code showing how to integrate this widget in a real project, including initialization and value updates usage.
+
+```cpp
+// Create a progress bar card (int, default)
+dash::ProgressCard<int> progressCard(dashboard, "Progress", 0, 100, "%");
+
+void setup() {
+  // ...
+  progressCard.setValue(50);
+  progressCard.setUnit("%");
+}
+
+void loop() {
+  // ...
+}
+```

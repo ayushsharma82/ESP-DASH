@@ -22,7 +22,7 @@ export default function Selector({ versions }) {
     <Listbox value={selected} onChange={onChangeHandler}>
       <Label className="block text-sm/6 font-medium text-zinc-900 dark:text-zinc-400">Select Version</Label>
       <div className="relative mt-2">
-        <ListboxButton className="grid w-full cursor-default grid-cols-1 rounded-md bg-white dark:bg-zinc-900 py-1.5 pr-2 pl-3 text-left text-zinc-900 dark:text-zinc-300 outline-1 -outline-offset-1 outline-zinc-300 dark:outline-zinc-800 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+        <ListboxButton className="grid w-full cursor-default grid-cols-1 rounded-md bg-transparent dark:bg-zinc-900 py-1.5 pr-2 pl-3 text-left text-zinc-900 dark:text-zinc-300 outline-1 -outline-offset-1 outline-zinc-300 dark:outline-zinc-800 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 font-normal sm:text-sm/6">
           <span className="col-start-1 row-start-1 truncate pr-6">{selected}</span>
           <ChevronUpDownIcon
             aria-hidden="true"

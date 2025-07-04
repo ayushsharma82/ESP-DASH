@@ -1,0 +1,170 @@
+---
+title: Migrating from ESP-DASH v4 to v5
+---
+
+# Migrating from ESP-DASH v4 to v5
+
+ESP-DASH v5 (Pro) introduces a refined API, better structure, and new features that improve development experience. This guide walks you through the major differences and how to migrate your code, using real examples for reference.
+
+<br/>
+
+## 1. Library Import & Dashboard Initialization
+
+### ✅ What's Changed
+- No need to pass the server as a pointer.
+- Initialization now uses a reference.
+
+### 🔄 Before (v4)
+```cpp
+ESPDash dashboard(&server);
+````
+
+### ✅ After (v5)
+
+```cpp
+ESPDash dashboard(server);
+```
+
+<br/>
+
+## 2. Widget Initialization
+
+### Cards
+
+Cards are now templated classes under `dash::`, with updated method names. Every card type now has its own class and set of methods, making it easier to use and understand.
+Please make sure to check them out in the Cards section one-by-one and migrate your code accordingly.
+
+Here's an quick overview of how to migrate a temperature card:
+
+#### 🔄 Before (v4)
+
+```cpp
+Card temperature(&dashboard, TEMPERATURE_CARD, "Temperature", "°C");
+```
+
+#### ✅ After (v5)
+
+```cpp
+dash::TemperatureCard temperature(dashboard, "Temperature");
+```
+
+**Key changes:**
+
+* Use `dash::TemperatureCard` instead of `Card + macro`.
+* Pass dashboard as a reference, not a pointer.
+
+<br/>
+
+### 📊 Charts
+
+Charts are now templated classes under `dash::`, with updated method names.
+
+#### 🔄 Before (v4)
+
+```cpp
+Chart power(&dashboard, BAR_CHART, "Power Usage (kWh)");
+power.updateX(XAxis, 7);
+power.updateY(YAxis, 7);
+```
+
+#### ✅ After (v5)
+
+```cpp
+dash::BarChart<const char*, int> power(dashboard, "Power Usage (kWh)");
+power.setX(XAxis, 7);
+power.setY(YAxis, 7);
+```
+
+**Key changes:**
+
+* `updateX()` → `setX()`
+* `updateY()` → `setY()`
+
+<br/>
+
+## 3. Updating Widgets
+
+### 🔄 Before (v4)
+
+```cpp
+temperature.update(value);
+```
+
+### ✅ After (v5)
+
+```cpp
+temperature.setValue(value);
+```
+
+Use `setValue()` instead of `update()`.
+
+<br/>
+
+## 4. Interactive Elements (e.g., Buttons, Sliders)
+
+Interactive cards now use intuitive class names and improved event handling.
+
+#### 🔄 Before (v4)
+
+```cpp
+Card button(&dashboard, BUTTON_CARD, "Test Button");
+button.attachCallback([&](int value) { ... });
+button.update(value);
+```
+
+#### ✅ After (v5)
+
+```cpp
+dash::ToggleButtonCard button(dashboard, "Test Button");
+button.onChange([](bool state) { ... });
+button.setValue(state);
+```
+
+**Key changes:**
+
+* Use dedicated classes like `ToggleButtonCard`.
+* `attachCallback()` → `onChange()`
+* Callbacks now receive more appropriate types (e.g., `bool` instead of `int`).
+
+<br/>
+
+## 5. Summary of API Changes
+
+| Feature         | v4 Syntax                         | v5 Syntax (New)                    |
+| --------------- | --------------------------------- | ---------------------------- |
+| Dashboard init  | `ESPDash(&server)`                | `ESPDash(server)`            |
+| Card creation   | `Card(..., TEMPERATURE_CARD,...)` | `dash::TemperatureCard(...)` |
+| Chart creation  | `Chart(..., BAR_CHART,...)`       | `dash::BarChart<...>(...)`   |
+| Value update    | `update(value)`                   | Different for every widget           |
+| Event handler   | `attachCallback(...)`             | Different for every widget             |
+| Card/chart type | Macro-based                       | Class-based                  |
+
+<br/>
+
+## 6. Migration Example
+
+#### 🔄 Before (v4)
+
+```cpp
+Card temperature(&dashboard, TEMPERATURE_CARD, "Temperature", "°C");
+temperature.update(25);
+```
+
+#### ✅ After (v5)
+
+```cpp
+dash::TemperatureCard temperature(dashboard, "Temperature");
+temperature.setValue(25);
+```
+
+<br/>
+
+## 7. Notes & Compatibility
+
+* Your WiFi and web server setup remains unchanged.
+* `dashboard.sendUpdates()` is still used to push updates.
+* The new API is designed to be more intuitive and consistent, making it easier to work with.
+
+
+Happy migrating 🚀
+

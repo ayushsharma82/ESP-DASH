@@ -1,0 +1,75 @@
+---
+title: Push Button Card
+description: An interactive button that triggers a callback on click. Updated for ESP-DASH v5 API.
+---
+
+import { Callout } from 'nextra/components'
+import ProCallout from '@/components/ProCallout';
+
+# Push Button Card
+
+<ProCallout />
+
+<img className="my-6 hidden dark:block" src="/img/v5/cards/dark/push-button.png" width="280px" alt="Preview" />
+<img className="my-6 dark:hidden" src="/img/v5/cards/light/push-button.png" width="280px" alt="Preview" />
+
+The Push Button Card triggers a callback on every user click. Stateless, no value is sent back to the dashboard.
+
+## Initializer
+
+To create a push button card in ESP-DASH v5, use the `dash::PushButtonCard` class.
+
+```cpp
+dash::PushButtonCard pushbtn(dashboard, "Push Button");
+```
+
+## Callback
+
+Register a callback function to be called when the button is pressed:
+```cpp
+pushbtn.onPush([]() {
+  // Handle button press
+  Serial.println("Push Button Triggered");
+});
+```
+
+## Methods
+
+<Callout>
+Push button cards do not maintain state or value. They simply trigger a callback when pressed.
+</Callout>
+
+### `setValue(T value)`
+Set the push button value. The type of `value` must match the template type you chose for `T` (e.g., int, bool).
+```cpp
+pushbtn.setValue(value); // value is of type T
+```
+- **Signature:** `void setValue(T value)`
+- **Parameters:**
+  - `T value` — The value to set (type matches template parameter `T`).
+- **Returns:** `void`
+
+> **Note:**
+> - `T` can be one of: `int` or `bool` depending on how you instantiate the card.
+
+## Reference
+
+```cpp
+// ...
+
+dash::PushButtonCard pushbtn(dashboard, "Push Button");
+
+void setup() {
+  // ...
+
+  // Register callback for button press
+  pushbtn.onPush([]() {
+    Serial.println("Push Button Triggered");
+    // Perform action here
+  });
+}
+
+void loop() {
+  // ...
+}
+```

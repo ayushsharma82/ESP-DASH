@@ -1,0 +1,122 @@
+---
+title: Doughnut Chart
+description: A doughnut chart for visualizing proportional data. Updated for ESP-DASH v5 API.
+---
+
+import { Callout } from 'nextra/components'
+import ProCallout from '@/components/ProCallout';
+
+# Doughnut Chart
+
+<ProCallout />
+
+<img className="my-6 hidden dark:block" src="/img/v5/charts/dark/doughnut.png" width="520px" alt="Preview" />
+<img className="my-6 dark:hidden" src="/img/v5/charts/light/doughnut.png" width="520px" alt="Preview" />
+
+Doughnut charts are great for showing proportions and percentages of a whole. In ESP-DASH v5, the `dash::DoughnutChart<L, V>` class lets you create doughnut charts with flexible label and value types. It's similar to pie charts but with a hollow center, making it visually distinct.
+
+## Initializer
+
+To create a doughnut chart, instantiate `dash::DoughnutChart<L, V>` with your dashboard instance and a descriptive title. The template parameters `L` and `V` define the types for the labels and values, respectively. Choose types that match your data:
+
+#### Example 1: String labels, integer values
+```cpp
+// Labels: categories (strings), Values: int
+Dash::DoughnutChart<const char*, int> doughnut(dashboard, "Market Share");
+```
+
+#### Example 2: Integer labels, float values
+```cpp
+// Labels: int, Values: float
+Dash::DoughnutChart<int, float> doughnut2(dashboard, "Distribution");
+```
+
+Just make sure the arrays you pass to `setLabels` and `setValues` match the types you specify in the template.
+
+## Callback
+
+<Callout>
+Doughnut charts are for data visualization and do not require a callback for user interaction.
+</Callout>
+
+## Methods
+
+### `setLabels(L arr_labels[], size_t label_size)`
+Sets the labels for the doughnut chart. The type of `arr_labels` must match the template type you chose for `L`.
+```cpp
+// If L is const char* (labels):
+doughnut.setLabels(Labels, 3); // Labels is const char*[]
+
+// If L is int:
+doughnut2.setLabels(labelArray, 5); // labelArray is int[]
+```
+- **Signature:** `void setLabels(L arr_labels[], size_t label_size)`
+- **Parameters:**
+  - `L arr_labels[]` — Array of label values.
+  - `size_t label_size` — Number of elements in the array.
+- **Returns:** `void`
+
+### `setValues(V arr_values[], size_t value_size)`
+Sets the values for the doughnut chart. The type of `arr_values` must match the template type you chose for `V`.
+```cpp
+// If V is int:
+doughnut.setValues(Values, 3); // Values is int[]
+
+// If V is float:
+doughnut2.setValues(valueArray, 5); // valueArray is float[]
+```
+- **Signature:** `void setValues(V arr_values[], size_t value_size)`
+- **Parameters:**
+  - `V arr_values[]` — Array of value data.
+  - `size_t value_size` — Number of elements in the array.
+- **Returns:** `void`
+
+### `labels()`
+Returns a pointer to the current labels array. The return type matches your template type for `L`.
+```cpp
+// If L is const char*:
+const char** labels = doughnut.labels();
+
+// If L is int:
+int* labelsInt = doughnut2.labels();
+```
+- **Signature:** `L* labels()`
+- **Parameters:** None
+- **Returns:** `L*` — Pointer to the current labels array.
+
+### `values()`
+Returns a pointer to the current values array. The return type matches your template type for `V`.
+```cpp
+// If V is int:
+int* values = doughnut.values();
+
+// If V is float:
+float* valuesF = doughnut2.values();
+```
+- **Signature:** `V* values()`
+- **Parameters:** None
+- **Returns:** `V*` — Pointer to the current values array.
+
+## Reference
+
+Below is a complete example showing how to initialize and update a doughnut chart. Comments explain each step for clarity.
+
+```cpp
+// Create a doughnut chart for market share
+// Labels: product names
+// Values: market share percentages
+
+dash::DoughnutChart<const char*, int> doughnut(dashboard, "Market Share");
+
+// Data arrays must be global so the chart can access them at any time
+const char* Labels[] = {"A", "B", "C"};
+int Values[] = {40, 30, 30};
+
+void setup() {
+  // Set labels and values for the chart
+  doughnut.setLabels(Labels, 3);
+  doughnut.setValues(Values, 3);
+}
+
+// Later in your code, you can update Values[] directly to update the chart in real time
+```

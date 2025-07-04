@@ -1,0 +1,162 @@
+---
+title: Slider Card
+description: A card that allows users to select a value within a specified range using a slider. Updated for ESP-DASH v5 API.
+---
+
+import { Callout } from 'nextra/components'
+
+# Slider Card
+
+<img className="my-6 hidden dark:block" src="/img/v5/cards/dark/slider.png" width="280px" alt="Preview" />
+<img className="my-6 dark:hidden" src="/img/v5/cards/light/slider.png" width="280px" alt="Preview" />
+
+The Slider card provides an interactive element for users to select a numerical value by dragging a slider along a defined range. It's ideal for controlling settings like volume, brightness, or any other value that can be represented on a continuous scale.
+
+## Initializer
+
+To create a slider card in ESP-DASH v5, use the `dash::SliderCard<T, Precision>` class. The template parameters allow you to control the value type and decimal precision:
+- `T`: Value type (e.g., int, float)
+- `Precision`: Number of decimal places for floating point values (default: 2)
+
+#### Example 1: Integer value (default)
+```cpp
+dash::SliderCard<int> slider(dashboard, "Slider", 0, 100, 1, "%");
+```
+
+#### Example 2: Float value, custom precision (2 decimals)
+```cpp
+dash::SliderCard<float, 2> sliderFloat(dashboard, "Slider", 0, 1, 0.01f, "V");
+```
+
+## Callback
+
+You can register a callback to handle value changes from the dashboard:
+
+```cpp
+slider1.onChange([](int value) {
+  Serial.printf("Slider value changed to: %d\n", value);
+});
+```
+
+## Methods
+
+### `setValue(T value)`
+Set the slider's value. The type of `value` must match the template type you chose for `T` (e.g., int, float).
+```cpp
+slider.setValue(value); // value is of type T
+```
+- **Signature:** `void setValue(T value)`
+- **Parameters:**
+  - `T value` — The value to display (type matches template parameter `T`).
+- **Returns:** `void`
+
+### `value()`
+Get the current slider value. The return type matches your template type for `T` (e.g., int, float).
+```cpp
+T v = slider.value();
+```
+- **Signature:** `T value()`
+- **Parameters:** None
+- **Returns:** `T` — The current value displayed by the card (type matches template parameter `T`).
+
+> **Note:**
+> - `T` can be one of: `int` or `float` depending on how you instantiate the card.
+
+### `setMin(T min)`
+Set the minimum value for the slider.
+```cpp
+slider.setMin(min); // min is of type T
+```
+- **Signature:** `void setMin(T min)`
+- **Parameters:**
+  - `T min` — The minimum value (type matches template parameter `T`).
+- **Returns:** `void`
+
+### `setMax(T max)`
+Set the maximum value for the slider.
+```cpp
+slider.setMax(max); // max is of type T
+```
+- **Signature:** `void setMax(T max)`
+- **Parameters:**
+  - `T max` — The maximum value (type matches template parameter `T`).
+- **Returns:** `void`
+
+### `setStep(T step)`
+Set the step value for the slider.
+```cpp
+slider.setStep(step); // step is of type T
+```
+- **Signature:** `void setStep(T step)`
+- **Parameters:**
+  - `T step` — The step value (type matches template parameter `T`).
+- **Returns:** `void`
+
+### `min()`
+Get the minimum value for the slider.
+```cpp
+T minVal = slider.min();
+```
+- **Signature:** `T min()`
+- **Parameters:** None
+- **Returns:** `T` — The minimum value (type matches template parameter `T`).
+
+### `max()`
+Get the maximum value for the slider.
+```cpp
+T maxVal = slider.max();
+```
+- **Signature:** `T max()`
+- **Parameters:** None
+- **Returns:** `T` — The maximum value (type matches template parameter `T`).
+
+### `step()`
+Get the step value for the slider.
+```cpp
+T stepVal = slider.step();
+```
+- **Signature:** `T step()`
+- **Parameters:** None
+- **Returns:** `T` — The step value (type matches template parameter `T`).
+
+> **Note:**
+> - `T` can be one of: `int` or `float` depending on how you instantiate the card.
+
+### `setUnit(const char* unit)`
+Set the unit or symbol for the slider.
+```cpp
+slider.setUnit("bits");
+```
+- **Signature:** `void setUnit(const char* unit)`
+- **Parameters:**
+  - `const char* unit` — The unit or symbol to display.
+- **Returns:** `void`
+
+### `unit()`
+Get the unit or symbol for the slider.
+```cpp
+const char* unit = slider.unit();
+```
+- **Signature:** `const char* unit()`
+- **Parameters:** None
+- **Returns:** `const char*` — The current unit or symbol for the card.
+
+## Reference
+
+Below is a reference code showing how to integrate this widget in a real project, including initialization and value updates usage.
+
+```cpp
+// Create a slider card (int, default)
+dash::SliderCard<int> sliderCard(dashboard, "Slider", 0, 100, 1, "%");
+
+void setup() {
+  // ...
+  
+  sliderCard.setValue(25);
+  sliderCard.setUnit("%");
+}
+
+void loop() {
+  // ...
+}
+```

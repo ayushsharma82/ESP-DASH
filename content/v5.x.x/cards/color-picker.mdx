@@ -1,0 +1,73 @@
+---
+title: Color Picker Card
+description: A card for selecting colors, returns hex values. Updated for ESP-DASH v5 API.
+---
+
+import { Callout } from 'nextra/components'
+import ProCallout from '@/components/ProCallout';
+
+# Color Picker Card
+
+<ProCallout />
+
+<img className="my-6 hidden dark:block" src="/img/v5/cards/dark/color-picker.png" width="280px" alt="Preview" />
+<img className="my-6 dark:hidden" src="/img/v5/cards/light/color-picker.png" width="280px" alt="Preview" />
+
+The Color Picker Card allows users to select a color, returning a hex string (e.g., #FF0000).
+
+## Initializer
+
+To create a color picker card in ESP-DASH v5, use the `dash::ColorPickerCard` class. The value type is always `dash::string`.
+
+#### Example:
+```cpp
+dash::ColorPickerCard color(dashboard, "Color Picker");
+```
+
+## Callback
+
+Register a callback function to be called when the color changes:
+```cpp
+color.onChange([](dash::string hex) {
+  // Handle color selection
+});
+```
+
+## Methods
+
+### `setValue(const char* color)`
+Set the color value (hex or color name).
+```cpp
+colorPicker.setValue("#FF0000"); // Set to red
+```
+- **Signature:** `void setValue(const char* color)`
+- **Parameters:**
+  - `const char* color` — The color value (hex string or color name).
+- **Returns:** `void`
+
+### `value()`
+Get the current color value.
+```cpp
+const char* color = colorPicker.value();
+```
+- **Signature:** `const char* value()`
+- **Parameters:** None
+- **Returns:** `const char*` — The current color value.
+
+## Reference
+
+Below is a reference code showing how to integrate this widget in a real project, including initialization and value updates usage.
+
+```cpp
+// Create a color picker card
+dash::ColorPickerCard colorCard(dashboard, "Color Picker");
+
+void setup() {
+  // ...
+  colorCard.setValue("#FF0000");
+}
+
+void loop() {
+  // ...
+}
+```

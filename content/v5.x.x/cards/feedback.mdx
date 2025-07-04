@@ -1,0 +1,134 @@
+---
+title: Feedback Card
+description: A card used to display feedback messages with different status indicators. Updated for ESP-DASH v5 API.
+---
+
+import { Callout } from 'nextra/components'
+
+# Feedback Card
+
+<div className='my-6 flex flex-row overflow-auto flex-wrap items-center gap-3'>
+  <img className="hidden dark:block" src="/img/v5/cards/dark/feedback-idle.png" width="260px" alt="Preview" />
+  <img className="dark:hidden" src="/img/v5/cards/light/feedback-idle.png" width="260px" alt="Preview" />
+
+  <img className="hidden dark:block" src="/img/v5/cards/dark/feedback-info.png" width="260px" alt="Preview" />
+  <img className="dark:hidden" src="/img/v5/cards/light/feedback-info.png" width="260px" alt="Preview" />
+
+  <img className="hidden dark:block" src="/img/v5/cards/dark/feedback-warning.png" width="260px" alt="Preview" />
+  <img className="dark:hidden" src="/img/v5/cards/light/feedback-warning.png" width="260px" alt="Preview" />
+
+  <img className="hidden dark:block" src="/img/v5/cards/dark/feedback-success.png" width="260px" alt="Preview" />
+  <img className="dark:hidden" src="/img/v5/cards/light/feedback-success.png" width="260px" alt="Preview" />
+
+  <img className="hidden dark:block" src="/img/v5/cards/dark/feedback-danger.png" width="260px" alt="Preview" />
+  <img className="dark:hidden" src="/img/v5/cards/light/feedback-danger.png" width="260px" alt="Preview" />
+</div>
+
+The Feedback Card is designed to display messages with an associated status, making it ideal for showing system feedback, success messages, warnings, or errors.
+
+## Initializer
+
+To create a Feedback Card in ESP-DASH v5, use the `dash::FeedbackCard<T>` class. `T` can be `dash::string`, `const char*`, etc.
+
+```cpp
+dash::FeedbackCard<const char*> feedback(dashboard, "Status");
+feedback.setFeedback("Light is ON", dash::Status::SUCCESS);
+```
+
+The status can be one of the following:
+- `dash::Status::NONE` — No status set (default).
+- `dash::Status::INFO` — Indicates informational messages.
+- `dash::Status::SUCCESS` — Indicates a successful operation.
+- `dash::Status::WARNING` — Indicates a warning condition.
+- `dash::Status::DANGER` — Indicates a critical error or failure.
+
+## Methods
+
+### `setFeedback(T message)`
+Set the feedback message to display. The type of `message` must match the template type you chose for `T` (e.g., dash::string, const char*).
+```cpp
+feedback.setFeedback(message); // message is of type T
+```
+- **Signature:** `void setFeedback(T message)`
+- **Parameters:**
+  - `T message` — The feedback message to display (type matches template parameter `T`).
+- **Returns:** `void`
+
+### `feedback()`
+Get the current feedback message. The return type matches your template type for `T` (e.g., dash::string, const char*).
+```cpp
+T msg = feedback.feedback();
+```
+- **Signature:** `T feedback()`
+- **Parameters:** None
+- **Returns:** `T` — The current feedback message (type matches template parameter `T`).
+
+> **Note:**
+> - `T` can be one of: `dash::string` or `const char*` depending on how you instantiate the card.
+
+### `setStatus(dash::Status status)`
+Set the feedback card's status (e.g., SUCCESS, WARNING, DANGER, INFO).
+```cpp
+feedback.setStatus(dash::Status::SUCCESS);
+```
+- **Signature:** `void setStatus(dash::Status status)`
+- **Parameters:**
+  - `dash::Status status` — The status to set.
+- **Returns:** `void`
+
+### `status()`
+Get the current status of the feedback card.
+```cpp
+dash::Status s = feedback.status();
+```
+- **Signature:** `dash::Status status()`
+- **Parameters:** None
+- **Returns:** `dash::Status` — The current status.
+
+### `setMessage(T message)`
+Set the feedback message (alias for setFeedback without status). The type of `message` must match the template type you chose for `T` (e.g., dash::string, const char*).
+```cpp
+feedback.setMessage(message); // message is of type T
+```
+- **Signature:** `void setMessage(T message)`
+- **Parameters:**
+  - `T message` — The feedback message to display (type matches template parameter `T`).
+- **Returns:** `void`
+
+### `message()`
+Get the current feedback message (alias for feedback()). The return type matches your template type for `T` (e.g., dash::string, const char*).
+```cpp
+T msg = feedback.message();
+```
+- **Signature:** `T message()`
+- **Parameters:** None
+- **Returns:** `T` — The current feedback message (type matches template parameter `T`).
+
+> **Note:**
+> - `T` can be one of: `dash::string` or `const char*` depending on how you instantiate the card.
+
+## Callback
+
+<Callout>
+Feedback card doesn't require any callback.
+</Callout>
+
+## Reference
+
+```cpp
+...
+
+dash::FeedbackCard<const char*> feedback(dashboard, "Status");
+
+void setup() {
+  ...
+
+  // Set initial feedback and status
+  // These functions can be called from anywhere (except global scope)
+  feedback.setFeedback("System Ready", dash::Status::SUCCESS);
+}
+
+void loop() {
+  ...
+}
+```

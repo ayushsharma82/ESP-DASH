@@ -1,0 +1,102 @@
+---
+title: Energy Card
+description: An energy card displays an energy consumption value with a configurable unit. Updated for ESP-DASH v5 API.
+---
+
+import { Callout } from 'nextra/components'
+import ProCallout from '@/components/ProCallout';
+
+# Energy Card
+
+<ProCallout />
+
+<img className="my-6 hidden dark:block" src="/img/v5/cards/dark/energy.png" width="280px" alt="Preview" />
+<img className="my-6 dark:hidden" src="/img/v5/cards/light/energy.png" width="280px" alt="Preview" />
+
+The Energy Card displays energy consumption values with a configurable unit.
+
+## Initializer
+
+To create an energy card in ESP-DASH v5, use the `dash::EnergyCard<T, Precision>` class. The template parameters allow you to control the value type and decimal precision:
+- `T`: Value type (e.g., float, int)
+- `Precision`: Number of decimal places for floating point values (default: 2)
+
+#### Example 1: Float value, default precision (2 decimals)
+```cpp
+dash::EnergyCard<float> energy(dashboard, "Energy Consumption", "kWh");
+```
+
+#### Example 2: Float value, custom precision (3 decimals)
+```cpp
+dash::EnergyCard<float, 3> energy3(dashboard, "Energy Consumption", "Joule");
+```
+
+#### Example 3: Integer value
+```cpp
+dash::EnergyCard<int> energyInt(dashboard, "Energy Consumption", "Wh");
+```
+
+## Methods
+
+### `setValue(T value)`
+Set the energy value. The type of `value` must match the template type you chose for `T` (e.g., int, float).
+```cpp
+energy.setValue(value); // value is of type T
+```
+- **Signature:** `void setValue(T value)`
+- **Parameters:**
+  - `T value` — The value to display (type matches template parameter `T`).
+- **Returns:** `void`
+
+### `value()`
+Get the current energy value. The return type matches your template type for `T` (e.g., int, float).
+```cpp
+T v = energy.value();
+```
+- **Signature:** `T value()`
+- **Parameters:** None
+- **Returns:** `T` — The current value displayed by the card (type matches template parameter `T`).
+
+> **Note:**
+> - `T` can be one of: `int` or `float` depending on how you instantiate the card.
+
+### `setUnit(const char* unit)`
+Set the unit or symbol for the energy card.
+```cpp
+energy.setUnit("Joule");
+```
+- **Signature:** `void setUnit(const char* unit)`
+- **Parameters:**
+  - `const char* unit` — The unit or symbol to display.
+- **Returns:** `void`
+
+### `unit()`
+Get the unit or symbol for the energy card.
+```cpp
+const char* unit = energy.unit();
+```
+- **Signature:** `const char* unit()`
+- **Parameters:** None
+- **Returns:** `const char*` — The current unit or symbol for the card.
+
+## Reference
+
+Below is a reference code showing how to integrate this widget in a real project, including initialization and value updates usage.
+
+```cpp
+// ...
+
+// Create an energy card (float, 2 decimals by default)
+dash::EnergyCard<float> energyCard(dashboard, "Energy Consumption", "kWh");
+
+void setup() {
+  // ...
+  
+  energyCard.setValue(123.4f);
+  energyCard.setUnit("Joule");
+}
+
+void loop() {
+  // ...
+}
+```

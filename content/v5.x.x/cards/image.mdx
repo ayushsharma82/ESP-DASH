@@ -1,0 +1,87 @@
+---
+title: Image Card
+description: An image card displays a dynamic image on your dashboard. Updated for ESP-DASH v5 API.
+---
+
+import { Callout } from 'nextra/components'
+import ProCallout from '@/components/ProCallout';
+
+# Image Card
+
+<ProCallout />
+
+<img className="my-6 hidden dark:block" src="/img/v5/cards/dark/image-large.png" width="300px" alt="Preview" />
+<img className="my-6 dark:hidden" src="/img/v5/cards/light/image-large.png" width="300px" alt="Preview" />
+
+The Image Card displays an image on your dashboard. Useful for QR codes, status indicators, or any visual info.
+
+## Initializer
+
+To create an image card in ESP-DASH v5, use the `dash::ImageCard` class.
+
+```cpp
+dash::ImageCard image(dashboard, "My Image Card");
+```
+
+## Methods
+
+### `setImage(const char* url)`
+Set the image URL to display.
+```cpp
+image.setImage("/img/example.png");
+```
+- **Signature:** `void setImage(const char* url)`
+- **Parameters:**
+  - `const char* url` — The image URL to display.
+- **Returns:** `void`
+
+### `image()`
+Get the current image URL.
+```cpp
+const char* url = image.image();
+```
+- **Signature:** `const char* image()`
+- **Parameters:** None
+- **Returns:** `const char*` — The current image URL.
+
+### `setImageSize(dash::ImageSize size)`
+Set the image size. Options are `dash::ImageSize::LG` (default) or `dash::ImageSize::XL`.
+```cpp
+image.setImageSize(dash::ImageSize::XL);
+```
+- **Signature:** `void setImageSize(dash::ImageSize size)`
+- **Parameters:**
+  - `dash::ImageSize size` — The image size to set.
+- **Returns:** `void`
+
+### `imageSize()`
+Get the current image size.
+```cpp
+dash::ImageSize size = image.imageSize();
+```
+- **Signature:** `dash::ImageSize imageSize()`
+- **Parameters:** None
+- **Returns:** `dash::ImageSize` — The current image size.
+
+## Reference
+
+Below is a reference code showing how to integrate this widget in a real project, including initialization, value updates, and callback usage.
+
+```cpp
+// ...
+
+dash::ImageCard image(dashboard, "My Image Card");
+
+void setup() {
+  // ...
+
+  // Set image URL
+  image.setImage("/img/example.png");
+  // Optionally set image size
+  image.setImageSize(dash::ImageSize::XL);
+}
+
+void loop() {
+  // ...
+}
+```

@@ -1,0 +1,115 @@
+---
+title: Generic Card
+description: A generic card for displaying any value. Updated for ESP-DASH v5 API.
+---
+
+import { Callout } from 'nextra/components'
+
+# Generic Card
+
+<img className="my-6 hidden dark:block" src="/img/v5/cards/dark/generic.png" width="280px" alt="Preview" />
+<img className="my-6 dark:hidden" src="/img/v5/cards/light/generic.png" width="280px" alt="Preview" />
+
+Generic card is the 'fits-all-types' card, which you can use to display any kind of value. It's mostly used when you want to display numbers, strings etc which don't relate to any other card in the list.
+
+## Initializer
+
+To create a generic card in ESP-DASH v5, use the `dash::GenericCard<T, Precision>` class. The template parameters allow you to control the value type and decimal precision:
+- `T`: Value type (e.g., int, float, dash::string, const char*)
+- `Precision`: Number of decimal places for floating point values (default: 2)
+
+#### Example 1: Integer value
+```cpp
+dash::GenericCard<int> genericInt(dashboard, "Counter", "restarts");
+```
+
+#### Example 2: Float value, custom precision (3 decimals)
+```cpp
+dash::GenericCard<float, 3> genericFloat(dashboard, "Energy", "kWh");
+```
+
+#### Example 3: String value
+```cpp
+dash::GenericCard<dash::string> genericStr(dashboard, "Status");
+```
+
+## Methods
+
+### `setValue(T value)`
+Set the value displayed by the card. The type of `value` must match the template type you chose for `T` (e.g., int, float, dash::string, const char*).
+```cpp
+// Example:
+generic.setValue(value); // value is of type T
+```
+- **Signature:** `void setValue(T value)`
+- **Parameters:**
+  - `T value` — The value to display (type matches template parameter `T`).
+- **Returns:** `void`
+
+### `value()`
+Get the current value displayed by the card. The return type matches your template type for `T` (e.g., int, float, dash::string, const char*).
+```cpp
+T v = generic.value();
+```
+- **Signature:** `T value()`
+- **Parameters:** None
+- **Returns:** `T` — The current value displayed by the card (type matches template parameter `T`).
+
+### `onChange(callback)`
+Register a callback function to be called when the value changes (if supported). The callback parameter type matches your template type for `T`.
+```cpp
+generic.onChange([](T newValue) {
+  // Handle value change
+});
+```
+- **Signature:** `void onChange(void (*callback)(T newValue))`
+- **Parameters:**
+  - `callback` — Function to call when the value changes. Receives the new value as a parameter of type `T`.
+- **Returns:** `void`
+
+> **Note:**
+> - `T` can be one of: `int`, `float`, `dash::string`, or `const char*` depending on how you instantiate the card.
+
+### `setSymbol(const char* symbol)`
+Set the symbol or unit for the card (e.g., "kWh", "%").
+```cpp
+generic.setSymbol("restarts");
+```
+- **Signature:** `void setSymbol(const char* symbol)`
+- **Parameters:**
+  - `const char* symbol` — The symbol or unit to display.
+- **Returns:** `void`
+
+### `symbol()`
+Get the current symbol or unit for the card.
+```cpp
+const char* sym = generic.symbol();
+```
+- **Signature:** `const char* symbol()`
+- **Parameters:** None
+- **Returns:** `const char*` — The current symbol or unit for the card.
+
+## Callback
+
+<Callout>
+Generic card doesn't require any callback.
+</Callout>
+
+## Reference
+
+Below is a reference code showing how to integrate this widget in a real project, including initialization and value updates usage.
+
+```cpp
+// Create a generic card (int, default)
+dash::GenericCard<int> genericCard(dashboard, "Counter", "restarts");
+
+void setup() {
+  // ...
+  genericCard.setValue(10);
+  genericCard.setSymbol("restarts");
+}
+
+void loop() {
+  // ...
+}
+```
