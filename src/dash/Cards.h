@@ -264,8 +264,6 @@ namespace dash {
 
       virtual void toJson(const JsonObject& json, bool onlyChanges) const override {
         ValueCard<bool>::toJson(json, onlyChanges);
-        if (!onlyChanges || hasChanged(Property::VALUE))
-          json["v"] = optional().value_or(false) ? 1 : 0;
       }
 
     private:
