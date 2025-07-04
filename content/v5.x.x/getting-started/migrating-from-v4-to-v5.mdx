@@ -8,7 +8,7 @@ ESP-DASH v5 (Pro) introduces a refined API, better structure, and new features t
 
 <br/>
 
-## 1. Library Import & Dashboard Initialization
+## Dashboard Initialization
 
 ### ✅ What's Changed
 - No need to pass the server as a pointer.
@@ -27,7 +27,7 @@ ESPDash dashboard(server);
 
 <br/>
 
-## 2. Widget Initialization
+## Widget Initialization
 
 ### Cards
 
@@ -52,10 +52,15 @@ dash::TemperatureCard temperature(dashboard, "Temperature");
 
 * Use `dash::TemperatureCard` instead of `Card + macro`.
 * Pass dashboard as a reference, not a pointer.
+* Now each card type has its own class, e.g., `dash::TemperatureCard`, `dash::HumidityCard`, etc.
+* Each card and chart type has its own set of methods, making it more intuitive to use.
+* The `update()` method is replaced with more specific methods like `setValue()`.
+
+Please refer to the specific card documentation for details on available methods.
 
 <br/>
 
-### 📊 Charts
+### Charts
 
 Charts are now templated classes under `dash::`, with updated method names.
 
@@ -79,30 +84,18 @@ power.setY(YAxis, 7);
 
 * `updateX()` → `setX()`
 * `updateY()` → `setY()`
+* Use `dash::BarChart` instead of `Chart + macro`.
+* Charts now use template types for X and Y axes, e.g., `dash::BarChart<const char*, int>`.
+* Each chart type has its own class, e.g., `dash::BarChart`, `dash::LineChart`, etc.
+* The `setX()` and `setY()` methods now take arrays and their sizes as parameters, making it clearer how to set data.
+
+Please refer to the specific chart documentation for details on available methods.
 
 <br/>
 
-## 3. Updating Widgets
+## Interactive Elements (e.g., Buttons, Sliders)
 
-### 🔄 Before (v4)
-
-```cpp
-temperature.update(value);
-```
-
-### ✅ After (v5)
-
-```cpp
-temperature.setValue(value);
-```
-
-Use `setValue()` instead of `update()`.
-
-<br/>
-
-## 4. Interactive Elements (e.g., Buttons, Sliders)
-
-Interactive cards now use intuitive class names and improved event handling.
+Interactive cards now use intuitive class names and improved event handling. Here's an example of migrating a toggle button card:
 
 #### 🔄 Before (v4)
 
@@ -122,13 +115,15 @@ button.setValue(state);
 
 **Key changes:**
 
-* Use dedicated classes like `ToggleButtonCard`.
+* Use dedicated classes like `dash::ToggleButtonCard`.
 * `attachCallback()` → `onChange()`
 * Callbacks now receive more appropriate types (e.g., `bool` instead of `int`).
 
+Please refer to the specific interactive card documentation for details on available methods. Every interactive card type has its own callback and methods, making it easier to work with and understand.
+
 <br/>
 
-## 5. Summary of API Changes
+## Summary of API Changes
 
 | Feature         | v4 Syntax                         | v5 Syntax (New)                    |
 | --------------- | --------------------------------- | ---------------------------- |
@@ -137,33 +132,18 @@ button.setValue(state);
 | Chart creation  | `Chart(..., BAR_CHART,...)`       | `dash::BarChart<...>(...)`   |
 | Value update    | `update(value)`                   | Different for every widget           |
 | Event handler   | `attachCallback(...)`             | Different for every widget             |
-| Card/chart type | Macro-based                       | Class-based                  |
+| Refreshing Widget   | `sendUpdates(...)`             | Now use `dashboard.refresh(...)` to refresh an individual widget inside callback             |
 
 <br/>
 
-## 6. Migration Example
+## Notes & Compatibility
 
-#### 🔄 Before (v4)
-
-```cpp
-Card temperature(&dashboard, TEMPERATURE_CARD, "Temperature", "°C");
-temperature.update(25);
-```
-
-#### ✅ After (v5)
-
-```cpp
-dash::TemperatureCard temperature(dashboard, "Temperature");
-temperature.setValue(25);
-```
-
-<br/>
-
-## 7. Notes & Compatibility
-
+* Cards and charts are now more modular and easier to use with specific classes and each having its own set of methods & callbacks.
+* We call all user interface elements "widgets" in v5. This includes cards, charts, statistics and tabs.
 * Your WiFi and web server setup remains unchanged.
 * `dashboard.sendUpdates()` is still used to push updates.
-* The new API is designed to be more intuitive and consistent, making it easier to work with.
+* Now you can refresh individual widgets using `dashboard.refresh(widget)` (usually used inside callbacks). This is useful for optimizing performance by only sending an update for a specific widget which has changed instead of the entire dashboard.
+* You can now set an icon for each Tab. Please refer to Tab documentation.
 
 
 Happy migrating 🚀
