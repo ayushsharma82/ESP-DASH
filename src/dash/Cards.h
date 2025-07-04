@@ -83,7 +83,7 @@ namespace dash {
       ValueCard(ESPDash& dashboard, const char* name) : Card(dashboard, name) {}
       ValueCard(const char* name) : Card(name) {}
 
-    private:
+    protected:
       std::optional<T> _value;
   };
 
@@ -112,7 +112,7 @@ namespace dash {
           json["s"] = _symbol;
       }
 
-    private:
+    protected:
       const char* _symbol;
   };
 
@@ -141,7 +141,7 @@ namespace dash {
           json["s"] = _unit;
       }
 
-    private:
+    protected:
       const char* _unit;
   };
 
@@ -170,7 +170,7 @@ namespace dash {
           json["s"] = _unit;
       }
 
-    private:
+    protected:
       const char* _unit;
   };
 
@@ -215,7 +215,7 @@ namespace dash {
           json["s"] = static_cast<uint8_t>(_status);
       }
 
-    private:
+    protected:
       Status _status;
   };
 
@@ -240,7 +240,7 @@ namespace dash {
         ValueCard<T>::toJson(json, onlyChanges);
       }
 
-    private:
+    protected:
   };
 
   // Toggle Button Card
@@ -266,7 +266,7 @@ namespace dash {
         ValueCard<bool>::toJson(json, onlyChanges);
       }
 
-    private:
+    protected:
       std::function<void(bool state)> _callback = nullptr;
   };
 
@@ -337,7 +337,7 @@ namespace dash {
           dash::toJsonValue<T, Precision>(json["max"].to<JsonVariant>(), _maxValue);
       }
 
-    private:
+    protected:
       T _minValue;
       T _maxValue;
       const char* _unit;
@@ -375,7 +375,7 @@ namespace dash {
           dash::toJsonValue<T, Precision>(json["step"].to<JsonVariant>(), _step);
       }
 
-    private:
+    protected:
       T _step;
       std::function<void(T value)> _callback = nullptr;
   };

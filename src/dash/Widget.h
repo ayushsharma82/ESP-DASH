@@ -34,7 +34,7 @@ namespace dash {
           json["idx"] = _index;
       }
 
-    private:
+    protected:
       uint8_t _index;
   };
 } // namespace dash

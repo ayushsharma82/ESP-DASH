@@ -51,7 +51,6 @@ namespace dash {
       // construct a new chart without adding it to any dashboard
       Chart(const char* name) : Widget(name) {}
 
-    private:
       X* _x_axis_i_ptr = nullptr;
       Y* _y_axis_i_ptr = nullptr;
       size_t _x_axis_ptr_size = 0;
