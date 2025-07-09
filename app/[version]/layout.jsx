@@ -6,7 +6,8 @@ import { getPageMap } from 'nextra/page-map';
 
 export default async function VersionLayout({ children, params }) {
   // Extract version from params
-  const version = params?.version || (Array.isArray(params) ? params[0] : undefined);
+  const pms = await params;
+  const version = pms?.version || (Array.isArray(pms) ? pms[0] : undefined);
   if (!version) throw new Error('Version param missing for layout');
 
   // Fetch pageMap for this version

@@ -4,17 +4,17 @@ const metadata = {
   "custom-uri": {
     title: "Custom URI"
   },
-  "toggle-display": {
-    title: <span className="flex items-center justify-center gap-2">Toggle Display <Badge /></span>
-  },
-  "toggle-chart-animations": {
-    title: <span className="flex items-center justify-center gap-2">Toggle Chart Animations <Badge /></span>
-  },
   "widget-size": {
     title: <span className="flex items-center justify-center gap-2">Widget Size <Badge /></span>
   },
   "widget-index": {
     title: <span className="flex items-center justify-center gap-2">Widget Index <Badge /></span>
+  },
+  "toggle-display": {
+    title: <span className="flex items-center justify-center gap-2">Toggle Display <Badge /></span>
+  },
+  "toggle-chart-animations": {
+    title: <span className="flex items-center justify-center gap-2">Toggle Chart Animations <Badge /></span>
   },
   "custom-title": {
     title: <span className="flex items-center justify-center gap-2">Custom Title <Badge /></span>
