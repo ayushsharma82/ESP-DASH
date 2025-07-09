@@ -16,7 +16,6 @@ namespace dash {
       enum class Property : uint8_t {
         AXIS_X = 1,
         AXIS_Y,
-        INDEX,
         MAX,
         MIN,
         NAME, // name or title

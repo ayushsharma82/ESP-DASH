@@ -225,11 +225,9 @@ namespace dash {
     public:
       SeparatorCard(ESPDash& dashboard, const char* title, const char* initialMessage = "") : ValueCard<T>(dashboard, title) {
         setSubtitle(initialMessage);
-        ValueCard<T>::setSize({12, 12, 12, 12, 12, 12});
       }
       SeparatorCard(const char* title, const char* initialMessage = "") : ValueCard<T>(title) {
         setSubtitle(initialMessage);
-        ValueCard<T>::setSize({12, 12, 12, 12, 12, 12});
       }
       virtual ~SeparatorCard() = default;
       virtual const char* type() const override { return "spc"; }

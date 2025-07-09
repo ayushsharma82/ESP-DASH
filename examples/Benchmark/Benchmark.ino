@@ -48,6 +48,7 @@ dash::GenericCard<int> genericInt(dashboard, "Generic Int");
 dash::HumidityCard<float, 3> hum(dashboard, "Humidity"); // set decimal precision is 3
 dash::ProgressCard<float, 4> progressFloat(dashboard, "Progress Float", 0, 1, "kWh");
 dash::ProgressCard progressInt(dashboard, "Progress Int", 0, 100, "%");
+dash::SeparatorCard cardSeparator(dashboard, "Interactives", "Below you will find all interactive cards available inside ESP-DASH Lite");
 dash::SliderCard<float, 4> sliderFloatP4(dashboard, "Float Slider (4)", 0, 1, 0.0001f);
 dash::SliderCard<float> sliderFloatP2(dashboard, "Float Slider (2)", 0, 1, 0.01f);
 dash::SliderCard sliderInt(dashboard, "Int Slider", 0, 255, 1, "bits");
@@ -56,6 +57,7 @@ dash::ToggleButtonCard button(dashboard, "Button");
 dash::TemperatureCard temp(dashboard, "Temperature"); // default precision is 2
 
 // Charts
+dash::SeparatorCard chartSeparator(dashboard, "Charts", "Below you will find all charts available inside ESP-DASH Lite");
 dash::BarChart<const char*, int> bar(dashboard, "Power Usage (kWh)");
 
 // Custom Statistics
@@ -102,9 +104,6 @@ void setup() {
     dashboard.refresh(button);
   });
 
-  // Set Slider Index
-  sliderInt.setIndex(1);
-
   /* Attach Slider Callback */
   sliderInt.onChange([&](int value) {
     /* Print our new slider value received from dashboard */
@@ -114,14 +113,12 @@ void setup() {
     dashboard.refresh(sliderInt);
   });
 
-  sliderFloatP2.setIndex(2);
   sliderFloatP2.onChange([&](float value) {
     Serial.println("Slider Float P2 Triggered: " + String(value));
     sliderFloatP2.setValue(value);
     dashboard.refresh(sliderFloatP2);
   });
 
-  sliderFloatP4.setIndex(3);
   sliderFloatP4.onChange([&](float value) {
     Serial.println("Slider Float P4 Triggered: " + String(value, 4));
     sliderFloatP4.setValue(value);
