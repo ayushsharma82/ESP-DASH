@@ -31,112 +31,112 @@ Tab tab1(&dashboard, "Custom Tab 1", dash::Icon::COG_ICON);
 
 As of v5, you can assign a icon to the tab using `dash::Icon` enum. This icon will be displayed in the sidebar next to the tab name. Here are the available icons:
 
-<div class="my-4 relative overflow-x-auto shadow-md sm:rounded-lg max-w-[500px]">
-    <table class="w-full text-sm text-left rtl:text-right text-zinc-500 dark:text-zinc-400">
-        <thead class="text-xs text-zinc-700 uppercase bg-zinc-100 dark:bg-zinc-900 dark:text-zinc-400">
+<div className="my-4 relative overflow-x-auto shadow-md sm:rounded-lg max-w-[500px]">
+    <table className="w-full text-sm text-left rtl:text-right text-zinc-500 dark:text-zinc-400">
+        <thead className="text-xs text-zinc-700 uppercase bg-zinc-100 dark:bg-zinc-900 dark:text-zinc-400">
             <tr>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" className="px-6 py-3">
                   Icon
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" className="px-6 py-3">
                   Value
                 </th>
             </tr>
         </thead>
         <tbody>
-            <tr class="odd:bg-white odd:dark:bg-zinc-950 even:bg-zinc-50 even:dark:bg-zinc-900 border-b dark:border-zinc-800 border-zinc-200">
-                <th scope="row" class="px-6 py-2 font-medium text-zinc-900 whitespace-nowrap dark:text-white">
+            <tr className="odd:bg-white odd:dark:bg-zinc-950 even:bg-zinc-50 even:dark:bg-zinc-900 border-b dark:border-zinc-800 border-zinc-200">
+                <th scope="row" className="px-6 py-2 font-medium text-zinc-900 whitespace-nowrap dark:text-white">
                   None (default)
                 </th>
-                <td class="px-6 py-4">
+                <td className="px-6 py-4">
                   `UNASSIGNED_ICON`
                 </td>
             </tr>
-            <tr class="odd:bg-white odd:dark:bg-zinc-950 even:bg-zinc-50 even:dark:bg-zinc-900 border-b dark:border-zinc-800 border-zinc-200">
-                <th scope="row" class="px-6 py-2 font-medium text-zinc-900 whitespace-nowrap dark:text-white">
+            <tr className="odd:bg-white odd:dark:bg-zinc-950 even:bg-zinc-50 even:dark:bg-zinc-900 border-b dark:border-zinc-800 border-zinc-200">
+                <th scope="row" className="px-6 py-2 font-medium text-zinc-900 whitespace-nowrap dark:text-white">
                   <HomeIcon className="size-5 self-auto" />
                 </th>
-                <td class="px-6 py-4">
+                <td className="px-6 py-4">
                   `HOME_ICON`
                 </td>
             </tr>
-            <tr class="odd:bg-white odd:dark:bg-zinc-950 even:bg-zinc-50 even:dark:bg-zinc-900 border-b dark:border-zinc-800 border-zinc-200">
-                <th scope="row" class="px-6 py-2 font-medium text-zinc-900 whitespace-nowrap dark:text-white">
+            <tr className="odd:bg-white odd:dark:bg-zinc-950 even:bg-zinc-50 even:dark:bg-zinc-900 border-b dark:border-zinc-800 border-zinc-200">
+                <th scope="row" className="px-6 py-2 font-medium text-zinc-900 whitespace-nowrap dark:text-white">
                   <CogIcon className="size-5 self-auto" />
                 </th>
-                <td class="px-6 py-4">
+                <td className="px-6 py-4">
                   `COG_ICON`
                 </td>
             </tr>
-            <tr class="odd:bg-white odd:dark:bg-zinc-950 even:bg-zinc-50 even:dark:bg-zinc-900 border-b dark:border-zinc-800 border-zinc-200">
-                <th scope="row" class="px-6 py-2 font-medium text-zinc-900 whitespace-nowrap dark:text-white">
+            <tr className="odd:bg-white odd:dark:bg-zinc-950 even:bg-zinc-50 even:dark:bg-zinc-900 border-b dark:border-zinc-800 border-zinc-200">
+                <th scope="row" className="px-6 py-2 font-medium text-zinc-900 whitespace-nowrap dark:text-white">
                   <SunIcon className="size-5 self-auto" />
                 </th>
-                <td class="px-6 py-4">
+                <td className="px-6 py-4">
                   `SUN_ICON`
                 </td>
             </tr>
-            <tr class="odd:bg-white odd:dark:bg-zinc-950 even:bg-zinc-50 even:dark:bg-zinc-900 border-b dark:border-zinc-800 border-zinc-200">
-                <th scope="row" class="px-6 py-2 font-medium text-zinc-900 whitespace-nowrap dark:text-white">
+            <tr className="odd:bg-white odd:dark:bg-zinc-950 even:bg-zinc-50 even:dark:bg-zinc-900 border-b dark:border-zinc-800 border-zinc-200">
+                <th scope="row" className="px-6 py-2 font-medium text-zinc-900 whitespace-nowrap dark:text-white">
                   <MoonIcon className="size-5 self-auto" />
                 </th>
-                <td class="px-6 py-4">
+                <td className="px-6 py-4">
                   `MOON_ICON`
                 </td>
             </tr>
-            <tr class="odd:bg-white odd:dark:bg-zinc-950 even:bg-zinc-50 even:dark:bg-zinc-900 border-b dark:border-zinc-800 border-zinc-200">
-                <th scope="row" class="px-6 py-2 font-medium text-zinc-900 whitespace-nowrap dark:text-white">
+            <tr className="odd:bg-white odd:dark:bg-zinc-950 even:bg-zinc-50 even:dark:bg-zinc-900 border-b dark:border-zinc-800 border-zinc-200">
+                <th scope="row" className="px-6 py-2 font-medium text-zinc-900 whitespace-nowrap dark:text-white">
                   <SunMoonIcon className="size-5 self-auto" />
                 </th>
-                <td class="px-6 py-4">
+                <td className="px-6 py-4">
                   `SUN_MOON_ICON`
                 </td>
             </tr>
-            <tr class="odd:bg-white odd:dark:bg-zinc-950 even:bg-zinc-50 even:dark:bg-zinc-900 border-b dark:border-zinc-800 border-zinc-200">
-                <th scope="row" class="px-6 py-2 font-medium text-zinc-900 whitespace-nowrap dark:text-white">
+            <tr className="odd:bg-white odd:dark:bg-zinc-950 even:bg-zinc-50 even:dark:bg-zinc-900 border-b dark:border-zinc-800 border-zinc-200">
+                <th scope="row" className="px-6 py-2 font-medium text-zinc-900 whitespace-nowrap dark:text-white">
                   <DatabaseIcon className="size-5 self-auto" />
                 </th>
-                <td class="px-6 py-4">
+                <td className="px-6 py-4">
                   `DATABASE_ICON`
                 </td>
             </tr>
-            <tr class="odd:bg-white odd:dark:bg-zinc-950 even:bg-zinc-50 even:dark:bg-zinc-900 border-b dark:border-zinc-800 border-zinc-200">
-                <th scope="row" class="px-6 py-2 font-medium text-zinc-900 whitespace-nowrap dark:text-white">
+            <tr className="odd:bg-white odd:dark:bg-zinc-950 even:bg-zinc-50 even:dark:bg-zinc-900 border-b dark:border-zinc-800 border-zinc-200">
+                <th scope="row" className="px-6 py-2 font-medium text-zinc-900 whitespace-nowrap dark:text-white">
                   <ComputerIcon className="size-5 self-auto" />
                 </th>
-                <td class="px-6 py-4">
+                <td className="px-6 py-4">
                   `COMPUTER_ICON`
                 </td>
             </tr>
-            <tr class="odd:bg-white odd:dark:bg-zinc-950 even:bg-zinc-50 even:dark:bg-zinc-900 border-b dark:border-zinc-800 border-zinc-200">
-                <th scope="row" class="px-6 py-2 font-medium text-zinc-900 whitespace-nowrap dark:text-white">
+            <tr className="odd:bg-white odd:dark:bg-zinc-950 even:bg-zinc-50 even:dark:bg-zinc-900 border-b dark:border-zinc-800 border-zinc-200">
+                <th scope="row" className="px-6 py-2 font-medium text-zinc-900 whitespace-nowrap dark:text-white">
                   <ActivityIcon className="size-5 self-auto" />
                 </th>
-                <td class="px-6 py-4">
+                <td className="px-6 py-4">
                   `ACTIVITY_ICON`
                 </td>
             </tr>
-            <tr class="odd:bg-white odd:dark:bg-zinc-950 even:bg-zinc-50 even:dark:bg-zinc-900 border-b dark:border-zinc-800 border-zinc-200">
-                <th scope="row" class="px-6 py-2 font-medium text-zinc-900 whitespace-nowrap dark:text-white">
+            <tr className="odd:bg-white odd:dark:bg-zinc-950 even:bg-zinc-50 even:dark:bg-zinc-900 border-b dark:border-zinc-800 border-zinc-200">
+                <th scope="row" className="px-6 py-2 font-medium text-zinc-900 whitespace-nowrap dark:text-white">
                   <AlarmClockIcon className="size-5 self-auto" />
                 </th>
-                <td class="px-6 py-4">
+                <td className="px-6 py-4">
                   `ALARM_ICON`
                 </td>
             </tr>
-            <tr class="odd:bg-white odd:dark:bg-zinc-950 even:bg-zinc-50 even:dark:bg-zinc-900 border-b dark:border-zinc-800 border-zinc-200">
-                <th scope="row" class="px-6 py-2 font-medium text-zinc-900 whitespace-nowrap dark:text-white">
+            <tr className="odd:bg-white odd:dark:bg-zinc-950 even:bg-zinc-50 even:dark:bg-zinc-900 border-b dark:border-zinc-800 border-zinc-200">
+                <th scope="row" className="px-6 py-2 font-medium text-zinc-900 whitespace-nowrap dark:text-white">
                   <AudioWaveformIcon className="size-5 self-auto" />
                 </th>
-                <td class="px-6 py-4">
+                <td className="px-6 py-4">
                   `AUDIO_ICON`
                 </td>
             </tr>
-            <tr class="odd:bg-white odd:dark:bg-zinc-950 even:bg-zinc-50 even:dark:bg-zinc-900 border-b dark:border-zinc-800 border-zinc-200">
-                <th scope="row" class="px-6 py-2 font-medium text-zinc-900 whitespace-nowrap dark:text-white">
+            <tr className="odd:bg-white odd:dark:bg-zinc-950 even:bg-zinc-50 even:dark:bg-zinc-900 border-b dark:border-zinc-800 border-zinc-200">
+                <th scope="row" className="px-6 py-2 font-medium text-zinc-900 whitespace-nowrap dark:text-white">
                   <JoystickIcon className="size-5 self-auto" />
                 </th>
-                <td class="px-6 py-4">
+                <td className="px-6 py-4">
                   `JOYSTICK_ICON`
                 </td>
             </tr>
