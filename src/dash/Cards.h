@@ -72,10 +72,15 @@ namespace dash {
       virtual void toJson(const JsonObject& json, bool onlyChanges) const override {
         Card::toJson(json, onlyChanges);
         if (!onlyChanges || hasChanged(Property::VALUE)) {
-          if (_value.has_value())
+          if (_value.has_value()) {
             toJsonValue<T, Precision>(json["v"].to<JsonVariant>(), _value.value());
-          else
-            json["v"] = "";
+          } else {
+            if constexpr (std::is_integral_v<T> || std::is_floating_point_v<T>) {
+              json["v"] = 0;
+            } else {
+              json["v"] = "";
+            }
+          }
         }
       }
 
