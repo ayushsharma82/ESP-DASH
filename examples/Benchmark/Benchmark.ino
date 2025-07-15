@@ -82,18 +82,15 @@ void setup() {
   Serial.println();
   /* Connect WiFi */
 
-  // WiFi.persistent(false);
-  // WiFi.mode(WIFI_STA);
-  // WiFi.begin(ssid, password);
-  // while (WiFi.status() != WL_CONNECTED) {
-  //   delay(500);
-  //   Serial.print(".");
-  // }
-  // Serial.print("IP Address: ");
-  // Serial.println(WiFi.localIP());
-
-  WiFi.mode(WIFI_AP);
-  WiFi.softAP("esp-captive");
+  WiFi.persistent(false);
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.print("IP Address: ");
+  Serial.println(WiFi.localIP());
 
   /* Attach Button Callback */
   button.onChange([&](bool state) {
