@@ -12,7 +12,7 @@ Repository URL: https://github.com/ayushsharma82/ESP-DASH
 #pragma once
 
 #include "Arduino.h"
-// #include "edp.h"
+#include "edp.h"
 #include "stdlib_noniso.h"
 
 #if defined(ESP8266)

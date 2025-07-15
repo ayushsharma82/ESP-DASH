@@ -77,17 +77,17 @@ ESPDash::ESPDash(AsyncWebServer& server, const char* uri, bool enable_default_st
   _ws = new AsyncWebSocket("/dashws");
 
   // Attach AsyncWebServer Routes
-  // _server->on(uri, HTTP_GET, [this](AsyncWebServerRequest* request) {
-  //   if (basic_auth) {
-  //     if (!request->authenticate(username.c_str(), password.c_str()))
-  //       return request->requestAuthentication();
-  //   }
-  //   // respond with the compressed frontend
-  //   AsyncWebServerResponse* response = request->beginResponse(200, "text/html", DASH_HTML, sizeof(DASH_HTML));
-  //   response->addHeader("Content-Encoding", "gzip");
-  //   response->addHeader("Cache-Control", "public, max-age=900");
-  //   request->send(response);
-  // });
+  _server->on(uri, HTTP_GET, [this](AsyncWebServerRequest* request) {
+    if (basic_auth) {
+      if (!request->authenticate(username.c_str(), password.c_str()))
+        return request->requestAuthentication();
+    }
+    // respond with the compressed frontend
+    AsyncWebServerResponse* response = request->beginResponse(200, "text/html", DASH_HTML, sizeof(DASH_HTML));
+    response->addHeader("Content-Encoding", "gzip");
+    response->addHeader("Cache-Control", "public, max-age=900");
+    request->send(response);
+  });
 
   // Websocket Callback Handler
   _ws->onEvent([&](__unused AsyncWebSocket* server, AsyncWebSocketClient* client, AwsEventType type, __unused void* arg, uint8_t* data, size_t len) {
