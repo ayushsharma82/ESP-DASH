@@ -17,7 +17,7 @@
 
 <br/>
 
-**ESP-DASH** is the 5th-gen blazing fast library to create a real-time, on-device dashboard for **ESP32**, **RP2040+W** and **RP2350+W** microcontrollers.
+**ESP-DASH** is the 5th-gen blazing fast library to create a real-time, on-device dashboard for your devices / projects based on **ESP32**, **RP2040+W** and **RP2350+W** microcontrollers.
 
 This library includes charts, display cards, interactive buttons and many more components to create a perfect dashboard which is accessible locally via your IoT device's IP. ESP-DASH does not require any kind of internet connection, everything is stored locally.</p>
 
