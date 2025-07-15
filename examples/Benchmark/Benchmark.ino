@@ -38,7 +38,7 @@ const char* password = ""; // Password
 AsyncWebServer server(80);
 
 /* Attach ESP-DASH to AsyncWebServer */
-ESPDash dashboard(server, true);
+ESPDash dashboard(server, "/", true);
 
 // Cards
 dash::GenericCard genericString(dashboard, "Generic String");
