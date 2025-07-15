@@ -41,20 +41,22 @@ AsyncWebServer server(80);
 ESPDash dashboard(server, true);
 
 // Cards
-dash::FeedbackCard feedback(dashboard, "Status", dash::Status::SUCCESS);
 dash::GenericCard genericString(dashboard, "Generic String");
 dash::GenericCard<float> genericFloat(dashboard, "Generic Float");
 dash::GenericCard<int> genericInt(dashboard, "Generic Int");
+dash::TemperatureCard temp(dashboard, "Temperature"); // default precision is 2
 dash::HumidityCard<float, 3> hum(dashboard, "Humidity"); // set decimal precision is 3
+dash::FeedbackCard feedback(dashboard, "Status", dash::Status::SUCCESS);
 dash::ProgressCard<float, 4> progressFloat(dashboard, "Progress Float", 0, 1, "kWh");
 dash::ProgressCard progressInt(dashboard, "Progress Int", 0, 100, "%");
+
+// Interactives
 dash::SeparatorCard cardSeparator(dashboard, "Interactives", "Below you will find all interactive cards available inside ESP-DASH Lite");
 dash::SliderCard<float, 4> sliderFloatP4(dashboard, "Float Slider (4)", 0, 1, 0.0001f);
 dash::SliderCard<float> sliderFloatP2(dashboard, "Float Slider (2)", 0, 1, 0.01f);
 dash::SliderCard sliderInt(dashboard, "Int Slider", 0, 255, 1, "bits");
 dash::SliderCard<uint32_t> updateDelay(dashboard, "Update Delay", 1000, 20000, 1000, "ms");
 dash::ToggleButtonCard button(dashboard, "Button");
-dash::TemperatureCard temp(dashboard, "Temperature"); // default precision is 2
 
 // Charts
 dash::SeparatorCard chartSeparator(dashboard, "Charts", "Below you will find all charts available inside ESP-DASH Lite");
