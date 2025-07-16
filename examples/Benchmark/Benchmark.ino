@@ -2,12 +2,13 @@
   -----------------------------
   ESPDASH Lite - Benchmark Example
   -----------------------------
-  Use this benchmark example to test if ESP-DASH is working properly on your platform.
+  
+  Use this benchmark example to test if ESP-DASH Lite is working properly on your platform.
 
   Github: https://github.com/ayushsharma82/ESP-DASH
   WiKi: https://docs.espdash.pro
 
-  Works with both ESP8266 & ESP32
+  Works with ESP32, RP2040+W and RP2350+W based devices / projects.
   -------------------------------
 
   Upgrade to ESP-DASH Pro: https://espdash.pro
@@ -21,103 +22,194 @@
   #include <ESPAsyncWebServer.h>
 #elif defined(ESP32)
   /* ESP32 Dependencies */
-  #include <WiFi.h>
   #include <AsyncTCP.h>
   #include <ESPAsyncWebServer.h>
 #elif defined(TARGET_RP2040) || defined(PICO_RP2040) || defined(TARGET_RP2350) || defined(PICO_RP2350)
   /* RP2040 or RP2350 Dependencies */
-  #include <WiFi.h>
-  #include <RPAsyncTCP.h>
   #include <ESPAsyncWebServer.h>
+  #include <RPAsyncTCP.h>
+  #include <WiFi.h>
 #endif
 
 #include <ESPDash.h>
 
-
 /* Your WiFi Credentials */
-const char* ssid = ""; // SSID
+const char* ssid = "";     // SSID
 const char* password = ""; // Password
 
 /* Start Webserver */
 AsyncWebServer server(80);
 
 /* Attach ESP-DASH to AsyncWebServer */
-ESPDash dashboard(&server); 
+ESPDash dashboard(server, "/", true);
 
-Card generic(&dashboard, GENERIC_CARD, "Generic");
-Card temp(&dashboard, TEMPERATURE_CARD, "Temperature", "°C");
-Card hum(&dashboard, HUMIDITY_CARD, "Humidity", "%");
-Card status1(&dashboard, STATUS_CARD, "Status 1", "success");
-Card status2(&dashboard, STATUS_CARD, "Status 2", "warning");
-Card status3(&dashboard, STATUS_CARD, "Status 3", "danger");
-Card status4(&dashboard, STATUS_CARD, "Status 4", "idle");
-Card progress(&dashboard, PROGRESS_CARD, "Progress", "", 0, 100);
-Card button(&dashboard, BUTTON_CARD, "Test Button");
-Card slider(&dashboard, SLIDER_CARD, "Test Slider", "", 0, 255);
+// Cards
+dash::GenericCard genericString(dashboard, "Generic String");
+dash::GenericCard<float> genericFloat(dashboard, "Generic Float");
+dash::GenericCard<int> genericInt(dashboard, "Generic Int");
+dash::TemperatureCard temp(dashboard, "Temperature"); // default precision is 2
+dash::HumidityCard<float, 3> hum(dashboard, "Humidity"); // set decimal precision is 3
+dash::FeedbackCard feedback(dashboard, "Status", dash::Status::SUCCESS);
+dash::ProgressCard<float, 4> progressFloat(dashboard, "Progress Float", 0, 1, "kWh");
+dash::ProgressCard progressInt(dashboard, "Progress Int", 0, 100, "%");
 
-Chart bar(&dashboard, BAR_CHART, "Power Usage (kWh)");
+// Interactives
+dash::SeparatorCard cardSeparator(dashboard, "Interactives", "Below you will find all interactive cards available inside ESP-DASH Lite");
+dash::SliderCard<float, 4> sliderFloatP4(dashboard, "Float Slider (4)", 0, 1, 0.0001f);
+dash::SliderCard<float> sliderFloatP2(dashboard, "Float Slider (2)", 0, 1, 0.01f);
+dash::SliderCard sliderInt(dashboard, "Int Slider", 0, 255, 1, "bits");
+dash::SliderCard<uint32_t> updateDelay(dashboard, "Update Delay", 1000, 20000, 1000, "ms");
+dash::ToggleButtonCard button(dashboard, "Button");
 
+// Charts
+dash::SeparatorCard chartSeparator(dashboard, "Charts", "Below you will find all charts available inside ESP-DASH Lite");
+dash::BarChart<const char*, int> bar(dashboard, "Power Usage (kWh)");
+
+// Custom Statistics
+dash::StatisticValue stat1(dashboard, "Statistic 1");
+dash::StatisticValue<float, 4> stat2(dashboard, "Statistic 2");
+dash::StatisticProvider<uint32_t> statProvider(dashboard, "Statistic Provider");
+
+uint8_t test_status = 0;
+
+/**
+ * Note how we are keeping all the chart data in global scope.
+ */
 // Bar Chart Data
-String XAxis[] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
-int YAxis[] = {0, 0, 0, 0, 0, 0, 0};
+const char* BarXAxis[] = {"1/4/22", "2/4/22", "3/4/22", "4/4/22", "5/4/22", "6/4/22", "7/4/22", "8/4/22", "9/4/22", "10/4/22", "11/4/22", "12/4/22", "13/4/22", "14/4/22", "15/4/22", "16/4/22", "17/4/22", "18/4/22", "19/4/22", "20/4/22", "21/4/22", "22/4/22", "23/4/22", "24/4/22", "25/4/22", "26/4/22", "27/4/22", "28/4/22", "29/4/22", "30/4/22"};
+int BarYAxis[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
+unsigned long last_update_millis = 0;
+uint32_t update_delay = 2000;
 
 void setup() {
   Serial.begin(115200);
-
+  Serial.println();
   /* Connect WiFi */
+
+  WiFi.persistent(false);
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
-  if (WiFi.waitForConnectResult() != WL_CONNECTED) {
-      Serial.printf("WiFi Failed!\n");
-      return;
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
   }
   Serial.print("IP Address: ");
   Serial.println(WiFi.localIP());
 
-  bar.updateX(XAxis, 7);
-
   /* Attach Button Callback */
-  button.attachCallback([&](int value){
+  button.onChange([&](bool state) {
     /* Print our new button value received from dashboard */
-    Serial.println("Button Triggered: "+String((value == 1)?"true":"false"));
+    Serial.println(String("Button Triggered: ") + (state ? "true" : "false"));
     /* Make sure we update our button's value and send update to dashboard */
-    button.update(value);
-    dashboard.sendUpdates();
+    button.setValue(state);
+    dashboard.refresh(button);
   });
 
   /* Attach Slider Callback */
-  slider.attachCallback([&](int value){
+  sliderInt.onChange([&](int value) {
     /* Print our new slider value received from dashboard */
-    Serial.println("Slider Triggered: "+String(value));
+    Serial.println("Slider Triggered: " + String(value));
     /* Make sure we update our slider's value and send update to dashboard */
-    slider.update(value);
-    dashboard.sendUpdates();
+    sliderInt.setValue(value);
+    dashboard.refresh(sliderInt);
   });
+
+  sliderFloatP2.onChange([&](float value) {
+    Serial.println("Slider Float P2 Triggered: " + String(value));
+    sliderFloatP2.setValue(value);
+    dashboard.refresh(sliderFloatP2);
+  });
+
+  sliderFloatP4.onChange([&](float value) {
+    Serial.println("Slider Float P4 Triggered: " + String(value, 4));
+    sliderFloatP4.setValue(value);
+    dashboard.refresh(sliderFloatP4);
+  });
+
+  updateDelay.setValue(update_delay);
+  updateDelay.onChange([&](uint32_t value) {
+    update_delay = value;
+    updateDelay.setValue(value);
+    dashboard.refresh(updateDelay);
+  });
+
+  stat1.setValue("Value 1");
+  stat2.setValue(10.0 / 3.0);
+  statProvider.setProvider([]() { return millis(); });
+
+  bar.setX(BarXAxis, 30);
+
+  genericFloat.setValue(10.0 / 3.0); // default rounding is 2
+  genericString.setValue("Hello World!");
 
   /* Start AsyncWebServer */
   server.begin();
+
+  server.onNotFound([](AsyncWebServerRequest* request) {
+    request->send(404);
+  });
 }
 
 void loop() {
-  // Randomize YAxis Values ( for demonstration purposes only )
-  for(int i=0; i < 7; i++){
-    YAxis[i] = (int)random(0, 200);
+  // Update Everything every 2 seconds using millis if connected to WiFi
+  if (millis() - last_update_millis > update_delay && dashboard.hasClient()) {
+    last_update_millis = millis();
+
+    // Randomize Bar Chart YAxis Values ( for demonstration purposes only )
+    for (int i = 0; i < 30; i++) {
+      BarYAxis[i] = (int)random(0, 200);
+    }
+
+    /* Update Chart Y Axis (yaxis_array, array_size) */
+    bar.setY(BarYAxis, 30);
+
+    // Update all cards with random values
+    genericInt.setSymbol(random(0, 2) ? "unit1" : "unit2");
+    genericInt.setValue((int)random(0, 100));
+    temp.setValue(random(0, 100) / 3.0);
+    hum.setValue(random(0, 100) / 3.0);
+
+    progressInt.setValue(random(0, 200));             // if more than max, clamped to max
+    progressFloat.setValue(random(0, 1000) / 2000.0); // if more than max, clamped to max
+
+    sliderInt.setValue(random(0, 200)); // clamped at 255 by max
+    sliderFloatP2.setValue(random(0, 100) / 333.0);
+    sliderFloatP4.setValue(random(0, 100) / 333.0);
+
+    // Loop through feedbacks
+    if (test_status == 0) {
+      feedback.setFeedback("Success Msg!", dash::Status::SUCCESS);
+      test_status = 1;
+    } else if (test_status == 1) {
+      feedback.setFeedback("Warning Msg!", dash::Status::WARNING);
+      test_status = 2;
+    } else if (test_status == 2) {
+      feedback.setFeedback("Danger Msg!", dash::Status::DANGER);
+      test_status = 3;
+    } else if (test_status == 3) {
+      feedback.setFeedback("Info Msg!", dash::Status::INFO);
+      test_status = 4;
+    } else if (test_status == 4) {
+      feedback.setFeedback("Idle Msg!", dash::Status::NONE);
+      test_status = 0;
+    }
+
+    if (random(0, 2))
+      button.toggle();
+
+#if defined(ESP8266) || defined(ESP32)
+    Serial.println("Free Heap (Before Update): " + String(ESP.getFreeHeap()));
+#elif defined(TARGET_RP2040) || defined(PICO_RP2040) || defined(TARGET_RP2350) || defined(PICO_RP2350)
+    Serial.println("Free Heap (Before Update): " + String(rp2040.getFreeHeap()));
+#endif
+
+    dashboard.sendUpdates();
+
+#if defined(ESP8266) || defined(ESP32)
+    Serial.println("Free Heap (After Update): " + String(ESP.getFreeHeap()));
+#elif defined(TARGET_RP2040) || defined(PICO_RP2040) || defined(TARGET_RP2350) || defined(PICO_RP2350)
+    Serial.println("Free Heap (After Update): " + String(rp2040.getFreeHeap()));
+#endif
   }
-
-  /* Update Chart Y Axis (yaxis_array, array_size) */
-  bar.updateY(YAxis, 7);
-
-  // Update all cards with random values
-  generic.update((int)random(0, 100));
-  temp.update((int)random(0, 100));
-  hum.update((int)random(0, 100));
-  status1.update("success");
-  status2.update("warning");
-  status3.update("danger");
-  status4.update("idle");
-  progress.update((int)random(0, 100));
-  
-  dashboard.sendUpdates();
-  delay(2000);
 }

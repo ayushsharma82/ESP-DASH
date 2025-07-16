@@ -11,12 +11,10 @@
   Github: https://github.com/ayushsharma82/ESP-DASH
   WiKi: https://docs.espdash.pro
 
-  Works with both ESP8266 & ESP32
-
+  Works with ESP32, RP2040+W and RP2350+W based devices / projects.
   -------------------------------
 
   Upgrade to ESP-DASH Pro: https://espdash.pro
-
 */
 
 #include <Arduino.h>
@@ -47,14 +45,14 @@ const char* password = ""; // Password
 AsyncWebServer server(80);
 
 /* Attach ESP-DASH to AsyncWebServer */
-ESPDash dashboard(&server);
+ESPDash dashboard(server);
 
 /* 
   Dashboard Cards 
   Format - (Dashboard Instance, Card Type, Card Name, Card Symbol(optional) )
 */
-Card* temperature = new Card(&dashboard, TEMPERATURE_CARD, "Temperature", "°C");
-Card* humidity = new Card(&dashboard, HUMIDITY_CARD, "Humidity", "%");
+dash::TemperatureCard<float, 2>* temperature = new dash::TemperatureCard<float, 2>(dashboard, "Temperature");
+dash::HumidityCard<float, 2>* humidity = new dash::HumidityCard<float, 2>(dashboard, "Humidity");
 
 /* 
   Removal Time for demonstration purposes only
@@ -84,10 +82,10 @@ void setup() {
 void loop() {
   /* Update Card Values */
   if(temperature != nullptr) // Check if our pointer has not been deleted & then only access 'update' method
-    temperature->update((int)random(0, 50));
+    temperature->setValue((int)random(0, 50));
 
   if(humidity != nullptr) // Check if our pointer has not been deleted & then only access 'update' method
-    humidity->update((int)random(0, 100));
+    humidity->setValue((int)random(0, 100));
 
   
   /* Remove our card when removal time is elapsed */

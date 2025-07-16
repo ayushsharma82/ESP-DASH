@@ -11,12 +11,10 @@
   Github: https://github.com/ayushsharma82/ESP-DASH
   WiKi: https://docs.espdash.pro
 
-  Works with both ESP8266 & ESP32
-
+  Works with ESP32, RP2040+W and RP2350+W based devices / projects.
   -------------------------------
 
   Upgrade to ESP-DASH Pro: https://espdash.pro
-
 */
 
 #include <Arduino.h>
@@ -47,19 +45,19 @@ const char* password = ""; // Password
 AsyncWebServer server(80);
 
 /* Attach ESP-DASH to AsyncWebServer */
-ESPDash dashboard(&server); 
+ESPDash dashboard(server); 
 
 /* 
   Button Card
   Format - (Dashboard Instance, Card Type, Card Name)
 */
-Card button(&dashboard, BUTTON_CARD, "Test Button");
+dash::ToggleButtonCard button(dashboard, "Test Button");
 
 /* 
   Slider Card
   Format - (Dashboard Instance, Card Type, Card Name, Card Symbol(optional), int min, int max)
 */
-Card slider(&dashboard, SLIDER_CARD, "Test Slider", "", 0, 255);
+dash::SliderCard slider(dashboard, "Test Slider", 0, 255);
 
 
 void setup() {
@@ -76,20 +74,20 @@ void setup() {
   Serial.println(WiFi.localIP());
 
   /* Attach Button Callback */
-  button.attachCallback([&](int value){
+  button.onChange([](bool state){
     /* Print our new button value received from dashboard */
-    Serial.println("Button Triggered: "+String((value == 1)?"true":"false"));
+    Serial.println(String("Button Triggered: ")+(state?"true":"false"));
     /* Make sure we update our button's value and send update to dashboard */
-    button.update(value);
+    button.setValue(state);
     dashboard.sendUpdates();
   });
 
   /* Attach Slider Callback */
-  slider.attachCallback([&](int value){
+  slider.onChange([](int value){
     /* Print our new slider value received from dashboard */
     Serial.println("Slider Triggered: "+String(value));
     /* Make sure we update our slider's value and send update to dashboard */
-    slider.update(value);
+    slider.setValue(value);
     dashboard.sendUpdates();
   });
 

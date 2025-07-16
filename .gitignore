@@ -38,6 +38,7 @@ node_modules
 ./vue-frontend/dist
 /build
 /portal
+/espdash-portal
 
 .next
 /.pio

@@ -11,12 +11,10 @@
   Github: https://github.com/ayushsharma82/ESP-DASH
   WiKi: https://docs.espdash.pro
 
-  Works with both ESP8266 & ESP32
-
+  Works with ESP32, RP2040+W and RP2350+W based devices / projects.
   -------------------------------
 
   Upgrade to ESP-DASH Pro: https://espdash.pro
-
 */
 
 #include <Arduino.h>
@@ -47,18 +45,18 @@ const char* password = ""; // Password
 AsyncWebServer server(80);
 
 /* Attach ESP-DASH to AsyncWebServer */
-ESPDash dashboard(&server);
+ESPDash dashboard(server);
 
 /* 
   Dashboard Charts
   Format - (Dashboard Instance, Chart Type, Chart Name )
 */
 // Bar Chart Data
-String XAxis[] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+const char* XAxis[] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
 int YAxis[] = {0, 0, 0, 0, 0, 0, 0};
 
 // Bar Chart Instance
-Chart power(&dashboard, BAR_CHART, "Power Usage (kWh)");
+dash::BarChart<const char*, int> power(dashboard, "Power Usage (kWh)");
 
 
 void setup() {
@@ -79,7 +77,7 @@ void setup() {
     -------------------
     We need to update X Axis once only as it will not be changing in this example 
   */
-  power.updateX(XAxis, 7);
+  power.setX(XAxis, 7);
 
   /* Start AsyncWebServer */
   server.begin();
@@ -92,7 +90,7 @@ void loop() {
   }
 
   /* Update Chart Y Axis (yaxis_array, array_size) */
-  power.updateY(YAxis, 7);
+  power.setY(YAxis, 7);
 
   /* Send Updates to our Dashboard (realtime) */
   dashboard.sendUpdates();
