@@ -1,14 +1,17 @@
 /*
   -----------------------------
-  ESPDASH Pro - Benchmark Example
+  ESPDASH Lite - Benchmark Example
   -----------------------------
-  Use this benchmark example to test if ESP-DASH Pro is working properly on your platform.
+  
+  Use this benchmark example to test if ESP-DASH Lite is working properly on your platform.
 
   Github: https://github.com/ayushsharma82/ESP-DASH
   WiKi: https://docs.espdash.pro
 
-  Works with both ESP8266 & ESP32
+  Works with ESP32, RP2040+W and RP2350+W based devices / projects.
   -------------------------------
+
+  Upgrade to ESP-DASH Pro: https://espdash.pro
 */
 
 #include <Arduino.h>

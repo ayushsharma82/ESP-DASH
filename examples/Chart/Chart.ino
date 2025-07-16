@@ -11,12 +11,10 @@
   Github: https://github.com/ayushsharma82/ESP-DASH
   WiKi: https://docs.espdash.pro
 
-  Works with both ESP8266 & ESP32
-
+  Works with ESP32, RP2040+W and RP2350+W based devices / projects.
   -------------------------------
 
   Upgrade to ESP-DASH Pro: https://espdash.pro
-
 */
 
 #include <Arduino.h>
