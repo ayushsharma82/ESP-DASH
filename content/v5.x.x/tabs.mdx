@@ -26,7 +26,7 @@ By default, ESP-DASH puts everything into 'Overview' Tab.
 Initializer should be kept in global scope. ( ie. outside of any function in your sketch )
 
 ```cpp
-Tab tab1(&dashboard, "Custom Tab 1", dash::Icon::COG_ICON);
+dash::Tab tab1(dashboard, "Custom Tab 1", dash::Icon::COG_ICON);
 ```
 
 As of v5, you can assign a icon to the tab using `dash::Icon` enum. This icon will be displayed in the sidebar next to the tab name. Here are the available icons:
@@ -148,9 +148,9 @@ As of v5, you can assign a icon to the tab using `dash::Icon` enum. This icon wi
 Once a tab has been created, you need to set the tab for relevant cards and charts using `setTab` function of Card or Chart class. `setTab` accepts a pointer to the tab which we just created.
 
 ```cpp
-card1.setTab(&tab1);
+card1.setTab(tab1);
 ```
 
 ```cpp
-chart1.setTab(&tab1);
+chart1.setTab(tab1);
 ```
