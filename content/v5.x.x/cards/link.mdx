@@ -44,6 +44,25 @@ const char* url = link.value();
 - **Parameters:** None
 - **Returns:** `const char*` — The current URL value.
 
+### `setTarget(const char* target)`
+Set the target for the link. This can be `_blank` (default), `_self`, etc. `_blank` will open the link in a new tab and `_self` will open it in the same tab.
+```cpp
+link.setTarget("_blank");
+```
+- **Signature:** `void setTarget(const char* target)`
+- **Parameters:**
+  - `const char* target` — The target attribute for the link.
+- **Returns:** `void`
+
+### `target()`
+Get the current target for the link.
+```cpp
+const char* target = link.target();
+```
+- **Signature:** `const char* target()`
+- **Parameters:** None
+- **Returns:** `const char*` — The current target attribute.
+
 ## Reference
 
 A complete example showing how to use the Link Card in a real project. This demonstrates initialization, setting the URL, and updating it dynamically.
@@ -54,8 +73,8 @@ dash::LinkCard link(dashboard, "Test Link");
 void setup() {
   // ...
 
-  // Set URL for the link
-  link.setValue("https://espdash.pro");
+  link.setValue("https://espdash.pro"); // Set URL for the link
+  link.setTarget("_blank"); // Open in new tab
 }
 
 void loop() {
