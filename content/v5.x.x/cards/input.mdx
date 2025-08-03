@@ -18,31 +18,33 @@ The Input Card allows users to enter textual or numeric data. You can specify th
 ## Initializer
 
 To create a input card in ESP-DASH v5, use the `dash::InputCard<T, Precision>` class. The template parameters allow you to control the value type and decimal precision:
-- `T`: Value type (e.g., dash::string, int, float, const char*)
-- `Precision`: Number of decimal places for floating point values (default: 2)
+- `T`: Value type (e.g., Replace `T` with `dash::string`, `int`, `float` or `const char*`)
+- `Precision`: Number of decimal places for floating point values (default: `2`)
 
-#### Example 1: String value (default)
+### For Text Input:
 ```cpp
-dash::InputCard<dash::string> input(dashboard, "Input");
+dash::InputCard<T> input(dashboard, "Enter text");
 ```
 
-#### Example 2: Float value, custom precision (3 decimals)
+### For Numericals:
 ```cpp
-dash::InputCard<float, 3> inputFloat(dashboard, "Enter float");
-```
-
-#### Example 3: Integer value
-```cpp
-dash::InputCard<int> inputInt(dashboard, "Enter int");
+dash::InputCard<T, Precision> inputInt(dashboard, "Enter int");
 ```
 
 ## Callback
 
-Register a callback function to be called when the text changes:
+Input cards support a callback that is triggered when the input value changes. This allows you to handle user input dynamically. Please pay close attention to the type of the callback parameter, which is `std::optional<T>`. This allows you to handle cases where the input might be cleared, or if user entered a value that is not valid. This results in the callback receiving `std::nullopt` when the input is cleared or invalid, very useful for handling user input gracefully.
+
+Replace `T` with the type you chose for the input card (e.g., `dash::string`, `int`, `float`, or `const char*`).
+
 ```cpp
-input.onChange([](const char* newText) {
+input.onChange([](const std::optional<T>& newText) {
   // Handle text change
-  Serial.printf("Text changed: %s\n", newText);
+  if (newText) {
+    Serial.printf("Text changed: %s\n", *newText);
+  } else {
+    Serial.println("Text cleared");
+  }
 });
 ```
 
@@ -83,6 +85,14 @@ dash::InputCard<dash::string> textCard(dashboard, "Input");
 void setup() {
   // ...
   textCard.setValue("Hello");
+
+  textCard.onChange([](const std::optional<const char*>& newText) {
+    if (newText) {
+      Serial.printf("New text: %s\n", *newText);
+    } else {
+      Serial.println("Text cleared");
+    }
+  });
 }
 
 void loop() {
