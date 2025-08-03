@@ -2,20 +2,18 @@
   "name": "ESP-DASH",
   "keywords": "espdash, esp8266, esp32, rp2040, rp2350, webserver, ui, dashboard, user, ux, interface, gui, iot, arduino, wifi, server",
   "description": "ESP-DASH lets you create functional and beautiful self-hosted dashboards for your ESP8266, ESP32, RP2040 or RP2350 without the need of an internet connection.",
-  "repository":
-  {
+  "repository": {
     "type": "git",
     "url": "https://github.com/ayushsharma82/ESP-DASH.git"
   },
-  "authors":
-  [
+  "authors": [
     {
       "name": "Ayush Sharma",
       "email": "asrocks5@gmail.com",
       "maintainer": true
     }
   ],
-  "version": "5.0.0",
+  "version": "5.0.1",
   "frameworks": "arduino",
   "platforms": ["espressif8266", "espressif32", "raspberrypi"],
   "dependencies": [
