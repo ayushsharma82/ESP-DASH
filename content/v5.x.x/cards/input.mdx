@@ -33,7 +33,7 @@ dash::InputCard<T, Precision> inputInt(dashboard, "Enter int");
 
 ## Callback
 
-Input cards support a callback that is triggered when the input value changes. This allows you to handle user input dynamically. Please pay close attention to the type of the callback parameter, which is `std::optional<T>`. This allows you to handle cases where the input might be cleared, or if user entered a value that is not valid. This results in the callback receiving `std::nullopt` when the input is cleared or invalid, very useful for handling user input gracefully.
+Input cards support a callback that is triggered when the input value changes. This allows you to handle user input dynamically. Please pay close attention to the type of the callback parameter, which is `const std::optional<T>&`. This results in the callback receiving `std::nullopt` when the input is cleared or invalid, very useful for handling user input gracefully.
 
 Replace `T` with the type you chose for the input card (e.g., `dash::string`, `int`, `float`, or `const char*`).
 
