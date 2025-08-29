@@ -68,6 +68,9 @@ const metadata = {
   "time-sync": {
     title: <span className="flex items-center justify-center gap-2">Time Sync <Badge /></span>
   },
+  "time-difference": {
+    title: <span className="flex items-center justify-center gap-2">Time Difference <NewBadge /> <Badge /></span>
+  },
   "range-slider": {
     title: <span className="flex items-center justify-center gap-2">Range Slider <NewBadge /> <Badge /></span>
   },

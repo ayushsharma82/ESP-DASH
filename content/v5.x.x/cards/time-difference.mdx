@@ -1,0 +1,80 @@
+---
+title: Time Sync Card
+description: A utility card for synchronizing device time with the MCU using browser time data. Updated for ESP-DASH v5 API.
+---
+
+import { Callout } from 'nextra/components'
+import ProCallout from '@/components/ProCallout';
+
+# Time Difference Card
+
+<ProCallout />
+
+<img className="my-6 hidden dark:block" src="/img/v5/cards/dark/time-difference.png" width="280px" alt="Preview" />
+<img className="my-6 dark:hidden" src="/img/v5/cards/light/time-difference.png" width="280px" alt="Preview" />
+
+A display card to show time difference between user's browser (current) time and custom time which you set in the card. This is useful for showing "human" readable time differences for example "last updated on", "started on" etc.
+
+The time value of this card can be in either past, present or future. It will automatically display the appropriate label (e.g., "in 5 minutes", "5 minutes ago").
+
+## Initializer
+
+To create a time difference card in ESP-DASH v5, use the `dash::TimeDifferenceCard<T>` class. The template parameters allow you to control the value type:
+- `T`: Value type (e.g., `dash::string`, `const char*` or `int`)
+
+```cpp
+dash::TimeDifferenceCard<T> timeDiff(dashboard, "Time Difference");
+```
+
+## Callback
+
+There is no callback for the time difference card.
+
+## Methods
+
+### setValue(T)
+
+Set the value for the time difference card. This value should be the time in either seconds (if using int type) or a UTC string between which the card will calculate the difference.
+
+### setFormat(const char*)
+
+Set the format string for displaying the time difference. This is optional, but allows you to control the format used for displaying the time difference. 
+
+```cpp
+timeDiff.setFormat("full");
+```
+- **Signature:** `void setFormat(const char* format)`
+- **Parameters:**
+  - `const char* format` — The format string for displaying the time difference. This can be one of the following:
+    - `full`: Full format (e.g., "DD:HH:MM:SS")
+    - `auto`: Auto format - A human readable string (e.g., "4 minutes ago")
+- **Returns:** `void`
+
+### format()
+
+Get the current format string for displaying the time difference.
+
+```cpp
+const char* format = timeDiff.format();
+```
+- **Signature:** `const char* format()`
+- **Parameters:** None
+- **Returns:** `const char*` — The current format string for displaying the time difference. (`full` / `auto`)
+
+## Reference
+
+```cpp
+// For Epoach (seconds)
+dash::TimeDifferenceCard<int> timeDiff(dashboard, "Time Difference");
+
+void setup() {
+  // ...
+
+  // This sets the epoch value - In practice, you would get this from the system clock or time.h
+  timeDiff.setValue(1756491674);
+}
+
+void loop() {
+  // ...
+}
+```
