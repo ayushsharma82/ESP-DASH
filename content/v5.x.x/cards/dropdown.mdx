@@ -52,25 +52,17 @@ dropdown.onChange([](auto value) {
 
 ## Methods
 
-### `setOptions(const char* options[], size_t count)`
-Set the dropdown options.
-```cpp
-dropdown.setOptions(options, 3);
-```
-- **Signature:** `void setOptions(const char* options[], size_t count)`
-- **Parameters:**
-  - `const char* options[]` — Array of option strings.
-  - `size_t count` — Number of options.
-- **Returns:** `void`
+### `setOptions(const char* options)`
 
-### `options()`
-Get the current dropdown options.
+Set comma-separated dropdown options for user to choose from.
+
 ```cpp
-const char* opts = dropdown.options();
+dropdown.setOptions("option 1, option 2, option 3");
 ```
-- **Signature:** `const char* options()`
-- **Parameters:** None
-- **Returns:** `const char*` — The current options as a comma-separated string.
+- **Signature:** `void setOptions(const char* options)`
+- **Parameters:**
+  - `const char* options` — Comma-separated string of option values.
+- **Returns:** `void`
 
 ### `setValue(T value)`
 Set the dropdown value. The type of `value` must match the template type you chose for `T` (e.g., int, float, dash::string, const char*).
