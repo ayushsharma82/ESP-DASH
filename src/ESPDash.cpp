@@ -42,12 +42,6 @@ ESPDash::ESPDash(AsyncWebServer& server, const char* uri, bool enable_default_st
     _components.push_back(sdk);
     _componentsOwned.push_back(sdk);
 
-    // MAC Address
-    dash::StatisticValue<dash::string>* mac = new dash::StatisticValue<dash::string>("MAC Address");
-    mac->setValue(WiFi.macAddress().c_str());
-    _components.push_back(mac);
-    _componentsOwned.push_back(mac);
-
     // Free Heap
     dash::StatisticProvider<uint32_t>* heap = new dash::StatisticProvider<uint32_t>("Free Heap (SRAM)");
 #if defined(ESP8266) || defined(ESP32)
