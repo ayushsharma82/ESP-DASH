@@ -53,13 +53,10 @@ namespace dash {
   // dash::to_string
 
   template <typename T, uint8_t Precision = 2, std::enable_if_t<std::is_same_v<T, dash::string>, bool> = true>
-  static const dash::string& to_string(const T& value) { return value; }
-
-  template <typename T, uint8_t Precision = 2, std::enable_if_t<std::is_same_v<T, const char*>, bool> = true>
-  static dash::string to_string(const T& value) { return value; }
+  static dash::string to_string(T value) { return value; }
 
   template <typename T, uint8_t Precision = 2, std::enable_if_t<std::is_integral_v<T>, bool> = true>
-  static dash::string to_string(const T& value) {
+  static dash::string to_string(T value) {
 #ifdef DASH_USE_STL_STRING
     return std::to_string(value);
 #else
@@ -68,7 +65,7 @@ namespace dash {
   }
 
   template <typename T, uint8_t Precision = 2, std::enable_if_t<std::is_floating_point_v<T>, bool> = true>
-  static dash::string to_string(const T& value) {
+  static dash::string to_string(T value) {
 #ifdef DASH_USE_STL_STRING
     return String(value, (size_t)Precision).c_str();
 #else

@@ -41,16 +41,7 @@ namespace dash {
       ~StatisticValue() = default;
 
       // update the statistic value and returns true if the value has changed
-      bool setValue(const T& value) {
-        if (Statistic<T, Precision>::_value == value)
-          return false;
-        Statistic<T, Precision>::_value = value;
-        Component::setChange(Component::Property::VALUE);
-        return true;
-      }
-
-      // update the statistic value and returns true if the value has changed
-      bool setValue(T&& value) {
+      bool setValue(T value) {
         if (Statistic<T, Precision>::_value == value)
           return false;
         Statistic<T, Precision>::_value = std::forward<T>(value);
