@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="400" viewBox="0 0 1200 400" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-label="SOFTT Engineering: shipping a product with ESP-DASH? Book a free engineering review.">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#111114"/><stop offset="1" stop-color="#08080a"/>
+    </linearGradient>
+    <radialGradient id="glowA" cx="980" cy="20" r="520" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#3d6dff" stop-opacity="0.42"/><stop offset="1" stop-color="#3d6dff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowB" cx="1140" cy="360" r="380" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#8c5cff" stop-opacity="0.22"/><stop offset="1" stop-color="#8c5cff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="title" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0.3" stop-color="#ffffff"/><stop offset="1" stop-color="#a9acb8"/>
+    </linearGradient>
+    <clipPath id="card"><rect width="1200" height="400" rx="28"/></clipPath>
+  </defs>
+  <g clip-path="url(#card)">
+    <rect width="1200" height="400" fill="url(#bg)"/>
+    <rect width="1200" height="400" fill="url(#glowA)"/>
+    <rect width="1200" height="400" fill="url(#glowB)"/>
+    <rect x="0.5" y="0.5" width="1199" height="399" rx="27.5" fill="none" stroke="#ffffff" stroke-opacity="0.07"/>
+  </g>
+  <svg x="64" y="61" width="17" height="17" viewBox="0 0 1855 1855"><path d="M637.726 1152H256V768h381.726L367.805 444.095l226.274-271.529L864 496.471V38.4h320v458.071l269.921-323.905 226.274 271.529L1410.274 768H1792v384h-381.726l269.921 323.905-226.274 271.529L1184 1423.529V1881.6H864v-458.071l-269.921 323.905-226.274-271.529L637.726 1152Z" fill="#8fa9ff" transform="matrix(1 0 0 .83333 -96.792 127.208)"/></svg>
+  <text x="90" y="75" font-size="14" font-weight="700" letter-spacing="2.6" fill="#8fa9ff">SOFTT ENGINEERING</text>
+  <text x="62" y="148" font-size="54" font-weight="800" letter-spacing="-1.9" fill="#ffffff">Shipping a product</text>
+  <text x="62" y="210" font-size="54" font-weight="800" letter-spacing="-1.9" fill="url(#title)">with ESP-DASH?</text>
+  <text x="64" y="258" font-size="19" fill="#a1a1a6">We built ESP-DASH. Our engineers can design the rest of</text>
+  <text x="64" y="285" font-size="19" fill="#a1a1a6">your device, from electronics and firmware to cloud and app.</text>
+  <rect x="64" y="314" width="318" height="50" rx="25" fill="#f5f5f7"/>
+  <text x="223" y="345" font-size="17" font-weight="650" fill="#111114" text-anchor="middle">Book a free engineering review</text>
+  <text x="414" y="345" font-size="17" font-weight="600" fill="#8fa9ff">softt.io  ↗</text>
+  <rect x="820" y="64" width="316" height="272" rx="20" fill="#ffffff" fill-opacity="0.04" stroke="#ffffff" stroke-opacity="0.09"/>
+  <text x="850" y="116.0" font-size="40" font-weight="800" letter-spacing="-1.6" fill="#f5f5f7">25+</text><text x="852" y="139.0" font-size="14" fill="#86868b">Products launched</text><line x1="820" x2="1136" y1="154.7" y2="154.7" stroke="#ffffff" stroke-opacity="0.09"/><text x="850" y="206.7" font-size="40" font-weight="800" letter-spacing="-1.6" fill="#f5f5f7">2M+</text><text x="852" y="229.7" font-size="14" fill="#86868b">Devices deployed</text><line x1="820" x2="1136" y1="245.3" y2="245.3" stroke="#ffffff" stroke-opacity="0.09"/><text x="850" y="297.3" font-size="40" font-weight="800" letter-spacing="-1.6" fill="#f5f5f7">8</text><text x="852" y="320.3" font-size="14" fill="#86868b">Countries served</text>
+</svg>
